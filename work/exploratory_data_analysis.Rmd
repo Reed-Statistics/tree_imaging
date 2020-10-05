@@ -1,0 +1,106 @@
+---
+title: "Portland Street Trees"
+author: "Sarah"
+date: "9/30/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(pdxTrees)
+```
+
+```{r}
+# load data
+pdxTrees_parks <- get_pdxTrees_parks()
+pdxTrees_streets <- get_pdxTrees_streets() # site width in ft., diameter in in.
+
+pdxTrees_parks_filtered <- pdxTrees_parks %>%
+  select(Longitude, Latitude, Genus, Species, Common_Name, Crown_Width_NS, Crown_Width_EW, Crown_Base_Height, Condition)
+
+pdxTrees_streets_filtered <- pdxTrees_streets %>%
+  select(Longitude, Latitude, Genus, Species, Common_Name, Site_Width, Condition)
+
+pdxTrees_combined <- full_join(pdxTrees_parks_filtered, pdxTrees_streets_filtered)
+```
+
+```{r}
+# trees that are at least 6m ~ 20ft in crown width
+pdxTrees_combined %>%
+  filter(Crown_Width_NS >= 20) %>%
+  ggplot(mapping = aes(x = Crown_Width_NS, y = Crown_Base_Height)) +
+    geom_col()
+
+
+# check canopy ns is equivalent to canopy we
+pdxTrees_combined %>%
+  filter(Crown_Width_NS >= 20) %>%
+  ggplot(mapping = aes(x = Crown_Width_NS, y = Crown_Width_EW)) +
+    geom_point() +
+    geom_abline(x = y, color = "red")
+
+# western red cedars
+pdxTrees_combined %>%
+  filter(Common_Name %in% "Western Redcedar") %>%
+  ggplot(mapping = aes(x = Crown_Width_NS)) +
+    geom_histogram(binwidth = 2) +
+    geom_vline(xintercept = 20, color = "green")
+
+pdxTrees_combined %>%
+  filter(Common_Name %in% "Western Redcedar", Crown_Width_NS >= 20) %>%
+  ggplot(mapping = aes(x = Crown_Base_Height)) +
+    geom_histogram()
+
+pdxTrees_combined %>%
+  filter(Common_Name %in% "Western Redcedar", Crown_Width_NS >= 20) %>%
+  ggplot(mapping = aes(x = Crown_Width_NS, y = Crown_Base_Height)) +
+    geom_col()
+
+pdxTrees_redcedar <- pdxTrees_combined%>%
+  filter(Common_Name %in% "Western Redcedar", Crown_Width_NS >= 20)
+
+# condition of the trees
+pdxTrees_combined %>%
+  count(Condition) %>%
+  arrange(-n)
+
+pdxTrees_combined %>%
+  count(Common_Name, Condition) %>%
+  arrange(-n)
+
+pdxTrees_combined %>%
+  filter(Condition %in% c("Dead", "Poor")) %>%
+  count(Common_Name, Condition) %>%
+  arrange(-n)
+
+# initial training set
+# maples, oak, douglas fir, western red cedar, oregon bigleaf
+train <- pdxTrees_combined %>%
+  filter(Genus %in% c("Acer", "Quercus", "Pseudotsuga", "Thuja"), Crown_Width_NS >= 20)
+
+train_summary <- train %>%
+  group_by(Genus, Condition) %>%
+  summarise(crown_ave = mean(Crown_Width_NS))
+
+# Note: no dead trees in training set, looking at trees with crown width >= 20ft (so no street trees)
+
+# distribution of trees over region 
+library(leaflet)
+bins <- c(20, 30, 40, 50, 100, 200)
+pal2 <- colorBin(palette = "viridis", domain = train$Crown_Width_NS, bins = bins)
+
+content2 <- paste("</b></br>", "Common name: ",
+                 train$Common_Name, 
+                 "</b></br>", "Condition:",
+                 train$Condition)
+
+leaflet() %>%
+  addTiles() %>%
+  addCircles(lng = ~Longitude, lat = ~Latitude, 
+                   data = train %>% filter(Crown_Width_NS >= 20), fillColor = ~pal2(Crown_Width_NS), radius = ~sqrt(Crown_Width_NS), 
+                   stroke = FALSE, fillOpacity = 0.9, popup = content2) %>%
+  addProviderTiles(providers$Stamen.TonerLite) %>%
+  addLegend(position = "bottomright", pal = pal2, values = train$Crown_Width_NS, title = "Crown Width", opacity = 1)
+```
+

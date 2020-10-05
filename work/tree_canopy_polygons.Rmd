@@ -1,0 +1,68 @@
+---
+title: "Tree Canopy Polygons"
+author: "Sarah"
+date: "10/4/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+https://pakillo.github.io/R-GIS-tutorial/
+
+```{r}
+library(rjson)
+library(rgdal)
+library(rworldmap)
+result <- fromJSON(file = "work/manifest.json")
+result <- geojson_read("work/manifest.json", what = "sp")
+# Download the shapefile. (note that I store it in a folder called DATA. You have to change that if needed.)
+download.file("http://thematicmapping.org/downloads/TM_WORLD_BORDERS_SIMPL-0.3.zip" , destfile="DATA/world_shape_file.zip")
+# You now have it in your current working directory, have a look!
+
+# Unzip this file. You can do it with R (as below), or clicking on the object you downloaded.
+system("unzip DATA/world_shape_file.zip")
+#  -- > You now have 4 files. One of these files is a .shp file! (TM_WORLD_BORDERS_SIMPL-0.3.shp)
+my_spdf <- readOGR( 
+  dsn= paste0(getwd(),"/DATA/world_shape_file/") , 
+  layer="TM_WORLD_BORDERS_SIMPL-0.3",
+  verbose=FALSE
+)
+
+json_data_frame <- as.data.frame(result)
+print(result)
+```
+
+```{r}
+# load data
+pdxTrees_parks <- get_pdxTrees_parks()
+pdxTrees_streets <- get_pdxTrees_streets() # site width in ft., diameter in in.
+
+pdxTrees_parks_filtered <- pdxTrees_parks %>%
+  select(Longitude, Latitude, Genus, Species, Common_Name, Crown_Width_NS, Crown_Width_EW, Crown_Base_Height, Condition)
+
+pdxTrees_streets_filtered <- pdxTrees_streets %>%
+  select(Longitude, Latitude, Genus, Species, Common_Name, Site_Width, Condition)
+
+pdxTrees_combined <- full_join(pdxTrees_parks_filtered, pdxTrees_streets_filtered)
+
+train <- pdxTrees_combined %>%
+  filter(Genus %in% c("Acer", "Quercus", "Pseudotsuga", "Thuja"), Crown_Width_NS >= 20)
+
+coordinates(train) <- train %>%
+  select("Longitude", "Latitude")
+
+plot(train)
+```
+
+```{r}
+#define spatial projection
+crs.geo <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84") # geographical, datum WGS84
+proj4string(train) <- crs.geo  # define projection system of our data
+summary(train)
+
+plot(train, pch = 20, col = "steelblue")
+plot(n)
+```
+
