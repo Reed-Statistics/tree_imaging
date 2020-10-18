@@ -12,26 +12,11 @@ knitr::opts_chunk$set(echo = TRUE)
 https://pakillo.github.io/R-GIS-tutorial/
 
 ```{r}
+library(tidyverse)
+library(pdxTrees)
 library(rjson)
 library(rgdal)
 library(rworldmap)
-result <- fromJSON(file = "work/manifest.json")
-result <- geojson_read("work/manifest.json", what = "sp")
-# Download the shapefile. (note that I store it in a folder called DATA. You have to change that if needed.)
-download.file("http://thematicmapping.org/downloads/TM_WORLD_BORDERS_SIMPL-0.3.zip" , destfile="DATA/world_shape_file.zip")
-# You now have it in your current working directory, have a look!
-
-# Unzip this file. You can do it with R (as below), or clicking on the object you downloaded.
-system("unzip DATA/world_shape_file.zip")
-#  -- > You now have 4 files. One of these files is a .shp file! (TM_WORLD_BORDERS_SIMPL-0.3.shp)
-my_spdf <- readOGR( 
-  dsn= paste0(getwd(),"/DATA/world_shape_file/") , 
-  layer="TM_WORLD_BORDERS_SIMPL-0.3",
-  verbose=FALSE
-)
-
-json_data_frame <- as.data.frame(result)
-print(result)
 ```
 
 ```{r}
@@ -47,22 +32,64 @@ pdxTrees_streets_filtered <- pdxTrees_streets %>%
 
 pdxTrees_combined <- full_join(pdxTrees_parks_filtered, pdxTrees_streets_filtered)
 
-train <- pdxTrees_combined %>%
-  filter(Genus %in% c("Acer", "Quercus", "Pseudotsuga", "Thuja"), Crown_Width_NS >= 20)
+sequoia_names <- unique(pdxTrees_combined[startsWith(pdxTrees_combined$Genus, "Sequoia"),]$Genus)
 
-coordinates(train) <- train %>%
-  select("Longitude", "Latitude")
+# maples, oak, douglas fir, western red cedar, oregon bigleaf, sequoia
+train <- pdxTrees_combined %>%
+  filter(Genus %in% c("Acer", "Quercus", "Pseudotsuga", "Thuja", sequoia_names), Crown_Width_NS >= 20)
+
+train_redcedar <- pdxTrees_combined %>%
+  filter(Common_Name %in% "Western Redcedar", Crown_Width_NS >= 20)
+
+train_quru <- pdxTrees_combined %>%
+  filter(Species %in% "QURO", Crown_Width_NS >= 20)
+
+train_segi <- pdxTrees_combined %>%
+  filter(Species %in% "SEGI", Crown_Width_NS >= 20)
+
+train_acpl <- pdxTrees_combined %>%
+  filter(Species %in% "ACPL", Crown_Width_NS >= 20)
+
+train_psme <- pdxTrees_combined %>%
+  filter(Species %in% "PSME", Crown_Width_NS >= 20)
+
+
 
 plot(train)
 ```
 
-```{r}
-#define spatial projection
-crs.geo <- CRS("+proj=longlat +ellps=WGS84 +datum=WGS84") # geographical, datum WGS84
-proj4string(train) <- crs.geo  # define projection system of our data
-summary(train)
 
-plot(train, pch = 20, col = "steelblue")
-plot(n)
+```{r}
+library(sp)
+library(raster)
+WGScoor <- train
+coordinates(WGScoor) = ~ Longitude + Latitude
+proj4string(WGScoor)<- CRS("+proj=longlat +datum=WGS84")
+raster::shapefile(WGScoor, "training_trees_shapefile.shp")
+
+# redwood
+coordinates(train_redcedar) = ~ Longitude + Latitude
+proj4string(train_redcedar)<- CRS("+proj=longlat +datum=WGS84")
+raster::shapefile(train_redcedar, "redcedar_shapefile.shp")
+
+# quru
+coordinates(train_quru) = ~ Longitude + Latitude
+proj4string(train_quru)<- CRS("+proj=longlat +datum=WGS84")
+raster::shapefile(train_quru, "quru_shapefile.shp")
+
+# segi
+coordinates(train_segi) = ~ Longitude + Latitude
+proj4string(train_segi)<- CRS("+proj=longlat +datum=WGS84")
+raster::shapefile(train_segi, "segi_shapefile.shp")
+
+# acpl
+coordinates(train_acpl) = ~ Longitude + Latitude
+proj4string(train_acpl)<- CRS("+proj=longlat +datum=WGS84")
+raster::shapefile(train_acpl, "acpl_shapefile.shp")
+
+# psme
+coordinates(train_psme) = ~ Longitude + Latitude
+proj4string(train_psme)<- CRS("+proj=longlat +datum=WGS84")
+raster::shapefile(train_psme, "psme_shapefile.shp")
 ```
 

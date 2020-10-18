@@ -32,6 +32,9 @@ pdxTrees_combined %>%
   ggplot(mapping = aes(x = Crown_Width_NS, y = Crown_Base_Height)) +
     geom_col()
 
+# largest street trees
+pdxTrees_streets %>%
+  filter(DBH >= 20)
 
 # check canopy ns is equivalent to canopy we
 pdxTrees_combined %>%
@@ -74,10 +77,12 @@ pdxTrees_combined %>%
   count(Common_Name, Condition) %>%
   arrange(-n)
 
+sequoia_names <- unique(pdxTrees_combined[startsWith(pdxTrees_combined$Genus, "Sequoia"),]$Genus)
+
 # initial training set
 # maples, oak, douglas fir, western red cedar, oregon bigleaf
 train <- pdxTrees_combined %>%
-  filter(Genus %in% c("Acer", "Quercus", "Pseudotsuga", "Thuja"), Crown_Width_NS >= 20)
+  filter(Genus %in% c("Acer", "Quercus", "Pseudotsuga", "Thuja", sequoia_names), Crown_Width_NS >= 20)
 
 train_summary <- train %>%
   group_by(Genus, Condition) %>%
