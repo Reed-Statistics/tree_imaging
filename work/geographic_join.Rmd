@@ -1,0 +1,111 @@
+---
+title: "Geographic Join"
+author: "Sarah"
+date: "10/18/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(raster)
+library(sp)
+library(sf)
+library(rgdal)
+library(hsdar)
+```
+
+
+```{r}
+# load point and polygon shapefile
+psme <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/psme_polygon.shp")
+psme$id <- "psme"
+psme_poly <- st_multipolygon(psme$geometry)
+psme_pts <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_imaging/shapefiles/psme_shapefile.shp")
+# psme_st_pts <- st_point(psme_pts$geometry)
+st_within(psme_pts, psme_poly, sparse = F)
+psme_join <- st_join(psme, psme_pts) # polygon to point join
+```
+
+```{r}
+# repeat with rest of tree species
+
+## acpl
+acpl <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/acpl_polygon.shp")
+acpl$id <- "acpl"
+acpl_poly <- st_multipolygon(acpl$geometry)
+acpl_pts <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_imaging/shapefiles/acpl_shapefile.shp")
+st_within(acpl_pts, acpl_poly, sparse = F)
+acpl_join <- st_join(acpl, acpl_pts) # polygon to point join
+
+## quru
+quru <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/quru_polygon.shp")
+quru$id <- "quru"
+quru_poly <- st_multipolygon(quru$geometry)
+quru_pts <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_imaging/shapefiles/quru_shapefile.shp")
+st_within(quru_pts, quru_poly, sparse = F)
+quru_join <- st_join(quru, quru_pts) # polygon to point join
+
+## redwood
+redwood <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/redwood_polygon.shp")
+redwood$id <- "redwood"
+redwood_poly <- st_multipolygon(redwood$geometry)
+redwood_pts <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_imaging/shapefiles/redcedar_shapefile.shp")
+st_within(redwood_pts, redwood_poly, sparse = F)
+redwood_join <- st_join(redwood, redwood_pts) # polygon to point join
+
+## segi
+segi <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/segi_polygon.shp")
+segi$id <- "segi"
+segi_poly <- st_multipolygon(segi$geometry)
+segi_pts <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_imaging/shapefiles/segi_shapefile.shp")
+st_within(segi_pts, segi_poly, sparse = F)
+segi_join <- st_join(segi, segi_pts) # polygon to point join
+
+## segi
+segi <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/segi_polygon.shp")
+segi$id <- "segi"
+segi_poly <- st_multipolygon(segi$geometry)
+segi_pts <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_imaging/shapefiles/segi_shapefile.shp")
+st_within(segi_pts, segi_poly, sparse = F)
+segi_join <- st_join(segi, segi_pts) # polygon to point join
+```
+
+```{r}
+# join all polygon information
+poly_join <- rbind(acpl_join, quru_join, redwood_join, segi_join)
+```
+
+```{r}
+# load raster layer object
+raster_pdx_stack <- stack("planet/20200902_184428_1005_3B_AnalyticMS_clip.tif")
+raster_pdx_stack
+raster_pdx_stack@layers
+raster_pdx_stack@crs
+raster_pdx_stack@extent
+object.size(raster_pdx_stack)
+raster_pdx_stack_df <- as.data.frame(raster_pdx_stack, xy = T)
+str(raster_pdx_stack_df)
+ggplot() +
+  geom_raster(data = raster_pdx_stack_df,
+              aes(x = x, y = y, alpha = X20200902_184428_1005_3B_AnalyticMS_clip.2)) + 
+  coord_quickmap()
+
+# compare run time with raster brick object
+raster_brick <- brick(raster_pdx_stack)
+object.size(raster_brick)
+plotRGB(raster_brick)
+plotRGB(raster_brick, r = 1, g = 2, b = 3)
+```
+
+```{r}
+values(raster_pdx)
+b <- brick(raster_pdx)
+extr <- raster::extract(b, poly_join, fun = mean, na.rm = TRUE)
+# for (i in seq_len(ncol(extr))) poly_join[[colnames(extr)[i]]] <- extr[,i]
+```
+
+
+NDVI formula:
+$$NDVI = \frac{NIR - Red}{NIR + Red}$$
+Reference: https://geocompr.robinlovelace.net/spatial-operations.html#spatial-ras
