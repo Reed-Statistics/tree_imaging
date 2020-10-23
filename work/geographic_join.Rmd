@@ -105,7 +105,14 @@ extr <- raster::extract(b, poly_join, fun = mean, na.rm = TRUE)
 # for (i in seq_len(ncol(extr))) poly_join[[colnames(extr)[i]]] <- extr[,i]
 ```
 
+```{r}
+ndvi <- (raster_pdx_stack[[4]] - raster_pdx_stack[[1]]) / (raster_pdx_stack[[4]] + raster_pdx_stack[[1]])
+
+plot(ndvi, main = "NDVI of North Portland", axes = FALSE, box = FALSE)
+```
 
 NDVI formula:
 $$NDVI = \frac{NIR - Red}{NIR + Red}$$
-Reference: https://geocompr.robinlovelace.net/spatial-operations.html#spatial-ras
+References: 
+https://geocompr.robinlovelace.net/spatial-operations.html#spatial-ras
+https://www.earthdatascience.org/courses/earth-analytics/multispectral-remote-sensing-data/vegetation-indices-NDVI-in-R/
