@@ -15,100 +15,90 @@ library(rgdal)
 library(hsdar)
 ```
 
-
 ```{r}
-# load point and polygon shapefile
-psme <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/psme_polygon.shp")
-psme$id <- "psme"
-psme_poly <- st_multipolygon(psme$geometry)
-psme_pts <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_imaging/shapefiles/psme_shapefile.shp")
-# psme_st_pts <- st_point(psme_pts$geometry)
-st_within(psme_pts, psme_poly, sparse = F)
-psme_join <- st_join(psme, psme_pts) # polygon to point join
-```
-
-```{r}
-# repeat with rest of tree species
-
-## acpl
+# load polygon shapefiles
 acpl <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/acpl_polygon.shp")
-acpl$id <- "acpl"
-acpl_poly <- st_multipolygon(acpl$geometry)
-acpl_pts <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_imaging/shapefiles/acpl_shapefile.shp")
-st_within(acpl_pts, acpl_poly, sparse = F)
-acpl_join <- st_join(acpl, acpl_pts) # polygon to point join
-
-## quru
+psme <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/psme_polygon.shp")
 quru <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/quru_polygon.shp")
-quru$id <- "quru"
-quru_poly <- st_multipolygon(quru$geometry)
+redcedar <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/redwood_polygon.shp")
+segi <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/segi_polygon.shp")
+
+# add polygon tree type column
+acpl$id_type <- "acpl"
+psme$id_type <- "psme"
+quru$id_type <- "quru"
+redcedar$id_type <- "redcedar"
+segi$id_type <- "segi"
+
+# combine polygon shapefiles
+combined_poly <- rbind(acpl, psme, quru, redcedar, segi)
+
+# create multipolygon object
+multi_poly <- st_multipolygon(combined_poly$geometry)
+
+# load point datasets
+acpl_pts <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_imaging/shapefiles/acpl_shapefile.shp")
+psme_pts <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_imaging/shapefiles/psme_shapefile.shp")
 quru_pts <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_imaging/shapefiles/quru_shapefile.shp")
-st_within(quru_pts, quru_poly, sparse = F)
-quru_join <- st_join(quru, quru_pts) # polygon to point join
-
-## redwood
-redwood <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/redwood_polygon.shp")
-redwood$id <- "redwood"
-redwood_poly <- st_multipolygon(redwood$geometry)
-redwood_pts <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_imaging/shapefiles/redcedar_shapefile.shp")
-st_within(redwood_pts, redwood_poly, sparse = F)
-redwood_join <- st_join(redwood, redwood_pts) # polygon to point join
-
-## segi
-segi <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/segi_polygon.shp")
-segi$id <- "segi"
-segi_poly <- st_multipolygon(segi$geometry)
+redcedar_pts <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_imaging/shapefiles/redcedar_shapefile.shp")
 segi_pts <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_imaging/shapefiles/segi_shapefile.shp")
-st_within(segi_pts, segi_poly, sparse = F)
-segi_join <- st_join(segi, segi_pts) # polygon to point join
 
-## segi
-segi <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/segi_polygon.shp")
-segi$id <- "segi"
-segi_poly <- st_multipolygon(segi$geometry)
-segi_pts <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_imaging/shapefiles/segi_shapefile.shp")
-st_within(segi_pts, segi_poly, sparse = F)
-segi_join <- st_join(segi, segi_pts) # polygon to point join
-```
+# combine point datasets
+combined_pts <- rbind(acpl_pts, psme_pts, quru_pts, redcedar_pts, segi_pts)
 
-```{r}
-# join all polygon information
-poly_join <- rbind(acpl_join, quru_join, redwood_join, segi_join)
+# join combined points to combined polygons
+poly_join <- st_join(combined_poly, combined_pts, largest = T)
+
+# tidy polygon-point dataset
+poly_join <- poly_join %>%
+  mutate(id = c(1:510))
 ```
 
 ```{r}
 # load raster layer object
 raster_pdx_stack <- stack("planet/20200902_184428_1005_3B_AnalyticMS_clip.tif")
-raster_pdx_stack
-raster_pdx_stack@layers
-raster_pdx_stack@crs
-raster_pdx_stack@extent
-object.size(raster_pdx_stack)
-raster_pdx_stack_df <- as.data.frame(raster_pdx_stack, xy = T)
-str(raster_pdx_stack_df)
-ggplot() +
-  geom_raster(data = raster_pdx_stack_df,
-              aes(x = x, y = y, alpha = X20200902_184428_1005_3B_AnalyticMS_clip.2)) + 
-  coord_quickmap()
 
-# compare run time with raster brick object
-raster_brick <- brick(raster_pdx_stack)
-object.size(raster_brick)
-plotRGB(raster_brick)
-plotRGB(raster_brick, r = 1, g = 2, b = 3)
+# match raster project to polygons
+raster_crs <- CRS(projection(raster_pdx_stack))
+poly_join_reprojected <- spTransform(as_Spatial(poly_join), raster_crs)
+
+# extract pixel values from polygons into a dataframe
+raster_val <- raster::extract(raster_pdx_stack, poly_join_reprojected, df = TRUE)
 ```
 
 ```{r}
-values(raster_pdx)
-b <- brick(raster_pdx)
-extr <- raster::extract(b, poly_join, fun = mean, na.rm = TRUE)
-# for (i in seq_len(ncol(extr))) poly_join[[colnames(extr)[i]]] <- extr[,i]
+# tidy pixel table
+pixels_data <- sp::merge(raster_val, poly_join_reprojected, by.x = "ID", by.y = "id")
+
+pixels_data <- pixels_data %>%
+  rename("blue" = "X20200902_184428_1005_3B_AnalyticMS_clip.1",
+         "green" = "X20200902_184428_1005_3B_AnalyticMS_clip.2",
+         "red" = "X20200902_184428_1005_3B_AnalyticMS_clip.3",
+         "ir" = "X20200902_184428_1005_3B_AnalyticMS_clip.4")
+```
+
+```{r}
+# initial analysis
+pixels_data %>%
+  drop_na(blue, green, red, ir) %>%
+  group_by(Cmmn_Nm) %>%
+  summarise(counts = n())
+
+pix_no_na <- pixels_data %>%
+  drop_na(blue, green, red, ir)
+
+n_distinct(pix_no_na)
 ```
 
 ```{r}
 ndvi <- (raster_pdx_stack[[4]] - raster_pdx_stack[[1]]) / (raster_pdx_stack[[4]] + raster_pdx_stack[[1]])
 
 plot(ndvi, main = "NDVI of North Portland", axes = FALSE, box = FALSE)
+
+av_nir <- mean(raster_pdx_stack[[4]])
+av_green <- mean(raster_pdx_stack[[3]])
+av_blue <- mean(raster_pdx_stack[[2]])
+av_red <- mean(raster_pdx_stack[[1]])
 ```
 
 NDVI formula:
