@@ -53,7 +53,8 @@ train_acpl <- pdxTrees_combined %>%
 train_psme <- pdxTrees_combined %>%
   filter(Species %in% "PSME", Crown_Width_NS >= 20)
 
-
+train_acma <- pdxTrees_combined %>%
+  filter(Species %in% "ACMA", Crown_Width_NS >= 20)
 
 plot(train)
 ```
@@ -91,5 +92,10 @@ raster::shapefile(train_acpl, "acpl_shapefile.shp")
 coordinates(train_psme) = ~ Longitude + Latitude
 proj4string(train_psme)<- CRS("+proj=longlat +datum=WGS84")
 raster::shapefile(train_psme, "psme_shapefile.shp")
+
+# acma
+coordinates(train_acma) = ~ Longitude + Latitude
+proj4string(train_acma) <- CRS("+proj=longlat +datum=WGS84")
+raster::shapefile(train_acma, "acma_shapefile.shp")
 ```
 

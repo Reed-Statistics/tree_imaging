@@ -22,6 +22,7 @@ psme <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canop
 quru <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/quru_polygon.shp")
 redcedar <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/redwood_polygon.shp")
 segi <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/segi_polygon.shp")
+acma <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/acma_polygon.shp")
 
 # add polygon tree type column
 acpl$id_type <- "acpl"
@@ -29,9 +30,10 @@ psme$id_type <- "psme"
 quru$id_type <- "quru"
 redcedar$id_type <- "redcedar"
 segi$id_type <- "segi"
+acma$id_type <- "acma"
 
 # combine polygon shapefiles
-combined_poly <- rbind(acpl, psme, quru, redcedar, segi)
+combined_poly <- rbind(acpl, psme, quru, redcedar, segi, acma)
 
 # create multipolygon object
 multi_poly <- st_multipolygon(combined_poly$geometry)
@@ -42,67 +44,65 @@ psme_pts <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_i
 quru_pts <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_imaging/shapefiles/quru_shapefile.shp")
 redcedar_pts <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_imaging/shapefiles/redcedar_shapefile.shp")
 segi_pts <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_imaging/shapefiles/segi_shapefile.shp")
+acma_pts <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_imaging/shapefiles/acma_shapefile.shp")
 
 # combine point datasets
-combined_pts <- rbind(acpl_pts, psme_pts, quru_pts, redcedar_pts, segi_pts)
+combined_pts <- rbind(acpl_pts, psme_pts, quru_pts, redcedar_pts, segi_pts, acma_pts)
 
 # join combined points to combined polygons
 poly_join <- st_join(combined_poly, combined_pts, largest = T)
 
 # tidy polygon-point dataset
 poly_join <- poly_join %>%
-  mutate(id = c(1:510))
+  mutate(id = c(1:670))
 ```
 
 ```{r}
 # load raster layer object
-raster_pdx_stack <- stack("planet/20200902_184428_1005_3B_AnalyticMS_clip.tif")
+stack_a <- stack("planet/20200902_184428_1005_3B_AnalyticMS_clip.tif")
+stack_b <- stack("planet/20200902_184429_1005_3B_AnalyticMS_clip.tif")
+stack_c <- stack("planet/20200902_183008_24_1065_3B_AnalyticMS_clip.tif")
+stack_d <- stack("planet/20200902_183006_18_1065_3B_AnalyticMS_clip.tif")
+stack_e <- stack("planet/20200902_184430_1005_3B_AnalyticMS_clip.tif")
 
 # match raster project to polygons
-raster_crs <- CRS(projection(raster_pdx_stack))
+raster_crs <- CRS(projection(stack_a))
 poly_join_reprojected <- spTransform(as_Spatial(poly_join), raster_crs)
 
 # extract pixel values from polygons into a dataframe
-raster_val <- raster::extract(raster_pdx_stack, poly_join_reprojected, df = TRUE)
+val_a <- raster::extract(stack_a, poly_join_reprojected, df = TRUE)
+val_b <- raster::extract(stack_b, poly_join_reprojected, df = TRUE)
+val_c <- raster::extract(stack_c, poly_join_reprojected, df = TRUE)
+val_d <- raster::extract(stack_d, poly_join_reprojected, df = TRUE)
+val_e <- raster::extract(stack_e, poly_join_reprojected, df = TRUE)
+```
+
+```{r}
+# tidy and combine extracted values
+names <- c("ID", "blue", "green", "red", "ir")
+colnames(val_a) <- names
+colnames(val_b) <- names
+colnames(val_c) <- names
+colnames(val_d) <- names
+colnames(val_e) <- names
+
+val_a <- drop_na(val_a)
+val_b <- drop_na(val_b)
+val_c <- drop_na(val_c)
+val_d <- drop_na(val_d)
+val_e <- drop_na(val_e)
+
+# semi_join returns rows of x where it can find a match in y
+val_combined <- rbind(val_b, anti_join(val_a, val_b, by = "ID"))
+val_combined <- rbind(val_combined, anti_join(val_c, val_combined, by = "ID"))
+val_combined <- rbind(val_combined, anti_join(val_d, val_combined, by = "ID"))
+val_combined <- rbind(val_combined, anti_join(val_e, val_combined, by = "ID"))
+write.csv(val_combined,'val_combined1.csv')
+val_combined <- read.csv('val_combined1.csv')
 ```
 
 ```{r}
 # tidy pixel table
-pixels_data <- sp::merge(raster_val, poly_join_reprojected, by.x = "ID", by.y = "id")
-
-pixels_data <- pixels_data %>%
-  rename("blue" = "X20200902_184428_1005_3B_AnalyticMS_clip.1",
-         "green" = "X20200902_184428_1005_3B_AnalyticMS_clip.2",
-         "red" = "X20200902_184428_1005_3B_AnalyticMS_clip.3",
-         "ir" = "X20200902_184428_1005_3B_AnalyticMS_clip.4")
+pixels_data <- sp::merge(val_combined, poly_join_reprojected, by.x = "ID", by.y = "id")
 ```
 
-```{r}
-# initial analysis
-pixels_data %>%
-  drop_na(blue, green, red, ir) %>%
-  group_by(Cmmn_Nm) %>%
-  summarise(counts = n())
-
-pix_no_na <- pixels_data %>%
-  drop_na(blue, green, red, ir)
-
-n_distinct(pix_no_na)
-```
-
-```{r}
-ndvi <- (raster_pdx_stack[[4]] - raster_pdx_stack[[1]]) / (raster_pdx_stack[[4]] + raster_pdx_stack[[1]])
-
-plot(ndvi, main = "NDVI of North Portland", axes = FALSE, box = FALSE)
-
-av_nir <- mean(raster_pdx_stack[[4]])
-av_green <- mean(raster_pdx_stack[[3]])
-av_blue <- mean(raster_pdx_stack[[2]])
-av_red <- mean(raster_pdx_stack[[1]])
-```
-
-NDVI formula:
-$$NDVI = \frac{NIR - Red}{NIR + Red}$$
-References: 
-https://geocompr.robinlovelace.net/spatial-operations.html#spatial-ras
-https://www.earthdatascience.org/courses/earth-analytics/multispectral-remote-sensing-data/vegetation-indices-NDVI-in-R/

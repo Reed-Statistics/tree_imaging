@@ -1,0 +1,94 @@
+---
+title: "Pixels Exploratory Analysis"
+author: "Sarah"
+date: "11/1/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# counts analysis
+pixels_data %>%
+  group_by(Cmmn_Nm) %>%
+  summarise(counts = n())
+
+n_distinct(pixels_data)
+```
+
+```{r}
+# distributions across bands
+ggplot(pixels_data) +
+  geom_density(aes(x = red), col = "red") +
+  geom_density(aes(x = blue), col = "blue") + 
+  geom_density(aes(x = green), col = "green") + 
+  geom_density(aes(x = ir), col = "purple") + 
+  facet_wrap(~Cmmn_Nm)+
+  theme_classic() + labs(x = "values")
+
+# how bands correlate with each other
+bands <- pixels_data %>%
+  dplyr::select(blue, green, red, ir)
+library(corrplot)
+corrplot(cor(bands))
+corrplot(cor(bands), method = "number")
+```
+
+```{r}
+# different species in each band
+pixels_data %>%
+  group_by(Cmmn_Nm) %>%
+  summarise(count = n(), ave_blue = mean(blue), ave_red = mean(red), 
+            ave_green = mean(green), ave_ir = mean(ir))
+
+library(reshape2)
+pixels_filtered <- pixels_data %>%
+  dplyr::select(red, green, blue, ir, Cmmn_Nm)
+pixels_long <- melt(pixels_filtered, id.vars=c("Cmmn_Nm"))
+
+ggplot(pixels_long, aes(x = Cmmn_Nm, y = value)) +
+  geom_boxplot() + facet_wrap(~variable) + theme_classic() +
+  theme(axis.text.x = element_text(angle = 90))
+
+ggplot(pixels_long, aes(x = Cmmn_Nm, y = value)) +
+  geom_violin() + facet_wrap(~variable) + theme_classic() +
+  theme(axis.text.x = element_text(angle = 90))
+
+ggplot(pixels_data, aes(x = Cmmn_Nm, y = ndvi)) +
+  geom_violin() + theme_classic() +
+  theme(axis.text.x = element_text(angle = 90))
+```
+
+```{r}
+# red v. ir analysis
+ggplot(pixels_data, mapping = aes(x = red, y = ir, color = Cmmn_Nm)) +
+  geom_point(alpha = 0.6) +
+  scale_colour_viridis_d()
+
+ggplot(pixels_data, mapping = aes(x = red - ir, y = blue - green, color = Cmmn_Nm)) +
+  geom_point(alpha = 0.6) +
+  scale_colour_viridis_d()
+
+# ndvi values
+ndvi <- (pixels_data$ir - pixels_data$red) / (pixels_data$ir + pixels_data$red)
+pixels_data$ndvi <- ndvi
+
+plot(ndvi, main = "NDVI of North Portland", axes = FALSE, box = FALSE)
+
+ggplot(data.frame(ndvi), aes(x = ndvi)) +
+  geom_density()
+
+av_nir <- mean(pixels_data$ir)
+av_green <- mean(pixels_data$green)
+av_blue <- mean(pixels_data$blue)
+av_red <- mean(pixels_data$red)
+```
+
+NDVI formula:
+$$NDVI = \frac{NIR - Red}{NIR + Red}$$
+References: 
+https://geocompr.robinlovelace.net/spatial-operations.html#spatial-ras
+https://www.earthdatascience.org/courses/earth-analytics/multispectral-remote-sensing-data/vegetation-indices-NDVI-in-R/
+https://ourcodingclub.github.io/tutorials/spatial/#section2
