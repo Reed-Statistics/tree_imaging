@@ -16,7 +16,6 @@ val_combined <- read.csv('val_combined1.csv')
 pixels_data <- sp::merge(val_combined, poly_join_reprojected, by.x = "ID", by.y = "id")
 ```
 
-
 ```{r}
 # counts analysis
 pixels_data %>%
@@ -100,3 +99,17 @@ References:
 https://geocompr.robinlovelace.net/spatial-operations.html#spatial-ras
 https://www.earthdatascience.org/courses/earth-analytics/multispectral-remote-sensing-data/vegetation-indices-NDVI-in-R/
 https://ourcodingclub.github.io/tutorials/spatial/#section2
+
+```{r}
+# condition of trees
+pixels_data %>%
+  group_by(Conditn) %>%
+  summarise(count = n())
+
+ggplot(pixels_data, aes(x = Cmmn_Nm, y = Cr_W_NS, fill = Conditn)) +
+  geom_col(position = "fill")
+
+ggplot(pixels_data, aes(x = Conditn, y = red, fill = Cmmn_Nm)) +
+  geom_col()
+```
+
