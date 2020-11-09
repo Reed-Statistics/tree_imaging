@@ -10,6 +10,14 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r}
+# load data
+poly_join_reprojected <- read.csv('poly_join_reprojected1.csv')
+val_combined <- read.csv('val_combined1.csv')
+pixels_data <- sp::merge(val_combined, poly_join_reprojected, by.x = "ID", by.y = "id")
+```
+
+
+```{r}
 # counts analysis
 pixels_data %>%
   group_by(Cmmn_Nm) %>%

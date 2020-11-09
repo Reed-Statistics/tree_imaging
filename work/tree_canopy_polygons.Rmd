@@ -35,8 +35,6 @@ pdxTrees_combined <- full_join(pdxTrees_parks_filtered, pdxTrees_streets_filtere
 sequoia_names <- unique(pdxTrees_combined[startsWith(pdxTrees_combined$Genus, "Sequoia"),]$Genus)
 
 # maples, oak, douglas fir, western red cedar, oregon bigleaf, sequoia
-train <- pdxTrees_combined %>%
-  filter(Genus %in% c("Acer", "Quercus", "Pseudotsuga", "Thuja", sequoia_names), Crown_Width_NS >= 20)
 
 train_redcedar <- pdxTrees_combined %>%
   filter(Common_Name %in% "Western Redcedar", Crown_Width_NS >= 20)
@@ -56,17 +54,12 @@ train_psme <- pdxTrees_combined %>%
 train_acma <- pdxTrees_combined %>%
   filter(Species %in% "ACMA", Crown_Width_NS >= 20)
 
-plot(train)
 ```
 
 
 ```{r}
 library(sp)
 library(raster)
-WGScoor <- train
-coordinates(WGScoor) = ~ Longitude + Latitude
-proj4string(WGScoor)<- CRS("+proj=longlat +datum=WGS84")
-raster::shapefile(WGScoor, "training_trees_shapefile.shp")
 
 # redwood
 coordinates(train_redcedar) = ~ Longitude + Latitude

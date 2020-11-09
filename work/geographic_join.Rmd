@@ -97,11 +97,15 @@ val_combined <- rbind(val_b, anti_join(val_a, val_b, by = "ID"))
 val_combined <- rbind(val_combined, anti_join(val_c, val_combined, by = "ID"))
 val_combined <- rbind(val_combined, anti_join(val_d, val_combined, by = "ID"))
 val_combined <- rbind(val_combined, anti_join(val_e, val_combined, by = "ID"))
-write.csv(val_combined,'val_combined1.csv')
-val_combined <- read.csv('val_combined1.csv')
 ```
 
 ```{r}
+# save results
+#write.csv(poly_join_reprojected,'poly_join_reprojected1.csv')
+poly_join_reprojected <- read.csv('poly_join_reprojected1.csv')
+#write.csv(val_combined,'val_combined1.csv')
+val_combined <- read.csv('val_combined1.csv')
+
 # tidy pixel table
 pixels_data <- sp::merge(val_combined, poly_join_reprojected, by.x = "ID", by.y = "id")
 ```

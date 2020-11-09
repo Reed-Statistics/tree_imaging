@@ -1,3 +1,8 @@
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE)
+```
+
 ## Data Chapter
 
 There are two sources of data in this project. Data at a pixel level come from satellite images downloaded from Planet.com (https://www.planet.com), and data at the ground level come from a library called “pdxTrees” in RStudio (https://github.com/mcconvil/pdxTrees). 
@@ -20,3 +25,63 @@ Tree Condition: Categorical variable with four categories (from best to worst), 
 To prepare the ground level data for training the model, the data was filtered by species and crown size. The following species were identified and included: maples, oak, douglas fir, western red cedar, oregon bigleaf, sequoia. Since the data is used to identify trees in the satellite images, the ground data was also filtered to include only the trees with a crown width from north to south of 20 feet or more, this ensures that there will be around 9 to 20 pixels for each tree.
 
 Portland's Tree Inventory is appropriate for this project, because it provides the variables necessary for identifying Western Redcedars as well as the larger trees in the dataset, which is ideal for constructing a training set of tree polygons in a satellite image. One way this data would be even better suited for the purposes of this project would be if the street trees subdata also contained variables for tree canopy size.
+
+### Training Data
+
+#### Characteristics of Training Data
+
+The training data at the ground-level was filtered by tree size and tree type. Only trees with at least 20 feet in north to south crown width were included in the training dataset, to ensure that the polygons around each tree contain around 9 to 20 pixels. Figure \@ref(fig:crownWidth) plots the north to south crown width values against the west to east crown width values to present the ranges of crown widths in the entire pdxTrees parks dataset and to justify only using the north to south crown width for filtering the dataset since the two variables have a strong positive correlation.
+
+```{r crownWidth}
+library(pdxTrees)
+library(ggplot2)
+pdxTrees_parks <- get_pdxTrees_parks()
+ggplot(pdxTrees_parks, aes(x = Crown_Width_NS, y = Crown_Width_EW)) +
+  geom_point(alpha = 0.4) +
+  theme_classic() + labs(x = "North to South Crown Width (ft)", y = "West to East Crown Width (ft)")
+```
+
+Six tree types were determined to have large enough canopies on average and appear frequently enough to construct a training dataset with plenty of observations for each species of tree: Douglas-Fir, English Oak, Giant Sequoia, Maple, Western Redcedar. Figure \@ref(fig:pointsTable) provides the number of trees under each common name category. The largest group contains 6485 observations of Douglas-Fir trees, and the smallest group contains 135 observations of English Oak trees.
+
+```{r pointsTable}
+library(tidyverse)
+train_points <- pdxTrees_parks %>%
+  dplyr::filter(Species %in% c("QURO", "SEGI", "ACPL", "PSME", "ACMA", "THPL"), Crown_Width_NS >= 20)
+
+train_points %>%
+  group_by(Common_Name) %>%
+  summarise(counts = n()) %>%
+  arrange(desc(counts))
+```
+
+#### Creating Spatial Polygons
+
+The training dataset was converted into shapefiles for each type of tree and exported into QGIS where polygons were manually drawn around 100 of the trees for each species. Displaying the point shapefiles layer over the raster images downloaded from Planet.com in QGIS provided a guide point for locating individual trees around which a polygon can be created by tracing the tree canopy. Careful attention was paid to avoid drawing polygons around trees with canopies that overlap with other trees of different species along with trees that are cast in shadows or otherwise partially obstructed by surrounded structures. For the five different species of trees, at least 100 polygons were drawn around trees of that type, with each polygon containing at least 6 pixels and at most 20 pixels. The polygon shapefiles were then exported into RStudio where the rest of the analysis was conducted.
+
+#### Combining Ground-level Data with Pixel-level Data
+
+The first spatial join in RStudio was conducted to match up each Spatial Polygon with a point in the training dataset. Then the raster images were loaded and joined with the polygons to extract the pixel values inside each polygon for all 4 bands. Ultimately, a pixel table with rows representing each pixel with its corresponding polygon, light reflection intensity values for all 4 bands, and the ground information about that tree. Table \@ref(fig:pixelCounts) contains the summary of the total number of pixels for each tree type.
+
+```{r pixelCounts}
+# load data
+poly_join_reprojected <- read.csv('~/Documents/Fall_2020_Reed/Thesis/tree_imaging/poly_join_reprojected1.csv')
+val_combined <- read.csv('~/Documents/Fall_2020_Reed/Thesis/tree_imaging/val_combined1.csv')
+pixels_data <- sp::merge(val_combined, poly_join_reprojected, by.x = "ID", by.y = "id")
+
+pixels_data %>%
+  group_by(Cmmn_Nm) %>%
+  summarise(counts = n())
+```
+
+Figure \@ref(fig:pixDensity) displays the range of reflection intensity pixel values per tree type. Each tree species has similar ranges of values over the red, green, blue, and infared bands. Of the species included in the training data, the Giant Sequoia trees appear to have higher density counts for the red, green, and blue bands.
+
+```{r pixDensity}
+ggplot(pixels_data) +
+  geom_density(aes(x = red), col = "red") +
+  geom_density(aes(x = blue), col = "blue") + 
+  geom_density(aes(x = green), col = "green") + 
+  geom_density(aes(x = ir), col = "purple") + 
+  facet_wrap(~Cmmn_Nm)+
+  theme_classic() + labs(x = "Reflection Intensity", y = "Density")
+```
+
