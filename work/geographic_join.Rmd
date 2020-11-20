@@ -23,6 +23,7 @@ quru <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canop
 redcedar <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/redwood_polygon.shp")
 segi <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/segi_polygon.shp")
 acma <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/acma_polygon.shp")
+grass <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/grass_polygon.shp")
 
 # add polygon tree type column
 acpl$id_type <- "acpl"
@@ -31,9 +32,10 @@ quru$id_type <- "quru"
 redcedar$id_type <- "redcedar"
 segi$id_type <- "segi"
 acma$id_type <- "acma"
+grass$id_type <- "grass"
 
 # combine polygon shapefiles
-combined_poly <- rbind(acpl, psme, quru, redcedar, segi, acma)
+combined_poly <- rbind(acpl, psme, quru, redcedar, segi, acma, grass)
 
 # create multipolygon object
 multi_poly <- st_multipolygon(combined_poly$geometry)
@@ -54,7 +56,7 @@ poly_join <- st_join(combined_poly, combined_pts, largest = T)
 
 # tidy polygon-point dataset
 poly_join <- poly_join %>%
-  mutate(id = c(1:670))
+  mutate(id = c(1:675))
 ```
 
 ```{r}
@@ -79,7 +81,7 @@ val_e <- raster::extract(stack_e, poly_join_reprojected, df = TRUE)
 
 ```{r}
 # tidy and combine extracted values
-names <- c("ID", "blue", "green", "red", "ir")
+names <- c("ID", "red", "green", "blue", "ir")
 colnames(val_a) <- names
 colnames(val_b) <- names
 colnames(val_c) <- names
@@ -103,10 +105,17 @@ val_combined <- rbind(val_combined, anti_join(val_e, val_combined, by = "ID"))
 # save results
 #write.csv(poly_join_reprojected,'poly_join_reprojected1.csv')
 poly_join_reprojected <- read.csv('poly_join_reprojected1.csv')
+poly_join_reprojected <- poly_join_reprojected %>%
+  mutate(X = factor(X))
 #write.csv(val_combined,'val_combined1.csv')
 val_combined <- read.csv('val_combined1.csv')
 
 # tidy pixel table
-pixels_data <- sp::merge(val_combined, poly_join_reprojected, by.x = "ID", by.y = "id")
+pixels_data <- sp::merge(val_combined, poly_join_reprojected, by.x = "ID", by.y = "X")
+
+# with ndvi index (1 if ndvi >= 2.5, 0 otherwise)
+pixels_data <- pixels_data %>%
+  select(-c("X.x", "X.y", "St_Wdth")) %>%
+  mutate(ndvi = (ir - red)/(ir + red))
 ```
 

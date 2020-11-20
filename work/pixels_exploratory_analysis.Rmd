@@ -103,7 +103,7 @@ https://ourcodingclub.github.io/tutorials/spatial/#section2
 ```{r}
 # condition of trees
 pixels_data %>%
-  group_by(Conditn) %>%
+  group_by(Conditn, Cmmn_Nm) %>%
   summarise(count = n())
 
 ggplot(pixels_data, aes(x = Cmmn_Nm, y = Cr_W_NS, fill = Conditn)) +
@@ -111,5 +111,23 @@ ggplot(pixels_data, aes(x = Cmmn_Nm, y = Cr_W_NS, fill = Conditn)) +
 
 ggplot(pixels_data, aes(x = Conditn, y = red, fill = Cmmn_Nm)) +
   geom_col()
+
+# for a species, different combinations of bands, color coded by condition
+# blue - green, boxplot for given species
+ggplot(pixels_data, aes(x = Conditn, y = ndvi, fill = Cmmn_Nm)) +
+  geom_violin() + theme_classic() +
+  theme(axis.text.x = element_text(angle = 90))
+
+ggplot(pixels_data, aes(x = Conditn, y = red, fill = Cmmn_Nm)) +
+  geom_violin() + theme_classic() +
+  theme(axis.text.x = element_text(angle = 90))
+
+ggplot(pixels_data, aes(x = Conditn, y = blue, fill = Cmmn_Nm)) +
+  geom_violin() + theme_classic() +
+  theme(axis.text.x = element_text(angle = 90))
+
+ggplot(pixels_data, aes(x = Conditn, y = green, fill = Cmmn_Nm)) +
+  geom_violin() + theme_classic() +
+  theme(axis.text.x = element_text(angle = 90))
 ```
 

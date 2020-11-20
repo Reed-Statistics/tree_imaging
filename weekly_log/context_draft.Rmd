@@ -1,0 +1,35 @@
+---
+title: "Context Chapter draft"
+author: "Sarah"
+date: "11/20/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Outline:
+
+## Research Problem and Background
+Western redcedar trees are evergreen trees that typically grow up to 75 feet tall and are located over the Pacific Northwest, making it an organism with a tolerance for shaded regions with moist environments. These trees are native to the land and have served many purposes to people and animals living in the vicinity of the trees, including medicinal, building, and habitat functions [1]. However, over the past decade, reports of dead western redcedars have been increasing, suggesting that something other than natural causes is killing off this species. In general, this species experiences several hardships in surviving in the Pacific Northwest, with common causes of death such as forest fires, clearcutting, small animals eating the saplings, and harsh weather including strong winds that easily uproot the trees [1]. Dying redcedar trees can be identified by their branches which turn brownish yellow or fall off completely. Another sign is that the top of a dying redcedar will turn brown and lose leaves [2]. Losing this native tree would have a detrimental effect on animals in the area who rely heavily on the trees for their lifestyle. Scientists have speculated that western redcedar decline might be caused by recent dry summers, the spread of tree disease, insects, or other weather related events [2]. Since this is a recent issue, there is not a lot of resources explaining the decline. This research aims to provide more insight into the cause of the western redcedar decline by first predicting the location of the western redcedar trees in Portland and then predicting their condition in terms of health.
+
+Modelling in this research will be conducted by combining information gathered from remote sensing images with ground level information. There are several sources publishing research done on using satellite imagery for land classification as well as for predicting tree species, which will be the groundwork for this project's application of remote sensing models to the specific topic of western redcedar mortality. 
+
+Plenty of literature has been published in utilizing satellite imagery for predictive models, however, many issues arise in classifying land type through remote sensing mainly due to image quality. A single image can be composed of image strips taken over the course of multiple flight paths. Consequently, these images are taken at different times of day, which compiles into a single image with a lot of variation in values due to changes in the weather as well as the different angles of the sun's position [4]. Ideally, a solid classifying model surpasses any error introduced by imperfection in the satellite images. Common approaches to classification on satellite images include support vector machines, random forests, and decision trees. A study on land type classification explores the performance of convolutional neural networks (CNN) as classification models, namely, the GoogleNet and CaffeNet models with feature vector output on two remote sensing datasets [4]. The results of that experiment conclude that using a pre-trained CNN successfully classifies land type on the UC Merced Land Use dataset. The GoogleNet method has the benefit of reducing complexity of filter layers, while the CaffeNet model has convolutional layers followed by pooling layers and fully connected layers.
+
+Even more pertinent to this research is a study on identifying 7 tree species by applying a hyperspectral CNN model. This study was completed over a single north to south strip of hyperspectral imagery data (16km long by 1km wide) taken over the mountains in California. The collected data from the remote-sensing imagery corresponds with a strip of land for which field data had been collected. The collected field data includes measured information about tree count, tree species, and mortality status. To build the models the data is separated into 10 folds with the application of k-fold cross validation. The hyperspectral image is converted into the form of a tree canopy height model and circular polygons are centered at individual tree canopies in such a way that each circle gets assigned a tree species and mortality status and treated as a single observation. Next, a convolutional neural network is trained on the designated training data, with the results concluding that the model most accurately identifies pine trees at the genus level, and Jeffrey pine species, sugar pine species, and incense cedar species all with F-scores around 0.90 or more. One complication that comes up in the study is the uneven distribution of proportion of examples in each class, which gets accounted for by applying a balanced loss function. Another model included is an RGB model, which does not perform as well as the hyperspectral model in terms of distinguishing tree classes, but does perform around the same level of accuracy in terms of genus classification.
+
+## A Statistical Learning Approach to Identifying Location of Western Redcedars
+This work applies the classification methods in [5] to predict tree species using satellite imagery to locate western redcedars in Portland, Oregon in order model the condition of western redcedars and understand the cause of death in this species.
+
+## Sources
+[1] https://plants.usda.gov/plantguide/pdf/cs_thpl.pdf
+
+[2] https://ppo.puyallup.wsu.edu/plant-health-concerns/redcedar/
+
+[3] https://www.treespnw.com/resources/2018/11/7/are-the-western-redcedars-dying
+
+[4] https://arxiv.org/pdf/1508.00092.pdf (Land Use Classification in Remote Sensing Images by Convolutional Neural Networks)
+
+[5] https://www.fs.fed.us/psw/publications/north/psw_2019_north009_fricker.pdf (A Convolutional Neural Network Classifier Identifies Tree Species in Mixed-Confier Forest from Hyperspectral Imagery)

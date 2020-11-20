@@ -1,0 +1,36 @@
+---
+title: "Untitled"
+author: "Sarah"
+date: "11/15/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# ndvi mask
+# load raster layer object
+stack_a <- stack("planet/20200902_184428_1005_3B_AnalyticMS_clip.tif")
+stack_b <- stack("planet/20200902_184429_1005_3B_AnalyticMS_clip.tif")
+stack_c <- stack("planet/20200902_183008_24_1065_3B_AnalyticMS_clip.tif")
+stack_d <- stack("planet/20200902_183006_18_1065_3B_AnalyticMS_clip.tif")
+stack_e <- stack("planet/20200902_184430_1005_3B_AnalyticMS_clip.tif")
+
+ndvi <- (stack_a[[4]] - pixels_data$red) / (pixels_data$ir + pixels_data$red)
+
+naip_ndvi <- (stack_a[[4]] - stack_a[[1]]) / (stack_a[[4]] + stack_a[[1]])
+naip_ndvi1 <- (stack_a[[4]] - stack_a[[3]]) / (stack_a[[4]] + stack_a[[3]])
+
+# plot the data
+plot(naip_ndvi,
+     main = "NDVI",
+     axes = FALSE, box = FALSE)
+plot(naip_ndvi1,
+     main = "NDVI 1",
+     axes = FALSE, box = FALSE)
+
+veg <- reclassify(ndvi, cbind(-Inf, 0.4, NA))
+```
+

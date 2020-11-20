@@ -1,0 +1,49 @@
+---
+title: "models_svm_randomforest"
+author: "Sarah"
+date: "11/8/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+```{r}
+# load data
+poly_join_reprojected <- read.csv('poly_join_reprojected1.csv')
+val_combined <- read.csv('val_combined1.csv')
+pixels_data <- sp::merge(val_combined, poly_join_reprojected, by.x = "ID", by.y = "id")
+pixels_data <- pixels_data %>%
+  select(-c("X.1", "X.x", "X.y", "St_Wdth"))
+
+# training data
+train <- sample(1:nrow(pixels_data), nrow(pixels_data)/2)
+
+# test data
+test <- pixels_data[-train, "Cmmn_Nm"]
+```
+
+```{r}
+library(randomForest)
+set.seed(1)
+tree_name_rf <- randomForest(formula = factor(Cmmn_Nm) ~ ., data = pixels_data, subset = train, importance = T)
+# default uses mtry = sqrt(# variables) when building random forest of classification trees
+
+tree_name_rf
+yhat_rf <- predict(tree_name_rf, newdata = pixels_data[-train, ])
+confusion_matrix <- table(test, yhat_rf)
+
+importance(tree_name_rf)
+varImpPlot(tree_name_rf)
+```
+
+```{r}
+library(e1071)
+tree_name_svm <- svm(factor(Cmmn_Nm) ~ ., data = pixels_data)
+
+tree_name_svm
+summary(tree_name_svm)
+```
+
