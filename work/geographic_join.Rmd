@@ -77,6 +77,7 @@ val_b <- raster::extract(stack_b, poly_join_reprojected, df = TRUE)
 val_c <- raster::extract(stack_c, poly_join_reprojected, df = TRUE)
 val_d <- raster::extract(stack_d, poly_join_reprojected, df = TRUE)
 val_e <- raster::extract(stack_e, poly_join_reprojected, df = TRUE)
+
 ```
 
 ```{r}
@@ -95,7 +96,7 @@ val_d <- drop_na(val_d)
 val_e <- drop_na(val_e)
 
 # semi_join returns rows of x where it can find a match in y
-val_combined <- rbind(val_b, anti_join(val_a, val_b, by = "ID"))
+val_combined <- rbind(val_a, anti_join(val_b, val_a, by = "ID"))
 val_combined <- rbind(val_combined, anti_join(val_c, val_combined, by = "ID"))
 val_combined <- rbind(val_combined, anti_join(val_d, val_combined, by = "ID"))
 val_combined <- rbind(val_combined, anti_join(val_e, val_combined, by = "ID"))
@@ -103,19 +104,17 @@ val_combined <- rbind(val_combined, anti_join(val_e, val_combined, by = "ID"))
 
 ```{r}
 # save results
-#write.csv(poly_join_reprojected,'poly_join_reprojected1.csv')
+#write.csv(poly_join_reprojected,'poly_join_reprojected1.csv', row.names = F)
 poly_join_reprojected <- read.csv('poly_join_reprojected1.csv')
-poly_join_reprojected <- poly_join_reprojected %>%
-  mutate(X = factor(X))
-#write.csv(val_combined,'val_combined1.csv')
+#write.csv(val_combined,'val_combined1.csv', row.names = F)
 val_combined <- read.csv('val_combined1.csv')
 
 # tidy pixel table
-pixels_data <- sp::merge(val_combined, poly_join_reprojected, by.x = "ID", by.y = "X")
-
-# with ndvi index (1 if ndvi >= 2.5, 0 otherwise)
+poly_join_reprojected <- poly_join_reprojected %>%
+  rename(ID = id)
+pixels_data <-left_join(val_combined, poly_join_reprojected)
 pixels_data <- pixels_data %>%
-  select(-c("X.x", "X.y", "St_Wdth")) %>%
   mutate(ndvi = (ir - red)/(ir + red))
+#write.csv(pixels_data,'pixels_data.csv', row.names = F)
 ```
 
