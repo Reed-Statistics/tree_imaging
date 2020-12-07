@@ -2,7 +2,7 @@
 title: "Context Chapter draft"
 author: "Sarah"
 date: "11/20/2020"
-output: html_document
+output: pdf_document
 ---
 
 ```{r setup, include=FALSE}

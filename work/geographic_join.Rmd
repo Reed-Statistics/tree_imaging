@@ -114,7 +114,9 @@ poly_join_reprojected <- poly_join_reprojected %>%
   rename(ID = id)
 pixels_data <-left_join(val_combined, poly_join_reprojected)
 pixels_data <- pixels_data %>%
-  mutate(ndvi = (ir - red)/(ir + red))
+  mutate(ndvi = (ir - red)/(ir + red), 
+         Cmmn_Nm = replace_na(as.character(Cmmn_Nm), "grass"))
+
 #write.csv(pixels_data,'pixels_data.csv', row.names = F)
 ```
 

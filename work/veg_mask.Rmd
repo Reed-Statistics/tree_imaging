@@ -18,19 +18,42 @@ stack_c <- stack("planet/20200902_183008_24_1065_3B_AnalyticMS_clip.tif")
 stack_d <- stack("planet/20200902_183006_18_1065_3B_AnalyticMS_clip.tif")
 stack_e <- stack("planet/20200902_184430_1005_3B_AnalyticMS_clip.tif")
 
-ndvi <- (stack_a[[4]] - pixels_data$red) / (pixels_data$ir + pixels_data$red)
+ndvi_a <- (stack_a[[4]] - stack_a[[1]]) / (stack_a[[4]] + stack_a[[1]])
+ndvi_b <- (stack_b[[4]] - stack_b[[1]]) / (stack_b[[4]] + stack_b[[1]])
+ndvi_c <- (stack_c[[4]] - stack_c[[1]]) / (stack_c[[4]] + stack_c[[1]])
+ndvi_d <- (stack_d[[4]] - stack_d[[1]]) / (stack_d[[4]] + stack_d[[1]])
+ndvi_e <- (stack_e[[4]] - stack_e[[1]]) / (stack_e[[4]] + stack_e[[1]])
 
-naip_ndvi <- (stack_a[[4]] - stack_a[[1]]) / (stack_a[[4]] + stack_a[[1]])
-naip_ndvi1 <- (stack_a[[4]] - stack_a[[3]]) / (stack_a[[4]] + stack_a[[3]])
+plot(ndvi_a, main = "NDVI", axes = FALSE, box = FALSE)
 
-# plot the data
-plot(naip_ndvi,
-     main = "NDVI",
-     axes = FALSE, box = FALSE)
-plot(naip_ndvi1,
-     main = "NDVI 1",
-     axes = FALSE, box = FALSE)
+# masked ndvi values
+ndvi_mask_a <- reclassify(ndvi_a, cbind(-Inf, 0.2, NA))
+ndvi_mask_b <- reclassify(ndvi_b, cbind(-Inf, 0.5, NA))
+ndvi_mask_c <- reclassify(ndvi_c, cbind(-Inf, 0.5, NA))
+ndvi_mask_d <- reclassify(ndvi_d, cbind(-Inf, 0.5, NA))
+ndvi_mask_e <- reclassify(ndvi_e, cbind(-Inf, 0.5, NA))
 
-veg <- reclassify(ndvi, cbind(-Inf, 0.4, NA))
+plot(ndvi_mask_a, main = "NDVI < 0.2", axes = FALSE, box = FALSE)
+plot(ndvi_mask_b, main = "NDVI", axes = FALSE, box = FALSE)
+plot(ndvi_mask_c, main = "NDVI", axes = FALSE, box = FALSE)
+
+# save ndvi mask
+writeRaster(x = ndvi_mask_a, filename = "ndvi_mask_a.tif", format = "GTiff", datatype = 'INT2S')
+writeRaster(x = ndvi_mask_a, filename = "ndvi_mask_a.tif", format = "GTiff", datatype = 'INT2S')
+writeRaster(x = ndvi_mask_a, filename = "ndvi_mask_a.tif", format = "GTiff", datatype = 'INT2S')
+writeRaster(x = ndvi_mask_a, filename = "ndvi_mask_a.tif", format = "GTiff", datatype = 'INT2S')
+writeRaster(x = ndvi_mask_a, filename = "ndvi_mask_a.tif", format = "GTiff", datatype = 'INT2S')
+```
+
+```{r}
+# Green Leaf Index (GLI) = [(green - red) + (green - blue)] / (2*green) + red + blue
+gli_a <- ((stack_a[[2]] - stack_a[[1]]) + (stack_a[[2]] - stack_a[[3]]))/ (2*stack_a[[2]] + stack_a[[1]] + stack_a[[3]])
+plot(gli_a, main = "GLI", axes = FALSE, box = FALSE)
+```
+
+```{r}
+# Enhanced Vegetation Index (EVI) = 2.5*(nir - red)/(nir + 6*red - 7.5*blue + 1)
+evi_a <- 2.5*(stack_a[[4]] - stack_a[[1]])/(stack_a[[4]] + 6*stack_a[[1]] - 7.5*stack_a[[3]])
+plot(evi_a, main = "EVI", axes = FALSE, box = FALSE)
 ```
 

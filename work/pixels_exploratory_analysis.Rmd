@@ -11,9 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 # load data
-poly_join_reprojected <- read.csv('poly_join_reprojected1.csv')
-val_combined <- read.csv('val_combined1.csv')
-pixels_data <- sp::merge(val_combined, poly_join_reprojected, by.x = "ID", by.y = "id")
+pixels_data <- read.csv('pixels_data.csv')
 ```
 
 ```{r}
@@ -21,6 +19,9 @@ pixels_data <- sp::merge(val_combined, poly_join_reprojected, by.x = "ID", by.y 
 pixels_data %>%
   group_by(Cmmn_Nm) %>%
   summarise(counts = n())
+
+pixels_data %>%
+  count(id_type)
 
 n_distinct(pixels_data)
 ```
@@ -79,13 +80,10 @@ ggplot(pixels_data, mapping = aes(x = red - ir, y = blue - green, color = Cmmn_N
   scale_colour_viridis_d()
 
 # ndvi values
-ndvi <- (pixels_data$ir - pixels_data$red) / (pixels_data$ir + pixels_data$red)
-pixels_data$ndvi <- ndvi
-
-plot(ndvi, main = "NDVI of North Portland", axes = FALSE, box = FALSE)
-
-ggplot(data.frame(ndvi), aes(x = ndvi)) +
+ggplot(pixels_data, aes(x = ndvi)) +
   geom_density()
+ggplot(pixels_data, aes(x = ndvi)) +
+  geom_histogram(fill = "turquoise")
 
 av_nir <- mean(pixels_data$ir)
 av_green <- mean(pixels_data$green)
