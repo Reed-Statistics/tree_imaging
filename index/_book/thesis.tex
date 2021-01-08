@@ -181,6 +181,20 @@ Second paragraph of abstract starts here.
 
 	\usepackage{float}
 \floatplacement{figure}{H}
+	\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
 % End of CII addition
 %%
 %% End Preamble
@@ -219,226 +233,28 @@ Second paragraph of abstract starts here.
 \chapter*{Introduction}\label{introduction}}
 \addcontentsline{toc}{chapter}{Introduction}
 
-Welcome to the \emph{R Markdown} thesis template. This template is based on (and in many places copied directly from) the Reed College LaTeX template, but hopefully it will provide a nicer interface for those that have never used TeX or LaTeX before. Using \emph{R Markdown} will also allow you to easily keep track of your analyses in \textbf{R} chunks of code, with the resulting plots and output included as well. The hope is this \emph{R Markdown} template gets you in the habit of doing reproducible research, which benefits you long-term as a researcher, but also will greatly help anyone that is trying to reproduce or build onto your results down the road.
-
-Hopefully, you won't have much of a learning period to go through and you will reap the benefits of a nicely formatted thesis. The use of LaTeX in combination with \emph{Markdown} is more consistent than the output of a word processor, much less prone to corruption or crashing, and the resulting file is smaller than a Word file. While you may have never had problems using Word in the past, your thesis is likely going to be about twice as large and complex as anything you've written before, taxing Word's capabilities. After working with \emph{Markdown} and \textbf{R} together for a few weeks, we are confident this will be your reporting style of choice going forward.
-
-\textbf{Why use it?}
-
-\emph{R Markdown} creates a simple and straightforward way to interface with the beauty of LaTeX. Packages have been written in \textbf{R} to work directly with LaTeX to produce nicely formatting tables and paragraphs. In addition to creating a user friendly interface to LaTeX, \emph{R Markdown} also allows you to read in your data, to analyze it and to visualize it using \textbf{R} functions, and also to provide the documentation and commentary on the results of your project. Further, it allows for \textbf{R} results to be passed inline to the commentary of your results. You'll see more on this later.
-
-\textbf{Who should use it?}
-
-Anyone who needs to use data analysis, math, tables, a lot of figures, complex cross-references, or who just cares about the final appearance of their document should use \emph{R Markdown}. Of particular use should be anyone in the sciences, but the user-friendly nature of \emph{Markdown} and its ability to keep track of and easily include figures, automatically generate a table of contents, index, references, table of figures, etc. should make it of great benefit to nearly anyone writing a thesis project.
-
-\textbf{For additional help with bookdown}
-
-Please visit \href{https://bookdown.org/yihui/bookdown/}{the free online bookdown reference guide}.
-
-\hypertarget{rmd-basics}{%
-\chapter{R Markdown Basics}\label{rmd-basics}}
-
-Here is a brief introduction into using \emph{R Markdown}. \emph{Markdown} is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. \emph{R Markdown} provides the flexibility of \emph{Markdown} with the implementation of \textbf{R} input and output. For more details on using \emph{R Markdown} see \url{https://rmarkdown.rstudio.com}.
-
-Be careful with your spacing in \emph{Markdown} documents. While whitespace largely is ignored, it does at times give \emph{Markdown} signals as to how to proceed. As a habit, try to keep everything left aligned whenever possible, especially as you type a new paragraph. In other words, there is no need to indent basic text in the Rmd document (in fact, it might cause your text to do funny things if you do).
-
-\hypertarget{lists}{%
-\section{Lists}\label{lists}}
-
-It's easy to create a list. It can be unordered like
-\begin{itemize}
-\tightlist
-\item
-  Item 1
-\item
-  Item 2
-\end{itemize}
-or it can be ordered like
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  Item 1
-\item
-  Item 2
-\end{enumerate}
-Notice that I intentionally mislabeled Item 2 as number 4. \emph{Markdown} automatically figures this out! You can put any numbers in the list and it will create the list. Check it out below.
-
-To create a sublist, just indent the values a bit (at least four spaces or a tab). (Here's one case where indentation is key!)
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\tightlist
-\item
-  Item 1
-\item
-  Item 2
-\item
-  Item 3
-  \begin{itemize}
-  \tightlist
-  \item
-    Item 3a
-  \item
-    Item 3b
-  \end{itemize}
-\end{enumerate}
-\hypertarget{line-breaks}{%
-\section{Line breaks}\label{line-breaks}}
-
-Make sure to add white space between lines if you'd like to start a new paragraph. Look at what happens below in the outputted document if you don't:
-
-Here is the first sentence. Here is another sentence. Here is the last sentence to end the paragraph.
-This should be a new paragraph.
-
-\emph{Now for the correct way:}
-
-Here is the first sentence. Here is another sentence. Here is the last sentence to end the paragraph.
-
-This should be a new paragraph.
-
-\hypertarget{r-chunks}{%
-\section{R chunks}\label{r-chunks}}
-
-When you click the \textbf{Knit} button above a document will be generated that includes both content as well as the output of any embedded \textbf{R} code chunks within the document. You can embed an \textbf{R} code chunk like this (\texttt{cars} is a built-in \textbf{R} dataset):
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{summary}\NormalTok{(cars)}
-\end{Highlighting}
-\end{Shaded}
-\begin{verbatim}
-     speed           dist       
- Min.   : 4.0   Min.   :  2.00  
- 1st Qu.:12.0   1st Qu.: 26.00  
- Median :15.0   Median : 36.00  
- Mean   :15.4   Mean   : 42.98  
- 3rd Qu.:19.0   3rd Qu.: 56.00  
- Max.   :25.0   Max.   :120.00  
-\end{verbatim}
-\hypertarget{inline-code}{%
-\section{Inline code}\label{inline-code}}
-
-If you'd like to put the results of your analysis directly into your discussion, add inline code like this:
-\begin{quote}
-The \texttt{cos} of \(2 \pi\) is 1.
-\end{quote}
-Another example would be the direct calculation of the standard deviation:
-\begin{quote}
-The standard deviation of \texttt{speed} in \texttt{cars} is 5.2876444.
-\end{quote}
-One last neat feature is the use of the \texttt{ifelse} conditional statement which can be used to output text depending on the result of an \textbf{R} calculation:
-\begin{quote}
-The standard deviation is less than 6.
-\end{quote}
-Note the use of \texttt{\textgreater{}} here, which signifies a quotation environment that will be indented.
-
-As you see with \texttt{\$2\ \textbackslash{}pi\$} above, mathematics can be added by surrounding the mathematical text with dollar signs. More examples of this are in \protect\hyperlink{math-sci}{Mathematics and Science} if you uncomment the code in \protect\hyperlink{math}{Math}.
-
-\hypertarget{including-plots}{%
-\section{Including plots}\label{including-plots}}
-
-You can also embed plots. For example, here is a way to use the base \textbf{R} graphics package to produce a plot using the built-in \texttt{pressure} dataset:
-
-\includegraphics{thesis_files/figure-latex/pressure-1.pdf}
-
-Note that the \texttt{echo=FALSE} parameter was added to the code chunk to prevent printing of the \textbf{R} code that generated the plot. There are plenty of other ways to add chunk options (like \texttt{fig.height} and \texttt{fig.width} in the chunk above). More information is available at \url{https://yihui.org/knitr/options/}.
-
-Another useful chunk option is the setting of \texttt{cache=TRUE} as you see here. If document rendering becomes time consuming due to long computations or plots that are expensive to generate you can use knitr caching to improve performance. Later in this file, you'll see a way to reference plots created in \textbf{R} or external figures.
-
-\hypertarget{loading-and-exploring-data}{%
-\section{Loading and exploring data}\label{loading-and-exploring-data}}
-
-Included in this template is a file called \texttt{flights.csv}. This file includes a subset of the larger dataset of information about all flights that departed from Seattle and Portland in 2014. More information about this dataset and its \textbf{R} package is available at \url{https://github.com/ismayc/pnwflights14}. This subset includes only Portland flights and only rows that were complete with no missing values. Merges were also done with the \texttt{airports} and \texttt{airlines} data sets in the \texttt{pnwflights14} package to get more descriptive airport and airline names.
-
-We can load in this data set using the following commands:
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# flights.csv is in the data directory}
-\CommentTok{# string columns will be read in as strings and not factors now}
-\NormalTok{flights <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{'~/tree_imaging/index/data/flights.csv'}\NormalTok{, }\DataTypeTok{stringsAsFactors =} \OtherTok{FALSE}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-The data is now stored in the data frame called \texttt{flights} in \textbf{R}. To get a better feel for the variables included in this dataset we can use a variety of functions. Here we can see the dimensions (rows by columns) and also the names of the columns.
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{dim}\NormalTok{(flights)}
-\end{Highlighting}
-\end{Shaded}
-\begin{verbatim}
-[1] 12649    16
-\end{verbatim}
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{names}\NormalTok{(flights)}
-\end{Highlighting}
-\end{Shaded}
-\begin{verbatim}
- [1] "month"        "day"          "dep_time"     "dep_delay"    "arr_time"    
- [6] "arr_delay"    "carrier"      "tailnum"      "flight"       "dest"        
-[11] "air_time"     "distance"     "hour"         "minute"       "carrier_name"
-[16] "dest_name"   
-\end{verbatim}
-Another good idea is to take a look at the dataset in table form. With this dataset having more than 20,000 rows, we won't explicitly show the results of the command here. I recommend you enter the command into the Console \textbf{\emph{after}} you have run the \textbf{R} chunks above to load the data into \textbf{R}.
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{View}\NormalTok{(flights)}
-\end{Highlighting}
-\end{Shaded}
-While not required, it is highly recommended you use the \texttt{dplyr} package to manipulate and summarize your data set as needed. It uses a syntax that is easy to understand using chaining operations. Below I've created a few examples of using \texttt{dplyr} to get information about the Portland flights in 2014. You will also see the use of the \texttt{ggplot2} package, which produces beautiful, high-quality academic visuals.
-
-We begin by checking to ensure that needed packages are installed and then we load them into our current working environment:
-\begin{Shaded}
-\begin{Highlighting}[]
-\CommentTok{# List of packages required for this analysis}
-\NormalTok{pkg <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"dplyr"}\NormalTok{, }\StringTok{"ggplot2"}\NormalTok{, }\StringTok{"knitr"}\NormalTok{, }\StringTok{"bookdown"}\NormalTok{)}
-\CommentTok{# Check if packages are not installed and assign the}
-\CommentTok{# names of the packages not installed to the variable new.pkg}
-\NormalTok{new.pkg <-}\StringTok{ }\NormalTok{pkg[}\OperatorTok{!}\NormalTok{(pkg }\OperatorTok{%in%}\StringTok{ }\KeywordTok{installed.packages}\NormalTok{())]}
-\CommentTok{# If there are any packages in the list that aren't installed,}
-\CommentTok{# install them}
-\ControlFlowTok{if}\NormalTok{ (}\KeywordTok{length}\NormalTok{(new.pkg)) \{}
-  \KeywordTok{install.packages}\NormalTok{(new.pkg, }\DataTypeTok{repos =} \StringTok{"https://cran.rstudio.com"}\NormalTok{)}
-\NormalTok{\}}
-\CommentTok{# Load packages}
-\KeywordTok{library}\NormalTok{(thesisdown)}
-\KeywordTok{library}\NormalTok{(dplyr)}
-\end{Highlighting}
-\end{Shaded}
-\begin{verbatim}
-Warning: package 'dplyr' was built under R version 3.6.2
-\end{verbatim}
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(ggplot2)}
-\end{Highlighting}
-\end{Shaded}
-\begin{verbatim}
-Warning: package 'ggplot2' was built under R version 3.6.2
-\end{verbatim}
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(knitr)}
-\end{Highlighting}
-\end{Shaded}
-\begin{verbatim}
-Warning: package 'knitr' was built under R version 3.6.2
-\end{verbatim}
 \clearpage
 
 \hypertarget{research-problem-and-background}{%
 \section{Research Problem and Background}\label{research-problem-and-background}}
 
-Western redcedar trees are evergreen trees that typically grow up to 75 feet tall and are located over the Pacific Northwest, making it an organism with a tolerance for shaded regions with moist environments. These trees are native to the land and have served many purposes to people and animals living in the vicinity of the trees, including medicinal, building, and habitat functions {[}1{]}. However, over the past decade, reports of dead western redcedars have been increasing, suggesting that something other than natural causes is killing off this species. In general, this species experiences several hardships in surviving in the Pacific Northwest, with common causes of death such as forest fires, clearcutting, small animals eating the saplings, and harsh weather including strong winds that easily uproot the trees {[}1{]}. Dying redcedar trees can be identified by their branches which turn brownish yellow or fall off completely. Another sign is that the top of a dying redcedar will turn brown and lose leaves {[}2{]}. Losing this native tree would have a detrimental effect on animals in the area who rely heavily on the trees for their lifestyle. Scientists have speculated that western redcedar decline might be caused by recent dry summers, the spread of tree disease, insects, or other weather related events {[}2{]}. Since this is a recent issue, there is not a lot of resources explaining the decline. This research aims to provide more insight into the cause of the western redcedar decline by first predicting the location of the western redcedar trees in Portland and then predicting their condition in terms of health.
+Western redcedar trees are evergreen trees that typically grow up to 75 feet tall and are located over the Pacific Northwest, making it an organism with a tolerance for shaded regions with moist environments. These trees are native to the land and have served many purposes to people and animals living in the vicinity of the trees, including medicinal, building, and habitat functions {[}1{]}. However, over the past decade, reports of dead western redcedars have been increasing, suggesting that something other than natural causes is killing off this species. In general, this species experiences several hardships in surviving in the Pacific Northwest, with common causes of death such as forest fires, clearcutting, small animals eating the saplings, and harsh weather including strong winds that easily uproot the trees {[}1{]}. Dying redcedar trees can be identified by their branches which turn brownish yellow or fall off completely. Another sign is that the top of a dying redcedar will turn brown and lose leaves {[}2{]}. Losing this native tree would have a detrimental effect on animals in the area who rely heavily on the trees for their lifestyle. Scientists have speculated that western redcedar decline might be caused by recent dry summers, the spread of tree disease, insects, or other weather related events {[}2{]}. Since this is a recent issue, there is not a lot of resources explaining the decline. This research aims to provide more insight into the cause of the western redcedar decline by first predicting the location of the western redcedar trees in Portland and then predicting their condition in terms of health. Having more insight helps to prevent further tree deaths and save the western redcedar species, which also extends to similar tree species and provides more knowledge about environmental changes in the Pacific Northwest region.
 
-Modelling in this research will be conducted by combining information gathered from remote sensing images with ground level information. There are several sources publishing research done on using satellite imagery for land classification as well as for predicting tree species, which will be the groundwork for this project's application of remote sensing models to the specific topic of western redcedar mortality.
+Modelling in this research will be conducted by combining information gathered from remote sensing images with ground level information. There are several sources publishing research done using satellite imagery for land classification and for predicting tree species, which will be the groundwork for this project's application of remote sensing models to the specific topic of western redcedar mortality.
 
-Plenty of literature has been published in utilizing satellite imagery for predictive models, however, many issues arise in classifying land type through remote sensing mainly due to image quality. A single image can be composed of image strips taken over the course of multiple flight paths. Consequently, these images are taken at different times of day, which compiles into a single image with a lot of variation in values due to changes in the weather as well as the different angles of the sun's position {[}4{]}. Ideally, a solid classifying model surpasses any error introduced by imperfection in the satellite images. Common approaches to classification on satellite images include support vector machines, random forests, and decision trees. A study on land type classification explores the performance of convolutional neural networks (CNN) as classification models, namely, the GoogleNet and CaffeNet models with feature vector output on two remote sensing datasets {[}4{]}. The results of that experiment conclude that using a pre-trained CNN successfully classifies land type on the UC Merced Land Use dataset. The GoogleNet method has the benefit of reducing complexity of filter layers, while the CaffeNet model has convolutional layers followed by pooling layers and fully connected layers.
+Plenty of literature has been published in utilizing satellite imagery for predictive models, however, many issues arise in classifying land type through remote sensing mainly due to image quality. A single image can be composed of image strips taken over the course of multiple flight paths. Consequently, these images are taken at different times of day, which compiles into a single image with a lot of variation in values due to changes in the weather as well as the different angles of the sun's position {[}4{]}. Ideally, a solid classifying model surpasses any error introduced by imperfection in the satellite images. Common approaches to classification on satellite images include support vector machines, random forests, and decision trees. One study on land type classification explores the performance of convolutional neural networks (CNN) as classification models {[}4{]}.
 
-Even more pertinent to this research is a study on identifying 7 tree species by applying a hyperspectral CNN model. This study was completed over a single north to south strip of hyperspectral imagery data (16km long by 1km wide) taken over the mountains in California. The collected data from the remote-sensing imagery corresponds with a strip of land for which field data had been collected. The collected field data includes measured information about tree count, tree species, and mortality status. To build the models the data is separated into 10 folds with the application of k-fold cross validation. The hyperspectral image is converted into the form of a tree canopy height model and circular polygons are centered at individual tree canopies in such a way that each circle gets assigned a tree species and mortality status and treated as a single observation. Next, a convolutional neural network is trained on the designated training data, with the results concluding that the model most accurately identifies pine trees at the genus level, and Jeffrey pine species, sugar pine species, and incense cedar species all with F-scores around 0.90 or more. One complication that comes up in the study is the uneven distribution of proportion of examples in each class, which gets accounted for by applying a balanced loss function. Another model included is an RGB model, which does not perform as well as the hyperspectral model in terms of distinguishing tree classes, but does perform around the same level of accuracy in terms of genus classification.
+Another related study identifies 7 tree species by applying a hyperspectral CNN model. This study was completed using field data with measured information about tree count, tree species, and mortality status and hyperspectral imagery data. The hyperspectral data is converted into the form of a tree canopy height model with circular polygons centered at individual tree canopies. The study analyzes the performance of CNNs for both hyperspectral imagery data and a Red-Green-Blue (RGB) subset of the hyperspectral imagery data. The results of the experiment conclude that training a CNN on the hyperspectral data outperforms the CNN trained on RGB data in classifying land type on the UC Merced Land Use dataset. The RGB model does not perform as well as the hyperspectral model in terms of distinguishing tree classes, but does perform around the same level of accuracy in terms of genus classification. For this project, the data comes from Planet.com and only has RGB data available for the Portland region.
+
+This thesis follows along with the methods in {[}5{]} for combining the satellite imagery data with ground data by creating spatial polygons and extracting pixel-level information to train classification models. The work in this thesis differs from the methods in the cited literature by using random forests and support vector machines as classification models instead of CNNs and uses the RGB model instead of hyperspectral model. Finally, this thesis applies established classification methods for satellite imagery data to answer the specific question about the cause of death of western redcedars in the Pacific Northwest. First models predicted the locations for each tree species, then the health conditions of the western redcedars are modelled to identify any patterns in the species mortality over the past decade.
+
+\hypertarget{overview}{%
+\section{Overview}\label{overview}}
 
 \hypertarget{a-statistical-learning-approach-to-identifying-location-of-western-redcedars}{%
-\section{A Statistical Learning Approach to Identifying Location of Western Redcedars}\label{a-statistical-learning-approach-to-identifying-location-of-western-redcedars}}
+\subsection{A Statistical Learning Approach to Identifying Location of Western Redcedars}\label{a-statistical-learning-approach-to-identifying-location-of-western-redcedars}}
 
-This work applies the classification methods in {[}5{]} to predict tree species using satellite imagery to locate western redcedars in Portland, Oregon in order model the condition of western redcedars and understand the cause of death in this species.
+This work combines RGB imagery data from Planet.com with ground level tree data from the RStudio \texttt{pdxTrees} library and applies random forest and support vector machine classification methods to predict the location of tree species (specifically western redcedars) in Portland, Oregon and model the condition of western redcedars to ultimately understand the cause of death in this species. {[}insert key findings here{]}
 
 \hypertarget{sources}{%
 \section{Sources}\label{sources}}
@@ -456,15 +272,15 @@ This work applies the classification methods in {[}5{]} to predict tree species 
 \hypertarget{data-chapter}{%
 \section{Data Chapter}\label{data-chapter}}
 
-There are two sources of data in this project. Data at a pixel level come from satellite images downloaded from Planet.com (\url{https://www.planet.com}), and data at the ground level come from a library called ``pdxTrees'' in RStudio (\url{https://github.com/mcconvil/pdxTrees}).
+There are two sources of data in this project. Data at a pixel level come from satellite images downloaded from Planet.com (\url{https://www.planet.com}), and data at the ground level come from library \texttt{pdxTrees} in RStudio (\url{https://github.com/mcconvil/pdxTrees}).
 
 \hypertarget{imaging}{%
 \subsection{Imaging}\label{imaging}}
 
-The images from Planet.com were taken by satellites on September 2nd, 2020 at an altitude of 475km. The compiled multi-spectral image is composed of 4 bands: blue, green, red, and near-infrared, with center wavelengths 490nm, 565nm, 665nm, and 865nm respectively, with an average bandwidth of 41nm. The average spatial extent is around 25km by 8km. The images cover the entire Portland area, with specific measurements of 26km from west to east and 30km from north to south. The spatial resolution of the pixels is approximately 3 meters.
+The images from Planet.com were taken by satellites on September 2nd, 2020 at an altitude of 475 km. The compiled multi-spectral image is composed of 4 bands: blue, green, red, and near-infrared, with center wavelengths 490 nm, 565 nm, 665 nm, and 865 nm respectively, with an average bandwidth of 41 nm. The average spatial extent is around 25 km by 8 km. The images cover the entire Portland area, with specific measurements of 26 km from west to east and 30 km from north to south. The spatial resolution of the pixels is approximately 3 meters.
 Downloaded images are then opened in QGIS where further analysis on the images can be made.
 
-Using Planet.com for gathering satellite images has the added benefit of providing a limited number of downloadable images by making a free account. However, one drawback to using this data is that it has a poor resolution, which will decrease the performance of statistical models trying to predict tree species location.
+Using Planet.com for gathering satellite images has the added benefit of providing a limited number of downloadable images by making a free account. However, one drawback to using this data is that its low resolution, which will decrease the performance of statistical models trying to predict tree species location.
 
 \url{https://www.planet.com/products/satellite-imagery/files/1610.06_Spec\%20Sheet_Combined_Imagery_Product_Letter_ENGv1.pdf}
 \url{https://developers.planet.com/docs/data/sensors/}
@@ -473,13 +289,20 @@ Using Planet.com for gathering satellite images has the added benefit of providi
 \subsection{Ground Data}\label{ground-data}}
 
 Ground level data is available from the `pdxTrees' package in RStudio. This data was collected as part of the Portland's Parks and Recreation's Urban Forestry Tree Inventory Project, which collected park tree information from 2017 to 2019. Originally, the inventory project started with the goal of improving the city's tree management plans. Under the guidance of US Forestry staff, volunteers around the city's neighborhoods are trained in identifying tree species and provided with tools necessary to record tree measurements. The Portland park trees inventory consists of over 25,000 trees, each with information about tree location, size, species, and health. For the purposes of this project, the following variables were selected:
-Spatial information: Longitude and latitude of tree
-Species: Tree genus, species, and common name
-Crown size: Crown width from north to south, crown width from east to west, and the base height of the crown in feet
-Tree Condition: Categorical variable with four categories (from best to worst), good, fair, poor, and dead
-To prepare the ground level data for training the model, the data was filtered by species and crown size. The following species were identified and included: maples, oak, douglas fir, western red cedar, oregon bigleaf, sequoia. Since the data is used to identify trees in the satellite images, the ground data was also filtered to include only the trees with a crown width from north to south of 20 feet or more, this ensures that there will be around 9 to 20 pixels for each tree.
+\begin{itemize}
+\tightlist
+\item
+  Spatial information: Longitude and latitude of tree
+\item
+  Species: Tree genus, species, and common name
+\item
+  Crown size: Crown width from north to south, crown width from east to west, and the base height of the crown in feet
+\item
+  Tree Condition: Categorical variable with four categories (from best to worst), good, fair, poor, and dead
+\end{itemize}
+To prepare the ground level data for training the model, the data was filtered by species and crown size. The following tree species were identified and included: maples, oak, Douglas-fir, Western Redcedar, and sequoia. Since the data is used to identify trees in the satellite images, the ground data was also filtered to only include the trees with a crown width from north to south of 20 feet or more, this ensures that there will be around 9 to 20 pixels per tree.
 
-Portland's Tree Inventory is appropriate for this project, because it provides the variables necessary for identifying Western Redcedars as well as the larger trees in the dataset, which is ideal for constructing a training set of tree polygons in a satellite image. One way this data would be even better suited for the purposes of this project would be if the street trees subdata also contained variables for tree canopy size.
+Portland's Tree Inventory provides valuable data for this project because it includes a variable for identifying Western Redcedars as well as variables for identifying larger trees in the dataset, which helps construct a training set of tree polygons in a satellite image. One way this data would be even better suited for the purposes of this project would be if the street trees subdata also contained variables for tree canopy size.
 
 \hypertarget{training-data}{%
 \subsection{Training Data}\label{training-data}}
@@ -487,107 +310,103 @@ Portland's Tree Inventory is appropriate for this project, because it provides t
 \hypertarget{characteristics-of-training-data}{%
 \subsubsection{Characteristics of Training Data}\label{characteristics-of-training-data}}
 
-The training data at the ground-level was filtered by tree size and tree type. Only trees with at least 20 feet in north to south crown width were included in the training dataset, to ensure that the polygons around each tree contain around 9 to 20 pixels. Figure \ref{fig:crownWidth} plots the north to south crown width values against the west to east crown width values to present the ranges of crown widths in the entire pdxTrees parks dataset and to justify only using the north to south crown width for filtering the dataset since the two variables have a strong positive correlation.
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(pdxTrees)}
-\end{Highlighting}
-\end{Shaded}
-\begin{verbatim}
-Warning: package 'pdxTrees' was built under R version 3.6.2
-\end{verbatim}
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(ggplot2)}
-\NormalTok{pdxTrees_parks <-}\StringTok{ }\KeywordTok{get_pdxTrees_parks}\NormalTok{()}
-\KeywordTok{ggplot}\NormalTok{(pdxTrees_parks, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ Crown_Width_NS, }\DataTypeTok{y =}\NormalTok{ Crown_Width_EW)) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{geom_point}\NormalTok{(}\DataTypeTok{alpha =} \FloatTok{0.4}\NormalTok{) }\OperatorTok{+}
-\StringTok{  }\KeywordTok{theme_classic}\NormalTok{() }\OperatorTok{+}\StringTok{ }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{x =} \StringTok{"North to South Crown Width (ft)"}\NormalTok{, }\DataTypeTok{y =} \StringTok{"West to East Crown Width (ft)"}\NormalTok{)}
-\end{Highlighting}
-\end{Shaded}
-\begin{verbatim}
-Warning: Removed 263 rows containing missing values (geom_point).
-\end{verbatim}
-\includegraphics{thesis_files/figure-latex/crownWidth-1.pdf}
+The training data at the ground-level was filtered by tree size and tree type. Trees with at least 20 feet in north to south crown width were included in the training dataset to ensure that the polygons around each tree contain around 9 to 20 pixels. Figure \ref{fig:crownWidth} plots the north to south crown width values against the west to east crown width values to present the ranges of crown widths in the entire pdxTrees parks dataset and to justify only using the north to south crown width for filtering the dataset since the two variables have a strong positive correlation.
+\begin{figure}
 
-Six tree types were determined to have large enough canopies on average and appear frequently enough to construct a training dataset with plenty of observations for each species of tree: Douglas-Fir, English Oak, Giant Sequoia, Maple, Western Redcedar. Figure \ref{fig:pointsTable} provides the number of trees under each common name category. The largest group contains 6485 observations of Douglas-Fir trees, and the smallest group contains 135 observations of English Oak trees.
-\begin{Shaded}
-\begin{Highlighting}[]
-\KeywordTok{library}\NormalTok{(tidyverse)}
-\end{Highlighting}
-\end{Shaded}
-\begin{verbatim}
--- Attaching packages --------------------------------------- tidyverse 1.3.0 --
-\end{verbatim}
-\begin{verbatim}
-v tibble  3.0.4     v purrr   0.3.4
-v tidyr   1.0.2     v stringr 1.4.0
-v readr   1.3.1     v forcats 0.5.0
-\end{verbatim}
-\begin{verbatim}
-Warning: package 'tibble' was built under R version 3.6.2
-\end{verbatim}
-\begin{verbatim}
-Warning: package 'purrr' was built under R version 3.6.2
-\end{verbatim}
-\begin{verbatim}
--- Conflicts ------------------------------------------ tidyverse_conflicts() --
-x dplyr::filter() masks stats::filter()
-x dplyr::lag()    masks stats::lag()
-\end{verbatim}
-\begin{Shaded}
-\begin{Highlighting}[]
-\NormalTok{train_points <-}\StringTok{ }\NormalTok{pdxTrees_parks }\OperatorTok{%>%}
-\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{filter}\NormalTok{(Species }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"QURO"}\NormalTok{, }\StringTok{"SEGI"}\NormalTok{, }\StringTok{"ACPL"}\NormalTok{, }\StringTok{"PSME"}\NormalTok{, }\StringTok{"ACMA"}\NormalTok{, }\StringTok{"THPL"}\NormalTok{), Crown_Width_NS }\OperatorTok{>=}\StringTok{ }\DecValTok{20}\NormalTok{)}
+{\centering \includegraphics{thesis_files/figure-latex/crownWidth-1} 
 
-\NormalTok{train_points }\OperatorTok{%>%}
-\StringTok{  }\KeywordTok{group_by}\NormalTok{(Common_Name) }\OperatorTok{%>%}
-\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{counts =} \KeywordTok{n}\NormalTok{()) }\OperatorTok{%>%}
-\StringTok{  }\KeywordTok{arrange}\NormalTok{(}\KeywordTok{desc}\NormalTok{(counts))}
-\end{Highlighting}
-\end{Shaded}
-\begin{verbatim}
-`summarise()` ungrouping output (override with `.groups` argument)
-\end{verbatim}
-\begin{verbatim}
-# A tibble: 6 x 2
-  Common_Name      counts
-  <chr>             <int>
-1 Douglas-Fir        6485
-2 Norway Maple       1406
-3 Western Redcedar    652
-4 Bigleaf Maple       464
-5 Giant Sequoia       315
-6 English Oak         135
-\end{verbatim}
+}
+
+\caption{Plot comparing North to South Crown Width (ft) to West to East Crown Width (ft). A tree with a higher north-south crown width has a higher west-east crown width, so without loss of generality the north-south crown width variable is used to filter the dataset for larger trees only.}\label{fig:crownWidth}
+\end{figure}
+Six tree types were determined to have large enough canopies on average and appear frequently enough to construct a training dataset with plenty of observations for each species of tree: Douglas-Fir, English Oak, Giant Sequoia, Maple, Western Redcedar. Table \ref{tab:pointsTable} provides the number of trees under each common name category. The largest group contains 6485 observations of Douglas-Fir trees, and the smallest group contains 135 observations of English Oak trees.
+\begin{table}
+
+\caption{\label{tab:pointsTable}Common tree names included in the tidy data and their total counts.}
+\centering
+\begin{tabular}[t]{l|r}
+\hline
+Tree Name & Tree Count\\
+\hline
+Douglas-Fir & 6485\\
+\hline
+Norway Maple & 1406\\
+\hline
+Western Redcedar & 652\\
+\hline
+Bigleaf Maple & 464\\
+\hline
+Giant Sequoia & 315\\
+\hline
+English Oak & 135\\
+\hline
+\end{tabular}
+\end{table}
 \hypertarget{creating-spatial-polygons}{%
 \subsubsection{Creating Spatial Polygons}\label{creating-spatial-polygons}}
 
-The training dataset was converted into shapefiles for each type of tree and exported into QGIS where polygons were manually drawn around 100 of the trees for each species. Displaying the point shapefiles layer over the raster images downloaded from Planet.com in QGIS provided a guide point for locating individual trees around which a polygon can be created by tracing the tree canopy. Careful attention was paid to avoid drawing polygons around trees with canopies that overlap with other trees of different species along with trees that are cast in shadows or otherwise partially obstructed by surrounded structures. For the five different species of trees, at least 100 polygons were drawn around trees of that type, with each polygon containing at least 6 pixels and at most 20 pixels. The polygon shapefiles were then exported into RStudio where the rest of the analysis was conducted.
+The training dataset was converted into shapefiles for each type of tree and exported into QGIS where polygons were manually drawn around 100 of the trees for each species. The point shapefile layers were displayed over the raster images downloaded from Planet.com in QGIS, which provided a guide point for locating individual trees. Then using QGIS's drawing tool, a polygon is carefully drawn around the tree canopy. Most polygons turned out to be four to six-sided polygons to retain the general shape of the tree canopy. Trees polygons were only created if the outline of the tree canopy was clearly visible or surrounded by other trees of the same species in order to avoid including pixels from the wrong species in that polygon. Also, the shadows of the trees are visible in the raster images, so the polygons were drawn with the intention of not including the tree shadow. For the five different species of trees, at least 100 polygons were drawn around trees of that type, with each polygon containing at least 6 pixels and at most 20 pixels. The polygon shapefiles were then exported into RStudio where the rest of the analysis was conducted.
 
 \hypertarget{combining-ground-level-data-with-pixel-level-data}{%
 \subsubsection{Combining Ground-level Data with Pixel-level Data}\label{combining-ground-level-data-with-pixel-level-data}}
 
-The first spatial join in RStudio was conducted to match up each Spatial Polygon with a point in the training dataset. Then the raster images were loaded and joined with the polygons to extract the pixel values inside each polygon for all 4 bands. Ultimately, a pixel table with rows representing each pixel with its corresponding polygon, light reflection intensity values for all 4 bands, and the ground information about that tree. Table \ref{fig:pixelCounts} contains the summary of the total number of pixels for each tree type.
-\begin{verbatim}
-`summarise()` ungrouping output (override with `.groups` argument)
-\end{verbatim}
-\begin{verbatim}
-# A tibble: 7 x 2
-  Cmmn_Nm          counts
-  <fct>             <int>
-1 Bigleaf Maple       885
-2 Douglas-Fir        1380
-3 English Oak        1025
-4 Giant Sequoia      1436
-5 Norway Maple       2340
-6 Western Redcedar   1364
-7 <NA>               2923
-\end{verbatim}
+The first spatial join in RStudio was conducted to match up each Spatial Polygon with a point in the training dataset. Then the raster images were loaded and joined with the polygons to extract the pixel values inside each polygon for all 4 bands (red, green, blue, infrared). Ultimately this turned into a pixel table with rows representing each pixel with its corresponding polygon, light reflection intensity values for all 4 bands, and the ground information about that tree. Table \ref{tab:pixelHead} displays the first few entries of the pixels dataset. Table \ref{tab:pixelCounts} contains the summary of the total number of pixels for each tree type.
+\begin{table}
+
+\caption{\label{tab:pixelHead}Variables and pixel values included in the pixels dataset}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{r|r|r|r|r|l|l|l|l|r|r|r|l|l|r}
+\hline
+ID & red & green & blue & ir & id\_type & Genus & Species & Cmmn\_Nm & Cr\_W\_NS & Cr\_W\_EW & Crw\_B\_H & Conditn & St\_Wdth & ndvi\\
+\hline
+43 & 4707 & 4125 & 3187 & 6627 & acpl & Acer & ACPL & Norway Maple & 28 & 28 & 8 & Fair & NA & 0.1694018\\
+\hline
+43 & 4384 & 3860 & 2864 & 7111 & acpl & Acer & ACPL & Norway Maple & 28 & 28 & 8 & Fair & NA & 0.2372336\\
+\hline
+43 & 4446 & 3803 & 2807 & 7443 & acpl & Acer & ACPL & Norway Maple & 28 & 28 & 8 & Fair & NA & 0.2520818\\
+\hline
+43 & 4619 & 3911 & 2859 & 7801 & acpl & Acer & ACPL & Norway Maple & 28 & 28 & 8 & Fair & NA & 0.2561997\\
+\hline
+43 & 4695 & 4060 & 3201 & 5996 & acpl & Acer & ACPL & Norway Maple & 28 & 28 & 8 & Fair & NA & 0.1216911\\
+\hline
+43 & 4344 & 3719 & 2728 & 6747 & acpl & Acer & ACPL & Norway Maple & 28 & 28 & 8 & Fair & NA & 0.2166622\\
+\hline
+\end{tabular}}
+\end{table}
+\begin{table}
+
+\caption{\label{tab:pixelCounts}Number of pixels per tree type}
+\centering
+\begin{tabular}[t]{l|r}
+\hline
+Tree Name & Pixels Count\\
+\hline
+Bigleaf Maple & 885\\
+\hline
+Douglas-Fir & 1380\\
+\hline
+English Oak & 1025\\
+\hline
+Giant Sequoia & 1436\\
+\hline
+grass & 2923\\
+\hline
+Norway Maple & 2340\\
+\hline
+Western Redcedar & 1364\\
+\hline
+\end{tabular}
+\end{table}
 Figure \ref{fig:pixDensity} displays the range of reflection intensity pixel values per tree type. Each tree species has similar ranges of values over the red, green, blue, and infared bands. Of the species included in the training data, the Giant Sequoia trees appear to have higher density counts for the red, green, and blue bands.
+\begin{figure}
 
-\includegraphics{thesis_files/figure-latex/pixDensity-1.pdf}
+{\centering \includegraphics{thesis_files/figure-latex/pixDensity-1} 
 
+}
+
+\caption{ }\label{fig:pixDensity}
+\end{figure}
 \hypertarget{math-sci}{%
 \chapter{Mathematics and Science}\label{math-sci}}
 
@@ -654,7 +473,7 @@ You will probably find the resources at \url{https://www.lecb.ncifcrf.gov/~toms/
 \hypertarget{tables}{%
 \section{Tables}\label{tables}}
 
-In addition to the tables that can be automatically generated from a data frame in \textbf{R} that you saw in \protect\hyperlink{rmd-basics}{R Markdown Basics} using the \texttt{kable()} function, you can also create tables using \emph{pandoc}. (More information is available at \url{https://pandoc.org/README.html\#tables}.) This might be useful if you don't have values specifically stored in \textbf{R}, but you'd like to display them in table form. Below is an example. Pay careful attention to the alignment in the table and hyphens to create the rows and columns.
+In addition to the tables that can be automatically generated from a data frame in \textbf{R} that you saw in {[}R Markdown Basics{]} using the \texttt{kable()} function, you can also create tables using \emph{pandoc}. (More information is available at \url{https://pandoc.org/README.html\#tables}.) This might be useful if you don't have values specifically stored in \textbf{R}, but you'd like to display them in table form. Below is an example. Pay careful attention to the alignment in the table and hyphens to create the rows and columns.
 \begin{longtable}[]{@{}ccc@{}}
 \caption{\label{tab:inher} Correlation of Inheritance Factors for Parents and Child}\tabularnewline
 \toprule
@@ -714,7 +533,7 @@ Slight\strut
 \end{minipage}\tabularnewline
 \bottomrule
 \end{longtable}
-We can also create a link to the table by doing the following: Table \ref{tab:inher}. If you go back to \protect\hyperlink{loading-and-exploring-data}{Loading and exploring data} and look at the \texttt{kable} table, we can create a reference to this max delays table too: Table \ref{tab:maxdelays}. The addition of the \texttt{(\textbackslash{}\#tab:inher)} option to the end of the table caption allows us to then make a reference to Table \texttt{\textbackslash{}@ref(tab:label)}. Note that this reference could appear anywhere throughout the document after the table has appeared.
+We can also create a link to the table by doing the following: Table \ref{tab:inher}. If you go back to {[}Loading and exploring data{]} and look at the \texttt{kable} table, we can create a reference to this max delays table too: Table \ref{tab:maxdelays}. The addition of the \texttt{(\textbackslash{}\#tab:inher)} option to the end of the table caption allows us to then make a reference to Table \texttt{\textbackslash{}@ref(tab:label)}. Note that this reference could appear anywhere throughout the document after the table has appeared.
 
 \clearpage
 
@@ -730,7 +549,12 @@ In the \textbf{R} chunk below, we will load in a picture stored as \texttt{reed.
 \end{Highlighting}
 \end{Shaded}
 \begin{figure}
-\includegraphics[width=3.47in]{figure/reed} \caption{Reed logo}\label{fig:reedlogo}
+
+{\centering \includegraphics[width=3.47in]{figure/reed} 
+
+}
+
+\caption{Reed logo}\label{fig:reedlogo}
 \end{figure}
 Here is a reference to the Reed logo: Figure \ref{fig:reedlogo}. Note the use of the \texttt{fig:} code here. By naming the \textbf{R} chunk that contains the figure, we can then reference that figure later as done in the first sentence here. We can also specify the caption for the figure via the R chunk option \texttt{fig.cap}.
 
@@ -754,9 +578,12 @@ Below we will investigate how to save the output of an \textbf{R} plot and label
 \end{Highlighting}
 \end{Shaded}
 \begin{figure}
-\centering
-\includegraphics{thesis_files/figure-latex/delaysboxplot-1.pdf}
-\caption{\label{fig:delaysboxplot}Mean Delays by Airline}
+
+{\centering \includegraphics{thesis_files/figure-latex/delaysboxplot-1} 
+
+}
+
+\caption{Mean Delays by Airline}\label{fig:delaysboxplot}
 \end{figure}
 Here is a reference to this image: Figure \ref{fig:delaysboxplot}.
 
@@ -766,7 +593,12 @@ A table linking these carrier codes to airline names is available at \url{https:
 
 Next, we will explore the use of the \texttt{out.extra} chunk option, which can be used to shrink or expand an image loaded from a file by specifying \texttt{"scale=\ "}. Here we use the mathematical graph stored in the ``subdivision.pdf'' file.
 \begin{figure}
-\includegraphics[scale=0.75]{figure/subdivision} \caption{Subdiv. graph}\label{fig:subd}
+
+{\centering \includegraphics[scale=0.75]{figure/subdivision} 
+
+}
+
+\caption{Subdiv. graph}\label{fig:subd}
 \end{figure}
 Here is a reference to this image: Figure \ref{fig:subd}. Note that \texttt{echo=FALSE} is specified so that the \textbf{R} code is hidden in the document.
 
@@ -774,7 +606,12 @@ Here is a reference to this image: Figure \ref{fig:subd}. Note that \texttt{echo
 
 Lastly, we will explore how to rotate and enlarge figures using the \texttt{out.extra} chunk option. (Currently this only works in the PDF version of the book.)
 \begin{figure}
-\includegraphics[angle=180, scale=1.1]{figure/subdivision} \caption{A Larger Figure, Flipped Upside Down}\label{fig:subd2}
+
+{\centering \includegraphics[angle=180, scale=1.1]{figure/subdivision} 
+
+}
+
+\caption{A Larger Figure, Flipped Upside Down}\label{fig:subd2}
 \end{figure}
 As another example, here is a reference: Figure \ref{fig:subd2}.
 
