@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2020.12.6)  6 DEC 2020 20:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.1.7)  7 JAN 2021 23:19
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **thesis.tex
 (./thesis.tex
-LaTeX2e <2020-10-01> patch level 2
-L3 programming layer <2020-12-03> xparse <2020-03-03> (./reedthesis.cls
+LaTeX2e <2020-10-01> patch level 3
+L3 programming layer <2020-12-07> xparse <2020-03-03> (./reedthesis.cls
 Document Class: reedthesis 2004/01/27 The Reed College Thesis Class
 (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/base/book.cls
 Document Class: book 2020/04/10 v1.4m Standard LaTeX document class
@@ -27,8 +27,8 @@ File: bk12.clo 2020/04/10 v1.4m Standard LaTeX file (size option)
 )
 (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/fancyhdr/fancyhdr.st
 y
-Package: fancyhdr 2019/01/31 v3.10 Extensive control of page headers and footer
-s
+Package: fancyhdr 2021/01/04 v4.0 Extensive control of page headers and footers
+
 \f@nch@headwidth=\skip49
 \f@nch@O@elh=\skip50
 \f@nch@O@erh=\skip51
@@ -464,35 +464,161 @@ Package: ltcaption 2020/05/30 v1.4b longtable captions (AR)
 Package caption Info: rotating package is loaded.
 )
 Package color Info: Redefining color shadecolor on input line 79.
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 18
-9.
+(/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/tools/array.sty
+Package: array 2020/10/01 v2.5c Tabular extension package (FMi)
+\col@sep=\dimen179
+\ar@mcellbox=\box57
+\extrarowheight=\dimen180
+\NC@list=\toks33
+\extratabsurround=\skip72
+\backup@length=\skip73
+\ar@cellbox=\box58
+)
+(/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/multirow/multirow.st
+y
+Package: multirow 2021/01/02 v2.6 Span multiple rows of a table
+\multirow@colwidth=\skip74
+\multirow@cntb=\count290
+\multirow@dima=\skip75
+\bigstrutjot=\dimen181
+) (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/wrapfig/wrapfig.st
+y
+\wrapoverhang=\dimen182
+\WF@size=\dimen183
+\c@WF@wrappedlines=\count291
+\WF@box=\box59
+\WF@everypar=\toks34
+Package: wrapfig 2003/01/31  v 3.6
+)
+(/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/colortbl/colortbl.st
+y
+Package: colortbl 2020/01/04 v1.0e Color table columns (DPC)
+\everycr=\toks35
+\minrowclearance=\skip76
+)
+(/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/pdflscape/pdflscape.
+sty
+Package: pdflscape 2019/12/05 v0.12 Display of landscape pages in PDF (HO)
+(/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/graphics/lscape.sty
+Package: lscape 2020/05/28 v3.02 Landscape Pages (DPC)
+)
+Package pdflscape Info: Auto-detected driver: pdftex on input line 81.
+) (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/tabu/tabu.sty
+Package: tabu 2019/01/11 v2.9 - flexible LaTeX tabulars (FC+tabu-fixed)
+
+(/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/varwidth/varwidth.st
+y
+Package: varwidth 2009/03/30 ver 0.92;  Variable-width minipages
+\@vwid@box=\box60
+\sift@deathcycles=\count292
+\@vwid@loff=\dimen184
+\@vwid@roff=\dimen185
+)
+\c@taburow=\count293
+\tabu@nbcols=\count294
+\tabu@cnt=\count295
+\tabu@Xcol=\count296
+\tabu@alloc=\count297
+\tabu@nested=\count298
+\tabu@target=\dimen186
+\tabu@spreadtarget=\dimen187
+\tabu@naturalX=\dimen188
+\tabucolX=\dimen189
+\tabu@Xsum=\dimen190
+\extrarowdepth=\dimen191
+\abovetabulinesep=\dimen192
+\belowtabulinesep=\dimen193
+\tabustrutrule=\dimen194
+\tabu@thebody=\toks36
+\tabu@footnotes=\toks37
+\tabu@box=\box61
+\tabu@arstrutbox=\box62
+\tabu@hleads=\box63
+\tabu@vleads=\box64
+\tabu@cellskip=\skip77
+)
+(/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/threeparttable/three
+parttable.sty
+Package: threeparttable 2003/06/13  v 3.0
+\@tempboxb=\box65
+)
+(/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/threeparttablex/thre
+eparttablex.sty
+Package: threeparttablex 2013/07/23 v0.3 by daleif
+(/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/environ/environ.sty
+Package: environ 2014/05/04 v0.3 A new way to define environments
+
+(/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/trimspaces/trimspace
+s.sty
+Package: trimspaces 2009/09/17 v1.1 Trim spaces around a token list
+))
+\TPTL@width=\skip78
+) (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/generic/ulem/ulem.sty
+\UL@box=\box66
+\UL@hyphenbox=\box67
+\UL@skip=\skip79
+\UL@hook=\toks38
+\UL@height=\dimen195
+\UL@pe=\count299
+\UL@pixel=\dimen196
+\ULC@box=\box68
+Package: ulem 2019/11/18
+\ULdepth=\dimen197
+)
+(/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/makecell/makecell.st
+y
+Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
+\rotheadsize=\dimen198
+\c@nlinenum=\count300
+\TeXr@lab=\toks39
+) (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2016/05/11 v2.12 LaTeX color extensions (UK)
+
+(/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.c
+fg
+File: color.cfg 2016/01/02 v1.6 sample color configuration
+)
+Package xcolor Info: Driver file: pdftex.def on input line 225.
+LaTeX Info: Redefining \color on input line 709.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1348.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1352.
+Package xcolor Info: Model `RGB' extended on input line 1364.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1366.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1367.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1368.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1370.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1371.
+)
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 20
+3.
 (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-
 pdftex.def
 File: l3backend-pdftex.def 2020-09-24 L3 backend support: PDF output (pdfTeX)
-\l__kernel_color_stack_int=\count290
-\l__pdf_internal_box=\box57
+\l__kernel_color_stack_int=\count301
+\l__pdf_internal_box=\box69
 ) (./thesis.aux)
 \openout1 = `thesis.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 189.
-LaTeX Font Info:    ... okay on input line 189.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 189.
-LaTeX Font Info:    ... okay on input line 189.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 189.
-LaTeX Font Info:    ... okay on input line 189.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 189.
-LaTeX Font Info:    ... okay on input line 189.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 189.
-LaTeX Font Info:    ... okay on input line 189.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 189.
-LaTeX Font Info:    ... okay on input line 189.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 189.
-LaTeX Font Info:    ... okay on input line 189.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 189.
-LaTeX Font Info:    ... okay on input line 189.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 203.
+LaTeX Font Info:    ... okay on input line 203.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 203.
+LaTeX Font Info:    ... okay on input line 203.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 203.
+LaTeX Font Info:    ... okay on input line 203.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 203.
+LaTeX Font Info:    ... okay on input line 203.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 203.
+LaTeX Font Info:    ... okay on input line 203.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 203.
+LaTeX Font Info:    ... okay on input line 203.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 203.
+LaTeX Font Info:    ... okay on input line 203.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 203.
+LaTeX Font Info:    ... okay on input line 203.
 
 (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopd
 f-base.sty
@@ -505,7 +631,7 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-Package hyperref Info: Link coloring OFF on input line 189.
+Package hyperref Info: Link coloring OFF on input line 203.
 
 (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty
 Package: nameref 2019/09/16 v2.46 Cross-referencing by name of section
@@ -518,54 +644,56 @@ Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 titlestring.sty
 Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 )
-\c@section@level=\count291
+\c@section@level=\count302
 )
-LaTeX Info: Redefining \ref on input line 189.
-LaTeX Info: Redefining \pageref on input line 189.
-LaTeX Info: Redefining \nameref on input line 189.
+LaTeX Info: Redefining \ref on input line 203.
+LaTeX Info: Redefining \pageref on input line 203.
+LaTeX Info: Redefining \nameref on input line 203.
 (./thesis.out) (./thesis.out)
 \@outlinefile=\write4
 \openout4 = `thesis.out'.
 
 Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: threeparttable package is loaded.
+Package caption Info: wrapfig package is loaded.
 Package caption Info: End \AtBeginDocument code.
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 1
-93.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 2
+07.
 (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 1
-93.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 2
+07.
 (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 
-193.
+207.
 (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 
-193.
+207.
 (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 193.
+(Font)              <12> on input line 207.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 193.
+(Font)              <8> on input line 207.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 193.
-LaTeX Font Info:    Trying to load font information for U+lasy on input line 19
-3.
+(Font)              <6> on input line 207.
+LaTeX Font Info:    Trying to load font information for U+lasy on input line 20
+7.
 (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/base/ulasy.fd
 File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
 )
-LaTeX Font Info:    Trying to load font information for U+msa on input line 193
+LaTeX Font Info:    Trying to load font information for U+msa on input line 207
 .
 (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 193
+LaTeX Font Info:    Trying to load font information for U+msb on input line 207
 .
 (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
@@ -587,20 +715,17 @@ map}] [2
 ] [2
 
 
-] (./thesis.toc
-Underfull \vbox (badness 1590) has occurred while \output is active []
-
-[3])
+] (./thesis.toc)
 \tf@toc=\write5
 \openout5 = `thesis.toc'.
 
-[4] (./thesis.lot)
+[3] [4
+
+] (./thesis.lot)
 \tf@lot=\write6
 \openout6 = `thesis.lot'.
 
-[5
-
-] [6
+[5] [6
 
 ] (./thesis.lof)
 \tf@lof=\write7
@@ -615,245 +740,278 @@ Underfull \vbox (badness 1590) has occurred while \output is active []
  been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.239 ...ter{R Markdown Basics}\label{rmd-basics}}
-                                                   [1
-
-]pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has
- been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.239 ...ter{R Markdown Basics}\label{rmd-basics}}
-                                                   [2
+l.236 \clearpage
+                 [1
 
 ]
-Chapter 1.
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
-41.
-(/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
-File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 2
-52.
-(/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
-File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has
- been already used, duplicate ignored
-<to be read again> 
-                   \relax 
-l.290 H
-       ere is the first sentence. Here is another sentence. Here is the last...
-[3]
-LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 305.
-pdfTeX warning (ext4): destination with the same identifier (name{page.4}) has 
+Underfull \vbox (badness 2556) has occurred while \output is active []
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.341 \includegraphics
-                      {thesis_files/figure-latex/pressure-1.pdf} [4]
-<thesis_files/figure-latex/pressure-1.pdf, id=280, 326.21875pt x 147.55125pt>
-File: thesis_files/figure-latex/pressure-1.pdf Graphic file (type pdf)
-<use thesis_files/figure-latex/pressure-1.pdf>
-Package pdftex.def Info: thesis_files/figure-latex/pressure-1.pdf  used on inpu
-t line 341.
-(pdftex.def)             Requested size: 326.21794pt x 147.55087pt.
-LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
-357.
-(/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
-File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-) [5 <./thesis_files/figure-latex/pressure-1.pdf>] [6] [7]
-Underfull \vbox (badness 2556) has occurred while \output is active []
-
-[8
+l.248 
+       [2
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 450--451
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
+57.
+(/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
+File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+Underfull \hbox (badness 10000) in paragraph at lines 266--267
 []\T1/lmr/m/n/12 [3] []$\T1/lmtt/m/n/12 https : / / www . treespnw . com / reso
 urces / 2018 / 11 / 7 / are -[] the -[] western -[]
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 454--455
+Underfull \hbox (badness 10000) in paragraph at lines 270--271
 []\T1/lmr/m/n/12 [5] []$\T1/lmtt/m/n/12 https : / / www . fs . fed . us / psw /
  publications / north / psw _ 2019 _ north009 _
  []
 
-[9]
-Underfull \hbox (badness 10000) in paragraph at lines 469--471
+
+Underfull \vbox (badness 2884) has occurred while \output is active []
+
+pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.276 
+       [3]
+Underfull \hbox (badness 10000) in paragraph at lines 285--287
 [][]$\T1/lmtt/m/n/12 https : / / www . planet . com / products / satellite -[] 
 imagery / files / 1610 .
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 469--471
+Underfull \hbox (badness 10000) in paragraph at lines 285--287
 \T1/lmtt/m/n/12 06 _ Spec % 20Sheet _ Combined _ Imagery _ Product _ Letter _ E
 NGv1 . pdf$[] []$https :
  []
 
-[10]
-
-LaTeX Warning: Reference `fig:crownWidth' on page 11 undefined on input line 49
-0.
-
-<thesis_files/figure-latex/crownWidth-1.pdf, id=343, 463.7325pt x 316.18124pt>
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 2
+95.
+(/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
+File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)pdfTeX warning (ext4): destination with the same identifier (name{page.4}) has
+ been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.304 
+       [4]
+<thesis_files/figure-latex/crownWidth-1.pdf, id=264, 427.5975pt x 280.04625pt>
 File: thesis_files/figure-latex/crownWidth-1.pdf Graphic file (type pdf)
 <use thesis_files/figure-latex/crownWidth-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/crownWidth-1.pdf  used on in
-put line 511.
-(pdftex.def)             Requested size: 463.73135pt x 316.18047pt.
-
-Overfull \hbox (30.11136pt too wide) in paragraph at lines 511--512
-[] 
- []
-
+put line 316.
+(pdftex.def)             Requested size: 427.59645pt x 280.04555pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[11]
+[5]
+Underfull \vbox (badness 5756) has occurred while \output is active []
 
-LaTeX Warning: Reference `fig:pointsTable' on page 12 undefined on input line 5
-13.
-
-[12 <./thesis_files/figure-latex/crownWidth-1.pdf>]
-
-LaTeX Warning: Reference `fig:pixelCounts' on page 13 undefined on input line 5
-71.
-
-[13]
-
-LaTeX Warning: Reference `fig:pixDensity' on page 14 undefined on input line 58
-7.
-
-<thesis_files/figure-latex/pixDensity-1.pdf, id=375, 459.7175pt x 316.18124pt>
+[6 <./thesis_files/figure-latex/crownWidth-1.pdf>]
+<thesis_files/figure-latex/pixDensity-1.pdf, id=294, 423.5825pt x 280.04625pt>
 File: thesis_files/figure-latex/pixDensity-1.pdf Graphic file (type pdf)
 <use thesis_files/figure-latex/pixDensity-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/pixDensity-1.pdf  used on in
-put line 589.
-(pdftex.def)             Requested size: 459.71637pt x 316.18047pt.
-
-Overfull \hbox (43.72119pt too wide) in paragraph at lines 589--590
-[][] 
- []
-
-[14 <./thesis_files/figure-latex/pixDensity-1.pdf>]
-Chapter 2.
+put line 404.
+(pdftex.def)             Requested size: 423.58147pt x 280.04555pt.
+[7] [8 <./thesis_files/figure-latex/pixDensity-1.pdf>]
+Chapter 1.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[15
+[9
 
 ]
-Underfull \hbox (badness 7221) in paragraph at lines 644--645
+Underfull \hbox (badness 7221) in paragraph at lines 463--464
 \T1/lmr/m/n/12 bol Guide ([]$\T1/lmtt/m/n/12 https : / / mirror . utexas . edu 
 / ctan / info / symbols / comprehensive /
  []
 
-[16]
-Chapter 3.
+[10]
+Chapter 2.
 
-LaTeX Warning: Reference `tab:maxdelays' on page 17 undefined on input line 717
+LaTeX Warning: Reference `tab:maxdelays' on page 11 undefined on input line 536
 .
 
-[17
+[11
 
 ]
-<figure/reed.jpg, id=428, 250.9375pt x 251.94125pt>
+
+Package xcolor Warning: Incompatible color definition on input line 546.
+
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 548.
+
+Package xcolor Warning: Incompatible color definition on input line 550.
+
+
+Package xcolor Warning: Incompatible color definition on input line 550.
+
+<figure/reed.jpg, id=355, 250.9375pt x 251.94125pt>
 File: figure/reed.jpg Graphic file (type jpg)
 <use figure/reed.jpg>
-Package pdftex.def Info: figure/reed.jpg  used on input line 733.
+Package pdftex.def Info: figure/reed.jpg  used on input line 553.
 (pdftex.def)             Requested size: 250.77698pt x 251.79454pt.
-[18
+[12
 
  <./figure/reed.jpg>]
-<thesis_files/figure-latex/delaysboxplot-1.pdf, id=436, 423.5825pt x 313.17pt>
+
+LaTeX Warning: Reference `rmd-basics' on page 13 undefined on input line 563.
+
+
+Package xcolor Warning: Incompatible color definition on input line 564.
+
+
+Package xcolor Warning: Incompatible color definition on input line 570.
+
+
+Package xcolor Warning: Incompatible color definition on input line 570.
+
+LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
+572.
+(/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
+File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+
+Package xcolor Warning: Incompatible color definition on input line 574.
+
+
+Package xcolor Warning: Incompatible color definition on input line 579.
+
+
+Package xcolor Warning: Incompatible color definition on input line 579.
+
+<thesis_files/figure-latex/delaysboxplot-1.pdf, id=363, 423.5825pt x 277.035pt>
+
 File: thesis_files/figure-latex/delaysboxplot-1.pdf Graphic file (type pdf)
 <use thesis_files/figure-latex/delaysboxplot-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/delaysboxplot-1.pdf  used on
- input line 758.
-(pdftex.def)             Requested size: 423.58147pt x 313.16922pt.
-[19
+ input line 582.
+(pdftex.def)             Requested size: 423.58147pt x 277.03432pt.
+[13
 
  <./thesis_files/figure-latex/delaysboxplot-1.pdf>]
-<figure/subdivision.pdf, id=451, 220.825pt x 89.33376pt>
+<figure/subdivision.pdf, id=379, 220.825pt x 89.33376pt>
 File: figure/subdivision.pdf Graphic file (type pdf)
 <use figure/subdivision.pdf>
-Package pdftex.def Info: figure/subdivision.pdf  used on input line 769.
+Package pdftex.def Info: figure/subdivision.pdf  used on input line 597.
 (pdftex.def)             Requested size: 165.61833pt x 67.00014pt.
 File: figure/subdivision.pdf Graphic file (type pdf)
 <use figure/subdivision.pdf>
-Package pdftex.def Info: figure/subdivision.pdf  used on input line 777.
+Package pdftex.def Info: figure/subdivision.pdf  used on input line 610.
 (pdftex.def)             Requested size: 220.82445pt x 89.33353pt.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 784.
+(Font)              <10> on input line 621.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 784.
+(Font)              <7> on input line 621.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 784.
-[20
+(Font)              <5> on input line 621.
+[14
 
- <./figure/subdivision.pdf>] [21] [22] [23
+ <./figure/subdivision.pdf>] [15] [16] [17
 
-] [24
+] [18
 
 ]
 Appendix A.
-[25]
-Underfull \vbox (badness 10000) detected at line 924
+
+Package xcolor Warning: Incompatible color definition on input line 675.
+
+
+Package xcolor Warning: Incompatible color definition on input line 686.
+
+
+Package xcolor Warning: Incompatible color definition on input line 686.
+
+
+Package xcolor Warning: Incompatible color definition on input line 688.
+
+
+Package xcolor Warning: Incompatible color definition on input line 761.
+
+
+Package xcolor Warning: Incompatible color definition on input line 761.
+
+
+Package xcolor Warning: Incompatible color definition on input line 761.
+
+[19]
+
+Package xcolor Warning: Incompatible color definition on input line 761.
+
+
+Package xcolor Warning: Incompatible color definition on input line 761.
+
+
+Underfull \vbox (badness 10000) detected at line 761
  []
 
 
-Underfull \vbox (badness 10000) detected at line 924
+Underfull \vbox (badness 10000) detected at line 761
  []
 
-[26] [27] [28
+
+Package xcolor Warning: Incompatible color definition on input line 761.
+
+[20]
+
+Package xcolor Warning: Incompatible color definition on input line 761.
+
+
+Package xcolor Warning: Incompatible color definition on input line 761.
+
+[21] [22
 
 ]
 Appendix B.
-[29] [30
+[23] [24
 
-] [31
+] [25
 
 ] (./thesis.aux)
-Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 03E410B5295B7A11F3ED1407429FF10F;2056.
 
 LaTeX Warning: There were undefined references.
 
+Package rerunfilecheck Info: File `thesis.out' has not changed.
+(rerunfilecheck)             Checksum: E565EB2565419E90266F6542C83952EB;1693.
  ) 
 Here is how much of TeX's memory you used:
- 9140 strings out of 481306
- 145077 string characters out of 5915259
- 443472 words of memory out of 5000000
- 25617 multiletter control sequences out of 15000+600000
- 475919 words of font info for 86 fonts, out of 8000000 for 9000
+ 10901 strings out of 481233
+ 170042 string characters out of 5913274
+ 493324 words of memory out of 5000000
+ 27414 multiletter control sequences out of 15000+600000
+ 471341 words of font info for 84 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 66i,12n,72p,1656b,501s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 68i,12n,70p,1884b,379s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc
+}{/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc
 }{/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.
 enc}{/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-math
 sy.enc}{/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-r
-m.enc}{/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts
-1.enc}</Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lm
+m.enc}</Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lm
 bx12.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/type1/public/lm
-/lmbxi10.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/type1/publi
-c/lm/lmmi12.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/type1/pu
-blic/lm/lmmi8.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/type1/
-public/lm/lmr10.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/type
-1/public/lm/lmr12.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/ty
-pe1/public/lm/lmr7.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/t
-ype1/public/lm/lmr8.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/
-type1/public/lm/lmri12.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fon
-ts/type1/public/lm/lmro12.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/
-fonts/type1/public/lm/lmsy10.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-di
-st/fonts/type1/public/lm/lmsy8.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-
-dist/fonts/type1/public/lm/lmtk10.pfb></Users/sarahkmaebius/Library/TinyTeX/tex
-mf-dist/fonts/type1/public/lm/lmtt12.pfb></Users/sarahkmaebius/Library/TinyTeX/
-texmf-dist/fonts/type1/public/lm/lmtti10.pfb></Users/sarahkmaebius/Library/Tiny
-TeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on thesis.pdf (45 pages, 1562340 bytes).
+/lmmi8.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/type1/public/
+lm/lmr10.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/type1/publi
+c/lm/lmr12.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/type1/pub
+lic/lm/lmr7.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/type1/pu
+blic/lm/lmr8.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/type1/p
+ublic/lm/lmri12.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/type
+1/public/lm/lmro12.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/t
+ype1/public/lm/lmsy10.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/font
+s/type1/public/lm/lmsy8.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fo
+nts/type1/public/lm/lmtk10.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist
+/fonts/type1/public/lm/lmtt12.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-d
+ist/fonts/type1/public/lm/lmtti10.pfb></Users/sarahkmaebius/Library/TinyTeX/tex
+mf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb>
+Output written on thesis.pdf (39 pages, 1538035 bytes).
 PDF statistics:
- 666 PDF objects out of 1000 (max. 8388607)
- 578 compressed objects within 6 object streams
- 138 named destinations out of 1000 (max. 500000)
- 287 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 586 PDF objects out of 1000 (max. 8388607)
+ 509 compressed objects within 6 object streams
+ 120 named destinations out of 1000 (max. 500000)
+ 234 words of extra memory for PDF output out of 10000 (max. 10000000)
 
