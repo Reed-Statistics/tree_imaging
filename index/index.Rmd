@@ -2,12 +2,12 @@
 author: 'Sarah Maebius'
 date: 'December 6th, 2020'
 institution: 'Reed College'
-#division: 'Mathematics and Natural Sciences'
-#advisor: 'Advisor F. Name'
+division: 'Mathematics and Natural Sciences'
+advisor: 'Tom Allen'
 #altadvisor: 'Your Other Advisor'
 # Delete line 6 if you only have one advisor
-#department: 'Mathematics'
-#degree: 'Bachelor of Arts'
+department: 'Mathematics'
+degree: 'Bachelor of Arts'
 title: 'Thesis'
 knit: "bookdown::render_book"
 site: bookdown::bookdown_site

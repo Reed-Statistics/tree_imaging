@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.1.7)  7 JAN 2021 23:19
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.1.7)  8 JAN 2021 12:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -770,9 +770,6 @@ Underfull \hbox (badness 10000) in paragraph at lines 270--271
  publications / north / psw _ 2019 _ north009 _
  []
 
-
-Underfull \vbox (badness 2884) has occurred while \output is active []
-
 pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has 
 been already used, duplicate ignored
 <to be read again> 
@@ -800,7 +797,7 @@ File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
                    \relax 
 l.304 
        [4]
-<thesis_files/figure-latex/crownWidth-1.pdf, id=264, 427.5975pt x 280.04625pt>
+<thesis_files/figure-latex/crownWidth-1.pdf, id=224, 427.5975pt x 280.04625pt>
 File: thesis_files/figure-latex/crownWidth-1.pdf Graphic file (type pdf)
 <use thesis_files/figure-latex/crownWidth-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/crownWidth-1.pdf  used on in
@@ -813,7 +810,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 5756) has occurred while \output is active []
 
 [6 <./thesis_files/figure-latex/crownWidth-1.pdf>]
-<thesis_files/figure-latex/pixDensity-1.pdf, id=294, 423.5825pt x 280.04625pt>
+<thesis_files/figure-latex/pixDensity-1.pdf, id=253, 423.5825pt x 280.04625pt>
 File: thesis_files/figure-latex/pixDensity-1.pdf Graphic file (type pdf)
 <use thesis_files/figure-latex/pixDensity-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/pixDensity-1.pdf  used on in
@@ -832,48 +829,31 @@ Underfull \hbox (badness 7221) in paragraph at lines 463--464
 / ctan / info / symbols / comprehensive /
  []
 
-[10]
-Chapter 2.
+[10] [11
 
-LaTeX Warning: Reference `tab:maxdelays' on page 11 undefined on input line 536
-.
-
-[11
+] [12
 
 ]
+Appendix A.
 
-Package xcolor Warning: Incompatible color definition on input line 546.
+Package xcolor Warning: Incompatible color definition on input line 488.
 
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 548.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 493.
 
-Package xcolor Warning: Incompatible color definition on input line 550.
-
-
-Package xcolor Warning: Incompatible color definition on input line 550.
-
-<figure/reed.jpg, id=355, 250.9375pt x 251.94125pt>
-File: figure/reed.jpg Graphic file (type jpg)
-<use figure/reed.jpg>
-Package pdftex.def Info: figure/reed.jpg  used on input line 553.
-(pdftex.def)             Requested size: 250.77698pt x 251.79454pt.
-[12
-
- <./figure/reed.jpg>]
-
-LaTeX Warning: Reference `rmd-basics' on page 13 undefined on input line 563.
+Package xcolor Warning: Incompatible color definition on input line 499.
 
 
-Package xcolor Warning: Incompatible color definition on input line 564.
+Package xcolor Warning: Incompatible color definition on input line 499.
 
 
-Package xcolor Warning: Incompatible color definition on input line 570.
+LaTeX Warning: Reference `ref-labels' on page 13 undefined on input line 500.
 
 
-Package xcolor Warning: Incompatible color definition on input line 570.
+Package xcolor Warning: Incompatible color definition on input line 501.
 
 LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
-572.
+508.
 (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
@@ -881,137 +861,81 @@ File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 Package xcolor Warning: Incompatible color definition on input line 574.
 
 
-Package xcolor Warning: Incompatible color definition on input line 579.
+Package xcolor Warning: Incompatible color definition on input line 574.
 
 
-Package xcolor Warning: Incompatible color definition on input line 579.
+Package xcolor Warning: Incompatible color definition on input line 574.
 
-<thesis_files/figure-latex/delaysboxplot-1.pdf, id=363, 423.5825pt x 277.035pt>
+[13]
 
-File: thesis_files/figure-latex/delaysboxplot-1.pdf Graphic file (type pdf)
-<use thesis_files/figure-latex/delaysboxplot-1.pdf>
-Package pdftex.def Info: thesis_files/figure-latex/delaysboxplot-1.pdf  used on
- input line 582.
-(pdftex.def)             Requested size: 423.58147pt x 277.03432pt.
-[13
-
- <./thesis_files/figure-latex/delaysboxplot-1.pdf>]
-<figure/subdivision.pdf, id=379, 220.825pt x 89.33376pt>
-File: figure/subdivision.pdf Graphic file (type pdf)
-<use figure/subdivision.pdf>
-Package pdftex.def Info: figure/subdivision.pdf  used on input line 597.
-(pdftex.def)             Requested size: 165.61833pt x 67.00014pt.
-File: figure/subdivision.pdf Graphic file (type pdf)
-<use figure/subdivision.pdf>
-Package pdftex.def Info: figure/subdivision.pdf  used on input line 610.
-(pdftex.def)             Requested size: 220.82445pt x 89.33353pt.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 621.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 621.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 621.
-[14
-
- <./figure/subdivision.pdf>] [15] [16] [17
-
-] [18
-
-]
-Appendix A.
-
-Package xcolor Warning: Incompatible color definition on input line 675.
+Package xcolor Warning: Incompatible color definition on input line 574.
 
 
-Package xcolor Warning: Incompatible color definition on input line 686.
+Package xcolor Warning: Incompatible color definition on input line 574.
 
 
-Package xcolor Warning: Incompatible color definition on input line 686.
-
-
-Package xcolor Warning: Incompatible color definition on input line 688.
-
-
-Package xcolor Warning: Incompatible color definition on input line 761.
-
-
-Package xcolor Warning: Incompatible color definition on input line 761.
-
-
-Package xcolor Warning: Incompatible color definition on input line 761.
-
-[19]
-
-Package xcolor Warning: Incompatible color definition on input line 761.
-
-
-Package xcolor Warning: Incompatible color definition on input line 761.
-
-
-Underfull \vbox (badness 10000) detected at line 761
+Underfull \vbox (badness 10000) detected at line 574
  []
 
 
-Underfull \vbox (badness 10000) detected at line 761
+Underfull \vbox (badness 10000) detected at line 574
  []
 
 
-Package xcolor Warning: Incompatible color definition on input line 761.
+Package xcolor Warning: Incompatible color definition on input line 574.
 
-[20]
+[14]
 
-Package xcolor Warning: Incompatible color definition on input line 761.
+Package xcolor Warning: Incompatible color definition on input line 574.
 
 
-Package xcolor Warning: Incompatible color definition on input line 761.
+Package xcolor Warning: Incompatible color definition on input line 574.
 
-[21] [22
+[15] [16
 
 ]
 Appendix B.
-[23] [24
+[17] [18
 
-] [25
+] [19
 
 ] (./thesis.aux)
 
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: E565EB2565419E90266F6542C83952EB;1693.
+(rerunfilecheck)             Checksum: 4AB16645BE2D42FEA9B81F3192069684;1308.
  ) 
 Here is how much of TeX's memory you used:
- 10901 strings out of 481233
- 170042 string characters out of 5913274
- 493324 words of memory out of 5000000
- 27414 multiletter control sequences out of 15000+600000
- 471341 words of font info for 84 fonts, out of 8000000 for 9000
+ 10788 strings out of 481233
+ 168444 string characters out of 5913274
+ 492819 words of memory out of 5000000
+ 27350 multiletter control sequences out of 15000+600000
+ 450018 words of font info for 63 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 68i,12n,70p,1884b,379s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc
-}{/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc
+ 68i,12n,70p,1960b,379s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.en
+c}{/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc
 }{/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.
 enc}{/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-math
 sy.enc}{/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-r
 m.enc}</Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/type1/public/lm/lm
 bx12.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/type1/public/lm
 /lmmi8.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/type1/public/
-lm/lmr10.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/type1/publi
-c/lm/lmr12.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/type1/pub
-lic/lm/lmr7.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/type1/pu
-blic/lm/lmr8.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/type1/p
-ublic/lm/lmri12.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/type
-1/public/lm/lmro12.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/t
-ype1/public/lm/lmsy10.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/font
-s/type1/public/lm/lmsy8.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fo
-nts/type1/public/lm/lmtk10.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist
-/fonts/type1/public/lm/lmtt12.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-d
-ist/fonts/type1/public/lm/lmtti10.pfb></Users/sarahkmaebius/Library/TinyTeX/tex
-mf-dist/fonts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on thesis.pdf (39 pages, 1538035 bytes).
+lm/lmr12.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/type1/publi
+c/lm/lmr8.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/type1/publ
+ic/lm/lmri12.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/type1/p
+ublic/lm/lmro12.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/type
+1/public/lm/lmsy10.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/t
+ype1/public/lm/lmsy8.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts
+/type1/public/lm/lmtk10.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fo
+nts/type1/public/lm/lmtt12.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist
+/fonts/type1/public/lm/lmtti10.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-
+dist/fonts/type1/public/amsfonts/symbols/msam10.pfb>
+Output written on thesis.pdf (33 pages, 1405520 bytes).
 PDF statistics:
- 586 PDF objects out of 1000 (max. 8388607)
- 509 compressed objects within 6 object streams
- 120 named destinations out of 1000 (max. 500000)
- 234 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 429 PDF objects out of 1000 (max. 8388607)
+ 372 compressed objects within 4 object streams
+ 92 named destinations out of 1000 (max. 500000)
+ 171 words of extra memory for PDF output out of 10000 (max. 10000000)
 
