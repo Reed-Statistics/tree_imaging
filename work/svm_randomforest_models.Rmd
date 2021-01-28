@@ -14,7 +14,7 @@ library(tidyverse)
 # load data
 pixels_data <- read.csv('pixels_data.csv')
 pixels_data <- pixels_data %>%
-  dplyr::select(red, green, blue, ir, ndvi, Cmmn_Nm)
+  dplyr::select(ID, red, green, blue, ir, ndvi, Cmmn_Nm)
   #dplyr::select(-St_Wdth)
 
 # training data
@@ -29,8 +29,8 @@ test <- pixels_data[-train, "Cmmn_Nm"]
 
 ```{r}
 library(randomForest)
-set.seed(1)
-tree_name_rf <- randomForest(formula = Cmmn_Nm ~ ., data = pixels_data, subset = train, importance = T)
+set.seed(123)
+tree_name_rf <- randomForest(formula = Cmmn_Nm ~ ., data = pixels_data %>% dplyr::select(-ID), subset = train, importance = T)
 # default uses mtry = sqrt(# variables) when building random forest of classification trees
 
 tree_name_rf
@@ -48,7 +48,7 @@ tree_name_svm <- svm(factor(Cmmn_Nm) ~ ., data = pixels_data)
 tree_name_svm
 summary(tree_name_svm)
 
-plot(tree_name_svm, pixels_data)
+graphics::plot(tree_name_svm, pixels_data, factor(Cmmn_Nm) ~ .)
 
 # cross validation
 tune_out <- tune(svm, Cmmn_Nm ~., data = pixels_data, kernel = "radial", 
@@ -56,6 +56,31 @@ tune_out <- tune(svm, Cmmn_Nm ~., data = pixels_data, kernel = "radial",
 summary(tune_out)
 
 # predict
+
+```
+
+Plot results
+```{r}
+# combine predictions with test data
+test_dat <- cbind(yhat_rf, pixels_data[-train, ])
+
+# "accurate" tree guess if more than half pixels in polygon are accurately predicted
+poly_test_dat <- test_dat %>%
+  group_by(ID) %>%
+  count(ID, same = (yhat_rf == Cmmn_Nm), total = n())
+
+poly_test_vector <- poly_test_dat %>%
+  dplyr::filter(n/total >= 0.5) %>%
+  dplyr::select(ID, same)
+
+poly_test_vector %>%
+  group_by(same) %>%
+  count(same)
+
+# combine with latitude info
+poly_test_join <- sp::merge(poly_join_reprojected, poly_test_vector, duplicateGeoms = T)
+
+plot(poly_test_join, col = c("maroon", "blue")[poly_test_join$same])
 
 ```
 

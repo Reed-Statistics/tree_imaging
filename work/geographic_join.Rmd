@@ -17,13 +17,13 @@ library(hsdar)
 
 ```{r}
 # load polygon shapefiles
-acpl <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/acpl_polygon.shp")
-psme <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/psme_polygon.shp")
-quru <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/quru_polygon.shp")
-redcedar <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/redwood_polygon.shp")
-segi <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/segi_polygon.shp")
-acma <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/acma_polygon.shp")
-grass <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_canopy/grass_polygon.shp")
+acpl <- st_read("~/Documents/Fall_2020_Reed/Thesis/tree_canopy/acpl_polygon.shp")
+psme <- st_read("~/Documents/Fall_2020_Reed/Thesis/tree_canopy/psme_polygon.shp")
+quru <- st_read("~/Documents/Fall_2020_Reed/Thesis/tree_canopy/quru_polygon.shp")
+redcedar <- st_read("~/Documents/Fall_2020_Reed/Thesis/tree_canopy/redwood_polygon.shp")
+segi <- st_read("~/Documents/Fall_2020_Reed/Thesis/tree_canopy/segi_polygon.shp")
+acma <- st_read("~/Documents/Fall_2020_Reed/Thesis/tree_canopy/acma_polygon.shp")
+grass <- st_read("~/Documents/Fall_2020_Reed/Thesis/tree_canopy/grass_polygon.shp")
 
 # add polygon tree type column
 acpl$id_type <- "acpl"
@@ -41,12 +41,12 @@ combined_poly <- rbind(acpl, psme, quru, redcedar, segi, acma, grass)
 multi_poly <- st_multipolygon(combined_poly$geometry)
 
 # load point datasets
-acpl_pts <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_imaging/shapefiles/acpl_shapefile.shp")
-psme_pts <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_imaging/shapefiles/psme_shapefile.shp")
-quru_pts <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_imaging/shapefiles/quru_shapefile.shp")
-redcedar_pts <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_imaging/shapefiles/redcedar_shapefile.shp")
-segi_pts <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_imaging/shapefiles/segi_shapefile.shp")
-acma_pts <- st_read("/Users/sarahkmaebius/Documents/Fall_2020_Reed/Thesis/tree_imaging/shapefiles/acma_shapefile.shp")
+acpl_pts <- st_read("~/tree_imaging/shapefiles/acpl_shapefile.shp")
+psme_pts <- st_read("~/tree_imaging/shapefiles/psme_shapefile.shp")
+quru_pts <- st_read("~/tree_imaging/shapefiles/quru_shapefile.shp")
+redcedar_pts <- st_read("~/tree_imaging/shapefiles/redcedar_shapefile.shp")
+segi_pts <- st_read("~/tree_imaging/shapefiles/segi_shapefile.shp")
+acma_pts <- st_read("~/tree_imaging/shapefiles/acma_shapefile.shp")
 
 # combine point datasets
 combined_pts <- rbind(acpl_pts, psme_pts, quru_pts, redcedar_pts, segi_pts, acma_pts)
