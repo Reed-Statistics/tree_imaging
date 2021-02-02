@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.1.7)  8 JAN 2021 12:33
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.1.7)  1 FEB 2021 17:18
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -758,50 +758,27 @@ LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
 57.
 (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
-Underfull \hbox (badness 10000) in paragraph at lines 266--267
-[]\T1/lmr/m/n/12 [3] []$\T1/lmtt/m/n/12 https : / / www . treespnw . com / reso
-urces / 2018 / 11 / 7 / are -[] the -[] western -[]
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 270--271
-[]\T1/lmr/m/n/12 [5] []$\T1/lmtt/m/n/12 https : / / www . fs . fed . us / psw /
- publications / north / psw _ 2019 _ north009 _
- []
-
-pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has 
-been already used, duplicate ignored
+)pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has
+ been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.276 
+l.268 
        [3]
-Underfull \hbox (badness 10000) in paragraph at lines 285--287
-[][]$\T1/lmtt/m/n/12 https : / / www . planet . com / products / satellite -[] 
-imagery / files / 1610 .
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 285--287
-\T1/lmtt/m/n/12 06 _ Spec % 20Sheet _ Combined _ Imagery _ Product _ Letter _ E
-NGv1 . pdf$[] []$https :
- []
-
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 2
-95.
+81.
 (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )pdfTeX warning (ext4): destination with the same identifier (name{page.4}) has
  been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.304 
-       [4]
-<thesis_files/figure-latex/crownWidth-1.pdf, id=224, 427.5975pt x 280.04625pt>
+l.288 \end{itemize}
+                    [4]
+<thesis_files/figure-latex/crownWidth-1.pdf, id=207, 427.5975pt x 280.04625pt>
 File: thesis_files/figure-latex/crownWidth-1.pdf Graphic file (type pdf)
 <use thesis_files/figure-latex/crownWidth-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/crownWidth-1.pdf  used on in
-put line 316.
+put line 302.
 (pdftex.def)             Requested size: 427.59645pt x 280.04555pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -810,11 +787,11 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 5756) has occurred while \output is active []
 
 [6 <./thesis_files/figure-latex/crownWidth-1.pdf>]
-<thesis_files/figure-latex/pixDensity-1.pdf, id=253, 423.5825pt x 280.04625pt>
+<thesis_files/figure-latex/pixDensity-1.pdf, id=236, 423.5825pt x 280.04625pt>
 File: thesis_files/figure-latex/pixDensity-1.pdf Graphic file (type pdf)
 <use thesis_files/figure-latex/pixDensity-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/pixDensity-1.pdf  used on in
-put line 404.
+put line 390.
 (pdftex.def)             Requested size: 423.58147pt x 280.04555pt.
 [7] [8 <./thesis_files/figure-latex/pixDensity-1.pdf>]
 Chapter 1.
@@ -824,7 +801,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 [9
 
 ]
-Underfull \hbox (badness 7221) in paragraph at lines 463--464
+Underfull \hbox (badness 7221) in paragraph at lines 449--450
 \T1/lmr/m/n/12 bol Guide ([]$\T1/lmtt/m/n/12 https : / / mirror . utexas . edu 
 / ctan / info / symbols / comprehensive /
  []
@@ -836,60 +813,60 @@ Underfull \hbox (badness 7221) in paragraph at lines 463--464
 ]
 Appendix A.
 
-Package xcolor Warning: Incompatible color definition on input line 488.
+Package xcolor Warning: Incompatible color definition on input line 474.
 
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 493.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 479.
 
-Package xcolor Warning: Incompatible color definition on input line 499.
-
-
-Package xcolor Warning: Incompatible color definition on input line 499.
+Package xcolor Warning: Incompatible color definition on input line 485.
 
 
-LaTeX Warning: Reference `ref-labels' on page 13 undefined on input line 500.
+Package xcolor Warning: Incompatible color definition on input line 485.
 
 
-Package xcolor Warning: Incompatible color definition on input line 501.
+LaTeX Warning: Reference `ref-labels' on page 13 undefined on input line 486.
+
+
+Package xcolor Warning: Incompatible color definition on input line 487.
 
 LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
-508.
+494.
 (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 
-Package xcolor Warning: Incompatible color definition on input line 574.
+Package xcolor Warning: Incompatible color definition on input line 560.
 
 
-Package xcolor Warning: Incompatible color definition on input line 574.
+Package xcolor Warning: Incompatible color definition on input line 560.
 
 
-Package xcolor Warning: Incompatible color definition on input line 574.
+Package xcolor Warning: Incompatible color definition on input line 560.
 
 [13]
 
-Package xcolor Warning: Incompatible color definition on input line 574.
+Package xcolor Warning: Incompatible color definition on input line 560.
 
 
-Package xcolor Warning: Incompatible color definition on input line 574.
+Package xcolor Warning: Incompatible color definition on input line 560.
 
 
-Underfull \vbox (badness 10000) detected at line 574
+Underfull \vbox (badness 10000) detected at line 560
  []
 
 
-Underfull \vbox (badness 10000) detected at line 574
+Underfull \vbox (badness 10000) detected at line 560
  []
 
 
-Package xcolor Warning: Incompatible color definition on input line 574.
+Package xcolor Warning: Incompatible color definition on input line 560.
 
 [14]
 
-Package xcolor Warning: Incompatible color definition on input line 574.
+Package xcolor Warning: Incompatible color definition on input line 560.
 
 
-Package xcolor Warning: Incompatible color definition on input line 574.
+Package xcolor Warning: Incompatible color definition on input line 560.
 
 [15] [16
 
@@ -904,16 +881,16 @@ Appendix B.
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 4AB16645BE2D42FEA9B81F3192069684;1308.
+(rerunfilecheck)             Checksum: 2386E18DFA00AC3EC89A72F7DF6E3F94;1253.
  ) 
 Here is how much of TeX's memory you used:
- 10788 strings out of 481233
- 168444 string characters out of 5913274
- 492819 words of memory out of 5000000
- 27350 multiletter control sequences out of 15000+600000
+ 10784 strings out of 481233
+ 168404 string characters out of 5913274
+ 491785 words of memory out of 5000000
+ 27348 multiletter control sequences out of 15000+600000
  450018 words of font info for 63 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 68i,12n,70p,1960b,379s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 68i,12n,70p,1960b,387s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.en
 c}{/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc
 }{/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.
@@ -932,10 +909,10 @@ ype1/public/lm/lmsy8.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts
 nts/type1/public/lm/lmtt12.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dist
 /fonts/type1/public/lm/lmtti10.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-
 dist/fonts/type1/public/amsfonts/symbols/msam10.pfb>
-Output written on thesis.pdf (33 pages, 1405520 bytes).
+Output written on thesis.pdf (33 pages, 1404329 bytes).
 PDF statistics:
- 429 PDF objects out of 1000 (max. 8388607)
- 372 compressed objects within 4 object streams
- 92 named destinations out of 1000 (max. 500000)
- 171 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 411 PDF objects out of 1000 (max. 8388607)
+ 354 compressed objects within 4 object streams
+ 90 named destinations out of 1000 (max. 500000)
+ 163 words of extra memory for PDF output out of 10000 (max. 10000000)
 
