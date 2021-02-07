@@ -142,9 +142,13 @@ library(kableExtra)
 \clearpage
 
 ## Research Problem and Background
-Western redcedar trees are evergreen trees that typically grow up to 75 feet tall and are located over the Pacific Northwest, making it an organism with a tolerance for shaded regions with moist environments. These trees are native to the land and have served many purposes to people and animals living in the vicinity of the trees, including medicinal, building, and habitat functions [@peterson_western_nodate]. However, over the past decade, reports of dead western redcedars have been increasing, suggesting that something other than natural causes is killing off this species. In general, this species experiences several hardships in surviving in the Pacific Northwest, with common causes of death such as forest fires, clearcutting, small animals eating the saplings, and harsh weather including strong winds that easily uproot the trees [@peterson_western_nodate]. Dying redcedar trees can be identified by their branches which turn brownish yellow or fall off completely. Another sign is that the top of a dying redcedar will turn brown and lose leaves [@noauthor_western_nodate]. Losing this native tree would have a detrimental effect on animals in the area who rely heavily on the trees for their lifestyle. Scientists have speculated that western redcedar decline might be caused by recent dry summers, the spread of tree disease, insects, or other weather related events [@noauthor_western_nodate]. Since this is a recent issue, there is not a lot of resources explaining the decline. This research aims to provide more insight into the cause of the western redcedar decline by first predicting the location of the western redcedar trees in Portland and then predicting their condition in terms of health. Having more insight helps to prevent further tree deaths and save the western redcedar species, which also extends to similar tree species and provides more knowledge about environmental changes in the Pacific Northwest region.
+Western redcedar trees are evergreen trees that typically grow up to 75 feet tall and are located over the Pacific Northwest, making it an organism with a tolerance for shaded regions with moist environments. These trees are native to the land and have served many purposes to people and animals living in the vicinity of the trees, including medicinal, building, and habitat functions [@peterson_western_nodate]. Western redcedars were culturally important to indigenous peoples who valued the strong wood and utilized it for construction and everyday necessities [@noauthor_western_nodate-1]. Over the past decade, reports of dead western redcedars have been increasing, suggesting that something other than natural causes is killing off this species. In general, this species experiences several hardships in surviving in the Pacific Northwest, with common causes of death such as forest fires, clearcutting, small animals eating the saplings, and harsh weather including strong winds that easily uproot the trees [@peterson_western_nodate]. Dying redcedar trees can be identified by their branches which turn brownish yellow or fall off completely. Another sign is that the top of a dying redcedar will turn brown and lose leaves [@noauthor_western_nodate]. Losing this native tree would have a detrimental effect on animals in the area who rely heavily on the trees for their lifestyle. Scientists have speculated that western redcedar decline might be caused by recent dry summers, the spread of tree disease, insects, or other weather related events [@noauthor_western_nodate]. Since this is a recent issue, there is not a lot of resources explaining the decline. This research aims to provide more insight into the cause of the western redcedar decline by first predicting the location of the western redcedar trees in Portland and then predicting their condition in terms of health. Having more insight helps to prevent further tree deaths and save the western redcedar species, which also extends to similar tree species and provides more knowledge about environmental changes in the Pacific Northwest region.
 
 Modelling in this research will be conducted by combining information gathered from remote sensing images with ground level information. There are several sources publishing research done using satellite imagery for land classification and for predicting tree species, which will be the groundwork for this project's application of remote sensing models to the specific topic of western redcedar mortality. 
+
+Remote sensing is a process for identifying the physical aspects of a large area of land by collecting measured light reflection using airplanes or satellites. This method provides access to lot of information about the region of interest that would otherwise be limited from a human's ground-level persepective. Remote sensing is used to detect characteristics on land as well as the sea. Some remote sensing land applications include tracking forest fires, volcanic eruptions, city growth, and also forest changes.
+
+Satellites orbit the earth, carrying sensors that record levels of electromagnetic radiation detected by the reflection of the sun on the earth. The data collected is the measured radiation from different waves of the spectrum (visible light, infrared, ultraviolet, etc.). Depending on the surface, sunlight get absorbed or reflected back at the orbiting satellite. The remotely sensed data is available at certain resolutions depending on the instruments used. Spatial resolution is the size of a pixel from a satellite image, and a detailed image has smaller spatial resolution so smaller pixels. Spectral resolution is a measure of the size of the wavelengths, where smaller bands and smaller wavelengths improve the spectral resolution of an image and hench improve the level of detail. Satellite images need to be corrected to combine the bands into an image depending on the analysis.
 
 Plenty of literature has been published in utilizing satellite imagery for predictive models, however, many issues arise in classifying land type through remote sensing mainly due to image quality. A single image can be composed of image strips taken over the course of multiple flight paths. Consequently, these images are taken at different times of day, which compiles into a single image with a lot of variation in values due to changes in the weather as well as the different angles of the sun's position [@castelluccio_land_2015]. Ideally, a solid classifying model surpasses any error introduced by imperfection in the satellite images. Common approaches to classification on satellite images include support vector machines, random forests, and decision trees. One study on land type classification explores the performance of convolutional neural networks (CNN) as classification models [@castelluccio_land_2015].
 
@@ -156,102 +160,4 @@ This thesis follows along with the methods in [@fricker_convolutional_2019] for 
 ### A Statistical Learning Approach to Identifying Location of Western Redcedars
 This work combines RGB imagery data from Planet.com with ground level tree data from the RStudio `pdxTrees` library and applies random forest and support vector machine classification methods to predict the location of tree species (specifically western redcedars) in Portland, Oregon and model the condition of western redcedars to ultimately understand the cause of death in this species. [insert key findings here]
 
-## Data Chapter
-
-There are two sources of data in this project. Data at a pixel level come from satellite images downloaded from Planet.com (https://www.planet.com), and data at the ground level come from library `pdxTrees` in RStudio (https://github.com/mcconvil/pdxTrees). 
-
-### Imaging
-
-Satellite images come from Planet.com's PS2.SD instrument found on Dove-R satellites that were launched in 2017. The PS2 telescope is equipped with a 2D frame detector with 6600 pixels across by 4400 pixels down and a spacing of 1100 pixels. One pixel = 5.5um. To separate the light into red, blue, green, and non-infrared (NIR) channels, the telescope has a high-performance butcher-block filter made of 4 individual pass-band filters. Planet.com equates this pass-band filter with that of Sentinel-2.
-
-As it orbits the Earth, the satellite captures continuous strips of single frame images that are split into a RGB frame and NIR frame. Images are are downloaded already fully processed and ready to be analyzed. The process includes corrections for radiometric calibration, terrain distortions corrections, elevation corrections, and atmospheric corrections.
-
-The images used in this research were taken on September 2nd, 2020 at an altitude of 475 km. The compiled multi-spectral image is composed of 4 bands: blue, green, red, and near-infrared (NIR), with center wavelengths 490 nm, 565 nm, 665 nm, and 865 nm respectively, with an average bandwidth of 41 nm. The average spatial extent is around 25 km by 8 km. The images cover the entire Portland area, with specific measurements of 26 km from west to east and 30 km from north to south. The spatial resolution of the pixels is approximately 3 meters.
-
-Using Planet.com for gathering satellite images has the added benefit of providing a limited number of downloadable images by making a free account. However, one drawback to using this data is that its low resolution, which will decrease the performance of statistical models trying to predict tree species location.
-
-### Ground Data
-Ground level data is available from the ‘pdxTrees’ package in RStudio. This data was collected as part of the Portland’s Parks and Recreation’s Urban Forestry Tree Inventory Project, which collected park tree information from 2017 to 2019. Originally, the inventory project started with the goal of improving the city's tree management plans. Under the guidance of US Forestry staff, volunteers around the city's neighborhoods are trained in identifying tree species and provided with tools necessary to record tree measurements. Measurements in feet were made using diameter tape. The Portland park trees inventory consists of over 25,000 trees, each with information about tree location, size, species, and health. For the purposes of this project, the following variables were selected:
-
-* Spatial information: Longitude and latitude of tree. Location of tree is recorded on a tablet with Collector for ArcGIS and recorders manually select the tree from a satellite image on the screen.
-
-* Species: Tree genus, species, and common name
-
-
-* Crown size: Crown width from north to south, crown width from east to west, and the base height of the crown in feet. The crown of the tree is the tree's above ground leaves, so the crown width is the longest horizontal distance that can be measured between the leaves of the tree. A measuring wheel is used to measure this distance.
-
-* Tree Condition: Categorical variable with four categories (from best to worst), good, fair, poor, and dead. A tree was considered good if the tree is strong and has no apparent issues, fair if the tree is average condition with possibly a few dead branches, poor if the tree has major wounds and dead major canopy loss, and dead if the tree has no live leaves.
-
-
-To prepare the ground level data for training the model, the data was filtered by species and crown size. The following tree species were identified and included: maples, oak, Douglas-fir, Western Redcedar, and sequoia. Since the data is used to identify trees in the satellite images, the ground data was also filtered to only include the trees with a crown width from north to south of 20 feet or more, this ensures that there will be around 9 to 20 pixels per tree.
-
-Portland's Tree Inventory provides valuable data for this project because it includes a variable for identifying Western Redcedars as well as variables for identifying larger trees in the dataset, which helps construct a training set of tree polygons in a satellite image. One way this data would be even better suited for the purposes of this project would be if the street trees subdata also contained variables for tree canopy size.
-
-### Training Data
-
-#### Characteristics of Training Data
-
-The training data at the ground-level was filtered by tree size and tree type. Trees with at least 20 feet in north to south crown width were included in the training dataset to ensure that the polygons around each tree contain around 9 to 20 pixels. Figure \@ref(fig:crownWidth) plots the north to south crown width values against the west to east crown width values to present the ranges of crown widths in the entire pdxTrees parks dataset and to justify only using the north to south crown width for filtering the dataset since the two variables have a strong positive correlation.
-
-
-```{r crownWidth, warning=F, message=F, echo=F, fig.cap='Plot comparing North to South Crown Width (ft) to West to East Crown Width (ft). A tree with a higher north-south crown width has a higher west-east crown width, so without loss of generality the north-south crown width variable is used to filter the dataset for larger trees only.'}
-pdxTrees_parks <- get_pdxTrees_parks()
-ggplot(pdxTrees_parks, aes(x = Crown_Width_NS, y = Crown_Width_EW)) +
-  geom_point(alpha = 0.4) +
-  theme_classic() + labs(x = "North to South Crown Width (ft)", y = "West to East Crown Width (ft)")
-```
-
-
-Six tree types were determined to have large enough canopies on average and appear frequently enough to construct a training dataset with plenty of observations for each species of tree: Douglas-Fir, English Oak, Giant Sequoia, Maple, Western Redcedar. Table \@ref(tab:pointsTable) provides the number of trees under each common name category. The largest group contains 6485 observations of Douglas-Fir trees, and the smallest group contains 135 observations of English Oak trees.
-
-
-```{r pointsTable, warning=F, message=F, echo=F, fig.cap='Common tree names included in the tidy data and their total counts.'}
-train_points <- pdxTrees_parks %>%
-  dplyr::filter(Species %in% c("QURO", "SEGI", "ACPL", "PSME", "ACMA", "THPL"), Crown_Width_NS >= 20)
-
-train_points_dat <- train_points %>%
-  group_by(Common_Name) %>%
-  summarise(counts = n()) %>%
-  arrange(desc(counts))
-
-knitr::kable(train_points_dat, col.names = c("Tree Name", "Tree Count"), "latex", caption = "Common tree names included in the tidy data and their total counts.")
-```
-
-#### Creating Spatial Polygons
-
-The training dataset was converted into shapefiles for each type of tree and exported into QGIS where polygons were manually drawn around 100 of the trees for each species. The point shapefile layers were displayed over the raster images downloaded from Planet.com in QGIS, which provided a guide point for locating individual trees. Then using QGIS's drawing tool, a polygon is carefully drawn around the tree canopy. Most polygons turned out to be four to six-sided polygons to retain the general shape of the tree canopy. Trees polygons were only created if the outline of the tree canopy was clearly visible or surrounded by other trees of the same species in order to avoid including pixels from the wrong species in that polygon. Also, the shadows of the trees are visible in the raster images, so the polygons were drawn with the intention of not including the tree shadow. For the five different species of trees, at least 100 polygons were drawn around trees of that type, with each polygon containing at least 6 pixels and at most 20 pixels. The polygon shapefiles were then exported into RStudio where the rest of the analysis was conducted.
-
-#### Combining Ground-level Data with Pixel-level Data
-
-The first spatial join in RStudio was conducted to match up each Spatial Polygon with a point in the training dataset. Then the raster images were loaded and joined with the polygons to extract the pixel values inside each polygon for all 4 bands (red, green, blue, infrared). Ultimately this turned into a pixel table with rows representing each pixel with its corresponding polygon, light reflection intensity values for all 4 bands, and the ground information about that tree. Table \@ref(tab:pixelHead) displays the first few entries of the pixels dataset. Table \@ref(tab:pixelCounts) contains the summary of the total number of pixels for each tree type.
-
-```{r pixelHead, echo=F, warning=F, message=F, fig.cap='Variables and pixel values included in the pixels dataset', fig.width=4}
-# load data
-pixels_data <- read.csv('~/tree_imaging/pixels_data.csv')
-pixels_head <- head(pixels_data)
-
-knitr::kable(pixels_head, caption = "Variables and pixel values included in the pixels dataset") %>%
-  kable_styling(latex_options = c("scale_down"))
-```
-
-
-```{r pixelCounts, echo=F, warning=F, message=F, fig.cap='Number of pixels per tree type'}
-pixels_summary_dat <- pixels_data %>%
-  group_by(Cmmn_Nm) %>%
-  summarise(counts = n())
-
-knitr::kable(pixels_summary_dat, col.names = c("Tree Name", "Pixels Count"), "latex", caption = "Number of pixels per tree type")
-```
-
-Figure \@ref(fig:pixDensity) displays the range of reflection intensity pixel values per tree type. Each tree species has similar ranges of values over the red, green, blue, and infared bands. Of the species included in the training data, the Giant Sequoia trees appear to have higher density counts for the red, green, and blue bands.
-
-```{r pixDensity, echo=F, warning=F, message=F, fig.cap=' '}
-ggplot(pixels_data) +
-  geom_density(aes(x = red), col = "red") +
-  geom_density(aes(x = blue), col = "blue") + 
-  geom_density(aes(x = green), col = "green") + 
-  geom_density(aes(x = ir), col = "purple") + 
-  facet_wrap(~Cmmn_Nm)+
-  theme_classic() + labs(x = "Reflection Intensity", y = "Density")
-```
 

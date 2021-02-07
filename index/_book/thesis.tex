@@ -238,9 +238,13 @@ Second paragraph of abstract starts here.
 \hypertarget{research-problem-and-background}{%
 \section{Research Problem and Background}\label{research-problem-and-background}}
 
-Western redcedar trees are evergreen trees that typically grow up to 75 feet tall and are located over the Pacific Northwest, making it an organism with a tolerance for shaded regions with moist environments. These trees are native to the land and have served many purposes to people and animals living in the vicinity of the trees, including medicinal, building, and habitat functions (Peterson, n.d.). However, over the past decade, reports of dead western redcedars have been increasing, suggesting that something other than natural causes is killing off this species. In general, this species experiences several hardships in surviving in the Pacific Northwest, with common causes of death such as forest fires, clearcutting, small animals eating the saplings, and harsh weather including strong winds that easily uproot the trees (Peterson, n.d.). Dying redcedar trees can be identified by their branches which turn brownish yellow or fall off completely. Another sign is that the top of a dying redcedar will turn brown and lose leaves (``Western redcedar Dieback,'' n.d.). Losing this native tree would have a detrimental effect on animals in the area who rely heavily on the trees for their lifestyle. Scientists have speculated that western redcedar decline might be caused by recent dry summers, the spread of tree disease, insects, or other weather related events (``Western redcedar Dieback,'' n.d.). Since this is a recent issue, there is not a lot of resources explaining the decline. This research aims to provide more insight into the cause of the western redcedar decline by first predicting the location of the western redcedar trees in Portland and then predicting their condition in terms of health. Having more insight helps to prevent further tree deaths and save the western redcedar species, which also extends to similar tree species and provides more knowledge about environmental changes in the Pacific Northwest region.
+Western redcedar trees are evergreen trees that typically grow up to 75 feet tall and are located over the Pacific Northwest, making it an organism with a tolerance for shaded regions with moist environments. These trees are native to the land and have served many purposes to people and animals living in the vicinity of the trees, including medicinal, building, and habitat functions (Peterson, n.d.). Western redcedars were culturally important to indigenous peoples who valued the strong wood and utilized it for construction and everyday necessities (``Western red cedar,'' n.d.). Over the past decade, reports of dead western redcedars have been increasing, suggesting that something other than natural causes is killing off this species. In general, this species experiences several hardships in surviving in the Pacific Northwest, with common causes of death such as forest fires, clearcutting, small animals eating the saplings, and harsh weather including strong winds that easily uproot the trees (Peterson, n.d.). Dying redcedar trees can be identified by their branches which turn brownish yellow or fall off completely. Another sign is that the top of a dying redcedar will turn brown and lose leaves (``Western redcedar Dieback,'' n.d.). Losing this native tree would have a detrimental effect on animals in the area who rely heavily on the trees for their lifestyle. Scientists have speculated that western redcedar decline might be caused by recent dry summers, the spread of tree disease, insects, or other weather related events (``Western redcedar Dieback,'' n.d.). Since this is a recent issue, there is not a lot of resources explaining the decline. This research aims to provide more insight into the cause of the western redcedar decline by first predicting the location of the western redcedar trees in Portland and then predicting their condition in terms of health. Having more insight helps to prevent further tree deaths and save the western redcedar species, which also extends to similar tree species and provides more knowledge about environmental changes in the Pacific Northwest region.
 
 Modelling in this research will be conducted by combining information gathered from remote sensing images with ground level information. There are several sources publishing research done using satellite imagery for land classification and for predicting tree species, which will be the groundwork for this project's application of remote sensing models to the specific topic of western redcedar mortality.
+
+Remote sensing is a process for identifying the physical aspects of a large area of land by collecting measured light reflection using airplanes or satellites. This method provides access to lot of information about the region of interest that would otherwise be limited from a human's ground-level persepective. Remote sensing is used to detect characteristics on land as well as the sea. Some remote sensing land applications include tracking forest fires, volcanic eruptions, city growth, and also forest changes.
+
+Satellites orbit the earth, carrying sensors that record levels of electromagnetic radiation detected by the reflection of the sun on the earth. The data collected is the measured radiation from different waves of the spectrum (visible light, infrared, ultraviolet, etc.). Depending on the surface, sunlight get absorbed or reflected back at the orbiting satellite. The remotely sensed data is available at certain resolutions depending on the instruments used. Spatial resolution is the size of a pixel from a satellite image, and a detailed image has smaller spatial resolution so smaller pixels. Spectral resolution is a measure of the size of the wavelengths, where smaller bands and smaller wavelengths improve the spectral resolution of an image and hench improve the level of detail. Satellite images need to be corrected to combine the bands into an image depending on the analysis.
 
 Plenty of literature has been published in utilizing satellite imagery for predictive models, however, many issues arise in classifying land type through remote sensing mainly due to image quality. A single image can be composed of image strips taken over the course of multiple flight paths. Consequently, these images are taken at different times of day, which compiles into a single image with a lot of variation in values due to changes in the weather as well as the different angles of the sun's position (Castelluccio, Poggi, Sansone, \& Verdoliva, 2015). Ideally, a solid classifying model surpasses any error introduced by imperfection in the satellite images. Common approaches to classification on satellite images include support vector machines, random forests, and decision trees. One study on land type classification explores the performance of convolutional neural networks (CNN) as classification models (Castelluccio et al., 2015).
 
@@ -256,21 +260,21 @@ This thesis follows along with the methods in (Fricker et al., 2019) for combini
 
 This work combines RGB imagery data from Planet.com with ground level tree data from the RStudio \texttt{pdxTrees} library and applies random forest and support vector machine classification methods to predict the location of tree species (specifically western redcedars) in Portland, Oregon and model the condition of western redcedars to ultimately understand the cause of death in this species. {[}insert key findings here{]}
 
-\hypertarget{data-chapter}{%
-\section{Data Chapter}\label{data-chapter}}
+\hypertarget{data}{%
+\chapter{Data}\label{data}}
 
 There are two sources of data in this project. Data at a pixel level come from satellite images downloaded from Planet.com (\url{https://www.planet.com}), and data at the ground level come from library \texttt{pdxTrees} in RStudio (\url{https://github.com/mcconvil/pdxTrees}).
 
 \hypertarget{imaging}{%
 \subsection{Imaging}\label{imaging}}
 
-Satellite images come from Planet.com's PS2.SD instrument found on Dove-R satellites that were launched in 2017. The PS2 telescope is equipped with a 2D frame detector with 6600 pixels across by 4400 pixels down and a spacing of 1100 pixels. One pixel = 5.5um. To separate the light into red, blue, green, and non-infrared (NIR) channels, the telescope has a high-performance butcher-block filter made of 4 individual pass-band filters. Planet.com equates this pass-band filter with that of Sentinel-2.
+Satellite images come from Planet.com's PS2.SD instrument found on Dove-R satellites that were launched in 2017. The PS2 telescope is equipped with a 2D frame detector with 6600 pixels across by 4400 pixels down and a spacing of 1100 pixels. For this instrument, one pixel = 5.5um. To separate the light into red, blue, green, and near-infrared (NIR) channels, the telescope has a high-performance butcher-block filter made of 4 individual pass-band filters. Planet.com equates this pass-band filter with that of Sentinel-2.
 
-As it orbits the Earth, the satellite captures continuous strips of single frame images that are split into a RGB frame and NIR frame. Images are are downloaded already fully processed and ready to be analyzed. The process includes corrections for radiometric calibration, terrain distortions corrections, elevation corrections, and atmospheric corrections.
+As it orbits the Earth, the satellite captures continuous strips of single frame images that are split into a RGB frame and NIR frame. The butcher-block pass separately photographs the red, blue, green, and NIR bands and then combines all four to form an image. Images are are downloaded already fully processed and ready to be analyzed. The process includes corrections for radiometric calibration, terrain distortions corrections, elevation corrections, and atmospheric corrections.
 
-The images used in this research were taken on September 2nd, 2020 at an altitude of 475 km. The compiled multi-spectral image is composed of 4 bands: blue, green, red, and near-infrared (NIR), with center wavelengths 490 nm, 565 nm, 665 nm, and 865 nm respectively, with an average bandwidth of 41 nm. The average spatial extent is around 25 km by 8 km. The images cover the entire Portland area, with specific measurements of 26 km from west to east and 30 km from north to south. The spatial resolution of the pixels is approximately 3 meters.
+The images used in this research were taken on September 2nd, 2020 at an altitude of 475 km. Images are taken from the summer months to reduce the chance of rain clouds and capture peak greenness of the trees. The compiled multi-spectral image is composed of 4 bands: blue, green, red, and NIR, with center wavelengths 490 nm, 565 nm, 665 nm, and 865 nm respectively, with an average bandwidth of 41 nm. The average spatial extent is around 25 km by 8 km. The images cover the entire Portland area, with specific measurements of 26 km from west to east and 30 km from north to south. The spatial resolution of the pixels is approximately 3 meters.
 
-Using Planet.com for gathering satellite images has the added benefit of providing a limited number of downloadable images by making a free account. However, one drawback to using this data is that its low resolution, which will decrease the performance of statistical models trying to predict tree species location.
+Planet.com provides a way to download free images that are already processed and corrected for analysis. Some drawbacks to using this data are the limited number of downloads available per free account, the low spatial resolution, which decreases the performance of statistical models trying to predict tree species location, and the low spectral resolution, so the satellite sensor cannot detect wavelengths in detail.
 
 \hypertarget{ground-data}{%
 \subsection{Ground Data}\label{ground-data}}
@@ -278,9 +282,9 @@ Using Planet.com for gathering satellite images has the added benefit of providi
 Ground level data is available from the `pdxTrees' package in RStudio. This data was collected as part of the Portland's Parks and Recreation's Urban Forestry Tree Inventory Project, which collected park tree information from 2017 to 2019. Originally, the inventory project started with the goal of improving the city's tree management plans. Under the guidance of US Forestry staff, volunteers around the city's neighborhoods are trained in identifying tree species and provided with tools necessary to record tree measurements. Measurements in feet were made using diameter tape. The Portland park trees inventory consists of over 25,000 trees, each with information about tree location, size, species, and health. For the purposes of this project, the following variables were selected:
 \begin{itemize}
 \item
-  Spatial information: Longitude and latitude of tree. Location of tree is recorded on a tablet with Collector for ArcGIS and recorders manually select the tree from a satellite image on the screen.
+  Spatial information: Longitude and latitude of tree. Location of tree is recorded on a tablet with Collector for ArcGIS and recorders manually select the tree from a satellite image on the screen. The tree's location is mapped over the satellite images in QGIS for analysis.
 \item
-  Species: Tree genus, species, and common name
+  Species: Tree genus, species, and common name. The tree species is used to train the model and predict the tree species of pixels in the test data.
 \item
   Crown size: Crown width from north to south, crown width from east to west, and the base height of the crown in feet. The crown of the tree is the tree's above ground leaves, so the crown width is the longest horizontal distance that can be measured between the leaves of the tree. A measuring wheel is used to measure this distance.
 \item
@@ -288,7 +292,7 @@ Ground level data is available from the `pdxTrees' package in RStudio. This data
 \end{itemize}
 To prepare the ground level data for training the model, the data was filtered by species and crown size. The following tree species were identified and included: maples, oak, Douglas-fir, Western Redcedar, and sequoia. Since the data is used to identify trees in the satellite images, the ground data was also filtered to only include the trees with a crown width from north to south of 20 feet or more, this ensures that there will be around 9 to 20 pixels per tree.
 
-Portland's Tree Inventory provides valuable data for this project because it includes a variable for identifying Western Redcedars as well as variables for identifying larger trees in the dataset, which helps construct a training set of tree polygons in a satellite image. One way this data would be even better suited for the purposes of this project would be if the street trees subdata also contained variables for tree canopy size.
+Portland's Tree Inventory includes a variable for identifying trees including Western Redcedars as well as variables for filtering to include larger trees canopies (at least 6m in diameter) in the dataset, which helps construct a training set of tree polygons over a satellite image. This data would be even better suited for the purposes of this project would be if the street trees subdata also contained variables for tree canopy size.
 
 \hypertarget{training-data}{%
 \subsection{Training Data}\label{training-data}}
@@ -331,7 +335,12 @@ English Oak & 135\\
 \hypertarget{creating-spatial-polygons}{%
 \subsubsection{Creating Spatial Polygons}\label{creating-spatial-polygons}}
 
-The training dataset was converted into shapefiles for each type of tree and exported into QGIS where polygons were manually drawn around 100 of the trees for each species. The point shapefile layers were displayed over the raster images downloaded from Planet.com in QGIS, which provided a guide point for locating individual trees. Then using QGIS's drawing tool, a polygon is carefully drawn around the tree canopy. Most polygons turned out to be four to six-sided polygons to retain the general shape of the tree canopy. Trees polygons were only created if the outline of the tree canopy was clearly visible or surrounded by other trees of the same species in order to avoid including pixels from the wrong species in that polygon. Also, the shadows of the trees are visible in the raster images, so the polygons were drawn with the intention of not including the tree shadow. For the five different species of trees, at least 100 polygons were drawn around trees of that type, with each polygon containing at least 6 pixels and at most 20 pixels. The polygon shapefiles were then exported into RStudio where the rest of the analysis was conducted.
+The training dataset was converted into shapefiles for each type of tree and exported into QGIS where polygons were manually drawn around 100 of the trees for each species. Ideally, the raster strips contains training trees of each species, but due to limitations of our ground-level data this is not the case. The point shapefile layers were displayed over the raster images downloaded from Planet.com in QGIS, which provided a guide point for locating individual trees. Then using QGIS's drawing tool, a polygon is carefully drawn around the tree canopy. Most polygons turned out to be four to six-sided polygons to retain the general shape of the tree canopy. Trees polygons were only created if the outline of the tree canopy was clearly visible or surrounded by other trees of the same species in order to avoid including pixels from the wrong species in that polygon. Also, the shadows of the trees are visible in the raster images, so the polygons were drawn with the intention of not including the tree shadow. For the five different species of trees, at least 100 polygons were drawn around trees of that type, with each polygon containing at least 6 pixels and at most 20 pixels. The polygon shapefiles were then exported into RStudio where the rest of the analysis was conducted.
+
+\hypertarget{polygon-limitations}{%
+\subsubsection{Polygon Limitations}\label{polygon-limitations}}
+
+The polygons are drawn with the intention of outlining pixels for a known tree species so that the extracted pixels truly represent that species and so that there is a sufficient amount of pixels per species, however, limitations of the satellite images' resolution make some error inevitable. Many parks trees have canopies that overlap, which cause some polygons to contain pixels from trees of different species. Other pixel errors might come from including pixels that are cast in shadow by the polygon's training tree or by surrounding infrastructure. To avoid these errors, polygons with uncertain canopies are cross-checked with the satellite filter on Google Maps. For example, a point in QGIS that is indicated as a Douglas-fir tree might appear as one tree on the low-resolution image from Planet.com, but a closer look at Google Maps shows that it is actually two trees in close proximity. Having low spatial resolution decreases the number of pixels available within a polygon, but that has to be balanced out with the need for a large number of pixels. With regards to the number of pixels per tree species, having around the same number of tree polygons per species results in differing amounts of pixels per species due to the different average sizes of tree canopies for different species. After drawing the images, the pixels totals per tree species is computed to ensure that the training pixels data contains at least 800 pixels per tree species.
 
 \hypertarget{combining-ground-level-data-with-pixel-level-data}{%
 \subsubsection{Combining Ground-level Data with Pixel-level Data}\label{combining-ground-level-data-with-pixel-level-data}}
@@ -393,65 +402,40 @@ Figure \ref{fig:pixDensity} displays the range of reflection intensity pixel val
 
 \caption{ }\label{fig:pixDensity}
 \end{figure}
-\hypertarget{math-sci}{%
-\chapter{Mathematics and Science}\label{math-sci}}
+--\textgreater{}
 
-\hypertarget{math}{%
-\section{Math}\label{math}}
+\hypertarget{methods}{%
+\chapter{Methods}\label{methods}}
 
-\TeX~is the best way to typeset mathematics. Donald Knuth designed \TeX~when he got frustrated at how long it was taking the typesetters to finish his book, which contained a lot of mathematics. One nice feature of \emph{R Markdown} is its ability to read LaTeX code directly.
+\hypertarget{current-methods}{%
+\section{Current Methods}\label{current-methods}}
 
-If you are doing a thesis that will involve lots of math, you will want to read the following section which has been commented out. If you're not going to use math, skip over or delete this next commented section.
+Since the Western redcedar decline is recent, there are currently no methods for identifying tree species like Western redcedars for the Pacific Northwest using satellite imaging. However, a similar study identifies tree species for a strip of land in California by combining ground-level data with satellite images (Fricker et al., 2019). Their methods involved drawing polygons around rastered images that are layered with ground data as explained in Chapter \ref{data}, but the pixels from the polygons are used to train a convolutional neural network (CNN) model instead of the random forests and support vector machines in this study. The CNN model was then evaluated with k-fold cross validation. CNN models are appropriate in a classification setting and when working with satellite images because they account for spatial relations, which is likely to appear in classifying tree species. This study follows the methods of preparing the data for modelling as well as the cross validation method to evaluate the performance of the random forests and support vector machines models. Random forests use random feature selections to create decision trees and increase the number of correctly classified observations. Random forests have the advantage of being simplier to train and still performs at a similar level as CNN models.
 
-\hypertarget{chemistry-101-symbols}{%
-\section{Chemistry 101: Symbols}\label{chemistry-101-symbols}}
+\hypertarget{training-models}{%
+\section{Training Models}\label{training-models}}
 
-Chemical formulas will look best if they are not italicized. Get around math mode's automatic italicizing in LaTeX by using the argument \texttt{\$\textbackslash{}mathrm\{formula\ here\}\$}, with your formula inside the curly brackets. (Notice the use of the backticks here which enclose text that acts as code.)
+For both the random forest model and the support vector machines model, the tidy pixels data is arbitrarily divided in half into a training dataset and a testing dataset and the selected variables for training the models are the four bands (red, green, blue, infrared) and an NDVI variable. The \texttt{randomForest} function from the \texttt{randomForest} package (Liaw \& Wiener, 2002) is used to train a random forest model on the training dataset to predict the tree species. The function takes parameters for data, the predictive variable, and the subset data that should be used to train the model. By default, the function grows 500 trees and samples cases with replacement.
 
-So, \(\mathrm{Fe_2^{2+}Cr_2O_4}\) is written \texttt{\$\textbackslash{}mathrm\{Fe\_2\^{}\{2+\}Cr\_2O\_4\}\$}.
+The \texttt{svm} function from the \texttt{e1071} package (Meyer, Dimitriadou, Hornik, Weingessel, \& Leisch, 2019) is used to train a support vector machine model on the training dataset to classify pixels into types of trees. By default, data are scaled to zero mean and unit variance and the kernel is radial.
 
-\noindent Exponent or Superscript: \(\mathrm{O^-}\)
+\hypertarget{preparing-raster-images}{%
+\section{Preparing Raster Images}\label{preparing-raster-images}}
 
-\noindent Subscript: \(\mathrm{CH_4}\)
+The training model has to be applied to the entire raster image to predict the location of Western redcedars, however, extracting all the pixels from raster images is a slow process. Filtering the rasters to keep vegetation and to recognize the difference between grass pixels and tree pixels alleviates the computational intensity of extracting all the pixels.
 
-To stack numbers or letters as in \(\mathrm{Fe_2^{2+}}\), the subscript is defined first, and then the superscript is defined.
+\hypertarget{masking-vegetation}{%
+\subsection{Masking Vegetation}\label{masking-vegetation}}
 
-\noindent Bullet: CuCl \(\bullet\) \(\mathrm{7H_{2}O}\)
+The satellite images in RStudio need to be masked to reduce the number of pixels that the model has to classify and prevent the chance of a non-vegetation surface being predicted as a tree. A common mask applied to raster images is a Normalized Difference Vegetation Index (NDVI) mask. This index is a measure of the greenness of a pixel, with higher values indicating vegetation and lower values indicating infertile areas such as a rock. The formula for NDVI is \(NDVI = \frac{NIR - Red}{NIR + Red}\). Figure {[}insert figure title{]} displays the density of NDVI values over the raster images. To remove the pixels that are not vegetation, an NDVI threshold is determined to be {[}insert threshold{]} to create a mask dividing the pixels into vegetation (1) and non-vegetation (0). When the trained model is applied to the raster image, it is applied to the masked raster image that only keeps pixels with mask values of 1.
 
-\noindent Delta: \(\Delta\)
+\hypertarget{grass-polygons}{%
+\subsection{Grass Polygons}\label{grass-polygons}}
 
-\noindent Reaction Arrows: \(\longrightarrow\) or \(\xrightarrow{solution}\)
+Further preparation for applying the model to the entire mask involved creating grass polygons in QGIS to add a grass attribute in the model. Five fields of grass were outlined as polygons in QGIS. In RStudio, the pixels were extracted from the grass polygons for a total of 2,923 grass pixels. Training the model to also predict grass ensures that a field of grass will not be classified as a tree when applied to the entire raster image.
 
-\noindent Resonance Arrows: \(\leftrightarrow\)
-
-\noindent Reversible Reaction Arrows: \(\rightleftharpoons\)
-
-\hypertarget{typesetting-reactions}{%
-\subsection{Typesetting reactions}\label{typesetting-reactions}}
-
-You may wish to put your reaction in an equation environment, which means that LaTeX will place the reaction where it fits and will number the equations for you.
-\begin{equation}
-  \mathrm{C_6H_{12}O_6  + 6O_2} \longrightarrow \mathrm{6CO_2 + 6H_2O}
-  \label{eq:reaction}
-\end{equation}
-We can reference this combustion of glucose reaction via Equation \eqref{eq:reaction}.
-
-\hypertarget{other-examples-of-reactions}{%
-\subsection{Other examples of reactions}\label{other-examples-of-reactions}}
-
-\(\mathrm{NH_4Cl_{(s)}}\) \(\rightleftharpoons\) \(\mathrm{NH_{3(g)}+HCl_{(g)}}\)
-
-\noindent \(\mathrm{MeCH_2Br + Mg}\) \(\xrightarrow[below]{above}\) \(\mathrm{MeCH_2\bullet Mg \bullet Br}\)
-
-\hypertarget{physics}{%
-\section{Physics}\label{physics}}
-
-Many of the symbols you will need can be found on the math page \url{https://web.reed.edu/cis/help/latex/math.html} and the Comprehensive LaTeX Symbol Guide (\url{https://mirror.utexas.edu/ctan/info/symbols/comprehensive/symbols-letter.pdf}).
-
-\hypertarget{biology}{%
-\section{Biology}\label{biology}}
-
-You will probably find the resources at \url{https://www.lecb.ncifcrf.gov/~toms/latex.html} helpful, particularly the links to bsts for various journals. You may also be interested in TeXShade for nucleotide typesetting (\url{https://homepages.uni-tuebingen.de/beitz/txe.html}). Be sure to read the proceeding chapter on graphics and tables.
+\hypertarget{modelling-tree-species-in-portland}{%
+\section{Modelling Tree Species in Portland}\label{modelling-tree-species-in-portland}}
 
 \hypertarget{conclusion}{%
 \chapter*{Conclusion}\label{conclusion}}
@@ -582,8 +566,17 @@ Castelluccio, M., Poggi, G., Sansone, C., \& Verdoliva, L. (2015). Land Use Clas
 \leavevmode\hypertarget{ref-fricker_convolutional_2019}{}%
 Fricker, G. A., Ventura, J. D., Wolf, J. A., North, M. P., Davis, F. W., \& Franklin, J. (2019). A Convolutional Neural Network Classifier Identifies Tree Species in Mixed-Conifer Forest from Hyperspectral Imagery. \emph{Remote Sensing}, \emph{11}(19), 2326. \url{http://doi.org/10.3390/rs11192326}
 
+\leavevmode\hypertarget{ref-random_forest}{}%
+Liaw, A., \& Wiener, M. (2002). Classification and regression by randomForest. \emph{R News}, \emph{2}(3), 18--22. Retrieved from \url{https://CRAN.R-project.org/doc/Rnews/}
+
+\leavevmode\hypertarget{ref-svm}{}%
+Meyer, D., Dimitriadou, E., Hornik, K., Weingessel, A., \& Leisch, F. (2019). \emph{E1071: Misc functions of the department of statistics, probability theory group (formerly: E1071), tu wien}. Retrieved from \url{https://CRAN.R-project.org/package=e1071}
+
 \leavevmode\hypertarget{ref-peterson_western_nodate}{}%
 Peterson, J. S. (n.d.). WESTERN RED CEDAR, 3.
+
+\leavevmode\hypertarget{ref-noauthor_western_nodate-1}{}%
+Western red cedar. (n.d.). Retrieved from \url{https://www.oregonencyclopedia.org/articles/western_red_cedar/\#.YB7fUy1h1N0}
 
 \leavevmode\hypertarget{ref-noauthor_western_nodate}{}%
 Western redcedar Dieback. (n.d.). \emph{PPO Home}. Retrieved from \url{https://ppo.puyallup.wsu.edu/plant-health-concerns/redcedar/}
