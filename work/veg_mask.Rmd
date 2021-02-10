@@ -7,7 +7,41 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(tidyverse)
 ```
+
+```{r}
+# look at ndvi/grass values from pixels dataset to determine threshold
+pixels_data <- read.csv('pixels_data.csv')
+
+ggplot(pixels_data, mapping = aes(x = ndvi)) +
+  geom_histogram(alpha = 0.6, fill = "blue") +
+  geom_vline(xintercept = 0.0) +
+  theme_minimal()
+
+ggplot(pixels_data, mapping = aes(x = (ir + red + blue + green), fill = Cmmn_Nm)) +
+  geom_density(alpha = 0.6) +
+  scale_fill_viridis_d() + theme_minimal()
+
+ggplot(pixels_data %>% filter(Cmmn_Nm %in% "grass"), mapping = aes(x = ndvi, fill = Cmmn_Nm)) +
+  geom_density(alpha = 0.6) +
+  scale_fill_viridis_d() + theme_minimal()
+
+ggplot(pixels_data, mapping = aes(x = ir, y = red, color = Cmmn_Nm)) +
+  geom_point(alpha = 0.6) +
+  scale_colour_viridis_d()
+
+ggplot(pixels_data%>% filter(Cmmn_Nm %in% "grass"), mapping = aes(x = ir - red, y = ir + red, color = Cmmn_Nm)) +
+  geom_point(alpha = 0.6) +
+  scale_colour_viridis_d()
+
+brightness <- (ir + red + blue + green)/4
+
+# masking out ndvi values below 0 (halfway up first peak) to keep vegetation pixels
+# and mask out grass values above __ to remove grass pixels
+```
+
 
 ```{r}
 # ndvi mask
@@ -27,13 +61,13 @@ ndvi_e <- (stack_e[[4]] - stack_e[[1]]) / (stack_e[[4]] + stack_e[[1]])
 plot(ndvi_a, main = "NDVI", axes = FALSE, box = FALSE)
 
 # masked ndvi values
-ndvi_mask_a <- reclassify(ndvi_a, cbind(-Inf, 0.2, NA))
-ndvi_mask_b <- reclassify(ndvi_b, cbind(-Inf, 0.5, NA))
-ndvi_mask_c <- reclassify(ndvi_c, cbind(-Inf, 0.5, NA))
-ndvi_mask_d <- reclassify(ndvi_d, cbind(-Inf, 0.5, NA))
-ndvi_mask_e <- reclassify(ndvi_e, cbind(-Inf, 0.5, NA))
+ndvi_mask_a <- reclassify(ndvi_a, cbind(-Inf, 0, NA))
+ndvi_mask_b <- reclassify(ndvi_b, cbind(-Inf, 0, NA))
+ndvi_mask_c <- reclassify(ndvi_c, cbind(-Inf, 0, NA))
+ndvi_mask_d <- reclassify(ndvi_d, cbind(-Inf, 0, NA))
+ndvi_mask_e <- reclassify(ndvi_e, cbind(-Inf, 0, NA))
 
-plot(ndvi_mask_a, main = "NDVI < 0.2", axes = FALSE, box = FALSE)
+plot(ndvi_mask_a, main = "NDVI > 0", axes = FALSE, box = FALSE)
 plot(ndvi_mask_b, main = "NDVI", axes = FALSE, box = FALSE)
 plot(ndvi_mask_c, main = "NDVI", axes = FALSE, box = FALSE)
 
@@ -55,5 +89,16 @@ plot(gli_a, main = "GLI", axes = FALSE, box = FALSE)
 # Enhanced Vegetation Index (EVI) = 2.5*(nir - red)/(nir + 6*red - 7.5*blue + 1)
 evi_a <- 2.5*(stack_a[[4]] - stack_a[[1]])/(stack_a[[4]] + 6*stack_a[[1]] - 7.5*stack_a[[3]])
 plot(evi_a, main = "EVI", axes = FALSE, box = FALSE)
+```
+
+```{r}
+# Grass Index  = (ir + red + blue + green)/4
+gi_a <- (stack_a[[1]] + stack_a[[2]] + stack_a[[3]] + stack_a[[4]])/4
+gi_mask_a <- reclassify(gi_a, cbind(NA, 5100, Inf))
+plot(gi_a, main = "Grass index", axes = FALSE, box = FALSE)
+plot(gi_mask_a, main = "Grass index", axes = FALSE, box = FALSE)
+
+summary(gi_a)
+summary(gi_mask_a)
 ```
 
