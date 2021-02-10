@@ -11,6 +11,69 @@ library(ggplot2)
 library(tidyverse)
 ```
 
+
+```{r}
+# load raster layer object
+stack_a <- stack("planet/20200902_184428_1005_3B_AnalyticMS_clip.tif")
+stack_b <- stack("planet/20200902_184429_1005_3B_AnalyticMS_clip.tif")
+stack_c <- stack("planet/20200902_183008_24_1065_3B_AnalyticMS_clip.tif")
+stack_d <- stack("planet/20200902_183006_18_1065_3B_AnalyticMS_clip.tif")
+stack_e <- stack("planet/20200902_184430_1005_3B_AnalyticMS_clip.tif")
+
+# ndvi mask remove values below 0
+ndvi_a <- (stack_a[[4]] - stack_a[[1]]) / (stack_a[[4]] + stack_a[[1]])
+ndvi_b <- (stack_b[[4]] - stack_b[[1]]) / (stack_b[[4]] + stack_b[[1]])
+ndvi_c <- (stack_c[[4]] - stack_c[[1]]) / (stack_c[[4]] + stack_c[[1]])
+ndvi_d <- (stack_d[[4]] - stack_d[[1]]) / (stack_d[[4]] + stack_d[[1]])
+ndvi_e <- (stack_e[[4]] - stack_e[[1]]) / (stack_e[[4]] + stack_e[[1]])
+
+plot(ndvi_a, main = "NDVI", axes = FALSE, box = FALSE)
+
+# masked ndvi values
+ndvi_a[ndvi_a < 0] <- NA
+ndvi_b[ndvi_b < 0] <- NA
+ndvi_c[ndvi_c < 0] <- NA
+ndvi_d[ndvi_d < 0] <- NA
+ndvi_e[ndvi_e < 0] <- NA
+
+ndvi_mask_a <- mask(stack_a, ndvi_a, filename = "ndvi_mask_a.tif", overwrite = T)
+ndvi_mask_b <- mask(stack_b, ndvi_b, filename = "ndvi_mask_b.tif")
+ndvi_mask_c <- mask(stack_c, ndvi_c, filename = "ndvi_mask_c.tif")
+ndvi_mask_d <- mask(stack_d, ndvi_d, filename = "ndvi_mask_d.tif")
+ndvi_mask_e <- mask(stack_e, ndvi_e, filename = "ndvi_mask_e.tif")
+```
+
+```{r}
+stack_a <- stack("ndvi_mask_a.tif")
+stack_b <- stack("ndvi_mask_b.tif")
+stack_c <- stack("ndvi_mask_c.tif")
+stack_d <- stack("ndvi_mask_d.tif")
+stack_e <- stack("ndvi_mask_e.tif")
+
+# Grass Index  = (ir + red + blue + green)/4
+gi_a <- (stack_a[[1]] + stack_a[[2]] + stack_a[[3]] + stack_a[[4]])/4
+gi_b <- (stack_b[[1]] + stack_b[[2]] + stack_b[[3]] + stack_b[[4]])/4
+gi_c <- (stack_c[[1]] + stack_c[[2]] + stack_c[[3]] + stack_c[[4]])/4
+gi_d <- (stack_d[[1]] + stack_d[[2]] + stack_d[[3]] + stack_d[[4]])/4
+gi_e <- (stack_e[[1]] + stack_e[[2]] + stack_e[[3]] + stack_e[[4]])/4
+
+# remove values above 5100
+gi_a[gi_a > 5100] <- NA
+gi_b[gi_b > 5100] <- NA
+gi_c[gi_c > 5100] <- NA
+gi_d[gi_d > 5100] <- NA
+gi_e[gi_e > 5100] <- NA
+
+gi_mask_a <- mask(stack_a, gi_a, filename = "grass_mask_a.tif", overwrite = T)
+gi_mask_b <- mask(stack_b, gi_b, filename = "grass_mask_b.tif")
+gi_mask_c <- mask(stack_c, gi_c, filename = "grass_mask_c.tif")
+gi_mask_d <- mask(stack_d, gi_d, filename = "grass_mask_d.tif")
+gi_mask_e <- mask(stack_e, gi_e, filename = "grass_mask_e.tif")
+
+plot(gi_a, main = "ndvi and grass mask", axes = FALSE, box = FALSE)
+```
+
+
 ```{r}
 # look at ndvi/grass values from pixels dataset to determine threshold
 pixels_data <- read.csv('pixels_data.csv')
@@ -42,43 +105,6 @@ brightness <- (ir + red + blue + green)/4
 # and mask out grass values above __ to remove grass pixels
 ```
 
-
-```{r}
-# ndvi mask
-# load raster layer object
-stack_a <- stack("planet/20200902_184428_1005_3B_AnalyticMS_clip.tif")
-stack_b <- stack("planet/20200902_184429_1005_3B_AnalyticMS_clip.tif")
-stack_c <- stack("planet/20200902_183008_24_1065_3B_AnalyticMS_clip.tif")
-stack_d <- stack("planet/20200902_183006_18_1065_3B_AnalyticMS_clip.tif")
-stack_e <- stack("planet/20200902_184430_1005_3B_AnalyticMS_clip.tif")
-
-ndvi_a <- (stack_a[[4]] - stack_a[[1]]) / (stack_a[[4]] + stack_a[[1]])
-ndvi_b <- (stack_b[[4]] - stack_b[[1]]) / (stack_b[[4]] + stack_b[[1]])
-ndvi_c <- (stack_c[[4]] - stack_c[[1]]) / (stack_c[[4]] + stack_c[[1]])
-ndvi_d <- (stack_d[[4]] - stack_d[[1]]) / (stack_d[[4]] + stack_d[[1]])
-ndvi_e <- (stack_e[[4]] - stack_e[[1]]) / (stack_e[[4]] + stack_e[[1]])
-
-plot(ndvi_a, main = "NDVI", axes = FALSE, box = FALSE)
-
-# masked ndvi values
-ndvi_mask_a <- reclassify(ndvi_a, cbind(-Inf, 0, NA))
-ndvi_mask_b <- reclassify(ndvi_b, cbind(-Inf, 0, NA))
-ndvi_mask_c <- reclassify(ndvi_c, cbind(-Inf, 0, NA))
-ndvi_mask_d <- reclassify(ndvi_d, cbind(-Inf, 0, NA))
-ndvi_mask_e <- reclassify(ndvi_e, cbind(-Inf, 0, NA))
-
-plot(ndvi_mask_a, main = "NDVI > 0", axes = FALSE, box = FALSE)
-plot(ndvi_mask_b, main = "NDVI", axes = FALSE, box = FALSE)
-plot(ndvi_mask_c, main = "NDVI", axes = FALSE, box = FALSE)
-
-# save ndvi mask
-writeRaster(x = ndvi_mask_a, filename = "ndvi_mask_a.tif", format = "GTiff", datatype = 'INT2S')
-writeRaster(x = ndvi_mask_a, filename = "ndvi_mask_a.tif", format = "GTiff", datatype = 'INT2S')
-writeRaster(x = ndvi_mask_a, filename = "ndvi_mask_a.tif", format = "GTiff", datatype = 'INT2S')
-writeRaster(x = ndvi_mask_a, filename = "ndvi_mask_a.tif", format = "GTiff", datatype = 'INT2S')
-writeRaster(x = ndvi_mask_a, filename = "ndvi_mask_a.tif", format = "GTiff", datatype = 'INT2S')
-```
-
 ```{r}
 # Green Leaf Index (GLI) = [(green - red) + (green - blue)] / (2*green) + red + blue
 gli_a <- ((stack_a[[2]] - stack_a[[1]]) + (stack_a[[2]] - stack_a[[3]]))/ (2*stack_a[[2]] + stack_a[[1]] + stack_a[[3]])
@@ -91,14 +117,5 @@ evi_a <- 2.5*(stack_a[[4]] - stack_a[[1]])/(stack_a[[4]] + 6*stack_a[[1]] - 7.5*
 plot(evi_a, main = "EVI", axes = FALSE, box = FALSE)
 ```
 
-```{r}
-# Grass Index  = (ir + red + blue + green)/4
-gi_a <- (stack_a[[1]] + stack_a[[2]] + stack_a[[3]] + stack_a[[4]])/4
-gi_mask_a <- reclassify(gi_a, cbind(NA, 5100, Inf))
-plot(gi_a, main = "Grass index", axes = FALSE, box = FALSE)
-plot(gi_mask_a, main = "Grass index", axes = FALSE, box = FALSE)
 
-summary(gi_a)
-summary(gi_mask_a)
-```
-
+https://www.rdocumentation.org/packages/raster/versions/3.4-5/topics/mask
