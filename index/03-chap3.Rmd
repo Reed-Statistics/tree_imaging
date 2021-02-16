@@ -10,13 +10,28 @@ For both the random forest model and the support vector machines model, the tidy
 The `svm` function from the `e1071` package [@svm] is used to train a support vector machine model on the training dataset to classify pixels into types of trees. By default, data are scaled to zero mean and unit variance and the kernel is radial.
 
 ## Preparing Raster Images
-The training model has to be applied to the entire raster image to predict the location of Western redcedars, however, extracting all the pixels from raster images is a slow process. Filtering the rasters to keep vegetation and to recognize the difference between grass pixels and tree pixels alleviates the computational intensity of extracting all the pixels.
+The training model has to be applied to the entire raster image to predict the location of Western redcedars, however, extracting all the pixels from raster images is a slow process. Filtering the rasters to keep vegetation and to recognize the difference between grass pixels and tree pixels alleviates the computational intensity of extracting all the pixels and improves the performance of the models.
 
 ### Masking Vegetation
-The satellite images in RStudio need to be masked to reduce the number of pixels that the model has to classify and prevent the chance of a non-vegetation surface being predicted as a tree. A common mask applied to raster images is a Normalized Difference Vegetation Index (NDVI) mask. This index is a measure of the greenness of a pixel, with higher values indicating vegetation and lower values indicating infertile areas such as a rock. The formula for NDVI is $NDVI = \frac{NIR - Red}{NIR + Red}$. Figure [insert figure title] displays the density of NDVI values over the raster images. To remove the pixels that are not vegetation, an NDVI threshold is determined to be [insert threshold] to create a mask dividing the pixels into vegetation (1) and non-vegetation (0). When the trained model is applied to the raster image, it is applied to the masked raster image that only keeps pixels with mask values of 1.
+The satellite images in RStudio need to be masked to reduce the number of pixels that the model has to classify and prevent the chance of a non-vegetation surface being predicted as a tree. A common mask applied to raster images is a Normalized Difference Vegetation Index (NDVI) mask. This index is a measure of the greenness of a pixel, with higher values indicating vegetation and lower values indicating infertile areas such as a rock. The formula for NDVI is $NDVI = \frac{NIR - Red}{NIR + Red}$. Figure \@ref(fig:ndvival) displays the density of NDVI values over the raster images. To remove the pixels that are not vegetation, an NDVI threshold is determined to be [insert threshold] to create a mask dividing the pixels into vegetation (1) and non-vegetation (0). When the trained model is applied to the raster image, it is applied to the masked raster image that only keeps pixels with mask values of 1.
 
-### Grass Polygons
-Further preparation for applying the model to the entire mask involved creating grass polygons in QGIS to add a grass attribute in the model. Five fields of grass were outlined as polygons in QGIS. In RStudio, the pixels were extracted from the grass polygons for a total of 2,923 grass pixels. Training the model to also predict grass ensures that a field of grass will not be classified as a tree when applied to the entire raster image.
+```{r ndvival, results="asis", echo=FALSE, warning=F, message=F, fig.cap="Normalized Difference Vegetation Index (NDVI) is a measure of the greenness of a pixel. The histogram displays the frequency of the tree pixels' NDVI values. A good threshold for masking out the nonvegetation pixels is an NDVI of 0.", fig.width=4, fig.align='center'}
+ggplot(pixels_data, mapping = aes(x = ndvi)) +
+  geom_histogram(alpha = 0.6, fill = "blue") +
+  geom_vline(xintercept = 0.0) +
+  theme_minimal() + labs(x = "NDVI values", y = "frequency")
+```
+
+### Masking Grass
+<!-- Further preparation for applying the model to the entire mask involved creating grass polygons in QGIS to add a grass attribute in the model. Five fields of grass were outlined as polygons in QGIS. In RStudio, the pixels were extracted from the grass polygons for a total of 2,923 grass pixels. Training the model to also predict grass ensures that a field of grass will not be classified as a tree when applied to the entire raster image. -->
+
+A second mask is applied to the raster image that contains only the vegetation pixels to distinguish tree pixels from grass pixels. Inspired by [@qian_new_2020], the...
+
+```{r grassval, results="asis", echo=FALSE, warning=F, message=F, fig.cap="grass mask", fig.width=4, fig.align='center'}
+ggplot(pixels_data, mapping = aes(x = (ir + red + blue + green), fill = Cmmn_Nm)) +
+  geom_density(alpha = 0.6) +
+  scale_fill_viridis_d() + theme_minimal()
+```
 
 ## Modelling Tree Species in Portland
 

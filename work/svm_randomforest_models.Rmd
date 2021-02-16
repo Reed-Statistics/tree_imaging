@@ -11,6 +11,7 @@ library(tidyverse)
 library(ggspatial)
 library(maptools)
 library(tigris)
+library(caret)
 ```
 
 ```{r}
@@ -21,45 +22,89 @@ pixels_data <- pixels_data %>%
   #dplyr::select(-St_Wdth)
 
 # training data
-train <- sample(1:nrow(pixels_data), nrow(pixels_data)/2)
+train_sample <- sample(1:nrow(pixels_data), nrow(pixels_data)/2)
+train <- pixels_data[train_sample,]
 
 # test data
-test <- pixels_data[-train, "Cmmn_Nm"]
+test <- pixels_data[-train_sample, "Cmmn_Nm"]
 
 
 # try grouping maples, maybe new smaller polygons, look into overlapping model results in pixels space, make a map of where western redcedar is
 ```
 
+
 ```{r}
-library(randomForest)
-set.seed(123)
-tree_name_rf <- randomForest(formula = Cmmn_Nm ~ ., data = pixels_data %>% dplyr::select(-ID), subset = train, importance = T)
-# default uses mtry = sqrt(# variables) when building random forest of classification trees
+# random search random forest using caret package
+control <- trainControl(method="repeatedcv", number=5, search="random")
+rf_random <- train(Cmmn_Nm~., data=pixels_data, method="rf", trControl=control)
+print(rf_random)
+plot(rf_random)
 
-tree_name_rf
-yhat_rf <- predict(tree_name_rf, newdata = pixels_data[-train, ])
-confusion_matrix <- table(test, yhat_rf)
-
-importance(tree_name_rf)
-varImpPlot(tree_name_rf)
+ 
+#predict(pixels_data[-train, ], rf_random)
 ```
 
+
+
 ```{r}
-library(e1071)
-tree_name_svm <- svm(factor(Cmmn_Nm) ~ ., data = pixels_data)
+# boosted tree using caret package
+fitControl <- trainControl(## 10-fold CV
+                           method = "repeatedcv",
+                           number = 10,
+                           repeats = 3)
+set.seed(825)
+gbmFit1 <- train(Cmmn_Nm ~ ., data = train, 
+                 method = "gbm", 
+                 trControl = fitControl,
+                 ## This last option is actually one
+                 ## for gbm() that passes through
+                 verbose = FALSE)
+gbmFit1
+```
 
-tree_name_svm
-summary(tree_name_svm)
 
-graphics::plot(tree_name_svm, pixels_data, factor(Cmmn_Nm) ~ .)
+```{r}
+# library(e1071)
+# tree_name_svm <- svm(factor(Cmmn_Nm) ~ ., data = pixels_data)
+# 
+# tree_name_svm
+# summary(tree_name_svm)
+# 
+# graphics::plot(tree_name_svm, pixels_data, factor(Cmmn_Nm) ~ .)
+# 
+# # cross validation
+# tune_out <- tune(svm, Cmmn_Nm ~., data = pixels_data, kernel = "radial", 
+#                  ranges = list(cost = c(0.001, 0.01, 0.1, 1, 5, 10, 100)))
+# summary(tune_out)
+# 
+# # predict
 
-# cross validation
-tune_out <- tune(svm, Cmmn_Nm ~., data = pixels_data, kernel = "radial", 
-                 ranges = list(cost = c(0.001, 0.01, 0.1, 1, 5, 10, 100)))
-summary(tune_out)
+# 10 fold cross validation
+train_control <- trainControl(method="repeatedcv", number=10, repeats=3)
 
-# predict
+# fit svm model with normalized variables
+svm1 <- train(Cmmn_Nm ~., data = pixels_data, method = "svmLinear", trControl = train_control,  preProcess = c("center","scale"))
+#View the model
+svm1
 
+# fit second svm model 
+svm2 <- train(Cmmn_Nm ~., data = pixels_data, method = "svmLinear", trControl = train_control,  preProcess = c("center","scale"), tuneGrid = expand.grid(C = seq(0, 2, length = 20)))
+#View the model
+svm2
+plot(svm2)
+svm2$bestTune
+
+# fit nonlinear svm model (radial basis)
+svm3 <- train(Cmmn_Nm ~., data = pixels_data, method = "svmRadial", trControl = train_control, preProcess = c("center","scale"), tuneLength = 10)
+# Print the best tuning parameter sigma and C that maximizes model accuracy
+svm3
+svm3$bestTune
+
+# fit nonlinear svm model (polynomial basis)
+svm4 <- train(Cmmn_Nm ~., data = pixels_data, method = "svmPoly", trControl = train_control, preProcess = c("center","scale"), tuneLength = 4)
+# Print the best tuning parameter sigma and C that maximizes model accuracy
+svm4
+svm4$bestTune
 ```
 
 Plot results

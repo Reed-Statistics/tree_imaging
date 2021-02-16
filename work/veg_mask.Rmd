@@ -57,7 +57,7 @@ gi_c <- (stack_c[[1]] + stack_c[[2]] + stack_c[[3]] + stack_c[[4]])/4
 gi_d <- (stack_d[[1]] + stack_d[[2]] + stack_d[[3]] + stack_d[[4]])/4
 gi_e <- (stack_e[[1]] + stack_e[[2]] + stack_e[[3]] + stack_e[[4]])/4
 
-# remove values above 5100
+# remove values above 4900**
 gi_a[gi_a > 5100] <- NA
 gi_b[gi_b > 5100] <- NA
 gi_c[gi_c > 5100] <- NA
@@ -70,7 +70,10 @@ gi_mask_c <- mask(stack_c, gi_c, filename = "grass_mask_c.tif")
 gi_mask_d <- mask(stack_d, gi_d, filename = "grass_mask_d.tif")
 gi_mask_e <- mask(stack_e, gi_e, filename = "grass_mask_e.tif")
 
-plot(gi_a, main = "ndvi and grass mask", axes = FALSE, box = FALSE)
+plotRGB(gi_mask_a, main = "ndvi and grass mask", axes = FALSE, box = FALSE)
+
+?writeRaster
+# save as geotif
 ```
 
 
@@ -91,7 +94,7 @@ ggplot(pixels_data %>% filter(Cmmn_Nm %in% "grass"), mapping = aes(x = ndvi, fil
   geom_density(alpha = 0.6) +
   scale_fill_viridis_d() + theme_minimal()
 
-ggplot(pixels_data, mapping = aes(x = ir, y = red, color = Cmmn_Nm)) +
+ggplot(pixels_data, mapping = aes(x = ir/green, y = ir, color = Cmmn_Nm)) +
   geom_point(alpha = 0.6) +
   scale_colour_viridis_d()
 

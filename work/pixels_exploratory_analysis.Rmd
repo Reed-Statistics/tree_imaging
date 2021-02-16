@@ -83,7 +83,8 @@ ggplot(pixels_data, mapping = aes(x = red - ir, y = blue - green, color = Cmmn_N
 ggplot(pixels_data, aes(x = ndvi)) +
   geom_density()
 ggplot(pixels_data, aes(x = ndvi)) +
-  geom_histogram(fill = "turquoise")
+  geom_histogram(fill = "turquoise") +
+  theme_minimal() + labs(x = "NDVI values", y = "frequency")
 
 av_nir <- mean(pixels_data$ir)
 av_green <- mean(pixels_data$green)
