@@ -1,0 +1,41 @@
+---
+title: "Modelling"
+author: "Sarah"
+date: "2/10/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# load raster images
+stack_a <- stack("grass_mask_a.tif")
+stack_b <- stack("grass_mask_b.tif")
+stack_c <- stack("grass_mask_c.tif")
+stack_d <- stack("grass_mask_d.tif")
+stack_e <- stack("grass_mask_e.tif")
+
+# load trained models
+load("tree_name_rf.RData")
+
+# extract from raster
+value_a <- as.data.frame(na.omit(getValues(stack_a)))
+value_b <- as.data.frame(na.omit(getValues(stack_b)))
+value_c <- as.data.frame(na.omit(getValues(stack_c)))
+value_d <- as.data.frame(na.omit(getValues(stack_d)))
+value_e <- as.data.frame(na.omit(getValues(stack_e)))
+
+names <- c("red", "green", "blue", "ir")
+colnames(value_a) <- names
+```
+
+```{r}
+# predict
+yhat_rf <- predict(tree_name_rf, newdata = val_a)
+```
+
+
+http://amsantac.co/blog/en/2015/11/28/classification-r.html
+https://geoscripting-wur.github.io/AdvancedRasterAnalysis/
