@@ -61,11 +61,11 @@ knitr::kable(train_points_dat, col.names = c("Tree Name", "Tree Count"), "latex"
 
 The training dataset was converted into shapefiles for each type of tree and exported into QGIS where polygons were manually drawn around 100 of the trees for each species. The point shapefile layers were displayed over the raster images downloaded from Planet.com in QGIS, which provided a guide point for locating individual trees. Then using QGIS's drawing tool, a polygon is carefully drawn around the tree canopy (see Figure \@ref(fig:polyimage) and Figure \@ref(fig:redcedar)). Most polygons turned out to be four to six-sided polygons to retain the general shape of the tree canopy. Trees polygons were only created if the outline of the tree canopy was clearly visible or surrounded by other trees of the same species in order to avoid including pixels from the wrong species in that polygon. Also, the shadows of the trees are visible in the raster images, so the polygons were drawn with the intention of not including the tree shadow. For the five different species of trees, at least 100 polygons were drawn around trees of that type, with each polygon containing at least 6 pixels and at most 20 pixels. The polygon shapefiles were then exported into RStudio where the rest of the analysis was conducted.
 
-```{r polyimage, results="asis", echo=FALSE, fig.cap="Polygons drawn around different tree species: maples (blue), sequoias (yellow), redcedars (pink). Note there are no polygons around trees with canopies that overlap with canopies of different tree species, like douglas-firs (green), to avoid misclassifying pixels from different tree species.", out.extra="scale=0.2", fig.align='center'}
+```{r polyimage, results="asis", echo=FALSE, fig.cap="Polygons drawn around different tree species: maples (blue), sequoias (yellow), redcedars (pink). Note there are no polygons around trees with canopies that overlap with canopies of different tree species, like douglas-firs (green), to avoid misclassifying pixels from different tree species.", out.width='50%', fig.align='center'}
 include_graphics("figure/polyimage.png")
 ```
 
-```{r redcedar, results="asis", echo=FALSE, fig.cap="Polygons drawn around redcedar trees", out.extra="scale=0.2", fig.align='center'}
+```{r redcedar, results="asis", echo=FALSE, fig.cap="Polygons drawn around redcedar trees", out.width='50%', fig.align='center'}
 include_graphics("figure/redcedar.png")
 ```
 

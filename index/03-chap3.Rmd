@@ -5,15 +5,22 @@
 Since the Western redcedar decline is recent, there are currently no methods for identifying tree species like Western redcedars for the Pacific Northwest using satellite imaging. However, a similar study identifies tree species for a strip of land in California by combining ground-level data with satellite images [@fricker_convolutional_2019]. Their methods involved drawing polygons around rastered images that are layered with ground data as explained in Chapter \@ref(data), but the pixels from the polygons are used to train a convolutional neural network (CNN) model instead of the random forests and support vector machines in this study. The CNN model was then evaluated with k-fold cross validation. CNN models are appropriate in a classification setting and when working with satellite images because they account for spatial relations, which is likely to appear in classifying tree species. This study follows the methods of preparing the data for modelling as well as the cross validation method to evaluate the performance of the random forests and support vector machines models. Random forests use random feature selections to create decision trees and increase the number of correctly classified observations. Random forests have the advantage of being simplier to train and still performs at a similar level as CNN models.
 
 ## Training Models
-For both the random forest model and the support vector machines model, the tidy pixels data is arbitrarily divided in half into a training dataset and a testing dataset and the selected variables for training the models are the four bands (red, green, blue, infrared) and an NDVI variable. The `randomForest` function from the `randomForest` package [@random_forest] is used to train a random forest model on the training dataset to predict the tree species. The function takes parameters for data, the predictive variable, and the subset data that should be used to train the model. By default, the function grows 500 trees and samples cases with replacement.
 
-The `svm` function from the `e1071` package [@svm] is used to train a support vector machine model on the training dataset to classify pixels into types of trees. By default, data are scaled to zero mean and unit variance and the kernel is radial.
+To model the tree type of the pixels in raster image, a random forest model and a support vector machine model are trained using the pixels training data. To train these models, k-fold cross validation is used. The data gets split into $k = 10$ folds and ten models are trained each time withholding one of the ten folds until the process goes through every fold. This process aids in understanding how the models will perform against data that has not been included in training the model.
+
+The selected variables for training the models are the four bands (red, green, blue, infrared) and an NDVI variable, and the predictive variable is the tree species name. The `caret` package [@caret] in RStudio stands for classification and regression training, and it contains functions for facilitating the process of creating training models in R. 
+
+The `train` function from the `caret` package [@caret] with the specified `method = rf` option is used to train a random forest model on the training dataset to predict the tree species. The function takes parameters for data, the predictive variable, and the method of training the model. To perform k-fold cross validation, the `trainControl` function is used to create an object that tells the `train` function to perform cross validation 10 times with a different fold left out each time.
+
+The `train` function also has the `method = svmLinear/svmRadial/svmPoly` option to train a support vector machine model on the training dataset to classify pixels into species of trees. This option also has parameter for cost, loss function, class weights, and normalized variables. For this project, three support vector machines were trained: linear, radial basis, and polynomial basis, and all three were specified to normalize the variables.
+
+The models are saved to be used for later prediction over the entire region of Portland.
 
 ## Preparing Raster Images
 The training model has to be applied to the entire raster image to predict the location of Western redcedars, however, extracting all the pixels from raster images is a slow process. Filtering the rasters to keep vegetation and to recognize the difference between grass pixels and tree pixels alleviates the computational intensity of extracting all the pixels and improves the performance of the models.
 
 ### Masking Vegetation
-The satellite images in RStudio need to be masked to reduce the number of pixels that the model has to classify and prevent the chance of a non-vegetation surface being predicted as a tree. A common mask applied to raster images is a Normalized Difference Vegetation Index (NDVI) mask. This index is a measure of the greenness of a pixel, with higher values indicating vegetation and lower values indicating infertile areas such as a rock. The formula for NDVI is $NDVI = \frac{NIR - Red}{NIR + Red}$. Figure \@ref(fig:ndvival) displays the density of NDVI values over the raster images. To remove the pixels that are not vegetation, an NDVI threshold is determined to be [insert threshold] to create a mask dividing the pixels into vegetation (1) and non-vegetation (0). When the trained model is applied to the raster image, it is applied to the masked raster image that only keeps pixels with mask values of 1.
+The satellite images in RStudio need to be masked to reduce the number of pixels that the model has to classify and prevent the chance of a non-vegetation surface being predicted as a tree. A common mask applied to raster images is a Normalized Difference Vegetation Index (NDVI) mask. This index is a measure of the greenness of a pixel, with higher values indicating vegetation and lower values indicating infertile areas such as a rock. The formula for NDVI is $NDVI = \frac{NIR - Red}{NIR + Red}$. Figure \@ref(fig:ndvival) displays the density of NDVI values over the raster images. To remove the pixels that are not vegetation, an NDVI threshold is determined to be 0.00 to create a mask dividing the pixels into vegetation (1) and non-vegetation (0). When the trained model is applied to the raster image, it is applied to the masked raster image that only keeps pixels with NDVI mask values of 1.
 
 ```{r ndvival, results="asis", echo=FALSE, warning=F, message=F, fig.cap="Normalized Difference Vegetation Index (NDVI) is a measure of the greenness of a pixel. The histogram displays the frequency of the tree pixels' NDVI values. A good threshold for masking out the nonvegetation pixels is an NDVI of 0.", fig.width=4, fig.align='center'}
 ggplot(pixels_data, mapping = aes(x = ndvi)) +
@@ -25,16 +32,35 @@ ggplot(pixels_data, mapping = aes(x = ndvi)) +
 ### Masking Grass
 <!-- Further preparation for applying the model to the entire mask involved creating grass polygons in QGIS to add a grass attribute in the model. Five fields of grass were outlined as polygons in QGIS. In RStudio, the pixels were extracted from the grass polygons for a total of 2,923 grass pixels. Training the model to also predict grass ensures that a field of grass will not be classified as a tree when applied to the entire raster image. -->
 
-A second mask is applied to the raster image that contains only the vegetation pixels to distinguish tree pixels from grass pixels. Inspired by [@qian_new_2020], the...
+A second mask is applied to the NDVI masked raster image to distinguish tree pixels from grass pixels. Inspired by previous research, a grass index was created by averaging the values of the four bands, $GRASS = \frac{RED + BLUE + GREEN + NIR}{4}$  [@qian_new_2020]. Grass polygons were created in QGIS to add a grass attribute in the pixels dataset. Five fields of grass were outlined as polygons in QGIS. In RStudio, the pixels were extracted from the grass polygons for a total of 2,923 grass pixels. Figure \@ref(fig:grassval) displays how the average band values for the grass pixels idffer from the other tree types average band values. Based on the figure, pixels in the raster image that have an average band value above 4900 are filtered out.  Masking the grass pixels ensures that a field of grass will not be classified as a tree when applied to the entire raster image
 
 ```{r grassval, results="asis", echo=FALSE, warning=F, message=F, fig.cap="grass mask", fig.width=4, fig.align='center'}
-ggplot(pixels_data, mapping = aes(x = (ir + red + blue + green), fill = Cmmn_Nm)) +
+ggplot(pixels_data, mapping = aes(x = (ir + red + blue + green)/4, fill = Cmmn_Nm)) +
   geom_density(alpha = 0.6) +
-  scale_fill_viridis_d() + theme_minimal()
+  geom_vline(xintercept = 4900, color = "blue") +
+  scale_fill_viridis_d(name = "Tree Name") + theme_minimal()
+```
+
+Figure \@ref(fig:beforeaftermask) displays a raster strip with every pixel included (top), only the pixels with NDVI values above 0.00 (middle), and only pixels with NDVI values above 0.00 and average band values below 4900 (bottom). Ideally, the bottom image is left with only the tree pixels in the image.
+
+```{r beforeaftermask, results="asis", echo=FALSE, fig.cap="A raster strip with every pixel included (top), only the pixels with NDVI values above 0.00 (middle), and only pixels with NDVI values above 0.00 and average band values below 4900 (bottom)", out.width='40%', fig.align='center'}
+include_graphics("figure/beforeaftermask.png")
+```
+
+### Masking Limitations
+
+The low resolution of the raster images cause shapes to appear blurry, and especially tree canopies that are close together appear as a single formation.
+
+Masked raster images were compared in QGIS and, in general, the masks are successful in keeping the forest pixels while still removing building structures and roads. If a field of grass is a brownish color, it gets removed, but some greener fields are not masked out. The masks consistently remove river pixels but not lake pixels if the lake is a greenish color. For example, Smith Lake in North Portland is considered an urban wetland, which signifies a body of water with a lot of vegetation. From the perspective of a satellite, this looks like a field of grass. However, the average band pixel values are less than 4900, so they are not masked out by the final GRASS mask stage, and instead are treated as tree pixels in the model (see Figure \@ref(fig:masklimit)).
+
+
+```{r masklimit, results="asis", echo=FALSE, fig.cap="Satellite view of Smith Lake (top), after NDVI mask applied (middle), and NDVI mask and GRASS mask applied (bottom). The final masked image still contains parts of the lake because the aquatic vegetation fits the pixel values descriptions set by the masks.", out.width='40%', fig.align='center'}
+include_graphics("figure/masklimit.png")
 ```
 
 ## Modelling Tree Species in Portland
 
+After masking the raster images of the entire region of Portland, the pre-trained models are used to predict the tree species of individual pixels in the masked raster images. First the pixels are extracted from the raster and compiled into a dataset. Then the models are applied to predict the tree species per pixel in the dataset.
 
 ```{r include_packages_2, include = FALSE}
 # This chunk ensures that the thesisdown package is

@@ -58,11 +58,11 @@ gi_d <- (stack_d[[1]] + stack_d[[2]] + stack_d[[3]] + stack_d[[4]])/4
 gi_e <- (stack_e[[1]] + stack_e[[2]] + stack_e[[3]] + stack_e[[4]])/4
 
 # remove values above 4900**
-gi_a[gi_a > 5100] <- NA
-gi_b[gi_b > 5100] <- NA
-gi_c[gi_c > 5100] <- NA
-gi_d[gi_d > 5100] <- NA
-gi_e[gi_e > 5100] <- NA
+gi_a[gi_a > 4900] <- NA
+gi_b[gi_b > 4900] <- NA
+gi_c[gi_c > 4900] <- NA
+gi_d[gi_d > 4900] <- NA
+gi_e[gi_e > 4900] <- NA
 
 gi_mask_a <- mask(stack_a, gi_a, filename = "grass_mask_a.tif", overwrite = T)
 gi_mask_b <- mask(stack_b, gi_b, filename = "grass_mask_b.tif")
