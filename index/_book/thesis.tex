@@ -429,14 +429,61 @@ Figure \ref{fig:pixDensity} displays the range of reflection intensity pixel val
 
 Since the Western redcedar decline is recent, there are currently no methods for identifying tree species like Western redcedars for the Pacific Northwest using satellite imaging. However, a similar study identifies tree species for a strip of land in California by combining ground-level data with satellite images (Fricker et al., 2019). Their methods involved drawing polygons around rastered images that are layered with ground data as explained in Chapter \ref{data}, but the pixels from the polygons are used to train a convolutional neural network (CNN) model instead of the random forests and support vector machines in this study. The CNN model was then evaluated with k-fold cross validation. CNN models are appropriate in a classification setting and when working with satellite images because they account for spatial relations, which is likely to appear in classifying tree species. This study follows the methods of preparing the data for modelling as well as the cross validation method to evaluate the performance of the random forests and support vector machines models. Random forests use random feature selections to create decision trees and increase the number of correctly classified observations. Random forests have the advantage of being simplier to train and still performs at a similar level as CNN models.
 
+\hypertarget{random-forest}{%
+\subsection{Random Forest}\label{random-forest}}
+
+In building a decision tree for classification, recursive binary splits are made by minimizing the Gini index (\(G\)), the total variance across \(K\) classes:
+
+\[G = \sum_{k = 1}^K\hat{p}_{mk}(1 - \hat{p}_{mk}),\]
+
+where \(\hat{p}_{mk}\) is the proportion of observations in the \(m^{\text{th}}\) region from the \(k^{\text{th}}\) class. A small Gini index value represents a region containing mostly observations from a single class, while a large Gini index value represents a lot of variation within classes. Then the decision tree is constructed by repeatedly considering different attributes and making splits where the Gini index is minimized. Note that this top-down, greedy approach tends to overfit the training data, so finding the decision tree that performs the best on test data involves a cost-complexity pruning algorithm to obtain smaller trees and apply k-fold cross validation to choose the best tree that minimizes the average error.
+
+In the classification setting, a stronger predictive model than a decision tree is a random forest, which uses an element of randomness to decorrelate bootstrapped decision trees. Bootstrapped samples from the training dataset are used to construct decision trees, where splits are based on minimizing the Gini index when selecting from a random sample \(m\) of attributes from all \(p\) available. In common random forest applications, the number of attributes considered at a split is \(m \approx \sqrt{p}\). Theoretically, by forcing only a subset of attributes to be featured in the tree, this expands the number of possible subtrees that might not have been achieved by the top-down, greedy approach. Hence, random forests provide a method of predicting classes with low variance while also keeping bias at a minimum.
+
+\hypertarget{support-vector-machine}{%
+\subsection{Support Vector Machine}\label{support-vector-machine}}
+
+Another method investigated in this study imagines the multidimensional data in space and classifies the data using hyperplanes positioned to minimize misclassification error and maximize distance from observations to separate the data. Support vectors are vectors in space that represent the subset of observations which influence the hyperplane classifier. For example, in two dimensions, imagine a line separating A's one one side and B's on the other side. This line is the maximal margin hyperplane if it is the farthest possible from the observations and also separates the two classes perfectly. Observations that are closer to the hyperplane (support vectors) have more influence over the line if they move than observations that are further. Consequently, more support vectors indicates a classifier with lower variance and high bias. A tuning parameter can be altered to expand or shrink the margin of error surrounding the hyperplane (how far away the observations have to be from the plane) and decide the level of tolerance for misclassifying observations.
+
+Support vector machines can be applied in a linear or nonlinear setting with the use of kernels. A kernel is a function \(K(x_i, x_{i'})\) of two observations specifying the similarities between two points. Given data with \(n\) observations, let \(x_i\) be an observation, where \(i = 1, ... ,n\). A linear kernel is
+
+\[K(x_i, x_{i'}) = \sum_{j = 1}^p x_{ij}x_{i'j}\]
+with a support vector classifier
+
+\[f(x) = \beta_0 + \sum_{i = 1}^n \alpha_i \langle x, x_i \rangle.\]
+
+The parameters \(\alpha_i\) and \(\beta_0\) are estimated using the inner products of the observations, but \(\alpha_i \neq 0\) if and only if \(x_i\) is a support vector. Note that this function is similar to a linear regression function. Extended this model to a nonlinear context involves a similar approach as adding nonlinear terms to a regression model.
+
+The polynomial kernel of degree \(d\) is defined to be
+
+\[K(x_i, x_{i'}) = \left( 1 + \sum_{j = 1}^p x_{ij}x_{i'j}\right)^d\]
+
+with support vector classifier
+
+\[f(x) = \beta_0 + \sum_{i = 1}^n \alpha_i K(x, x_i).\]
+For some positive constant \(k\), the radial kernel is defined to be
+
+\[K(x_i, x_{i'}) = \mbox{exp}\left( -\gamma\sum_{j = 1}^p(x_{ij} - x_{i'j})^2 \right),\]
+
+which makes the support vector machine more sensitive to nearby observations as opposed to further observations.
+
 \hypertarget{training-models}{%
 \section{Training Models}\label{training-models}}
 
 To model the tree type of the pixels in raster image, a random forest model and a support vector machine model are trained using the pixels training data. To train these models, k-fold cross validation is used. The data gets split into \(k = 10\) folds and ten models are trained each time withholding one of the ten folds until the process goes through every fold. This process aids in understanding how the models will perform against data that has not been included in training the model.
 
-The selected variables for training the models are the four bands (red, green, blue, infrared) and an NDVI variable, and the predictive variable is the tree species name. The \texttt{caret} package (Kuhn, 2020) in RStudio stands for classification and regression training, and it contains functions for facilitating the process of creating training models in R.
+The selected variables for training the models are the four bands (red, green, blue, infrared) and an NDVI variable, and the predictive variable is the tree species name. Some predictor variables were manually computed using ratios of bands. Typically, long over short provides some more information to train the model. The following bands were created: red/blue, ir/red, red/green, and blue/green. Examining a correlation matrix with these predictors reveals some possibly useful and not too highly correlated variables are red/green, red/blue, and blue/green (see Figure \ref{fig:corrmatrix}.
+\begin{figure}
 
-The \texttt{train} function from the \texttt{caret} package (Kuhn, 2020) with the specified \texttt{method\ =\ rf} option is used to train a random forest model on the training dataset to predict the tree species. The function takes parameters for data, the predictive variable, and the method of training the model. To perform k-fold cross validation, the \texttt{trainControl} function is used to create an object that tells the \texttt{train} function to perform cross validation 10 times with a different fold left out each time.
+{\centering \includegraphics[width=0.4\linewidth]{figure/corrmatrix} 
+
+}
+
+\caption{Correlation matrix of possible predictor variables to include in the model}\label{fig:corrmatrix}
+\end{figure}
+The \texttt{caret} package (Kuhn, 2020) in RStudio stands for classification and regression training, and it contains functions for facilitating the process of creating training models in R.
+
+The \texttt{train} function from the \texttt{caret} package (Kuhn, 2020) with the specified \texttt{method\ =\ rf} option is used to train a random forest model on the training dataset to predict the tree species. The function takes parameters for data, the predictive variable, and the method of training the model. To perform k-fold cross validation, the \texttt{trainControl} function is used to create an object that tells the \texttt{train} function to perform cross validation 10 times with a different fold left out each time. Three different models were considered\ldots{}
 
 The \texttt{train} function also has the \texttt{method\ =\ svmLinear/svmRadial/svmPoly} option to train a support vector machine model on the training dataset to classify pixels into species of trees. This option also has parameter for cost, loss function, class weights, and normalized variables. For this project, three support vector machines were trained: linear, radial basis, and polynomial basis, and all three were specified to normalize the variables.
 

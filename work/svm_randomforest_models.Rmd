@@ -12,21 +12,20 @@ library(ggspatial)
 library(maptools)
 library(tigris)
 library(caret)
+library(corrplot)
 ```
 
 ```{r}
 # load data
 pixels_data <- read.csv('pixels_data.csv')
-pixels_data <- pixels_data %>%
-  dplyr::select(ID, red, green, blue, ir, ndvi, Cmmn_Nm)
-  #dplyr::select(-St_Wdth)
 
-# training data
-train_sample <- sample(1:nrow(pixels_data), nrow(pixels_data)/2)
-train <- pixels_data[train_sample,]
 
-# test data
-test <- pixels_data[-train_sample, "Cmmn_Nm"]
+# # training data
+# train_sample <- sample(1:nrow(pixels_data), nrow(pixels_data)/2)
+# train <- pixels_data[train_sample,]
+# 
+# # test data
+# test <- pixels_data[-train_sample, "Cmmn_Nm"]
 
 
 # try grouping maples, maybe new smaller polygons, look into overlapping model results in pixels space, make a map of where western redcedar is
@@ -34,16 +33,95 @@ test <- pixels_data[-train_sample, "Cmmn_Nm"]
 
 
 ```{r}
-# random search random forest using caret package
-control <- trainControl(method="repeatedcv", number=5, search="random")
-rf_random <- train(Cmmn_Nm~., data=pixels_data, method="rf", trControl=control)
-print(rf_random)
-plot(rf_random)
+# load data adding different ratio predictors
+pixels_data <- pixels_data %>%
+  dplyr::select(red, green, blue, ir, ndvi, Cmmn_Nm) %>%
+  mutate(red_blue = red/blue,
+         ir_red = ir/red,
+         red_green = red/green,
+         blue_green = blue/green)
+  
+# look at correlation matrix
+corr_matrix <- round(cor(pixels_data %>% select(-Cmmn_Nm)), 2)
+corrplot(corr_matrix, type = "upper", order = "hclust", 
+         tl.col = "black", tl.srt = 45)
 
- 
+# ir_red not as highly correlated as other ratio predictors, but still highly correlated with ndvi
+# red_green strongest correlation with green at -0.81
+# red_blue strongest correlation with blue
+
+pixels_data1 <- pixels_data %>%
+  select(red, green, blue, ir, ndvi, Cmmn_Nm)
+
+pixels_data2 <- pixels_data %>%
+  select(red, green, blue, ir, ndvi, red_green, blue_green, Cmmn_Nm)
+
+pixels_data3 <- pixels_data %>%
+  select(red, green, blue, ir, ndvi, red_green, red_blue, blue_green, Cmmn_Nm)
+
+# random forest
+
+# random search random forest using caret package
+control <- trainControl(method="repeatedcv", number=10, search="random")
+rf_random1 <- train(Cmmn_Nm~., data=pixels_data1, method="rf", trControl=control)
+rf_random2 <- train(Cmmn_Nm~., data=pixels_data2, method="rf", trControl=control)
+rf_random3 <- train(Cmmn_Nm~., data=pixels_data3, method="rf", trControl=control)
+
+
 #predict(pixels_data[-train, ], rf_random)
 ```
 
+
+```{r}
+# compare rf models
+
+# collect resamples
+results <- rbind(cbind(rf_random1$resample, Model = rep("5", nrow(rf_random1$resample))), 
+                 cbind(rf_random2$resample, Model = rep("7", nrow(rf_random2$resample))), 
+                 cbind(rf_random3$resample, Model = rep("8", nrow(rf_random3$resample))))
+
+ggplot(results, aes(x = Model, y = Accuracy, fill = Model)) +
+  geom_boxplot(alpha = 0.6) +
+  theme_minimal() + 
+  scale_fill_viridis_d() +
+  labs(title = "Model Accuracy of Random Forest Models with 10-Fold CV", x = " ", fill = "Number of Predictors") + 
+  theme(axis.text.x = element_blank())
+```
+
+
+```{r}
+# reload data
+pixels_data <- pixels_data %>%
+  dplyr::select(red, green, blue, ir, ndvi, Cmmn_Nm)
+
+# 10 fold cross validation
+train_control <- trainControl(method="cv", number=10)
+
+# fit svm model with normalized variables
+svm1 <- train(Cmmn_Nm ~., data = pixels_data, method = "svmLinear", trControl = train_control,  preProcess = c("center","scale"))
+
+# fit nonlinear svm model (radial basis)
+svm2 <- train(Cmmn_Nm ~., data = pixels_data, method = "svmRadial", trControl = train_control, preProcess = c("center","scale"), tuneLength = 10)
+
+# fit nonlinear svm model (polynomial basis)
+svm3 <- train(Cmmn_Nm ~., data = pixels_data, method = "svmPoly", trControl = train_control, preProcess = c("center","scale"))
+```
+
+```{r}
+# compare svm models
+
+# collect resamples
+results <- rbind(cbind(svm1$resample, Model = rep("svmLinear", nrow(svm1$resample))), 
+                 cbind(svm2$resample, Model = rep("svmRadial", nrow(svm2$resample))), 
+                 cbind(svm3$resample, Model = rep("svmPoly", nrow(svm3$resample))))
+
+ggplot(results, aes(x = Model, y = Accuracy, fill = Model)) +
+  geom_boxplot(alpha = 0.6) +
+  theme_minimal() + 
+  scale_fill_viridis_d() +
+  labs(title = "Model Accuracy of SVM Models with 10-Fold CV", x = " ", fill = " ") + 
+  theme(axis.text.x = element_blank())
+```
 
 
 ```{r}
@@ -60,51 +138,6 @@ gbmFit1 <- train(Cmmn_Nm ~ ., data = train,
                  ## for gbm() that passes through
                  verbose = FALSE)
 gbmFit1
-```
-
-
-```{r}
-# library(e1071)
-# tree_name_svm <- svm(factor(Cmmn_Nm) ~ ., data = pixels_data)
-# 
-# tree_name_svm
-# summary(tree_name_svm)
-# 
-# graphics::plot(tree_name_svm, pixels_data, factor(Cmmn_Nm) ~ .)
-# 
-# # cross validation
-# tune_out <- tune(svm, Cmmn_Nm ~., data = pixels_data, kernel = "radial", 
-#                  ranges = list(cost = c(0.001, 0.01, 0.1, 1, 5, 10, 100)))
-# summary(tune_out)
-# 
-# # predict
-
-# 10 fold cross validation
-train_control <- trainControl(method="repeatedcv", number=10, repeats=3)
-
-# fit svm model with normalized variables
-svm1 <- train(Cmmn_Nm ~., data = pixels_data, method = "svmLinear", trControl = train_control,  preProcess = c("center","scale"))
-#View the model
-svm1
-
-# fit second svm model 
-svm2 <- train(Cmmn_Nm ~., data = pixels_data, method = "svmLinear", trControl = train_control,  preProcess = c("center","scale"), tuneGrid = expand.grid(C = seq(0, 2, length = 20)))
-#View the model
-svm2
-plot(svm2)
-svm2$bestTune
-
-# fit nonlinear svm model (radial basis)
-svm3 <- train(Cmmn_Nm ~., data = pixels_data, method = "svmRadial", trControl = train_control, preProcess = c("center","scale"), tuneLength = 10)
-# Print the best tuning parameter sigma and C that maximizes model accuracy
-svm3
-svm3$bestTune
-
-# fit nonlinear svm model (polynomial basis)
-svm4 <- train(Cmmn_Nm ~., data = pixels_data, method = "svmPoly", trControl = train_control, preProcess = c("center","scale"), tuneLength = 4)
-# Print the best tuning parameter sigma and C that maximizes model accuracy
-svm4
-svm4$bestTune
 ```
 
 Plot results
