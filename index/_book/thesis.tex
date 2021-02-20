@@ -467,6 +467,8 @@ For some positive constant \(k\), the radial kernel is defined to be
 
 which makes the support vector machine more sensitive to nearby observations as opposed to further observations.
 
+Support vector machines are less sensitive to outliers and successful predictors of categorical variables in high-dimensional data. A support vector machine does not perform well for data with observations that overlap and if the kernel is incorrectly selected.
+
 \hypertarget{training-models}{%
 \section{Training Models}\label{training-models}}
 
@@ -483,7 +485,7 @@ The selected variables for training the models are the four bands (red, green, b
 \end{figure}
 The \texttt{caret} package (Kuhn, 2020) in RStudio stands for classification and regression training, and it contains functions for facilitating the process of creating training models in R and determining the tuning parameters.
 
-The \texttt{train} function from the \texttt{caret} package (Kuhn, 2020) with the specified \texttt{method\ =\ rf} option is used to train a random forest model on the training dataset to predict the tree species. The function takes parameters for data, the predictive variable, and the method of training the model. To perform k-fold cross validation, the \texttt{trainControl} function is used to create an object that tells the \texttt{train} function to perform cross validation 10 times with a different fold left out each time. Three different models were considered with varying number of predictors:
+The \texttt{train} function from the \texttt{caret} package (Kuhn, 2020) with the specified \texttt{method\ =\ rf} option is used to train a random forest model on the training dataset to predict the tree species. The function takes parameters for data, the predictive variable, and the method of training the model. To perform k-fold cross validation, the \texttt{trainControl} function is used to create an object that tells the \texttt{train} function to perform cross validation 10 times with a different fold left out each time. The number of tries at each split is by default the floor of the square root of the number of predictors available. Three different models were considered with varying number of predictors:
 \begin{itemize}
 \item
   5 predictor model: red, green, blue, ir, ndvi
@@ -501,11 +503,11 @@ Figure \ref{fig:rfresults} compares the results of the models based on overall m
 
 \caption{Comparison of results from random forest models with different predictors included}\label{fig:rfresults}
 \end{figure}
-The model with the most number of predictors included has a slightly higher median accuracy and mean accuracy than the 7 predictor model.
+The model with the highest number of predictors included has a slightly higher median accuracy and mean accuracy than the 7 predictor model. A confusion matrix was constructed for each model averaging the entry counts over all ten cross validation resamples to investigate model performance just predicting Western redcedar tree pixels. Both the 7 and the 8 predictor models performed similarly classifying Western redceder pixels, the 7 predictor model had a prediction accuracy of 38\%, while the 8 predictor model had 37\%, and the 5 predictor model had 35\%. Across all three models, Western redcedars tend to be inaccurately classified under douglas-firs, english oak, and norway maple trees.
 
-The \texttt{train} function also has the \texttt{method\ =\ svmLinear/svmRadial/svmPoly} option to train a support vector machine model on the training dataset to classify pixels into species of trees. This option also has parameter for cost, loss function, class weights, and normalized variables. For this project, three support vector machines were trained: linear, radial basis, and polynomial basis, and all three were specified to normalize the variables.
+The \texttt{train} function has the \texttt{method\ =\ svmLinear/svmRadial/svmPoly} option to train a support vector machine model on the training dataset to classify pixels into species of trees. This option also has parameters for cost, loss function, class weights, and normalized variables. For this project, three support vector machines were trained: linear, radial basis, and polynomial basis, and all three were specified to normalize the variables.
 
-Figure \ref{fig:svmresults} displays the results of the linear, radial basis, and polynomial basis support vector machine models. The best model in terms of prediction accuracy overall was the radial basis model with higher median model accuracy than the other two models.
+Figure \ref{fig:svmresults} displays the results of the linear, radial basis, and polynomial basis support vector machine models. Based on the overall prediction accuracy, the radial basis is an appropriate kernel choice for the pixels data since it has a higher median model accuracy than the other two kernel options.
 \begin{figure}
 
 {\centering \includegraphics[width=0.4\linewidth]{figure/svmresults} 
@@ -514,6 +516,8 @@ Figure \ref{fig:svmresults} displays the results of the linear, radial basis, an
 
 \caption{Comparison of results from support vector machine models with different kernel types: linear, radial, and polynomial.}\label{fig:svmresults}
 \end{figure}
+As with the random forest model comparisons, a confusion matrix was constructed using the average counts over all ten cross-validation resamples to obtain the model results predicting Western redcedars. The support vector machine model that performed best overall was the radial basis kernel model, and it had the highest prediction accuracy of the Western redcedar class, 41\%. The polynomial basis kernel had a 34\% prediction accuracy and the linear kernel had 32\% accuracy for Western redcedar.
+
 The models are saved to be used for later prediction over the entire region of Portland.
 
 \hypertarget{preparing-raster-images}{%
@@ -536,14 +540,14 @@ The satellite images in RStudio need to be masked to reduce the number of pixels
 \hypertarget{masking-grass}{%
 \subsection{Masking Grass}\label{masking-grass}}
 
-A second mask is applied to the NDVI masked raster image to distinguish tree pixels from grass pixels. Inspired by previous research, a grass index was created by averaging the values of the four bands, \(GRASS = \frac{RED + BLUE + GREEN + NIR}{4}\) (Qian, Zhou, Nytch, Han, \& Li, 2020). Grass polygons were created in QGIS to add a grass attribute in the pixels dataset. Five fields of grass were outlined as polygons in QGIS. In RStudio, the pixels were extracted from the grass polygons for a total of 2,923 grass pixels. Figure \ref{fig:grassval} displays how the average band values for the grass pixels idffer from the other tree types average band values. Based on the figure, pixels in the raster image that have an average band value above 4900 are filtered out. Masking the grass pixels ensures that a field of grass will not be classified as a tree when applied to the entire raster image
+A second mask is applied to the NDVI masked raster image to distinguish tree pixels from grass pixels. Inspired by previous research, a grass index was created by averaging the values of the four bands, \(GRASS = \frac{RED + BLUE + GREEN + NIR}{4}\) (Qian, Zhou, Nytch, Han, \& Li, 2020). Grass polygons were created in QGIS to add a grass attribute in the pixels dataset. Five fields of grass were outlined as polygons in QGIS. In RStudio, the pixels were extracted from the grass polygons for a total of 2,923 grass pixels. Figure \ref{fig:grassval} displays how the average band values for the grass pixels differ from the other tree types average band values. Based on the figure, pixels in the raster image that have an average band value above 4900 are filtered out. Masking the grass pixels ensures that a field of grass will not be classified as a tree when applied to the entire raster image
 \begin{figure}
 
 {\centering \includegraphics{thesis_files/figure-latex/grassval-1} 
 
 }
 
-\caption{grass mask}\label{fig:grassval}
+\caption{Average of band values distribution across different tree types in comparison with grass pixel average band values. Most grass pixels have an average value above 4900, so a mask is applied to the raster image to remove pixels with average values above this threshold.}\label{fig:grassval}
 \end{figure}
 Figure \ref{fig:beforeaftermask} displays a raster strip with every pixel included (top), only the pixels with NDVI values above 0.00 (middle), and only pixels with NDVI values above 0.00 and average band values below 4900 (bottom). Ideally, the bottom image is left with only the tree pixels in the image.
 \begin{figure}
@@ -560,6 +564,8 @@ Figure \ref{fig:beforeaftermask} displays a raster strip with every pixel includ
 The low resolution of the raster images cause shapes to appear blurry, and especially tree canopies that are close together appear as a single formation.
 
 Masked raster images were compared in QGIS and, in general, the masks are successful in keeping the forest pixels while still removing building structures and roads. If a field of grass is a brownish color, it gets removed, but some greener fields are not masked out. The masks consistently remove river pixels but not lake pixels if the lake is a greenish color. For example, Smith Lake in North Portland is considered an urban wetland, which signifies a body of water with a lot of vegetation. From the perspective of a satellite, this looks like a field of grass. However, the average band pixel values are less than 4900, so they are not masked out by the final GRASS mask stage, and instead are treated as tree pixels in the model (see Figure \ref{fig:masklimit}).
+
+To address leftoverd grass pixels in the filtered raster image, access to lidar data would provide a method of determining the height of certain pixels. Setting a height threshold would ensure that grass pixels are removed while higher vegetation pixels are kept. This would also address the masks' limitations in removing lakes with high vegetation, since those pixels would not meet the threshold for height.
 \begin{figure}
 
 {\centering \includegraphics[width=0.4\linewidth]{figure/masklimit} 

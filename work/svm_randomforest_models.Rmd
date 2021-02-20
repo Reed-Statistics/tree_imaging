@@ -86,6 +86,11 @@ ggplot(results, aes(x = Model, y = Accuracy, fill = Model)) +
   scale_fill_viridis_d() +
   labs(title = "Model Accuracy of Random Forest Models with 10-Fold CV", x = " ", fill = "Number of Predictors") + 
   theme(axis.text.x = element_blank())
+
+confusionMatrix(rf_random1,  mode = "prec_recall")
+# rf_random1 western redcedar prediction accuracy: 0.35
+# rf_random2 western redcedar prediction accuracy: 0.38
+# rf_random3 western redcedar prediction accuracy: 0.37
 ```
 
 
@@ -121,6 +126,11 @@ ggplot(results, aes(x = Model, y = Accuracy, fill = Model)) +
   scale_fill_viridis_d() +
   labs(title = "Model Accuracy of SVM Models with 10-Fold CV", x = " ", fill = " ") + 
   theme(axis.text.x = element_blank())
+
+confusionMatrix(svm1,  mode = "prec_recall")
+# svm1 western redcedar prediction accuracy: 0.32
+# svm2 western redcedar prediction accuracy: 0.41
+# svm3 western redcedar prediction accuracy: 0.34
 ```
 
 
