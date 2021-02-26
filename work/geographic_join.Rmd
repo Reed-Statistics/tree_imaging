@@ -78,6 +78,7 @@ val_c <- raster::extract(stack_c, poly_join_reprojected, df = TRUE)
 val_d <- raster::extract(stack_d, poly_join_reprojected, df = TRUE)
 val_e <- raster::extract(stack_e, poly_join_reprojected, df = TRUE)
 
+
 ```
 
 ```{r}
@@ -94,6 +95,18 @@ val_b <- drop_na(val_b)
 val_c <- drop_na(val_c)
 val_d <- drop_na(val_d)
 val_e <- drop_na(val_e)
+
+# add raster strip id column
+val_a <- val_a %>%
+  mutate(rstrip = "a")
+val_b <- val_b %>%
+  mutate(rstrip = "b")
+val_c <- val_c %>%
+  mutate(rstrip = "c")
+val_d <- val_d %>%
+  mutate(rstrip = "d")
+val_e <- val_e %>%
+  mutate(rstrip = "e")
 
 # semi_join returns rows of x where it can find a match in y
 val_combined <- rbind(val_a, anti_join(val_b, val_a, by = "ID"))

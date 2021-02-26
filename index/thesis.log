@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.1.7)  19 FEB 2021 16:58
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.1.7)  26 FEB 2021 08:54
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -754,116 +754,114 @@ l.248
        [2
 
 ]
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
-61.
-(/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
-File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 pdfTeX warning (ext4): destination with the same identifier (name{page.3}) has 
 been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.262 
-       [3]pdfTeX warning (ext4): destination with the same identifier (name{pag
-e.4}) has been already used, duplicate ignored
+l.256 
+       [3]
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 2
+63.
+(/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
+File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)pdfTeX warning (ext4): destination with the same identifier (name{page.4}) has
+ been already used, duplicate ignored
 <to be read again> 
                    \relax 
-l.264 \chapter{Data}\label{data}}
+l.266 \chapter{Data}\label{data}}
                                   [4]
 Chapter 1.
 
 Package hyperref Warning: Difference (2) between bookmark levels is greater 
-(hyperref)                than one, level fixed on input line 269.
+(hyperref)                than one, level fixed on input line 271.
 
 [5
 
 ]
 LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 2
-85.
+87.
 (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
-<thesis_files/figure-latex/crownWidth-1.pdf, id=260, 427.5975pt x 280.04625pt>
+) [6]
+<thesis_files/figure-latex/crownWidth-1.pdf, id=270, 427.5975pt x 280.04625pt>
 File: thesis_files/figure-latex/crownWidth-1.pdf Graphic file (type pdf)
 <use thesis_files/figure-latex/crownWidth-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/crownWidth-1.pdf  used on in
-put line 306.
+put line 308.
 (pdftex.def)             Requested size: 427.59645pt x 280.04555pt.
-[6]
-<figure/polyimage.png, id=271, 250.9375pt x 129.48375pt>
+[7 <./thesis_files/figure-latex/crownWidth-1.pdf>]
+<figure/polyimage.png, id=295, 250.9375pt x 129.48375pt>
 File: figure/polyimage.png Graphic file (type png)
 <use figure/polyimage.png>
-Package pdftex.def Info: figure/polyimage.png  used on input line 341.
+Package pdftex.def Info: figure/polyimage.png  used on input line 345.
 (pdftex.def)             Requested size: 216.81pt x 111.87938pt.
-
-Underfull \vbox (badness 1728) has occurred while \output is active []
-
-[7 <./thesis_files/figure-latex/crownWidth-1.pdf>]
-<figure/redcedar.png, id=292, 250.9375pt x 128.98187pt>
+<figure/redcedar.png, id=297, 250.9375pt x 128.98187pt>
 File: figure/redcedar.png Graphic file (type png)
 <use figure/redcedar.png>
-Package pdftex.def Info: figure/redcedar.png  used on input line 349.
+Package pdftex.def Info: figure/redcedar.png  used on input line 353.
 (pdftex.def)             Requested size: 216.81pt x 111.44576pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[8 <./figure/polyimage.png>]
-<thesis_files/figure-latex/pixDensity-1.pdf, id=302, 423.5825pt x 280.04625pt>
+[8] [9 <./figure/polyimage.png> <./figure/redcedar.png>] [10]
+<thesis_files/figure-latex/pixDensity-1.pdf, id=319, 423.5825pt x 280.04625pt>
 File: thesis_files/figure-latex/pixDensity-1.pdf Graphic file (type pdf)
 <use thesis_files/figure-latex/pixDensity-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/pixDensity-1.pdf  used on in
-put line 416.
+put line 504.
 (pdftex.def)             Requested size: 423.58147pt x 280.04555pt.
-[9 <./figure/redcedar.png>] [10 <./thesis_files/figure-latex/pixDensity-1.pdf>]
-[11] [12
 
-]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[11] [12 <./thesis_files/figure-latex/pixDensity-1.pdf>]
 Chapter 2.
-[13] [14]
-<figure/corrmatrix.png, id=354, 1514.65875pt x 1178.4025pt>
+[13
+
+] [14]
+<figure/corrmatrix.png, id=360, 1514.65875pt x 1178.4025pt>
 File: figure/corrmatrix.png Graphic file (type png)
 <use figure/corrmatrix.png>
-Package pdftex.def Info: figure/corrmatrix.png  used on input line 480.
+Package pdftex.def Info: figure/corrmatrix.png  used on input line 568.
 (pdftex.def)             Requested size: 216.81pt x 168.67929pt.
 
 Underfull \vbox (badness 5504) has occurred while \output is active []
 
 [15]
-<figure/rfresults.png, id=361, 1667.22874pt x 1295.84125pt>
+<figure/rfresults.png, id=367, 1667.22874pt x 1295.84125pt>
 File: figure/rfresults.png Graphic file (type png)
 <use figure/rfresults.png>
-Package pdftex.def Info: figure/rfresults.png  used on input line 500.
+Package pdftex.def Info: figure/rfresults.png  used on input line 588.
 (pdftex.def)             Requested size: 173.44534pt x 134.79199pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [16 <./figure/corrmatrix.png>]
-<figure/svmresults.png, id=368, 1137.24875pt x 1194.4625pt>
+<figure/svmresults.png, id=374, 1137.24875pt x 1194.4625pt>
 File: figure/svmresults.png Graphic file (type png)
 <use figure/svmresults.png>
-Package pdftex.def Info: figure/svmresults.png  used on input line 513.
+Package pdftex.def Info: figure/svmresults.png  used on input line 601.
 (pdftex.def)             Requested size: 173.44534pt x 182.16893pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [17 <./figure/rfresults.png>]
-<thesis_files/figure-latex/ndvival-1.pdf, id=376, 279.0425pt x 280.04625pt>
+<thesis_files/figure-latex/ndvival-1.pdf, id=382, 279.0425pt x 280.04625pt>
 File: thesis_files/figure-latex/ndvival-1.pdf Graphic file (type pdf)
 <use thesis_files/figure-latex/ndvival-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/ndvival-1.pdf  used on input
- line 534.
+ line 622.
 (pdftex.def)             Requested size: 279.04181pt x 280.04555pt.
 [18 <./figure/svmresults.png>]
-<thesis_files/figure-latex/grassval-1.pdf, id=386, 489.83pt x 280.04625pt>
+<thesis_files/figure-latex/grassval-1.pdf, id=392, 489.83pt x 280.04625pt>
 File: thesis_files/figure-latex/grassval-1.pdf Graphic file (type pdf)
 <use thesis_files/figure-latex/grassval-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/grassval-1.pdf  used on inpu
-t line 546.
+t line 634.
 (pdftex.def)             Requested size: 489.8288pt x 280.04555pt.
 
-Overfull \hbox (56.2088pt too wide) in paragraph at lines 546--547
+Overfull \hbox (56.2088pt too wide) in paragraph at lines 634--635
  [][] 
  []
 
@@ -871,19 +869,19 @@ Overfull \hbox (56.2088pt too wide) in paragraph at lines 546--547
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [19 <./thesis_files/figure-latex/ndvival-1.pdf>]
-<figure/beforeaftermask.png, id=403, 301.125pt x 454.19687pt>
+<figure/beforeaftermask.png, id=409, 301.125pt x 454.19687pt>
 File: figure/beforeaftermask.png Graphic file (type png)
 <use figure/beforeaftermask.png>
-Package pdftex.def Info: figure/beforeaftermask.png  used on input line 555.
+Package pdftex.def Info: figure/beforeaftermask.png  used on input line 643.
 (pdftex.def)             Requested size: 173.44534pt x 261.6255pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [20 <./thesis_files/figure-latex/grassval-1.pdf>]
-<figure/masklimit.png, id=420, 301.125pt x 457.20813pt>
+<figure/masklimit.png, id=426, 301.125pt x 457.20813pt>
 File: figure/masklimit.png Graphic file (type png)
 <use figure/masklimit.png>
-Package pdftex.def Info: figure/masklimit.png  used on input line 571.
+Package pdftex.def Info: figure/masklimit.png  used on input line 659.
 (pdftex.def)             Requested size: 173.44534pt x 263.36005pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -895,60 +893,60 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 ]
 Appendix A.
 
-Package xcolor Warning: Incompatible color definition on input line 600.
+Package xcolor Warning: Incompatible color definition on input line 688.
 
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 605.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 693.
 
-Package xcolor Warning: Incompatible color definition on input line 611.
-
-
-Package xcolor Warning: Incompatible color definition on input line 611.
+Package xcolor Warning: Incompatible color definition on input line 699.
 
 
-LaTeX Warning: Reference `ref-labels' on page 25 undefined on input line 612.
+Package xcolor Warning: Incompatible color definition on input line 699.
 
 
-Package xcolor Warning: Incompatible color definition on input line 613.
+LaTeX Warning: Reference `ref-labels' on page 25 undefined on input line 700.
+
+
+Package xcolor Warning: Incompatible color definition on input line 701.
 
 LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
-620.
+708.
 (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 
-Package xcolor Warning: Incompatible color definition on input line 686.
+Package xcolor Warning: Incompatible color definition on input line 774.
 
 
-Package xcolor Warning: Incompatible color definition on input line 686.
+Package xcolor Warning: Incompatible color definition on input line 774.
 
 
-Package xcolor Warning: Incompatible color definition on input line 686.
+Package xcolor Warning: Incompatible color definition on input line 774.
 
 [25]
 
-Package xcolor Warning: Incompatible color definition on input line 686.
+Package xcolor Warning: Incompatible color definition on input line 774.
 
 
-Package xcolor Warning: Incompatible color definition on input line 686.
+Package xcolor Warning: Incompatible color definition on input line 774.
 
 
-Underfull \vbox (badness 10000) detected at line 686
+Underfull \vbox (badness 10000) detected at line 774
  []
 
 
-Underfull \vbox (badness 10000) detected at line 686
+Underfull \vbox (badness 10000) detected at line 774
  []
 
 
-Package xcolor Warning: Incompatible color definition on input line 686.
+Package xcolor Warning: Incompatible color definition on input line 774.
 
 [26]
 
-Package xcolor Warning: Incompatible color definition on input line 686.
+Package xcolor Warning: Incompatible color definition on input line 774.
 
 
-Package xcolor Warning: Incompatible color definition on input line 686.
+Package xcolor Warning: Incompatible color definition on input line 774.
 
 [27] [28
 
@@ -963,16 +961,16 @@ Appendix B.
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: D172AFE29F96574F985E53AC6C793BC1;1482.
+(rerunfilecheck)             Checksum: 7DF1F6286C36E6DA8876DADA7ED81303;1482.
  ) 
 Here is how much of TeX's memory you used:
- 10905 strings out of 481233
- 170962 string characters out of 5913274
- 490822 words of memory out of 5000000
- 27425 multiletter control sequences out of 15000+600000
+ 10909 strings out of 481233
+ 171031 string characters out of 5913274
+ 495974 words of memory out of 5000000
+ 27427 multiletter control sequences out of 15000+600000
  455998 words of font info for 65 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 68i,12n,70p,2127b,379s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 68i,12n,70p,2133b,379s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.en
 c}{/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc
 }{/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.
@@ -994,10 +992,10 @@ ist/fonts/type1/public/lm/lmsy8.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf
 -dist/fonts/type1/public/lm/lmtk10.pfb></Users/sarahkmaebius/Library/TinyTeX/te
 xmf-dist/fonts/type1/public/lm/lmtt12.pfb></Users/sarahkmaebius/Library/TinyTeX
 /texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on thesis.pdf (45 pages, 3897196 bytes).
+Output written on thesis.pdf (45 pages, 3900560 bytes).
 PDF statistics:
- 582 PDF objects out of 1000 (max. 8388607)
- 490 compressed objects within 5 object streams
- 121 named destinations out of 1000 (max. 500000)
+ 588 PDF objects out of 1000 (max. 8388607)
+ 496 compressed objects within 5 object streams
+ 123 named destinations out of 1000 (max. 500000)
  232 words of extra memory for PDF output out of 10000 (max. 10000000)
 

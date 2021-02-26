@@ -130,3 +130,16 @@ ggplot(pixels_data, aes(x = Conditn, y = green, fill = Cmmn_Nm)) +
   theme(axis.text.x = element_text(angle = 90))
 ```
 
+
+```{r}
+# create table of polygons per raster strip
+poly_count <- pixels_data %>%
+  group_by("Raster Strip" = rstrip, "Common Name" = Cmmn_Nm) %>%
+  count("Polygons" = length(unique(ID)))
+
+# create table of polygons per raster strip per tree species
+poly_totals <- pixels_data %>%
+  group_by("Raster Strip" = rstrip) %>%
+  count("Polygons" = length(unique(ID)))
+```
+
