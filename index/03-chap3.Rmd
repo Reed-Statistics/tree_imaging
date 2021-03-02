@@ -45,7 +45,7 @@ Support vector machines are less sensitive to outliers and successful predictors
 
 ## Training Models
 
-To model the tree type of the pixels in raster image, a random forest model and a support vector machine model are trained using the pixels training data. To train these models, k-fold cross validation is used. The data gets split into $k = 10$ folds and ten models are trained each time withholding one of the ten folds until the process goes through every fold. This process aids in understanding how the models will perform against data that has not been included in training the model.
+To model the tree type of the pixels in raster image, a random forest model and a support vector machine model are trained using the pixels training data. First the data is separated into a training set and then a test set by a ratio of 70% training data and 30% testing data. The `dplyr` function `slice_sample` was used to take a stratified sample from the entire pixels dataset where 70% of each tree species in an individual raster strip was randomly selected. For example, 70% of the bigleaf maple trees in raster strip 'A' were randomly selected for the training set. To train these models, k-fold cross validation is used. The data gets split into $k = 10$ folds and ten models are trained each time withholding one of the ten folds until the process goes through every fold. This process aids in understanding how the models will perform against data that has not been included in training the model.
 
 The selected variables for training the models are the four bands (red, green, blue, infrared) and an NDVI variable, and the predictive variable is the tree species name. Some predictor variables were manually computed using ratios of bands. Typically, a long over short band ratio provides some more information to train the model. The following bands were created: red/blue, ir/red, red/green, and blue/green. Examining a correlation matrix with these predictors reveals some possibly useful and not too highly correlated variables are red/green, red/blue, and blue/green (see Figure \@ref(fig:corrmatrix).
 
@@ -70,10 +70,17 @@ Figure \@ref(fig:rfresults) compares the results of the models based on overall 
 include_graphics("figure/rfresults.png")
 ```
 
-The model with the highest number of predictors included has a slightly higher median accuracy and mean accuracy than the 7 predictor model. A confusion matrix was constructed for each model averaging the entry counts over all ten cross validation resamples to investigate model performance just predicting Western redcedar tree pixels. Both the 7 and the 8 predictor models performed similarly classifying Western redceder pixels, the 7 predictor model had a prediction accuracy of 38%, while the 8 predictor model had 37%, and the 5 predictor model had 35%. Across all three models, Western redcedars tend to be inaccurately classified under douglas-firs, english oak, and norway maple trees.
+The model with the highest number of predictors included has a slightly higher median accuracy and mean accuracy than the 7 predictor model. A confusion matrix was constructed for each model averaging the entry counts over all ten cross validation resamples to investigate model performance just predicting Western redcedar tree pixels. Both the 7 and the 8 predictor models performed equally classifying Western redceder pixels, the 7 predictor model and the 8 predictor model had a prediction accuracy of 38%, while the 5 predictor model had 35%. Across all three models, Western redcedars tend to be inaccurately classified under douglas-firs, english oak, and norway maple trees.
+
+The training set with 8 predictors was selected for further tuning of the random forest model, to determine the ideal number of randomly selected predictors at each split. Figure \@ref(fig:rfmtry) displays a comparison of the accuracy of the number of tries considered at each split. The most accurate model uses 2 randomly selected predictors at each split, with a model accuracy of 0.545.
+
+```{r rfmtry, results="asis", echo=FALSE, fig.cap="Comparison of number of randomly selected predictors for each split from random forest model with 8 predictors included", out.width='40%', fig.align='center'}
+include_graphics("figure/rfmtry.png")
+```
 
 
-The `train` function has the `method = svmLinear/svmRadial/svmPoly` option to train a support vector machine model on the training dataset to classify pixels into species of trees. This option also has parameters for cost, loss function, class weights, and normalized variables. For this project, three support vector machines were trained: linear, radial basis, and polynomial basis, and all three were specified to normalize the variables.
+
+The `train` function has the `method = svmLinear/svmRadial/svmPoly` option to train a support vector machine model on the dataset to classify pixels into species of trees. This option also has parameters for cost, loss function, class weights, and normalized variables. For this project, three support vector machines were trained: linear, radial basis, and polynomial basis, and all three were specified to normalize the variables.
 
 Figure \@ref(fig:svmresults) displays the results of the linear, radial basis, and polynomial basis support vector machine models. Based on the overall prediction accuracy, the radial basis is an appropriate kernel choice for the pixels data since it has a higher median model accuracy than the other two kernel options.
 
@@ -82,6 +89,23 @@ include_graphics("figure/svmresults.png")
 ```
 
 As with the random forest model comparisons, a confusion matrix was constructed using the average counts over all ten cross-validation resamples to obtain the model results predicting Western redcedars. The support vector machine model that performed best overall was the radial basis kernel model, and it had the highest prediction accuracy of the Western redcedar class, 41%. The polynomial basis kernel had a 34% prediction accuracy and the linear kernel had 32% accuracy for Western redcedar.
+
+Table \@ref(tab:resultsR) compares the hyperparameters accross all models.
+
+```{r resultsR, echo=F, warning=F, message=F, fig.cap='Chart', out.width='50%'}
+results_r <- read.csv('~/tree_imaging/results_r.csv', check.names = F)
+results_s <- read.csv('~/tree_imaging/results_s.csv', check.names = F)
+
+# knitr::kable(results_r, "latex", caption = "Accuracy of random forest models with different number of predictors and model with best ntry parameter.")
+knitr::kable(list(results_r, results_s), "latex", caption = "Table of Hyperparameters", booktabs = T)
+# t1 <- kable(results_r, format = 'latex')
+# t2 <- kable(results_s, format = 'latex')
+# cat(c("\\begin{table}[h] \\centering ", 
+#       t1,
+#     "\\hspace{1cm} \\centering ",
+#       t2,
+#     "\\caption{My tables} \\end{table}"))  
+```
 
 
 The models are saved to be used for later prediction over the entire region of Portland.

@@ -19,22 +19,33 @@ library(corrplot)
 # load data
 pixels_data <- read.csv('pixels_data.csv')
 
+# group by number of polygons per tree class per strip
+poly_count <- pixels_data %>%
+  group_by("Raster Strip" = rstrip, "Tree Name" = Cmmn_Nm) %>%
+  count("Polygons" = length(unique(ID)))
 
-# # training data
-# train_sample <- sample(1:nrow(pixels_data), nrow(pixels_data)/2)
-# train <- pixels_data[train_sample,]
-# 
-# # test data
-# test <- pixels_data[-train_sample, "Cmmn_Nm"]
+# split into 70% train, 30% test, stratified on tree classes per raster strip
 
+# training data
+train <- pixels_data %>%
+  group_by(rstrip, Cmmn_Nm) %>%
+  slice_sample(prop = 0.7) %>%
+  ungroup()
 
-# try grouping maples, maybe new smaller polygons, look into overlapping model results in pixels space, make a map of where western redcedar is
+# check 70% in each class
+train %>%
+  group_by("Raster Strip" = rstrip, "Tree Name" = Cmmn_Nm) %>%
+  count("Polygons" = length(unique(ID)))
+
+# test data
+test <- anti_join(pixels_data, train)
+
 ```
 
 
 ```{r}
-# load data adding different ratio predictors
-pixels_data <- pixels_data %>%
+# adding different ratio predictors
+train <- train %>%
   dplyr::select(red, green, blue, ir, ndvi, Cmmn_Nm) %>%
   mutate(red_blue = red/blue,
          ir_red = ir/red,
@@ -42,7 +53,7 @@ pixels_data <- pixels_data %>%
          blue_green = blue/green)
   
 # look at correlation matrix
-corr_matrix <- round(cor(pixels_data %>% select(-Cmmn_Nm)), 2)
+corr_matrix <- round(cor(train %>% select(-Cmmn_Nm)), 2)
 corrplot(corr_matrix, type = "upper", order = "hclust", 
          tl.col = "black", tl.srt = 45)
 
@@ -50,27 +61,40 @@ corrplot(corr_matrix, type = "upper", order = "hclust",
 # red_green strongest correlation with green at -0.81
 # red_blue strongest correlation with blue
 
-pixels_data1 <- pixels_data %>%
+train1 <- train %>%
   select(red, green, blue, ir, ndvi, Cmmn_Nm)
 
-pixels_data2 <- pixels_data %>%
+train2 <- train %>%
   select(red, green, blue, ir, ndvi, red_green, blue_green, Cmmn_Nm)
 
-pixels_data3 <- pixels_data %>%
+train3 <- train %>%
   select(red, green, blue, ir, ndvi, red_green, red_blue, blue_green, Cmmn_Nm)
 
 # random forest
 
 # random search random forest using caret package
-control <- trainControl(method="repeatedcv", number=10, search="random")
-rf_random1 <- train(Cmmn_Nm~., data=pixels_data1, method="rf", trControl=control)
-rf_random2 <- train(Cmmn_Nm~., data=pixels_data2, method="rf", trControl=control)
-rf_random3 <- train(Cmmn_Nm~., data=pixels_data3, method="rf", trControl=control)
+control <- trainControl(method = "repeatedcv", number = 10, search = "random")
+rf_random1 <- train(Cmmn_Nm~., data = train1, method = "rf", trControl = control)
+rf_random2 <- train(Cmmn_Nm~., data = train2, method = "rf", trControl = control)
+rf_random3 <- train(Cmmn_Nm~., data = train3, method = "rf", trControl = control)
 
-
-#predict(pixels_data[-train, ], rf_random)
+#predict(test, rf_random)
 ```
 
+```{r}
+# random forest mtry tuning
+
+# Random Search
+control <- trainControl(method="repeatedcv", number = 10, repeats = 3, search = "random")
+set.seed(12)
+mtry <- sqrt(ncol(train3))
+rf_random <- train(Cmmn_Nm~., data = train3, method = "rf", tuneLength = 15,
+                   trControl = control)
+print(rf_random)
+plot(rf_random)
+confusionMatrix(rf_random,  mode = "prec_recall")
+# rf_random western redcedar prediction accuracy: 0.36
+```
 
 ```{r}
 # compare rf models
@@ -87,40 +111,41 @@ ggplot(results, aes(x = Model, y = Accuracy, fill = Model)) +
   labs(title = "Model Accuracy of Random Forest Models with 10-Fold CV", x = " ", fill = "Number of Predictors") + 
   theme(axis.text.x = element_blank())
 
-confusionMatrix(rf_random1,  mode = "prec_recall")
-# rf_random1 western redcedar prediction accuracy: 0.35
-# rf_random2 western redcedar prediction accuracy: 0.38
+confusionMatrix(rf_random3,  mode = "prec_recall")
+# rf_random1 western redcedar prediction accuracy: 0.33
+# rf_random2 western redcedar prediction accuracy: 0.37
 # rf_random3 western redcedar prediction accuracy: 0.37
+
+results_rf <- rbind(cbind(rf_random1$resample, Model = rep("5", nrow(rf_random1$resample))), 
+                 cbind(rf_random2$resample, Model = rep("7", nrow(rf_random2$resample))), 
+                 cbind(rf_random3$resample, Model = rep("8", nrow(rf_random3$resample))),
+                 cbind(rf_random$resample, Model = rep("8 ntry = 2", nrow(rf_random3$resample))))
 ```
 
 
 ```{r}
-# reload data
-pixels_data <- pixels_data %>%
-  dplyr::select(red, green, blue, ir, ndvi, Cmmn_Nm)
-
 # 10 fold cross validation
-train_control <- trainControl(method="cv", number=10)
+train_control <- trainControl(method = "cv", number = 10)
 
 # fit svm model with normalized variables
-svm1 <- train(Cmmn_Nm ~., data = pixels_data, method = "svmLinear", trControl = train_control,  preProcess = c("center","scale"))
+svm1 <- train(Cmmn_Nm ~., data = train, method = "svmLinear", trControl = train_control,  preProcess = c("center","scale"))
 
 # fit nonlinear svm model (radial basis)
-svm2 <- train(Cmmn_Nm ~., data = pixels_data, method = "svmRadial", trControl = train_control, preProcess = c("center","scale"), tuneLength = 10)
+svm2 <- train(Cmmn_Nm ~., data = train, method = "svmRadial", trControl = train_control, preProcess = c("center","scale"), tuneLength = 10)
 
 # fit nonlinear svm model (polynomial basis)
-svm3 <- train(Cmmn_Nm ~., data = pixels_data, method = "svmPoly", trControl = train_control, preProcess = c("center","scale"))
+svm3 <- train(Cmmn_Nm ~., data = train, method = "svmPoly", trControl = train_control, preProcess = c("center","scale"))
 ```
 
 ```{r}
 # compare svm models
 
 # collect resamples
-results <- rbind(cbind(svm1$resample, Model = rep("svmLinear", nrow(svm1$resample))), 
+results_svm <- rbind(cbind(svm1$resample, Model = rep("svmLinear", nrow(svm1$resample))), 
                  cbind(svm2$resample, Model = rep("svmRadial", nrow(svm2$resample))), 
                  cbind(svm3$resample, Model = rep("svmPoly", nrow(svm3$resample))))
 
-ggplot(results, aes(x = Model, y = Accuracy, fill = Model)) +
+ggplot(results_svm, aes(x = Model, y = Accuracy, fill = Model)) +
   geom_boxplot(alpha = 0.6) +
   theme_minimal() + 
   scale_fill_viridis_d() +
@@ -131,6 +156,28 @@ confusionMatrix(svm1,  mode = "prec_recall")
 # svm1 western redcedar prediction accuracy: 0.32
 # svm2 western redcedar prediction accuracy: 0.41
 # svm3 western redcedar prediction accuracy: 0.34
+```
+
+```{r}
+# combined hyperparameters results table
+results_r <- results_rf %>%
+  mutate(Model = recode(as.character(Model), '5'= '5 predictors',
+                        '7' = '7 predictors', '8' = '8 predictors', 
+                        '8 ntry = 2' = '8 predictors with mtry = 2')) %>%
+  group_by(Model) %>%
+  summarise("Accuracy" = round(mean(Accuracy), 4), "Kappa" = round(mean(Kappa), 4)) %>%
+  rename("Random Forest Model" = Model)
+
+results_s <- results_svm %>%
+  mutate(Model = recode(as.character(Model), 'svmLinear'= 'Linear',
+                        'svmRadial' = 'Radial', 'svmPoly' = 'Polynomial')) %>%
+  group_by(Model) %>%
+  summarise("Accuracy" = round(mean(Accuracy), 4), "Kappa" = round(mean(Kappa), 4)) %>%
+  rename("SVM Model Kernel" = Model)
+
+# save results
+# write.csv(results_r,'results_r.csv', row.names = F)
+# write.csv(results_s,'results_s.csv', row.names = F)
 ```
 
 
