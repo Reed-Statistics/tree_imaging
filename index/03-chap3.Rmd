@@ -49,7 +49,7 @@ To model the tree type of the pixels in raster image, a random forest model and 
 
 The selected variables for training the models are the four bands (red, green, blue, infrared) and an NDVI variable, and the predictive variable is the tree species name. Some predictor variables were manually computed using ratios of bands. Typically, a long over short band ratio provides some more information to train the model. The following bands were created: red/blue, ir/red, red/green, and blue/green. Examining a correlation matrix with these predictors reveals some possibly useful and not too highly correlated variables are red/green, red/blue, and blue/green (see Figure \@ref(fig:corrmatrix).
 
-```{r corrmatrix, results="asis", echo=FALSE, fig.cap="Correlation matrix of possible predictor variables to include in the model", out.width='50%', fig.align='center'}
+```{r corrmatrix, results="asis", echo=FALSE, fig.cap="Correlation matrix of possible predictor variables to include in the model", out.width='70%', fig.align='center'}
 include_graphics("figure/corrmatrix.png")
 ```
 
@@ -66,7 +66,7 @@ The `train` function from the `caret` package [@caret] with the specified `metho
 
 Figure \@ref(fig:rfresults) compares the results of the models based on overall model accuracy in predicting the test data.
 
-```{r rfresults, results="asis", echo=FALSE, fig.cap="Comparison of results from random forest models with different predictors included", out.width='40%', fig.align='center'}
+```{r rfresults, results="asis", echo=FALSE, fig.cap="Comparison of results from random forest models with different predictors included", out.width='70%', fig.align='center'}
 include_graphics("figure/rfresults.png")
 ```
 
@@ -74,7 +74,7 @@ The model with the highest number of predictors included has a slightly higher m
 
 The training set with 8 predictors was selected for further tuning of the random forest model, to determine the ideal number of randomly selected predictors at each split. Figure \@ref(fig:rfmtry) displays a comparison of the accuracy of the number of tries considered at each split. The most accurate model uses 2 randomly selected predictors at each split, with a model accuracy of 0.545.
 
-```{r rfmtry, results="asis", echo=FALSE, fig.cap="Comparison of number of randomly selected predictors for each split from random forest model with 8 predictors included", out.width='40%', fig.align='center'}
+```{r rfmtry, results="asis", echo=FALSE, fig.cap="Comparison of number of randomly selected predictors for each split from random forest model with 8 predictors included", out.width='70%', fig.align='center'}
 include_graphics("figure/rfmtry.png")
 ```
 
@@ -84,7 +84,7 @@ The `train` function has the `method = svmLinear/svmRadial/svmPoly` option to tr
 
 Figure \@ref(fig:svmresults) displays the results of the linear, radial basis, and polynomial basis support vector machine models. Based on the overall prediction accuracy, the radial basis is an appropriate kernel choice for the pixels data since it has a higher median model accuracy than the other two kernel options.
 
-```{r svmresults, results="asis", echo=FALSE, fig.cap="Comparison of results from support vector machine models with different kernel types: linear, radial, and polynomial.", out.width='40%', fig.align='center'}
+```{r svmresults, results="asis", echo=FALSE, fig.cap="Comparison of results from support vector machine models with different kernel types: linear, radial, and polynomial.", out.width='70%', fig.align='center'}
 include_graphics("figure/svmresults.png")
 ```
 
@@ -92,11 +92,11 @@ As with the random forest model comparisons, a confusion matrix was constructed 
 
 Table \@ref(tab:resultsR) compares the hyperparameters accross all models.
 
-```{r resultsR, echo=F, warning=F, message=F, fig.cap='Chart', out.width='50%'}
+```{r resultsR, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
 results_r <- read.csv('~/tree_imaging/results_r.csv', check.names = F)
 results_s <- read.csv('~/tree_imaging/results_s.csv', check.names = F)
 
-# knitr::kable(results_r, "latex", caption = "Accuracy of random forest models with different number of predictors and model with best ntry parameter.")
+# knitr::kable(results_r, "latex", caption = "Accuracy of random forest models with different number of predictors and model with best ntry parameter determined by ten-fold cross validation.")
 knitr::kable(list(results_r, results_s), "latex", caption = "Table of Hyperparameters", booktabs = T)
 # t1 <- kable(results_r, format = 'latex')
 # t2 <- kable(results_s, format = 'latex')

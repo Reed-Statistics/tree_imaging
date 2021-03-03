@@ -260,7 +260,7 @@ This thesis follows along with the methods in (Fricker et al., 2019) for combini
 \hypertarget{a-statistical-learning-approach-to-identifying-location-of-western-redcedars}{%
 \subsection{A Statistical Learning Approach to Identifying Location of Western Redcedars}\label{a-statistical-learning-approach-to-identifying-location-of-western-redcedars}}
 
-This work combines RGB imagery data from Planet.com with ground level tree data from the RStudio \texttt{pdxTrees} library and applies random forest and support vector machine classification methods to predict the location of tree species (specifically western redcedars) in Portland, Oregon and model the condition of western redcedars to ultimately understand the cause of death in this species. {[}insert key findings here{]}
+This work combines RGB imagery data from Planet.com with ground level tree data from the RStudio \texttt{pdxTrees} library and applies random forest and support vector machine classification methods to predict the location of tree species (specifically western redcedars) in Portland, Oregon and model the condition of western redcedars to ultimately understand the cause of death in this species. Chapter \ref{data} describes the two levels of data in this research: ground level and pixel level data, where the data comes from, and how the data is combined for modeling. Chapter \ref{methods} discusses the process behind training random forest and support vector machine models. Chapter \ref{results} summarizes how the data is prepared for the final model and the outcome of the research.
 
 \hypertarget{data}{%
 \chapter{Data}\label{data}}
@@ -565,7 +565,7 @@ To model the tree type of the pixels in raster image, a random forest model and 
 The selected variables for training the models are the four bands (red, green, blue, infrared) and an NDVI variable, and the predictive variable is the tree species name. Some predictor variables were manually computed using ratios of bands. Typically, a long over short band ratio provides some more information to train the model. The following bands were created: red/blue, ir/red, red/green, and blue/green. Examining a correlation matrix with these predictors reveals some possibly useful and not too highly correlated variables are red/green, red/blue, and blue/green (see Figure \ref{fig:corrmatrix}.
 \begin{figure}
 
-{\centering \includegraphics[width=0.5\linewidth]{figure/corrmatrix} 
+{\centering \includegraphics[width=0.7\linewidth]{figure/corrmatrix} 
 
 }
 
@@ -585,7 +585,7 @@ The \texttt{train} function from the \texttt{caret} package (Kuhn, 2020) with th
 Figure \ref{fig:rfresults} compares the results of the models based on overall model accuracy in predicting the test data.
 \begin{figure}
 
-{\centering \includegraphics[width=0.4\linewidth]{figure/rfresults} 
+{\centering \includegraphics[width=0.7\linewidth]{figure/rfresults} 
 
 }
 
@@ -596,7 +596,7 @@ The model with the highest number of predictors included has a slightly higher m
 The training set with 8 predictors was selected for further tuning of the random forest model, to determine the ideal number of randomly selected predictors at each split. Figure \ref{fig:rfmtry} displays a comparison of the accuracy of the number of tries considered at each split. The most accurate model uses 2 randomly selected predictors at each split, with a model accuracy of 0.545.
 \begin{figure}
 
-{\centering \includegraphics[width=0.4\linewidth]{figure/rfmtry} 
+{\centering \includegraphics[width=0.7\linewidth]{figure/rfmtry} 
 
 }
 
@@ -607,7 +607,7 @@ The \texttt{train} function has the \texttt{method\ =\ svmLinear/svmRadial/svmPo
 Figure \ref{fig:svmresults} displays the results of the linear, radial basis, and polynomial basis support vector machine models. Based on the overall prediction accuracy, the radial basis is an appropriate kernel choice for the pixels data since it has a higher median model accuracy than the other two kernel options.
 \begin{figure}
 
-{\centering \includegraphics[width=0.4\linewidth]{figure/svmresults} 
+{\centering \includegraphics[width=0.7\linewidth]{figure/svmresults} 
 
 }
 
@@ -702,15 +702,10 @@ To address leftover grass pixels in the filtered raster image, access to lidar d
 
 After masking the raster images of the entire region of Portland, the pre-trained models are used to predict the tree species of individual pixels in the masked raster images. First the pixels are extracted from the raster and compiled into a dataset. Then the models are applied to predict the tree species per pixel in the dataset.
 
-\hypertarget{conclusion}{%
-\chapter*{Conclusion}\label{conclusion}}
-\addcontentsline{toc}{chapter}{Conclusion}
+\hypertarget{results}{%
+\chapter{Results}\label{results}}
 
-If we don't want Conclusion to have a chapter number next to it, we can add the \texttt{\{-\}} attribute.
-
-\textbf{More info}
-
-And here's some other random info: the first paragraph after a chapter title or section head \emph{shouldn't be} indented, because indents are to tell the reader that you're starting a new paragraph. Since that's obvious after a chapter or section title, proper typesetting doesn't add an indent there.
+These are the results.
 
 \appendix
 
