@@ -709,7 +709,39 @@ Random Forest Model & Accuracy & Kappa & mtry\\
 \hypertarget{support-vector-machine-tuning}{%
 \subsection{Support Vector Machine Tuning}\label{support-vector-machine-tuning}}
 
-The \texttt{train} function has the \texttt{method\ =\ svmLinear/svmRadial/svmPoly} option to train a support vector machine model on the dataset to classify pixels into species of trees. This option also has parameters for cost, loss function, class weights, and normalized variables. For this project, three support vector machines were trained: linear, radial basis, and polynomial basis, and all three were specified to normalize the variables.
+The \texttt{train} function has the \texttt{method\ =\ svmLinear/svmRadial/svmPoly} option to train a support vector machine model on the dataset to classify pixels into species of trees. This option also has parameters for cost, loss function, class weights, and normalized variables. For this project, three support vector machines were trained: linear, radial basis, and polynomial basis, and all three were specified to normalize the variables. The \texttt{caret} package selects the best cost tuning parameter based on accuracy through cross-validation.
+
+\hypertarget{linear-support-vector-machine}{%
+\subsubsection{Linear Support Vector Machine}\label{linear-support-vector-machine}}
+
+The linear kernel SVM model had the highest training accuracy at 0.51 when cost parameter held constant at a value of 1. The final model contained 5915 support vectors.
+
+\hypertarget{radial-support-vector-machine}{%
+\subsubsection{Radial Support Vector Machine}\label{radial-support-vector-machine}}
+
+Figure \ref{fig:svm2} displays the results of different cost parameters on training accuracy for the radial basis function kernel. The radial kernel SVM model performed best when cost was 16 and \(\sigma = 0.25\) for a training accuracy of 0.56. The final model had 5587 support vectors.
+\begin{figure}
+
+{\centering \includegraphics[width=0.7\linewidth]{figure/svm2} 
+
+}
+
+\caption{Comparison of accuracy results from different cost parameters with sigma held constant at 0.25 for radial basis function kernel.}\label{fig:svm2}
+\end{figure}
+\hypertarget{polynomial-support-vector-machine}{%
+\subsubsection{Polynomial Support Vector Machine}\label{polynomial-support-vector-machine}}
+
+Figure \ref{fig:svm3} displays the results of different cost parameters on training accuracy for the polynomial basis function kernel. The final values used for the model were degree = 3, scale = 0.1, and cost = 1, which corresponded to a training accuracy of 0.54. The final model had a total of 5697 support vectors.
+\begin{figure}
+
+{\centering \includegraphics[width=0.7\linewidth]{figure/svm3} 
+
+}
+
+\caption{Comparison of accuracy results from different cost parameters with scale ranging from 0.001 to 0.1, C from 0.25 to 1, and degree from 1 to 3 for polynomial SVM.}\label{fig:svm3}
+\end{figure}
+\hypertarget{best-support-vector-machine}{%
+\subsubsection{Best Support Vector Machine}\label{best-support-vector-machine}}
 
 Figure \ref{fig:svmresults} displays the results of the linear, radial basis, and polynomial basis support vector machine models. Based on the overall prediction accuracy, the radial basis is an appropriate kernel choice for the pixels data since it has a higher median model accuracy than the other two kernel options.
 \begin{figure}
@@ -727,15 +759,15 @@ Table \ref{tab:resultsSVM} compares the hyperparameters accross all support vect
 
 \caption{\label{tab:resultsSVM}Accuracy of support vector machine models with different kernels. Best parameter is determined by ten-fold cross validation.}
 \centering
-\begin{tabular}[t]{l|r|r}
+\begin{tabular}[t]{l|r|r|l}
 \hline
-SVM Model Kernel & Accuracy & Kappa\\
+SVM Model Kernel & Accuracy & Kappa & Parameter\\
 \hline
-Linear & 0.5053 & 0.3843\\
+Linear & 0.5053 & 0.3843 & C = 1\\
 \hline
-Polynomial & 0.5403 & 0.4322\\
+Polynomial & 0.5403 & 0.4322 & C = 16 sigma = 0.2483\\
 \hline
-Radial & 0.5604 & 0.4614\\
+Radial & 0.5604 & 0.4614 & C = 1 , scale = 0.1 , degree = 3\\
 \hline
 \end{tabular}
 \end{table}

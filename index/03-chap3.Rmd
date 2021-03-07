@@ -107,7 +107,27 @@ knitr::kable(results_r, "latex", caption = "Accuracy of random forest models wit
 
 ### Support Vector Machine Tuning
 
-The `train` function has the `method = svmLinear/svmRadial/svmPoly` option to train a support vector machine model on the dataset to classify pixels into species of trees. This option also has parameters for cost, loss function, class weights, and normalized variables. For this project, three support vector machines were trained: linear, radial basis, and polynomial basis, and all three were specified to normalize the variables.
+The `train` function has the `method = svmLinear/svmRadial/svmPoly` option to train a support vector machine model on the dataset to classify pixels into species of trees. This option also has parameters for cost, loss function, class weights, and normalized variables. For this project, three support vector machines were trained: linear, radial basis, and polynomial basis, and all three were specified to normalize the variables. The `caret` package selects the best cost tuning parameter based on accuracy through cross-validation.
+
+#### Linear Support Vector Machine
+The linear kernel SVM model had the highest training accuracy at 0.51 when cost parameter held constant at a value of 1. The final model contained 5915 support vectors.
+
+#### Radial Support Vector Machine
+Figure \@ref(fig:svm2) displays the results of different cost parameters on training accuracy for the radial basis function kernel. The radial kernel SVM model performed best when cost was 16 and $\sigma = 0.25$ for a training accuracy of 0.56. The final model had 5587 support vectors.
+
+```{r svm2, results="asis", echo=FALSE, fig.cap="Comparison of accuracy results from different cost parameters with sigma held constant at 0.25 for radial basis function kernel.", out.width='70%', fig.align='center'}
+include_graphics("figure/svm2.png")
+```
+
+#### Polynomial Support Vector Machine
+Figure \@ref(fig:svm3) displays the results of different cost parameters on training accuracy for the polynomial basis function kernel. The final values used  for the model were degree = 3, scale = 0.1, and cost = 1, which corresponded to a training accuracy of 0.54. The final model had a total of 5697 support vectors.
+
+```{r svm3, results="asis", echo=FALSE, fig.cap="Comparison of accuracy results from different cost parameters with scale ranging from 0.001 to 0.1, C from 0.25 to 1, and degree from 1 to 3 for polynomial SVM.", out.width='70%', fig.align='center'}
+include_graphics("figure/svm3.png")
+```
+
+
+#### Best Support Vector Machine
 
 Figure \@ref(fig:svmresults) displays the results of the linear, radial basis, and polynomial basis support vector machine models. Based on the overall prediction accuracy, the radial basis is an appropriate kernel choice for the pixels data since it has a higher median model accuracy than the other two kernel options.
 
