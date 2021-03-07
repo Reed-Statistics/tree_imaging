@@ -25,7 +25,7 @@ with a support vector classifier
 
 $$f(x) = \beta_0 + \sum_{i = 1}^n \alpha_i \langle x, x_i \rangle.$$
 
-The parameters $\alpha_i$ and $\beta_0$ are estimated using the inner products of the observations, but $\alpha_i \neq 0$ if and only if $x_i$ is a support vector. Note that this function is similar to a linear regression function. Extended this model to a nonlinear context involves a similar approach as adding nonlinear terms to a regression model.
+The parameters $\alpha_i$ and $\beta_0$ are estimated using the inner products of the observations, but $\alpha_i \neq 0$ if and only if $x_i$ is a support vector. Note that this function is similar to a linear regression function. Extending this model to a nonlinear context involves a similar approach as adding nonlinear terms to a regression model.
 
 The polynomial kernel of degree $d$ is defined to be 
 
@@ -47,7 +47,7 @@ Support vector machines are less sensitive to outliers and successful predictors
 
 To model the tree type of the pixels in raster image, a random forest model and a support vector machine model are trained using the pixels training data. First the data is separated into a training set and then a test set by a ratio of 70% training data and 30% testing data. The `dplyr` function `slice_sample` was used to take a stratified sample from the entire pixels dataset where 70% of each tree species in an individual raster strip was randomly selected. For example, 70% of the bigleaf maple trees in raster strip 'A' were randomly selected for the training set. To train these models, k-fold cross validation is used. The data gets split into $k = 10$ folds and ten models are trained each time withholding one of the ten folds until the process goes through every fold. This process aids in understanding how the models will perform against data that has not been included in training the model.
 
-The selected variables for training the models are the four bands (red, green, blue, infrared) and an NDVI variable, and the predictive variable is the tree species name. Some predictor variables were manually computed using ratios of bands. Typically, a long over short band ratio provides some more information to train the model. The following bands were created: red/blue, ir/red, red/green, and blue/green. Examining a correlation matrix with these predictors reveals some possibly useful and not too highly correlated variables are red/green, red/blue, and blue/green (see Figure \@ref(fig:corrmatrix).
+The selected variables for training the models are the four bands (red, green, blue, infrared) and an NDVI variable, and the predictive variable is the tree species name. Some predictor variables were manually computed using ratios of bands. Typically, a long over short band ratio provides some more information to train the model. The following bands were created: red/blue, ir/red, red/green, and blue/green. Examining a correlation matrix with these predictors reveals possibly useful and not too highly correlated variables are red/green, red/blue, and blue/green (see Figure \@ref(fig:corrmatrix).
 
 ```{r corrmatrix, results="asis", echo=FALSE, fig.cap="Correlation matrix of possible predictor variables to include in the model", out.width='70%', fig.align='center'}
 include_graphics("figure/corrmatrix.png")
@@ -56,13 +56,38 @@ include_graphics("figure/corrmatrix.png")
 
 The `caret` package [@caret] in RStudio stands for classification and regression training, and it contains functions for facilitating the process of creating training models in R and determining the tuning parameters. 
 
-The `train` function from the `caret` package [@caret] with the specified `method = rf` option is used to train a random forest model on the training dataset to predict the tree species. The function takes parameters for data, the predictive variable, and the method of training the model. To perform k-fold cross validation, the `trainControl` function is used to create an object that tells the `train` function to perform cross validation 10 times with a different fold left out each time. The number of tries at each split is by default the floor of the square root of the number of predictors available. Three different models were considered with varying number of predictors:
+### Random Forest Tuning
 
-* 5 predictor model: red, green, blue, ir, ndvi
+The `train` function from the `caret` package [@caret] with the specified `method = rf` option is used to train a random forest model on the training dataset to predict the tree species. The function takes parameters for data, the predictive variable, and the method of training the model. To perform k-fold cross validation, the `trainControl` function is used to create an object that tells the `train` function to perform cross validation 10 times with a different fold left out each time. The function automatically tries multiple number of tries at each split (mtry) and determines the optimal number through cross-validation. Three different models were considered with varying number of predictors:
 
-* 7 predictor model: red, green, blue, ir, ndvi, red_green, blue_green
+* 5 predictor model: red, green, blue, infrared, NDVI
 
-* 8 predictor model: red, green, blue, ir, ndvi, red_green, red_blue, blue_green.
+* 7 predictor model: red, green, blue, infrared, NDVI, $\frac{\mbox{red}}{\mbox{green}}$, $\frac{\mbox{blue}}{\mbox{green}}$
+
+* 8 predictor model: red, green, blue, infrared, NDVI, $\frac{\mbox{red}}{\mbox{green}}$, $\frac{\mbox{red}}{\mbox{blue}}$, $\frac{\mbox{blue}}{\mbox{green}}$
+
+#### 5 predictor Random Forest
+Figure \@ref(fig:rf5) displays the accuracy of the trained random forest model for three different numbers of randomly selected predictors over 10 repeated cross-validation sets for a model with 5 predictors: red, green, blue, infrared, and NDVI band values. This model had the highest overall accuracy with 0.53 when mtry was 1. The variable with the highest predictive power was infrared band values followed by NDVI values.
+
+```{r rf5, results="asis", echo=FALSE, fig.cap='Accuracy of the 5 predictor trained random forest model for different mtry numbers over 10-fold cross-validation.', out.width='70%', fig.align='center'}
+include_graphics("figure/rf5_mtry.png")
+```
+
+#### 7 predictor Random Forest
+The 7 predictor random forest model uses the same predictors from the 5 predictor model and also includes $\frac{\mbox{red}}{\mbox{green}}$ and $\frac{\mbox{blue}}{\mbox{green}}$ predictors. Figure \@ref(fig:rf7) displays the accuracy of the model with a range of mtry values. The 7 predictor model with the highest accuracy (determined by cross-validation) randomly selected 2 predictors at each split with an accuracy of 0.54. The variable with the highest predictive power was still infrared band values with NDVI values second highest predictive power.
+
+```{r rf7, results="asis", echo=FALSE, fig.cap='Accuracy of the 7 predictor trained random forest model for different mtry numbers over 10-fold cross-validation.', out.width='70%', fig.align='center'}
+include_graphics("figure/rf7_mtry.png")
+```
+
+#### 8 predictor Random Forest
+The 8 predictor random forest model added a $\frac{\mbox{blue}}{\mbox{green}}$ predictor to the 7 predictor model. Figure \@ref(fig:rf8) displays the results of a different number of randomly selected predictors to be considered at each split in the tree. The optimal mtry value was 4 with an accuracy of 0.55. The variables with the higher predictive power in decreasing order were infrared, NDVI, and green band values predictors.
+
+```{r rf8, results="asis", echo=FALSE, fig.cap='Accuracy of the 8 predictor trained random forest model for different mtry numbers over 10-fold cross-validation.', out.width='70%', fig.align='center'}
+include_graphics("figure/rf8_mtry.png")
+```
+
+#### Best Random Forest
 
 Figure \@ref(fig:rfresults) compares the results of the models based on overall model accuracy in predicting the test data.
 
@@ -72,13 +97,15 @@ include_graphics("figure/rfresults.png")
 
 The model with the highest number of predictors included has a slightly higher median accuracy and mean accuracy than the 7 predictor model. A confusion matrix was constructed for each model averaging the entry counts over all ten cross validation resamples to investigate model performance just predicting Western redcedar tree pixels. Both the 7 and the 8 predictor models performed equally classifying Western redceder pixels, the 7 predictor model and the 8 predictor model had a prediction accuracy of 38%, while the 5 predictor model had 35%. Across all three models, Western redcedars tend to be inaccurately classified under douglas-firs, english oak, and norway maple trees.
 
-The training set with 8 predictors was selected for further tuning of the random forest model, to determine the ideal number of randomly selected predictors at each split. Figure \@ref(fig:rfmtry) displays a comparison of the accuracy of the number of tries considered at each split. The most accurate model uses 2 randomly selected predictors at each split, with a model accuracy of 0.545.
+Table \@ref(tab:resultsRF) compares the hyperparameters accross all random forest models.
 
-```{r rfmtry, results="asis", echo=FALSE, fig.cap="Comparison of number of randomly selected predictors for each split from random forest model with 8 predictors included", out.width='70%', fig.align='center'}
-include_graphics("figure/rfmtry.png")
+```{r resultsRF, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+results_r <- read.csv('~/tree_imaging/results_r.csv', check.names = F)
+
+knitr::kable(results_r, "latex", caption = "Accuracy of random forest models with different number of predictors and mtry determined by ten-fold cross validation.")
 ```
 
-
+### Support Vector Machine Tuning
 
 The `train` function has the `method = svmLinear/svmRadial/svmPoly` option to train a support vector machine model on the dataset to classify pixels into species of trees. This option also has parameters for cost, loss function, class weights, and normalized variables. For this project, three support vector machines were trained: linear, radial basis, and polynomial basis, and all three were specified to normalize the variables.
 
@@ -90,74 +117,56 @@ include_graphics("figure/svmresults.png")
 
 As with the random forest model comparisons, a confusion matrix was constructed using the average counts over all ten cross-validation resamples to obtain the model results predicting Western redcedars. The support vector machine model that performed best overall was the radial basis kernel model, and it had the highest prediction accuracy of the Western redcedar class, 41%. The polynomial basis kernel had a 34% prediction accuracy and the linear kernel had 32% accuracy for Western redcedar.
 
-Table \@ref(tab:resultsR) compares the hyperparameters accross all models.
+Table \@ref(tab:resultsSVM) compares the hyperparameters accross all support vector machine models. 
 
-```{r resultsR, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
-results_r <- read.csv('~/tree_imaging/results_r.csv', check.names = F)
+```{r resultsSVM, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
 results_s <- read.csv('~/tree_imaging/results_s.csv', check.names = F)
 
-# knitr::kable(results_r, "latex", caption = "Accuracy of random forest models with different number of predictors and model with best ntry parameter determined by ten-fold cross validation.")
-knitr::kable(list(results_r, results_s), "latex", caption = "Table of Hyperparameters", booktabs = T)
-# t1 <- kable(results_r, format = 'latex')
-# t2 <- kable(results_s, format = 'latex')
-# cat(c("\\begin{table}[h] \\centering ", 
-#       t1,
-#     "\\hspace{1cm} \\centering ",
-#       t2,
-#     "\\caption{My tables} \\end{table}"))  
+knitr::kable(results_s, "latex", caption = "Accuracy of support vector machine models with different kernels. Best parameter is determined by ten-fold cross validation.")
 ```
 
 
 The models are saved to be used for later prediction over the entire region of Portland.
 
-## Preparing Raster Images
-The training model has to be applied to the entire raster image to predict the location of Western redcedars, however, extracting all the pixels from raster images is a slow process. Filtering the rasters to keep vegetation and to recognize the difference between grass pixels and tree pixels alleviates the computational intensity of extracting all the pixels and improves the performance of the models.
+## Testing Models
 
-### Masking Vegetation
-The satellite images in RStudio need to be masked to reduce the number of pixels that the model has to classify and prevent the chance of a non-vegetation surface being predicted as a tree. A common mask applied to raster images is a Normalized Difference Vegetation Index (NDVI) mask. This index is a measure of the greenness of a pixel, with higher values indicating vegetation and lower values indicating infertile areas such as a rock. The formula for NDVI is $NDVI = \frac{NIR - Red}{NIR + Red}$. Figure \@ref(fig:ndvival) displays the density of NDVI values over the raster images. To remove the pixels that are not vegetation, an NDVI threshold is determined to be 0.00 to create a mask dividing the pixels into vegetation (1) and non-vegetation (0). When the trained model is applied to the raster image, it is applied to the masked raster image that only keeps pixels with NDVI mask values of 1.
+The best models from the random forest models and the support vector machine models were used to predict the tree type on the test dataset. The results for the overall accuracy and the prediction accuracy for Western redcedars are shown in Table \@ref(tab:resultsTest).
 
-```{r ndvival, results="asis", echo=FALSE, warning=F, message=F, fig.cap="Normalized Difference Vegetation Index (NDVI) is a measure of the greenness of a pixel. The histogram displays the frequency of the tree pixels' NDVI values. A good threshold for masking out the nonvegetation pixels is an NDVI of 0.", fig.width=4, fig.align='center'}
-ggplot(pixels_data, mapping = aes(x = ndvi)) +
-  geom_histogram(alpha = 0.6, fill = "blue") +
-  geom_vline(xintercept = 0.0) +
-  theme_minimal() + labs(x = "NDVI values", y = "frequency")
+```{r resultsTest, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+test_results <- read.csv('~/tree_imaging/test_results.csv', check.names = F)
+
+results_tab <- test_results %>%
+  summarise("RF Accuracy" = sum(Class == RF)/nrow(test_results), 
+            "SVM Accuracy" = sum(Class == SVM)/nrow(test_results))
+
+test_results_redceder <- test_results %>%
+  filter(Class %in% "Western Redcedar")
+
+results_redcedar_tab <- test_results_redceder %>%
+  summarise("RF Accuracy" = sum(Class == RF)/nrow(test_results), 
+            "SVM Accuracy" = sum(Class == SVM)/nrow(test_results))
+
+knitr::kable(results_tab, "latex", caption = "Overall accuracy of 8 predictor RF model compared to Radial SVM model on test data")
+knitr::kable(results_redcedar_tab, "latex", caption = "Western redcedar accuracy of 8 predictor RF model on test data")
 ```
 
-### Masking Grass
-<!-- Further preparation for applying the model to the entire mask involved creating grass polygons in QGIS to add a grass attribute in the model. Five fields of grass were outlined as polygons in QGIS. In RStudio, the pixels were extracted from the grass polygons for a total of 2,923 grass pixels. Training the model to also predict grass ensures that a field of grass will not be classified as a tree when applied to the entire raster image. -->
+The polygon prediction accuracy on the test dataset was also computed to see how pixels of the same tree were classified compared to individual pixel classification. A "correct" prediction was indicated if more than half the pixels in a polygon are correctly predicted. Table \@ref(tab:polyTab) displays the results over polygons in the test dataset.
 
-A second mask is applied to the NDVI masked raster image to distinguish tree pixels from grass pixels. Inspired by previous research, a grass index was created by averaging the values of the four bands, $GRASS = \frac{RED + BLUE + GREEN + NIR}{4}$  [@qian_new_2020]. Grass polygons were created in QGIS to add a grass attribute in the pixels dataset. Five fields of grass were outlined as polygons in QGIS. In RStudio, the pixels were extracted from the grass polygons for a total of 2,923 grass pixels. Figure \@ref(fig:grassval) displays how the average band values for the grass pixels differ from the other tree types average band values. Based on the figure, pixels in the raster image that have an average band value above 4900 are filtered out.  Masking the grass pixels ensures that a field of grass will not be classified as a tree when applied to the entire raster image
+```{r polyTab, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+poly_test_rf <- read.csv('~/tree_imaging/poly_test_rf.csv', check.names = F)
+poly_test_svm <- read.csv('~/tree_imaging/poly_test_svm.csv', check.names = F)
 
-```{r grassval, results="asis", echo=FALSE, warning=F, message=F, fig.cap="Average of band values distribution across different tree types in comparison with grass pixel average band values. Most grass pixels have an average value above 4900, so a mask is applied to the raster image to remove pixels with average values above this threshold.", fig.width=7, fig.align='center'}
-ggplot(pixels_data, mapping = aes(x = (ir + red + blue + green)/4, fill = Cmmn_Nm)) +
-  geom_density(alpha = 0.7) +
-  geom_vline(xintercept = 4900, color = "blue") +
-  scale_fill_brewer(palette = "Set2", name = "Tree Name") + theme_minimal()
+poly_test_rf <- poly_test_rf %>%
+  group_by(result) %>%
+  count(result)
+
+poly_test_svm <- poly_test_svm %>%
+  group_by(result) %>%
+  count(result)
+
+knitr::kable(poly_test_rf, "latex", caption = "Accuracy of 8 predictor random forest model for polygons in test data. A \'correct\' prediction is considered to be a polygon with more than half of the pixels correctly classified.")
+knitr::kable(poly_test_svm, "latex", caption = "Accuracy of radial support vector machine model for polygons in test data. A \'correct\' prediction is considered to be a polygon with more than half of the pixels correctly classified.")
 ```
-
-Figure \@ref(fig:beforeaftermask) displays a raster strip with every pixel included (top), only the pixels with NDVI values above 0.00 (middle), and only pixels with NDVI values above 0.00 and average band values below 4900 (bottom). Ideally, the bottom image is left with only the tree pixels in the image.
-
-```{r beforeaftermask, results="asis", echo=FALSE, fig.cap="A raster strip with every pixel included (top), only the pixels with NDVI values above 0.00 (middle), and only pixels with NDVI values above 0.00 and average band values below 4900 (bottom)", out.width='40%', fig.align='center'}
-include_graphics("figure/beforeaftermask.png")
-```
-
-### Masking Limitations
-
-The low resolution of the raster images cause shapes to appear blurry, and especially tree canopies that are close together appear as a single formation.
-
-Masked raster images were compared in QGIS and, in general, the masks are successful in keeping the forest pixels while still removing building structures and roads. If a field of grass is a brownish color, it gets removed, but some greener fields are not masked out. The masks consistently remove river pixels but not lake pixels if the lake is a greenish color. For example, Smith Lake in North Portland is considered an urban wetland, which signifies a body of water with a lot of vegetation. From the perspective of a satellite, this looks like a field of grass. However, the average band pixel values are less than 4900, so they are not masked out by the final GRASS mask stage, and instead are treated as tree pixels in the model (see Figure \@ref(fig:masklimit)).
-
-To address leftover grass pixels in the filtered raster image, access to lidar data would provide a method of determining the height of certain pixels. Setting a height threshold would ensure that grass pixels are removed while higher vegetation pixels are kept. This would also address the masks' limitations in removing lakes with high vegetation, since those pixels would not meet the threshold for height.
-
-```{r masklimit, results="asis", echo=FALSE, fig.cap="Satellite view of Smith Lake (top), after NDVI mask applied (middle), and NDVI mask and GRASS mask applied (bottom). The final masked image still contains parts of the lake because the aquatic vegetation fits the pixel values descriptions set by the masks.", out.width='40%', fig.align='center'}
-include_graphics("figure/masklimit.png")
-```
-
-
-
-## Modelling Tree Species in Portland
-
-After masking the raster images of the entire region of Portland, the pre-trained models are used to predict the tree species of individual pixels in the masked raster images. First the pixels are extracted from the raster and compiled into a dataset. Then the models are applied to predict the tree species per pixel in the dataset.
 
 ```{r include_packages_2, include = FALSE}
 # This chunk ensures that the thesisdown package is

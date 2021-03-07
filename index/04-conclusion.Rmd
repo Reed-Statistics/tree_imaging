@@ -1,6 +1,8 @@
 # Results {#results}
 
-These are the results.
+## Modelling Tree Species in Portland
+
+After masking the raster images of the entire region of Portland, the pre-trained models are used to predict the tree species of individual pixels in the masked raster images. First the pixels are extracted from the raster and compiled into a dataset. Then the models are applied to predict the tree species per pixel in the dataset.
 
 <!-- If we don't want Conclusion to have a chapter number next to it, we can add the `{-}` attribute. -->
 

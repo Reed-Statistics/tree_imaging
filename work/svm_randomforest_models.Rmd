@@ -38,12 +38,8 @@ train %>%
   count("Polygons" = length(unique(ID)))
 
 # test data
-test <- anti_join(pixels_data, train)
+test_full <- anti_join(pixels_data, train)
 
-```
-
-
-```{r}
 # adding different ratio predictors
 train <- train %>%
   dplyr::select(red, green, blue, ir, ndvi, Cmmn_Nm) %>%
@@ -51,7 +47,24 @@ train <- train %>%
          ir_red = ir/red,
          red_green = red/green,
          blue_green = blue/green)
-  
+
+test <- test_full %>%
+  dplyr::select(red, green, blue, ir, ndvi, Cmmn_Nm) %>%
+  mutate(red_blue = red/blue,
+         ir_red = ir/red,
+         red_green = red/green,
+         blue_green = blue/green)
+```
+
+```{r}
+# preprocess pca
+train_pca <- preProcess(dplyr::select(train, -Cmmn_Nm), method = c("center", "scale", "pca"))
+train_pca
+train_pca$method
+train_pca$rotation
+```
+
+```{r}
 # look at correlation matrix
 corr_matrix <- round(cor(train %>% select(-Cmmn_Nm)), 2)
 corrplot(corr_matrix, type = "upper", order = "hclust", 
@@ -112,20 +125,31 @@ ggplot(results, aes(x = Model, y = Accuracy, fill = Model)) +
   theme(axis.text.x = element_blank())
 
 confusionMatrix(rf_random3,  mode = "prec_recall")
+rf_random1[["finalModel"]]
+rf_random2[["finalModel"]]
+rf_random3[["finalModel"]]
+varImp(rf_random1)
+varImp(rf_random2)
+varImp(rf_random3)
 # rf_random1 western redcedar prediction accuracy: 0.33
 # rf_random2 western redcedar prediction accuracy: 0.37
 # rf_random3 western redcedar prediction accuracy: 0.37
 
-results_rf <- rbind(cbind(rf_random1$resample, Model = rep("5", nrow(rf_random1$resample))), 
-                 cbind(rf_random2$resample, Model = rep("7", nrow(rf_random2$resample))), 
-                 cbind(rf_random3$resample, Model = rep("8", nrow(rf_random3$resample))),
-                 cbind(rf_random$resample, Model = rep("8 ntry = 2", nrow(rf_random3$resample))))
+results_rf <- rbind(cbind(rf_random1$resample, Model = rep("5", 10), 
+                          mtry = rep(rf_random1$bestTune[1,1], 10)),
+                    cbind(rf_random2$resample, Model = rep("7", 10),
+                          mtry = rep(rf_random2$bestTune[1,1], 10)),
+                    cbind(rf_random3$resample, Model = rep("8", 10),
+                          mtry = rep(rf_random3$bestTune[1,1], 10)))
 ```
 
 
 ```{r}
+train <- train %>%
+  mutate(Cmmn_Nm = make.names(Cmmn_Nm))
+
 # 10 fold cross validation
-train_control <- trainControl(method = "cv", number = 10)
+train_control <- trainControl(method = "cv", number = 10, classProbs = T)
 
 # fit svm model with normalized variables
 svm1 <- train(Cmmn_Nm ~., data = train, method = "svmLinear", trControl = train_control,  preProcess = c("center","scale"))
@@ -162,10 +186,10 @@ confusionMatrix(svm1,  mode = "prec_recall")
 # combined hyperparameters results table
 results_r <- results_rf %>%
   mutate(Model = recode(as.character(Model), '5'= '5 predictors',
-                        '7' = '7 predictors', '8' = '8 predictors', 
-                        '8 ntry = 2' = '8 predictors with mtry = 2')) %>%
+                        '7' = '7 predictors', '8' = '8 predictors')) %>%
   group_by(Model) %>%
-  summarise("Accuracy" = round(mean(Accuracy), 4), "Kappa" = round(mean(Kappa), 4)) %>%
+  summarise("Accuracy" = round(mean(Accuracy), 4), "Kappa" = round(mean(Kappa), 4),
+            "mtry" = mean(mtry)) %>%
   rename("Random Forest Model" = Model)
 
 results_s <- results_svm %>%
@@ -180,53 +204,70 @@ results_s <- results_svm %>%
 # write.csv(results_s,'results_s.csv', row.names = F)
 ```
 
-
 ```{r}
-# boosted tree using caret package
-fitControl <- trainControl(## 10-fold CV
-                           method = "repeatedcv",
-                           number = 10,
-                           repeats = 3)
-set.seed(825)
-gbmFit1 <- train(Cmmn_Nm ~ ., data = train, 
-                 method = "gbm", 
-                 trControl = fitControl,
-                 ## This last option is actually one
-                 ## for gbm() that passes through
-                 verbose = FALSE)
-gbmFit1
+# test set results for overall prediction
+test_results <- data.frame(Class = test$Cmmn_Nm)
+test_results$RF <- predict(rf_random3, test)
+test_results$SVM <- predict(svm2, test)
+
+test_results %>%
+  summarise("RF Accuracy" = sum(Class == RF)/nrow(test_results), 
+            "SVM Accuracy" = sum(Class == SVM)/nrow(test_results))
+
+# test set results for predicting Western Redcedar
+test_results_redceder <- test_results %>%
+  filter(Class %in% "Western Redcedar")
+
+test_results_redceder %>%
+  summarise(rf_accuracy = sum(Class == RF)/nrow(test_results), 
+            svm_accuracy = sum(Class == SVM)/nrow(test_results))
+
+# overall test set results for polygons
+# join test results to full test data (with polygon info)
+test_dat <- cbind(test_full, test_results[,-1]) 
+
+# "correct" prediction if more than half pixels in polygon are correctly predicted
+
+# rf polygon results
+poly_test_rf <- test_dat %>%
+  group_by(ID) %>%
+  count(ID, same_rf = (RF == Cmmn_Nm), total = n()) %>%
+  pivot_wider(names_from = same_rf, values_from = n)
+
+poly_test_rf[is.na(poly_test_rf)] <- 0 # replace na with 0
+
+poly_test_rf <- poly_test_rf %>%
+  mutate(result = case_when(`TRUE` > `FALSE` ~ "correct",
+                                   `TRUE` <= `FALSE` ~ "incorrect"))
+
+poly_test_rf %>%
+  group_by(result) %>%
+  count(result)
+
+# svm polygon results
+poly_test_svm <- test_dat %>%
+  group_by(ID) %>%
+  count(ID, same_svm = (SVM == Cmmn_Nm), total = n()) %>%
+  pivot_wider(names_from = same_svm, values_from = n)
+
+poly_test_svm[is.na(poly_test_svm)] <- 0 # replace na with 0
+
+poly_test_svm <- poly_test_svm %>%
+  mutate(result = case_when(`TRUE` > `FALSE` ~ "correct",
+                                   `TRUE` <= `FALSE` ~ "incorrect"))
+
+poly_test_svm %>%
+  group_by(result) %>%
+  count(result)
+
+# save results
+# write.csv(test_results,'test_results.csv', row.names = F)
+# write.csv(poly_test_rf,'poly_test_rf.csv', row.names = F)
+# write.csv(poly_test_svm,'poly_test_svm.csv', row.names = F)
 ```
 
 Plot results
 ```{r}
-# combine predictions with test data
-test_dat <- cbind(yhat_rf, pixels_data[-train, ])
-
-# "accurate" tree guess if more than half pixels in polygon are accurately predicted
-poly_test_dat <- test_dat %>%
-  group_by(ID) %>%
-  count(ID, same = (yhat_rf == Cmmn_Nm), total = n())
-
-poly_test <- poly_test_dat %>%
-  pivot_wider(names_from = same, values_from = n)
-
-poly_test[is.na(poly_test)] <- 0 # replace na with 0
-
-sum(poly_test$`FALSE`)
-sum(poly_test$`TRUE`)
-
-poly_test_vector <- poly_test_dat %>%
-  dplyr::filter(n/total >= 0.5) %>%
-  dplyr::select(ID, same)
-
-poly_test_vector <- poly_test %>%
-  dplyr::mutate(result = case_when(`TRUE` > `FALSE` ~ "correct",
-                                   `TRUE` <= `FALSE` ~ "incorrect"))
-
-poly_test_vector %>%
-  group_by(result) %>%
-  count(result)
-
 # combine with latitude info from poly_reprojected in work/geographic_join.Rmd
 poly_join_reprojected@data <- poly_join_reprojected@data %>%
   left_join(poly_test_vector, by = c("id" = "ID"))
@@ -261,3 +302,18 @@ ggplot(data = poly_sf, aes(color = result)) +
   scale_color_viridis_d(direction = -1)
 ```
 
+```{r}
+# boosted tree using caret package
+fitControl <- trainControl(## 10-fold CV
+                           method = "repeatedcv",
+                           number = 10,
+                           repeats = 3)
+set.seed(825)
+gbmFit1 <- train(Cmmn_Nm ~ ., data = train, 
+                 method = "gbm", 
+                 trControl = fitControl,
+                 ## This last option is actually one
+                 ## for gbm() that passes through
+                 verbose = FALSE)
+gbmFit1
+```
