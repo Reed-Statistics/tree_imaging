@@ -9,8 +9,19 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 library(tidyverse)
+library(sf)
+library(raster)
+library(rgdal)
+library(tigris)
+library(spdplyr)
 ```
 
+```{r}
+# load city boundary shapefile
+or_cities <- places("OR")
+portland <- or_cities %>%
+  filter(NAME == "Portland")
+```
 
 ```{r}
 # load raster layer object
@@ -19,6 +30,13 @@ stack_b <- stack("planet/20200902_184429_1005_3B_AnalyticMS_clip.tif")
 stack_c <- stack("planet/20200902_183008_24_1065_3B_AnalyticMS_clip.tif")
 stack_d <- stack("planet/20200902_183006_18_1065_3B_AnalyticMS_clip.tif")
 stack_e <- stack("planet/20200902_184430_1005_3B_AnalyticMS_clip.tif")
+
+## crop and mask pixels outside portland
+stack_a <- crop(mask(stack_a, spTransform(portland, crs(stack_a))), extent(portland))
+stack_b <- crop(mask(stack_b, spTransform(portland, crs(stack_b))), extent(portland))
+stack_c <- crop(mask(stack_c, spTransform(portland, crs(stack_c))), extent(portland))
+stack_d <- crop(mask(stack_d, spTransform(portland, crs(stack_d))), extent(portland))
+stack_e <- crop(mask(stack_e, spTransform(portland, crs(stack_e))), extent(portland))
 
 # ndvi mask remove values below 0
 ndvi_a <- (stack_a[[4]] - stack_a[[1]]) / (stack_a[[4]] + stack_a[[1]])
@@ -37,10 +55,10 @@ ndvi_d[ndvi_d < 0] <- NA
 ndvi_e[ndvi_e < 0] <- NA
 
 ndvi_mask_a <- mask(stack_a, ndvi_a, filename = "ndvi_mask_a.tif", overwrite = T)
-ndvi_mask_b <- mask(stack_b, ndvi_b, filename = "ndvi_mask_b.tif")
-ndvi_mask_c <- mask(stack_c, ndvi_c, filename = "ndvi_mask_c.tif")
-ndvi_mask_d <- mask(stack_d, ndvi_d, filename = "ndvi_mask_d.tif")
-ndvi_mask_e <- mask(stack_e, ndvi_e, filename = "ndvi_mask_e.tif")
+ndvi_mask_b <- mask(stack_b, ndvi_b, filename = "ndvi_mask_b.tif", overwrite = T)
+ndvi_mask_c <- mask(stack_c, ndvi_c, filename = "ndvi_mask_c.tif", overwrite = T)
+ndvi_mask_d <- mask(stack_d, ndvi_d, filename = "ndvi_mask_d.tif", overwrite = T)
+ndvi_mask_e <- mask(stack_e, ndvi_e, filename = "ndvi_mask_e.tif", overwrite = T)
 ```
 
 ```{r}
@@ -65,17 +83,16 @@ gi_d[gi_d > 4900] <- NA
 gi_e[gi_e > 4900] <- NA
 
 gi_mask_a <- mask(stack_a, gi_a, filename = "grass_mask_a.tif", overwrite = T)
-gi_mask_b <- mask(stack_b, gi_b, filename = "grass_mask_b.tif")
-gi_mask_c <- mask(stack_c, gi_c, filename = "grass_mask_c.tif")
-gi_mask_d <- mask(stack_d, gi_d, filename = "grass_mask_d.tif")
-gi_mask_e <- mask(stack_e, gi_e, filename = "grass_mask_e.tif")
+gi_mask_b <- mask(stack_b, gi_b, filename = "grass_mask_b.tif", overwrite = T)
+gi_mask_c <- mask(stack_c, gi_c, filename = "grass_mask_c.tif", overwrite = T)
+gi_mask_d <- mask(stack_d, gi_d, filename = "grass_mask_d.tif", overwrite = T)
+gi_mask_e <- mask(stack_e, gi_e, filename = "grass_mask_e.tif", overwrite = T)
 
 plotRGB(gi_mask_a, main = "ndvi and grass mask", axes = FALSE, box = FALSE)
 
 ?writeRaster
 # save as geotif
 ```
-
 
 ```{r}
 # look at ndvi/grass values from pixels dataset to determine threshold

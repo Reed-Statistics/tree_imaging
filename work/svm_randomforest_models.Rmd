@@ -209,6 +209,9 @@ results_s$Parameter <- c(paste("C =", svm1$bestTune[1,1]),
 # save results
 # write.csv(results_r,'results_r.csv', row.names = F)
 # write.csv(results_s,'results_s.csv', row.names = F)
+# save best models
+# saveRDS(rf_random3, "rf_model.rds")
+# saveRDS(svm2, "svm_model.rds")
 ```
 
 ```{r}
