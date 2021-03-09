@@ -7,10 +7,15 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(raster)
+library(caret)
+library(tidyverse)
+library(spdplyr)
+library(doParallel)
 ```
 
 ```{r}
-# load raster images
+# load masked raster images
 stack_a <- stack("grass_mask_a.tif")
 stack_b <- stack("grass_mask_b.tif")
 stack_c <- stack("grass_mask_c.tif")
@@ -18,24 +23,64 @@ stack_d <- stack("grass_mask_d.tif")
 stack_e <- stack("grass_mask_e.tif")
 
 # load trained models
-load("tree_name_rf.RData")
+rf_model <- readRDS("rf_model.rds")
+svm_model <- readRDS("svm_model.rds")
+```
 
-# extract from raster
-value_a <- as.data.frame(na.omit(getValues(stack_a)))
-value_b <- as.data.frame(na.omit(getValues(stack_b)))
-value_c <- as.data.frame(na.omit(getValues(stack_c)))
-value_d <- as.data.frame(na.omit(getValues(stack_d)))
-value_e <- as.data.frame(na.omit(getValues(stack_e)))
 
-names <- c("red", "green", "blue", "ir")
-colnames(value_a) <- names
+```{r}
+# predictions on a raster object
+stack_a <- stack(stack_a, ((stack_a[[4]] - stack_a[[1]])/(stack_a[[4]] + stack_a[[1]])),
+                 (stack_a[[1]]/stack_a[[3]]), (stack_a[[4]]/stack_a[[1]]),
+                 (stack_a[[1]]/stack_a[[2]]), (stack_a[[3]]/stack_a[[2]]))
+names(stack_a) <- c("red", "green", "blue", "ir", "ndvi", "red_blue", 
+                    "ir_red", "red_green", "blue_green")
+
+# baby example prediction
+small_stack <- crop(stack_a, extent(515000, 515100, 5050000, 5050100))
+results <- raster::predict(small_stack, rf_model, progress = "text")
+raster::spplot(results)
+
+# whole image prediction
+cl <- makeCluster(3, type = "FORK")  
+registerDoParallel(cl)  
+start <- proc.time()
+results <- raster::predict(stack_a, rf_model, progress = "text")
+do_loop <- proc.time() - start
+stopCluster(cl)
+# about 10 min
+
+raster::spplot(results)
 ```
 
 ```{r}
-# predict
-yhat_rf <- predict(tree_name_rf, newdata = val_a)
+# prep rasters function
+predRaster <- function(stack) {
+  stack <- stack(stack, ((stack[[4]] - stack[[1]])/(stack[[4]] + stack[[1]])),
+                 (stack[[1]]/stack[[3]]), (stack[[4]]/stack[[1]]),
+                 (stack[[1]]/stack[[2]]), (stack[[3]]/stack[[2]]))
+  names(stack) <- c("red", "green", "blue", "ir", "ndvi", "red_blue", 
+                    "ir_red", "red_green", "blue_green")
+  cl <- makeCluster(3, type = "FORK")  
+  registerDoParallel(cl)  
+  results_RF <- raster::predict(stack, rf_model, progress = "text")
+  results_SVM <- raster::predict(stack, svm_model, progress = "text")
+  results <- stack(results_RF, results_SVM)
+  stopCluster(cl)
+  return(results)
+}
+
+results_small <- predRaster(small_stack[[1:4]])
+raster::spplot(results_small)
+
+results_a <- predRaster(stack_a[[1:4]]) # svm more than 2 hrs, didn't finish
+results_b <- predRaster(stack_b[[1:4]])
+results_c <- predRaster(stack_c[[1:4]])
+results_d <- predRaster(stack_d[[1:4]])
+results_e <- predRaster(stack_e[[1:4]])
 ```
 
 
+https://www.r-bloggers.com/2020/05/threading-and-caret-burning-your-cpu-to-improve-model-training-speed/
 http://amsantac.co/blog/en/2015/11/28/classification-r.html
 https://geoscripting-wur.github.io/AdvancedRasterAnalysis/
