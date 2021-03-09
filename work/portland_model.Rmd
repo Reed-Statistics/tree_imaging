@@ -16,15 +16,15 @@ library(doParallel)
 
 ```{r}
 # load masked raster images
-stack_a <- stack("grass_mask_a.tif")
-stack_b <- stack("grass_mask_b.tif")
-stack_c <- stack("grass_mask_c.tif")
-stack_d <- stack("grass_mask_d.tif")
-stack_e <- stack("grass_mask_e.tif")
+stack_a <- stack("data/grass_mask_a.tif")
+stack_b <- stack("data/grass_mask_b.tif")
+stack_c <- stack("data/grass_mask_c.tif")
+stack_d <- stack("data/grass_mask_d.tif")
+stack_e <- stack("data/grass_mask_e.tif")
 
 # load trained models
-rf_model <- readRDS("rf_model.rds")
-svm_model <- readRDS("svm_model.rds")
+rf_model <- readRDS("data/rf_model.rds")
+svm_model <- readRDS("data/svm_model.rds")
 ```
 
 
@@ -73,11 +73,21 @@ predRaster <- function(stack) {
 results_small <- predRaster(small_stack[[1:4]])
 raster::spplot(results_small)
 
-results_a <- predRaster(stack_a[[1:4]]) # svm more than 2 hrs, didn't finish
-results_b <- predRaster(stack_b[[1:4]])
-results_c <- predRaster(stack_c[[1:4]])
-results_d <- predRaster(stack_d[[1:4]])
-results_e <- predRaster(stack_e[[1:4]])
+results_a <- predRaster(stack_a) # 41min
+results_b <- predRaster(stack_b)
+results_c <- predRaster(stack_c)
+results_d <- predRaster(stack_d)
+results_e <- predRaster(stack_e)
+
+# save results
+#stackSave(results_a, "data/results_a")
+#stackSave(results_b, "data/results_b")
+stackSave(results_c, "data/results_c")
+stackSave(results_d, "data/results_d")
+stackSave(results_e, "data/results_e")
+
+# plot results
+raster::spplot(results_a)
 ```
 
 
