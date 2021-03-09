@@ -80,14 +80,21 @@ results_d <- predRaster(stack_d)
 results_e <- predRaster(stack_e)
 
 # save results
-#stackSave(results_a, "data/results_a")
-#stackSave(results_b, "data/results_b")
-stackSave(results_c, "data/results_c")
-stackSave(results_d, "data/results_d")
-stackSave(results_e, "data/results_e")
+# writeRaster(results_a,"data/results_a.grd", format = "raster")
+# writeRaster(results_b,"data/results_b.grd", format = "raster")
+# writeRaster(results_c,"data/results_c.grd", format = "raster")
+# writeRaster(results_d,"data/results_d.grd", format = "raster")
+# writeRaster(results_e,"data/results_e.grd", format = "raster")
+
+# load results
+results_a <- stack("data/results_a.grd")
+results_b <- stack("data/results_b.grd")
+results_c <- stack("data/results_c.grd")
+results_d <- stack("data/results_d.grd")
+results_e <- stack("data/results_e.grd")
 
 # plot results
-raster::spplot(results_a)
+raster::spplot(results_e)
 ```
 
 
