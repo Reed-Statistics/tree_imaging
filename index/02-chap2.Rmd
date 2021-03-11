@@ -72,7 +72,7 @@ include_graphics("figure/redcedar.png")
 ```
 
 ```{r polyCounts, echo=F, warning=F, message=F, fig.cap='Total polygons per raster strip'}
-pixels_data <- read.csv('~/tree_imaging/pixels_data.csv')
+pixels_data <- read.csv('~/tree_imaging/data/pixels_data.csv')
 poly_totals <- pixels_data %>%
   group_by("Raster Strip" = rstrip) %>%
   count("Polygons" = length(unique(ID)))

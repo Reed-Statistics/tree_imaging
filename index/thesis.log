@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.1.7)  7 MAR 2021 09:28
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.1.7)  11 MAR 2021 13:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1039,7 +1039,7 @@ ist/fonts/type1/public/lm/lmsy8.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf
 -dist/fonts/type1/public/lm/lmtk10.pfb></Users/sarahkmaebius/Library/TinyTeX/te
 xmf-dist/fonts/type1/public/lm/lmtt12.pfb></Users/sarahkmaebius/Library/TinyTeX
 /texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on thesis.pdf (53 pages, 4183862 bytes).
+Output written on thesis.pdf (53 pages, 4183861 bytes).
 PDF statistics:
  722 PDF objects out of 1000 (max. 8388607)
  610 compressed objects within 7 object streams

@@ -12,6 +12,8 @@ library(caret)
 library(tidyverse)
 library(spdplyr)
 library(doParallel)
+library(pdxTrees)
+library(sf)
 ```
 
 ```{r}
@@ -38,7 +40,8 @@ names(stack_a) <- c("red", "green", "blue", "ir", "ndvi", "red_blue",
 
 # baby example prediction
 small_stack <- crop(stack_a, extent(515000, 515100, 5050000, 5050100))
-results <- raster::predict(small_stack, rf_model, progress = "text")
+results <- raster::predict(small_stack, rf_model, progress = "text", 
+                           factors = levels(small_stack))
 raster::spplot(results)
 
 # whole image prediction
@@ -85,7 +88,9 @@ results_e <- predRaster(stack_e)
 # writeRaster(results_c,"data/results_c.grd", format = "raster")
 # writeRaster(results_d,"data/results_d.grd", format = "raster")
 # writeRaster(results_e,"data/results_e.grd", format = "raster")
+```
 
+```{r}
 # load results
 results_a <- stack("data/results_a.grd")
 results_b <- stack("data/results_b.grd")
@@ -93,8 +98,44 @@ results_c <- stack("data/results_c.grd")
 results_d <- stack("data/results_d.grd")
 results_e <- stack("data/results_e.grd")
 
+rf_model[["levels"]]
+names(results_a) <- c("results_RF", "results_SVM")
+
+# load street trees western redcedars
+pdxTrees_parks <- get_pdxTrees_parks()
+pdxTrees_streets <- get_pdxTrees_streets()
+
+redcedar_dat <- pdxTrees_streets %>%
+  filter(Common_Name %in% "Western Redcedar")
+coordinates(redcedar_dat) <- c("Longitude", "Latitude")
+proj4string(redcedar_dat) <- CRS("+init=epsg:4326")
+dat_transformed <- spTransform(redcedar_dat, CRS("+proj=utm +zone=10 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"))
+spplot(spmap.to.lev(dat_transformed))
+
+
 # plot results
-raster::spplot(results_e)
+proj_a <- projectRaster(results_a, crs = "+proj=utm +zone=10 +ellps=WGS84 +datum=WGS84 +units=m +no_defs", method = "ngb")
+crs(results) <- "+proj=utm +zone=10 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
+r_pts <- rasterToPoints(proj_a, spatial=TRUE)
+proj4string(r_pts)
+
+# # reproject sp object
+r_pts <- spTransform(r_pts, CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
+proj4string(r_pts)
+
+ra_df <- as.data.frame(results_a, xy = T, na.rm = T) %>%
+  filter(results_RF == 7)
+
+ggplot(data.frame(dat_transformed), aes(Longitude, Latitude)) + 
+  geom_point(shape = 3) +
+  geom_point(data = ra_df, mapping = aes(x = x, y), color = "turquoise", alpha = 0.4) +
+  theme_minimal()
+
+spplot(proj_a)
+spplot(redcedar_dat)
+
+plot(redcedar_dat)
+plot(results_a[[1]], add = T)
 ```
 
 

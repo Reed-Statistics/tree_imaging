@@ -100,7 +100,7 @@ The model with the highest number of predictors included has a slightly higher m
 Table \@ref(tab:resultsRF) compares the hyperparameters accross all random forest models.
 
 ```{r resultsRF, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
-results_r <- read.csv('~/tree_imaging/results_r.csv', check.names = F)
+results_r <- read.csv('~/tree_imaging/data/results_r.csv', check.names = F)
 
 knitr::kable(results_r, "latex", caption = "Accuracy of random forest models with different number of predictors and mtry determined by ten-fold cross validation.")
 ```
@@ -140,7 +140,7 @@ As with the random forest model comparisons, a confusion matrix was constructed 
 Table \@ref(tab:resultsSVM) compares the hyperparameters accross all support vector machine models. 
 
 ```{r resultsSVM, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
-results_s <- read.csv('~/tree_imaging/results_s.csv', check.names = F)
+results_s <- read.csv('~/tree_imaging/data/results_s.csv', check.names = F)
 
 knitr::kable(results_s, "latex", caption = "Accuracy of support vector machine models with different kernels. Best parameter is determined by ten-fold cross validation.")
 ```
@@ -153,7 +153,7 @@ The models are saved to be used for later prediction over the entire region of P
 The best models from the random forest models and the support vector machine models were used to predict the tree type on the test dataset. The results for the overall accuracy and the prediction accuracy for Western redcedars are shown in Table \@ref(tab:resultsTest).
 
 ```{r resultsTest, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
-test_results <- read.csv('~/tree_imaging/test_results.csv', check.names = F)
+test_results <- read.csv('~/tree_imaging/data/test_results.csv', check.names = F)
 
 results_tab <- test_results %>%
   summarise("RF Accuracy" = sum(Class == RF)/nrow(test_results), 
@@ -163,8 +163,8 @@ test_results_redceder <- test_results %>%
   filter(Class %in% "Western Redcedar")
 
 results_redcedar_tab <- test_results_redceder %>%
-  summarise("RF Accuracy" = sum(Class == RF)/nrow(test_results), 
-            "SVM Accuracy" = sum(Class == SVM)/nrow(test_results))
+  summarise("RF Accuracy" = sum(Class == RF)/nrow(test_results_redceder), 
+            "SVM Accuracy" = sum(Class == SVM)/nrow(test_results_redceder))
 
 knitr::kable(results_tab, "latex", caption = "Overall accuracy of 8 predictor RF model compared to Radial SVM model on test data")
 knitr::kable(results_redcedar_tab, "latex", caption = "Western redcedar accuracy of 8 predictor RF model on test data")
@@ -173,8 +173,8 @@ knitr::kable(results_redcedar_tab, "latex", caption = "Western redcedar accuracy
 The polygon prediction accuracy on the test dataset was also computed to see how pixels of the same tree were classified compared to individual pixel classification. A "correct" prediction was indicated if more than half the pixels in a polygon are correctly predicted. Table \@ref(tab:polyTab) displays the results over polygons in the test dataset.
 
 ```{r polyTab, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
-poly_test_rf <- read.csv('~/tree_imaging/poly_test_rf.csv', check.names = F)
-poly_test_svm <- read.csv('~/tree_imaging/poly_test_svm.csv', check.names = F)
+poly_test_rf <- read.csv('~/tree_imaging/data/poly_test_rf.csv', check.names = F)
+poly_test_svm <- read.csv('~/tree_imaging/data/poly_test_svm.csv', check.names = F)
 
 poly_test_rf <- poly_test_rf %>%
   group_by(result) %>%
