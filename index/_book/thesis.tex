@@ -260,7 +260,7 @@ This thesis follows along with the methods in (Fricker et al., 2019) for combini
 \hypertarget{a-statistical-learning-approach-to-identifying-location-of-western-redcedars}{%
 \subsection{A Statistical Learning Approach to Identifying Location of Western Redcedars}\label{a-statistical-learning-approach-to-identifying-location-of-western-redcedars}}
 
-This work combines RGB imagery data from Planet.com with ground level tree data from the RStudio \texttt{pdxTrees} library and applies random forest and support vector machine classification methods to predict the location of tree species (specifically western redcedars) in Portland, Oregon and model the condition of western redcedars to ultimately understand the cause of death in this species. Chapter \ref{data} describes the two levels of data in this research: ground level and pixel level data, where the data comes from, and how the data is combined for modeling. Chapter \ref{methods} discusses the process behind training random forest and support vector machine models. Chapter \ref{results} summarizes how the data is prepared for the final model and the outcome of the research.
+This work combines RGB imagery data from Planet.com with ground level tree data from the RStudio \texttt{pdxTrees} library and applies random forest and support vector machine classification methods to predict the location of tree species (specifically western redcedars) in Portland, Oregon and model the condition of western redcedars to ultimately understand the cause of death in this species. Chapter \ref{data} describes the two levels of data in this research: ground level and pixel level data, where the data comes from, and how the data is combined for modeling. Chapter \ref{methods} discusses the process behind training random forest and support vector machine models. Chapter \ref{results} summarizes how the data is prepared for the final model and the outcome of the research followed by a discussion and conclusion.
 
 \hypertarget{data}{%
 \chapter{Data}\label{data}}
@@ -510,7 +510,7 @@ Figure \ref{fig:pixDensity} displays the range of reflection intensity pixel val
 \hypertarget{preparing-raster-images}{%
 \section{Preparing Raster Images}\label{preparing-raster-images}}
 
-The training model has to be applied to the entire raster image to predict the location of Western redcedars, however, extracting all the pixels from raster images is a slow process. Filtering the rasters to keep vegetation and to recognize the difference between grass pixels and tree pixels alleviates the computational intensity of extracting all the pixels and improves the performance of the models.
+The training model has to be applied to the entire raster image to predict the location of Western redcedars, however, extracting all the pixels from raster images is a slow process. Filtering the rasters to keep vegetation and to recognize the difference between grass pixels and tree pixels alleviates the computational intensity of extracting all the pixels and improves the performance of the models. To reduce the size of computations, all five raster strips are masked and cropped to only include pixels within the city boundary of Portland, since that is the region of interest, and that is the extent of the ground level data.
 
 \hypertarget{masking-vegetation}{%
 \subsection{Masking Vegetation}\label{masking-vegetation}}
@@ -791,7 +791,7 @@ RF Accuracy & SVM Accuracy\\
 \end{table}
 \begin{table}
 
-\caption{\label{tab:resultsTest}Western redcedar accuracy of 8 predictor RF model on test data}
+\caption{\label{tab:resultsTest}Western redcedar accuracy of 8 predictor RF model compared to Radial SVM model on test data}
 \centering
 \begin{tabular}[t]{r|r}
 \hline
@@ -833,11 +833,40 @@ incorrect & 416\\
 \hypertarget{results}{%
 \chapter{Results}\label{results}}
 
+\hypertarget{training-results}{%
+\section{Training Results}\label{training-results}}
+
+The best hyperparameters settings for the random forest training model were an mtry value of 4 predictors at each split and the following predictors: red, green, blue, infrared, NDVI, \(\frac{\mbox{red}}{\mbox{green}}\), \(\frac{\mbox{red}}{\mbox{blue}}\), \(\frac{\mbox{blue}}{\mbox{green}}\). This model had a training predictive accuracy of 0.55 overall and 0.38 for Western redcedars specifically. On the test dataset, this model still accurately predicted 55\% of the pixels, while the accuracy for predicting more than half the pixels correctly in the same polygon was 32\%. The selected hyperparameter for the support vector machine model was a radial basis kernel with cost equal to 16 and \(\sigma = 0.25\). The radial support vector machine had a training accuracy of 0.56 overall, 0.41 for just Western redcedars, and testing accuracy of 0.56 overall and 0.32 for Western redcedar pixels. For polygon predictions, the radial support vector machine had an accuracy of 36\%. Between the random forest model and the support vector machine model, the radial basis kernel support vector machine model slightly outperforms the random forest 8 predictor model in overall accuracy, but the random forest has a slightly higher performance in predicting Western redcedars. Since these models produced similar results, both models are used to proceed with the final model over Portland.
+
 \hypertarget{modelling-tree-species-in-portland}{%
 \section{Modelling Tree Species in Portland}\label{modelling-tree-species-in-portland}}
 
-After masking the raster images of the entire region of Portland, the pre-trained models are used to predict the tree species of individual pixels in the masked raster images. First the pixels are extracted from the raster and compiled into a dataset. Then the models are applied to predict the tree species per pixel in the dataset.
+After masking the raster images of the entire region of Portland, the pre-trained models are used to predict the tree species of individual pixels in the masked raster images. The \texttt{predict.raster} function from RStudio's \texttt{raster} package takes a model and applying that model to each cell of the raster, leaving a raster with tree classification predictions. This function is used to predict tree species over all five raster strips, and the raster strips are merged to display predictions for the entire city. Figure \ref{fig:rfPortland} displays the tree classification predictions given by the optimal random forest model over Portland and figure \ref{fig:svmPortland} displays the predictions from the support vector machine model.
+\begin{figure}
 
+{\centering \includegraphics[width=0.7\linewidth]{figure/rfPortland} 
+
+}
+
+\caption{Model tree classification predictions over entire Portland region using the random forest model with 8 predictors.}\label{fig:rfPortland}
+\end{figure}
+\begin{figure}
+
+{\centering \includegraphics[width=0.7\linewidth]{figure/svmPortland} 
+
+}
+
+\caption{Model tree classification predictions over entire Portland region using the support vector machine model with radial basis kernel.}\label{fig:svmPortland}
+\end{figure}
+To assess the performance of the model over the Portland region, the results are compared to the remaining Western redcedars from \texttt{pdxTrees} both street and park data. The shapefiles for \texttt{pdxTrees} Western redcedars ground data are mapped over the classified pixel predictions, and the number of correctly and incorrectly classified pixels is recorded. Figure \ref{fig:resultsToStreet} visualizes this comparison.
+\begin{figure}
+
+{\centering \includegraphics[width=0.7\linewidth]{figure/resultsToStreet} 
+
+}
+
+\caption{Comparison of Wester redcedar random forest pixel predictions to Western redcedar trees from pdxTrees.}\label{fig:resultsToStreet}
+\end{figure}
 \appendix
 
 \hypertarget{the-first-appendix}{%

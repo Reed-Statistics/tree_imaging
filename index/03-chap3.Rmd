@@ -167,7 +167,7 @@ results_redcedar_tab <- test_results_redceder %>%
             "SVM Accuracy" = sum(Class == SVM)/nrow(test_results_redceder))
 
 knitr::kable(results_tab, "latex", caption = "Overall accuracy of 8 predictor RF model compared to Radial SVM model on test data")
-knitr::kable(results_redcedar_tab, "latex", caption = "Western redcedar accuracy of 8 predictor RF model on test data")
+knitr::kable(results_redcedar_tab, "latex", caption = "Western redcedar accuracy of 8 predictor RF model compared to Radial SVM model on test data")
 ```
 
 The polygon prediction accuracy on the test dataset was also computed to see how pixels of the same tree were classified compared to individual pixel classification. A "correct" prediction was indicated if more than half the pixels in a polygon are correctly predicted. Table \@ref(tab:polyTab) displays the results over polygons in the test dataset.

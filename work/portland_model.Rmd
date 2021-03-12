@@ -14,6 +14,7 @@ library(spdplyr)
 library(doParallel)
 library(pdxTrees)
 library(sf)
+library(tmap)
 ```
 
 ```{r}
@@ -136,9 +137,17 @@ spplot(redcedar_dat)
 
 plot(redcedar_dat)
 plot(results_a[[1]], add = T)
+
+# if you have a list of Raster objects, you can use do.call
+r_list_RF <- list(results_a[[1]], results_b[[1]])
+r_list_SVM <- list(results_a[[2]], results_b[[2]])
+m_RF <- do.call(merge, r_list_RF)
+m_SVM <- do.call(merge, r_list_SVM)
+plot(m_RF)
+plot(m_SVM)
 ```
 
-
+https://mgimond.github.io/Spatial/mapping-data-in-r.html
 https://www.r-bloggers.com/2020/05/threading-and-caret-burning-your-cpu-to-improve-model-training-speed/
 http://amsantac.co/blog/en/2015/11/28/classification-r.html
 https://geoscripting-wur.github.io/AdvancedRasterAnalysis/
