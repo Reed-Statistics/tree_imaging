@@ -172,7 +172,7 @@ include_graphics("figure/masklimit.png")
 
 
 
-<!-- <!-- Required to number equations in HTML files --> -->
+<!-- <!-- Required to number equations in HTML files --> 
 <!-- <script type="text/x-mathjax-config"> -->
 <!-- MathJax.Hub.Config({ -->
 <!--   TeX: { equationNumbers: { autoNumber: "AMS" } } -->

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.1.7)  12 MAR 2021 13:22
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.1.7)  16 MAR 2021 09:46
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -870,19 +870,19 @@ Chapter 2.
 <figure/corrmatrix.png, id=481, 1514.65875pt x 1178.4025pt>
 File: figure/corrmatrix.png Graphic file (type png)
 <use figure/corrmatrix.png>
-Package pdftex.def Info: figure/corrmatrix.png  used on input line 622.
+Package pdftex.def Info: figure/corrmatrix.png  used on input line 620.
 (pdftex.def)             Requested size: 303.53267pt x 236.14383pt.
 [19]
 <figure/rf5_mtry.png, id=488, 1313.90875pt x 982.67125pt>
 File: figure/rf5_mtry.png Graphic file (type png)
 <use figure/rf5_mtry.png>
-Package pdftex.def Info: figure/rf5_mtry.png  used on input line 648.
+Package pdftex.def Info: figure/rf5_mtry.png  used on input line 646.
 (pdftex.def)             Requested size: 303.53267pt x 227.01425pt.
 [20 <./figure/corrmatrix.png>]
 <figure/rf7_mtry.png, id=498, 1048.91875pt x 871.255pt>
 File: figure/rf7_mtry.png Graphic file (type png)
 <use figure/rf7_mtry.png>
-Package pdftex.def Info: figure/rf7_mtry.png  used on input line 660.
+Package pdftex.def Info: figure/rf7_mtry.png  used on input line 658.
 (pdftex.def)             Requested size: 303.53267pt x 252.11241pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -891,7 +891,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 <figure/rf8_mtry.png, id=507, 953.5625pt x 791.95876pt>
 File: figure/rf8_mtry.png Graphic file (type png)
 <use figure/rf8_mtry.png>
-Package pdftex.def Info: figure/rf8_mtry.png  used on input line 672.
+Package pdftex.def Info: figure/rf8_mtry.png  used on input line 670.
 (pdftex.def)             Requested size: 303.53267pt x 252.09062pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -900,7 +900,7 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 <figure/rfresults.png, id=516, 1273.75874pt x 1015.795pt>
 File: figure/rfresults.png Graphic file (type png)
 <use figure/rfresults.png>
-Package pdftex.def Info: figure/rfresults.png  used on input line 684.
+Package pdftex.def Info: figure/rfresults.png  used on input line 682.
 (pdftex.def)             Requested size: 303.53267pt x 242.0598pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -909,18 +909,18 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 <figure/svm2.png, id=533, 866.23625pt x 719.68875pt>
 File: figure/svm2.png Graphic file (type png)
 <use figure/svm2.png>
-Package pdftex.def Info: figure/svm2.png  used on input line 725.
+Package pdftex.def Info: figure/svm2.png  used on input line 723.
 (pdftex.def)             Requested size: 303.53267pt x 252.18036pt.
 <figure/svm3.png, id=535, 1330.9725pt x 1084.05pt>
 File: figure/svm3.png Graphic file (type png)
 <use figure/svm3.png>
-Package pdftex.def Info: figure/svm3.png  used on input line 737.
+Package pdftex.def Info: figure/svm3.png  used on input line 735.
 (pdftex.def)             Requested size: 303.53267pt x 247.20897pt.
 [25 <./figure/svm2.png>]
 <figure/svmresults.png, id=549, 1291.82625pt x 1115.16624pt>
 File: figure/svmresults.png Graphic file (type png)
 <use figure/svmresults.png>
-Package pdftex.def Info: figure/svmresults.png  used on input line 749.
+Package pdftex.def Info: figure/svmresults.png  used on input line 747.
 (pdftex.def)             Requested size: 303.53267pt x 262.01306pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -929,88 +929,90 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 ]
 Chapter 3.
-<figure/rfPortland.png, id=582, 1443.3925pt x 891.33pt>
+<figure/rfPortland.png, id=582, 1553.805pt x 1575.8875pt>
 File: figure/rfPortland.png Graphic file (type png)
 <use figure/rfPortland.png>
-Package pdftex.def Info: figure/rfPortland.png  used on input line 847.
-(pdftex.def)             Requested size: 303.53267pt x 187.42963pt.
-<figure/svmPortland.png, id=583, 1443.3925pt x 891.33pt>
+Package pdftex.def Info: figure/rfPortland.png  used on input line 845.
+(pdftex.def)             Requested size: 303.53267pt x 307.83786pt.
+<figure/svmPortland.png, id=583, 1413.28pt x 1432.35126pt>
 File: figure/svmPortland.png Graphic file (type png)
 <use figure/svmPortland.png>
-Package pdftex.def Info: figure/svmPortland.png  used on input line 855.
-(pdftex.def)             Requested size: 303.53267pt x 187.42963pt.
+Package pdftex.def Info: figure/svmPortland.png  used on input line 853.
+(pdftex.def)             Requested size: 303.53267pt x 307.62167pt.
 
 Underfull \vbox (badness 1297) has occurred while \output is active []
 
 [31]
-<figure/resultsToStreet.png, id=591, 2296.58pt x 1421.31pt>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[32 <./figure/rfPortland.png>]
+<figure/resultsToStreet.png, id=596, 1509.64pt x 1575.8875pt>
 File: figure/resultsToStreet.png Graphic file (type png)
 <use figure/resultsToStreet.png>
-Package pdftex.def Info: figure/resultsToStreet.png  used on input line 864.
-(pdftex.def)             Requested size: 303.53267pt x 187.83472pt.
+Package pdftex.def Info: figure/resultsToStreet.png  used on input line 862.
+(pdftex.def)             Requested size: 303.53267pt x 316.8311pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[32 <./figure/rfPortland.png> <./figure/svmPortland.png>] [33 <./figure/results
-ToStreet.png>] [34
-
-]
+[33 <./figure/svmPortland.png>] [34 <./figure/resultsToStreet.png>]
 Appendix A.
 
-Package xcolor Warning: Incompatible color definition on input line 878.
+Package xcolor Warning: Incompatible color definition on input line 876.
 
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 883.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 881.
+
+Package xcolor Warning: Incompatible color definition on input line 887.
+
+
+Package xcolor Warning: Incompatible color definition on input line 887.
+
+
+LaTeX Warning: Reference `ref-labels' on page 35 undefined on input line 888.
+
 
 Package xcolor Warning: Incompatible color definition on input line 889.
-
-
-Package xcolor Warning: Incompatible color definition on input line 889.
-
-
-LaTeX Warning: Reference `ref-labels' on page 35 undefined on input line 890.
-
-
-Package xcolor Warning: Incompatible color definition on input line 891.
 
 LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
-898.
+896.
 (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 
-Package xcolor Warning: Incompatible color definition on input line 964.
+Package xcolor Warning: Incompatible color definition on input line 962.
 
 
-Package xcolor Warning: Incompatible color definition on input line 964.
+Package xcolor Warning: Incompatible color definition on input line 962.
 
 
-Package xcolor Warning: Incompatible color definition on input line 964.
+Package xcolor Warning: Incompatible color definition on input line 962.
 
-[35]
+[35
 
-Package xcolor Warning: Incompatible color definition on input line 964.
+]
+
+Package xcolor Warning: Incompatible color definition on input line 962.
 
 
-Package xcolor Warning: Incompatible color definition on input line 964.
+Package xcolor Warning: Incompatible color definition on input line 962.
 
 
-Underfull \vbox (badness 10000) detected at line 964
+Underfull \vbox (badness 10000) detected at line 962
  []
 
 
-Underfull \vbox (badness 10000) detected at line 964
+Underfull \vbox (badness 10000) detected at line 962
  []
 
 
-Package xcolor Warning: Incompatible color definition on input line 964.
+Package xcolor Warning: Incompatible color definition on input line 962.
 
 [36]
 
-Package xcolor Warning: Incompatible color definition on input line 964.
+Package xcolor Warning: Incompatible color definition on input line 962.
 
 
-Package xcolor Warning: Incompatible color definition on input line 964.
+Package xcolor Warning: Incompatible color definition on input line 962.
 
 [37] [38
 
@@ -1033,7 +1035,7 @@ Package rerunfilecheck Info: File `thesis.out' has not changed.
 Here is how much of TeX's memory you used:
  11049 strings out of 481233
  173601 string characters out of 5913274
- 499573 words of memory out of 5000000
+ 499583 words of memory out of 5000000
  27511 multiletter control sequences out of 15000+600000
  455998 words of font info for 65 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
@@ -1059,7 +1061,7 @@ ist/fonts/type1/public/lm/lmsy8.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf
 -dist/fonts/type1/public/lm/lmtk10.pfb></Users/sarahkmaebius/Library/TinyTeX/te
 xmf-dist/fonts/type1/public/lm/lmtt12.pfb></Users/sarahkmaebius/Library/TinyTeX
 /texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on thesis.pdf (55 pages, 5338667 bytes).
+Output written on thesis.pdf (55 pages, 4483379 bytes).
 PDF statistics:
  757 PDF objects out of 1000 (max. 8388607)
  637 compressed objects within 7 object streams

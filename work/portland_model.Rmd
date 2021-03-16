@@ -14,7 +14,7 @@ library(spdplyr)
 library(doParallel)
 library(pdxTrees)
 library(sf)
-library(tmap)
+library(tigris)
 ```
 
 ```{r}
@@ -91,6 +91,7 @@ results_e <- predRaster(stack_e)
 # writeRaster(results_e,"data/results_e.grd", format = "raster")
 ```
 
+Visualize results
 ```{r}
 # load results
 results_a <- stack("data/results_a.grd")
@@ -99,9 +100,41 @@ results_c <- stack("data/results_c.grd")
 results_d <- stack("data/results_d.grd")
 results_e <- stack("data/results_e.grd")
 
-rf_model[["levels"]]
-names(results_a) <- c("results_RF", "results_SVM")
+# merge rasters into one for plotting
+r_list_RF <- list(results_a[[1]] == 7, results_b[[1]] == 7, results_c[[1]] == 7,
+                  results_d[[1]] == 7, results_e[[1]] == 7)
+r_list_SVM <- list(results_a[[2]] == 7, results_b[[2]] == 7, results_c[[2]] == 7,
+                  results_d[[2]] == 7, results_e[[2]] == 7)
+m_RF <- do.call(merge, r_list_RF)
+m_SVM <- do.call(merge, r_list_SVM)
 
+# compare rasters
+r_matches <- m_RF == m_SVM
+freq(r_matches)
+# (r_matches == 1)/((r_matches == 0) + (r_matches == 1)) percentage in common: 85%
+plot(r_matches == 1, main = "RF and SVM Predictions Comparisons",
+     labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "lightgreen")
+plot(r_matches == 0, col = "maroon", labels = F, xaxt = 'n', yaxt = 'n',
+     legend = F, add = T)
+
+# load city outline
+or_cities <- places("OR")
+portland <- or_cities %>%
+  filter(NAME == "Portland")
+portland_wgs84 <- spTransform(portland, CRS("+proj=utm +zone=10 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"))
+
+# plot predictions
+plot(m_RF, main = "RF Western Redcedar Predictions", 
+     labels = F, xaxt = 'n', yaxt = 'n', legend = F)
+plot(portland_wgs84, add = T)
+
+plot(m_SVM, main = "SVM Western Redcedar Predictions", 
+     labels = F, xaxt = 'n', yaxt = 'n', legend = F)
+plot(portland_wgs84, add = T)
+```
+
+Compare to pdxTrees
+```{r}
 # load street trees western redcedars
 pdxTrees_parks <- get_pdxTrees_parks()
 pdxTrees_streets <- get_pdxTrees_streets()
@@ -111,40 +144,23 @@ redcedar_dat <- pdxTrees_streets %>%
 coordinates(redcedar_dat) <- c("Longitude", "Latitude")
 proj4string(redcedar_dat) <- CRS("+init=epsg:4326")
 dat_transformed <- spTransform(redcedar_dat, CRS("+proj=utm +zone=10 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"))
-spplot(spmap.to.lev(dat_transformed))
 
 
-# plot results
-proj_a <- projectRaster(results_a, crs = "+proj=utm +zone=10 +ellps=WGS84 +datum=WGS84 +units=m +no_defs", method = "ngb")
-crs(results) <- "+proj=utm +zone=10 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"
-r_pts <- rasterToPoints(proj_a, spatial=TRUE)
-proj4string(r_pts)
+# plot pdxTrees with predictions
+plot(m_RF, main = "RF Predictions with pdxTrees", 
+     labels = F, xaxt = 'n', yaxt = 'n', legend = F)
+plot(dat_transformed, col = rgb(red = 0.2, green = 0.2, blue = 1.0, alpha = 0.2), cex = .2, add = T)
+plot(portland_wgs84, add = T)
 
-# # reproject sp object
-r_pts <- spTransform(r_pts, CRS("+proj=longlat +datum=WGS84 +ellps=WGS84 +towgs84=0,0,0"))
-proj4string(r_pts)
+plot(m_SVM, main = "SVM Predictions with pdxTrees", 
+     labels = F, xaxt = 'n', yaxt = 'n', legend = F)
+plot(dat_transformed, col = rgb(red = 0.2, green = 0.2, blue = 1.0, alpha = 0.2), cex = .2, add = T)
+plot(portland_wgs84, add = T)
 
-ra_df <- as.data.frame(results_a, xy = T, na.rm = T) %>%
-  filter(results_RF == 7)
-
-ggplot(data.frame(dat_transformed), aes(Longitude, Latitude)) + 
-  geom_point(shape = 3) +
-  geom_point(data = ra_df, mapping = aes(x = x, y), color = "turquoise", alpha = 0.4) +
-  theme_minimal()
-
-spplot(proj_a)
-spplot(redcedar_dat)
-
-plot(redcedar_dat)
-plot(results_a[[1]], add = T)
-
-# if you have a list of Raster objects, you can use do.call
-r_list_RF <- list(results_a[[1]], results_b[[1]])
-r_list_SVM <- list(results_a[[2]], results_b[[2]])
-m_RF <- do.call(merge, r_list_RF)
-m_SVM <- do.call(merge, r_list_SVM)
-plot(m_RF)
-plot(m_SVM)
+# match pixels with pdxTrees to test for accuracy
+street_mask <- mask(m_RF, dat_transformed)
+freq(street_mask) # testing accuracy estimates for Western redcedars
+# 34%
 ```
 
 https://mgimond.github.io/Spatial/mapping-data-in-r.html

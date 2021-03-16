@@ -18,7 +18,7 @@ include_graphics("figure/svmPortland.png")
 
 To assess the performance of the model over the Portland region, the results are compared to the remaining Western redcedars from `pdxTrees` both street and park data. The shapefiles for `pdxTrees` Western redcedars ground data are mapped over the classified pixel predictions, and the number of correctly and incorrectly classified pixels is recorded. Figure \@ref(fig:resultsToStreet) visualizes this comparison.
 
-```{r resultsToStreet, results="asis", echo=FALSE, fig.cap="Comparison of Wester redcedar random forest pixel predictions to Western redcedar trees from pdxTrees.", out.width='70%', fig.align='center'}
+```{r resultsToStreet, results="asis", echo=FALSE, fig.cap="Comparison of Wester redcedar RF pixel predictions (in green) to Western redcedar trees from pdxTrees (in blue).", out.width='70%', fig.align='center'}
 include_graphics("figure/resultsToStreet.png")
 ```
 
