@@ -13,6 +13,7 @@ library(maptools)
 library(tigris)
 library(caret)
 library(corrplot)
+library(nnet)
 ```
 
 ```{r}
@@ -181,6 +182,12 @@ confusionMatrix(svm1,  mode = "prec_recall")
 # svm2 western redcedar prediction accuracy: 0.41
 # svm3 western redcedar prediction accuracy: 0.34
 ```
+
+```{r}
+# fit CNN model
+cnn <- train(Cmmn_Nm ~., data = train, method = "nnet", trControl = train_control)
+```
+https://joparga3.github.io/ud_deep_learning_cnns/
 
 ```{r}
 # combined hyperparameters results table
