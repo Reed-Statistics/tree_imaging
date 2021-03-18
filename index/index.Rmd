@@ -6,7 +6,7 @@ division: 'Mathematics and Natural Sciences'
 advisor: 'Tom Allen'
 #altadvisor: 'Your Other Advisor'
 # Delete line 6 if you only have one advisor
-department: 'Mathematics'
+department: 'Mathematics - Statistics'
 degree: 'Bachelor of Arts'
 title: 'Thesis'
 knit: "bookdown::render_book"

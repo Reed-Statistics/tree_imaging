@@ -185,6 +185,8 @@ confusionMatrix(svm1,  mode = "prec_recall")
 
 ```{r}
 # fit CNN model
+train_control <- trainControl(method = "repeatedcv", number = 10, repeats = 3, classProbs = T)
+
 cnn <- train(Cmmn_Nm ~., data = train, method = "nnet", trControl = train_control)
 ```
 https://joparga3.github.io/ud_deep_learning_cnns/
