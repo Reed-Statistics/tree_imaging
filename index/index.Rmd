@@ -1,6 +1,6 @@
 ---
 author: 'Sarah Maebius'
-date: 'December 6th, 2020'
+date: 'May 2021'
 institution: 'Reed College'
 division: 'Mathematics and Natural Sciences'
 advisor: 'Tom Allen'

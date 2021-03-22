@@ -114,7 +114,7 @@
 \title{Thesis}
 \author{Sarah Maebius}
 % The month and year that you submit your FINAL draft TO THE LIBRARY (May or December)
-\date{December 6th, 2020}
+\date{May 2021}
 \division{Mathematics and Natural Sciences}
 \advisor{Tom Allen}
 \institution{Reed College}
@@ -124,7 +124,7 @@
 % End of CII addition
 
 %%% Remember to use the correct department!
-\department{Mathematics}
+\department{Mathematics - Statistics}
 % if you're writing a thesis in an interdisciplinary major,
 % uncomment the line below and change the text as appropriate.
 % check the Senior Handbook if unsure.
@@ -623,55 +623,43 @@ The selected variables for training the models are the four bands (red, green, b
 
 \caption{Correlation matrix of possible predictor variables to include in the model}\label{fig:corrmatrix}
 \end{figure}
+To address the small number of predictor variables available to predict the large number of classes (7 tree species), some species are grouped together. The Bigleaf Maple, Norway Maple, and English Oak species are grouped under a new ``Broadleaf'' tree category. This reduces the number of classes to 5: Broadleaf, Douglas-Fir, Giant Sequoia, Grass, and Western Redcedar. Both the full 7 tree species training data and the grouped (5 class) species training data are used to train the models.
+
 The \texttt{caret} package (Kuhn, 2020) in RStudio stands for classification and regression training, and it contains functions for facilitating the process of creating training models in R and determining the tuning parameters.
 
 \hypertarget{random-forest-tuning}{%
 \subsection{Random Forest Tuning}\label{random-forest-tuning}}
 
-The \texttt{train} function from the \texttt{caret} package (Kuhn, 2020) with the specified \texttt{method\ =\ rf} option is used to train a random forest model on the training dataset to predict the tree species. The function takes parameters for data, the predictive variable, and the method of training the model. To perform k-fold cross validation, the \texttt{trainControl} function is used to create an object that tells the \texttt{train} function to perform cross validation 10 times with a different fold left out each time. The function automatically tries multiple number of tries at each split (mtry) and determines the optimal number through cross-validation. Three different models were considered with varying number of predictors:
+The \texttt{train} function from the \texttt{caret} package (Kuhn, 2020) with the specified \texttt{method\ =\ rf} option is used to train a random forest model on the training dataset to predict the tree species. The function takes parameters for data, the predictive variable, and the method of training the model. To perform k-fold cross validation, the \texttt{trainControl} function is used to create an object that tells the \texttt{train} function to perform cross validation 10 times with a different fold left out each time. The function automatically tries multiple number of tries at each split (mtry) and determines the optimal number through cross-validation. Training preliminary models with varying number of predictors provided a sense of the number of predictors to include in the training data that still add information to the model but avoid adding redundancy or multicollinearity to the model. For example, just having 5 predictors in the model results in a random forest that only selects one variable for each split, while 12 predictors guarantees an issue of multicollinearity. Models were considered with total predictors around 7 or 8 predicting classes of size 7 (individual species) or 5 (oaks and maples grouped together):
 \begin{itemize}
-\item
-  5 predictor model: red, green, blue, infrared, NDVI
 \item
   7 predictor model: red, green, blue, infrared, NDVI, \(\frac{\mbox{red}}{\mbox{green}}\), \(\frac{\mbox{blue}}{\mbox{green}}\)
 \item
   8 predictor model: red, green, blue, infrared, NDVI, \(\frac{\mbox{red}}{\mbox{green}}\), \(\frac{\mbox{red}}{\mbox{blue}}\), \(\frac{\mbox{blue}}{\mbox{green}}\)
 \end{itemize}
 \hypertarget{predictor-random-forest}{%
-\subsubsection{5 predictor Random Forest}\label{predictor-random-forest}}
+\subsubsection{7 predictor Random Forest}\label{predictor-random-forest}}
 
-Figure \ref{fig:rf5} displays the accuracy of the trained random forest model for three different numbers of randomly selected predictors over 10 repeated cross-validation sets for a model with 5 predictors: red, green, blue, infrared, and NDVI band values. This model had the highest overall accuracy with 0.53 when mtry was 1. The variable with the highest predictive power was infrared band values followed by NDVI values.
+The 7 predictor random forest model uses the following predictors: red, green, blue, infrared, NDVI, \(\frac{\mbox{red}}{\mbox{green}}\) and \(\frac{\mbox{blue}}{\mbox{green}}\) band values predictors. Figure \ref{fig:rf7} displays the accuracy of the model predicting all 7 tree classes and the grouped 5 classes training set with a range of mtry values. The 7 predictor model with the highest accuracy (determined by cross-validation) randomly selected 1 predictor at each split with an accuracy of 0.55. The variable with the highest predictive power was infrared band values with NDVI values with the second highest predictive power. For the grouped data, the optimal mtry value of 2 produced an accuracy of 0.64. The most important variable for this model was infrared followed by NDVI values.
 \begin{figure}
 
-{\centering \includegraphics[width=0.7\linewidth]{figure/rf5_mtry} 
+{\centering \includegraphics[width=0.9\linewidth]{figure/rf7_mtry} 
 
 }
 
-\caption{Accuracy of the 5 predictor trained random forest model for different mtry numbers over 10-fold cross-validation.}\label{fig:rf5}
+\caption{Accuracy of the 7 predictor trained random forest model for different mtry numbers over 10-fold cross-validation on 7 class and 5 class training data. (P = Predictors, C = Classes)}\label{fig:rf7}
 \end{figure}
 \hypertarget{predictor-random-forest-1}{%
-\subsubsection{7 predictor Random Forest}\label{predictor-random-forest-1}}
+\subsubsection{8 predictor Random Forest}\label{predictor-random-forest-1}}
 
-The 7 predictor random forest model uses the same predictors from the 5 predictor model and also includes \(\frac{\mbox{red}}{\mbox{green}}\) and \(\frac{\mbox{blue}}{\mbox{green}}\) predictors. Figure \ref{fig:rf7} displays the accuracy of the model with a range of mtry values. The 7 predictor model with the highest accuracy (determined by cross-validation) randomly selected 2 predictors at each split with an accuracy of 0.54. The variable with the highest predictive power was still infrared band values with NDVI values second highest predictive power.
+The 8 predictor random forest model added a \(\frac{\mbox{blue}}{\mbox{green}}\) predictor to the 7 predictor model. Figure \ref{fig:rf8} displays the results of a different number of randomly selected predictors to be considered at each split in the tree for 7 class data and 5 class. For modelling all 7 classes, the optimal mtry value was 4 with an accuracy of 0.55. The variables with the higher predictive power in decreasing order were infrared, NDVI, and green band values predictors. The model using grouped data with 5 tree classes, had an optimal mtry value of 1 with an accuracy of 0.65. The most important variable was infrared.
 \begin{figure}
 
-{\centering \includegraphics[width=0.7\linewidth]{figure/rf7_mtry} 
+{\centering \includegraphics[width=0.9\linewidth]{figure/rf8_mtry} 
 
 }
 
-\caption{Accuracy of the 7 predictor trained random forest model for different mtry numbers over 10-fold cross-validation.}\label{fig:rf7}
-\end{figure}
-\hypertarget{predictor-random-forest-2}{%
-\subsubsection{8 predictor Random Forest}\label{predictor-random-forest-2}}
-
-The 8 predictor random forest model added a \(\frac{\mbox{blue}}{\mbox{green}}\) predictor to the 7 predictor model. Figure \ref{fig:rf8} displays the results of a different number of randomly selected predictors to be considered at each split in the tree. The optimal mtry value was 4 with an accuracy of 0.55. The variables with the higher predictive power in decreasing order were infrared, NDVI, and green band values predictors.
-\begin{figure}
-
-{\centering \includegraphics[width=0.7\linewidth]{figure/rf8_mtry} 
-
-}
-
-\caption{Accuracy of the 8 predictor trained random forest model for different mtry numbers over 10-fold cross-validation.}\label{fig:rf8}
+\caption{Accuracy of the 8 predictor trained random forest model for different mtry numbers over 10-fold cross-validation on 7 class and 5 class training data. (P = Predictors, C = Classes)}\label{fig:rf8}
 \end{figure}
 \hypertarget{best-random-forest}{%
 \subsubsection{Best Random Forest}\label{best-random-forest}}
@@ -679,13 +667,15 @@ The 8 predictor random forest model added a \(\frac{\mbox{blue}}{\mbox{green}}\)
 Figure \ref{fig:rfresults} compares the results of the models based on overall model accuracy in predicting the test data.
 \begin{figure}
 
-{\centering \includegraphics[width=0.7\linewidth]{figure/rfresults} 
+{\centering \includegraphics[width=0.9\linewidth]{figure/rfresults} 
 
 }
 
 \caption{Comparison of results from random forest models with different predictors included}\label{fig:rfresults}
 \end{figure}
-The model with the highest number of predictors included has a slightly higher median accuracy and mean accuracy than the 7 predictor model. A confusion matrix was constructed for each model averaging the entry counts over all ten cross validation resamples to investigate model performance just predicting Western redcedar tree pixels. Both the 7 and the 8 predictor models performed equally classifying Western redceder pixels, the 7 predictor model and the 8 predictor model had a prediction accuracy of 38\%, while the 5 predictor model had 35\%. Across all three models, Western redcedars tend to be inaccurately classified under douglas-firs, english oak, and norway maple trees.
+For modelling the 7 individual tree classes, the model with the 7 predictors included has a slightly higher mean but smaller median accuracy than the 8 predictor model. A confusion matrix located in the appendix was constructed for each model averaging the entry counts over all ten cross validation resamples to investigate model performance just predicting Western redcedar tree pixels. Both the 7 and the 8 predictor models performed equally classifying Western redceder pixels, the 7 predictor model and the 8 predictor model had a prediction accuracy of 37\%. Out of both models, Western redcedars tend to be inaccurately classified under douglas-firs, english oak, and norway maple trees.
+
+Modelling only 5 tree classes with the grouped data produced higher accuracies than the full classes models. The 7 predictor model had a larger variation than the 8 predictor model, but the 8 predictor model produced the highest accuracies of 0.65 through cross-validation. The 7 predictor model accurately predicted Western redcedars 41\% percent of the time, while the 8 predictor model predicted redcedars with an accuracy of 42\%. Most inaccurately predicted redcedars were classified under the broadleaf category. Models on both training sets predicted grass pixels with the highest accuracy.
 
 Table \ref{tab:resultsRF} compares the hyperparameters accross all random forest models.
 \begin{table}
@@ -696,11 +686,13 @@ Table \ref{tab:resultsRF} compares the hyperparameters accross all random forest
 \hline
 Random Forest Model & Accuracy & Kappa & mtry\\
 \hline
-5 predictors & 0.5280 & 0.4251 & 1\\
+P = 7, C = 7 & 0.5484 & 0.4498 & 1\\
 \hline
-7 predictors & 0.5436 & 0.4449 & 2\\
+P = 8, C = 7 & 0.5452 & 0.4474 & 4\\
 \hline
-8 predictors & 0.5457 & 0.4479 & 4\\
+P = 7, C = 5 & 0.6399 & 0.4983 & 2\\
+\hline
+P = 8, C = 5 & 0.6478 & 0.5067 & 1\\
 \hline
 \end{tabular}
 \end{table}
@@ -712,27 +704,27 @@ The \texttt{train} function has the \texttt{method\ =\ svmLinear/svmRadial/svmPo
 \hypertarget{linear-support-vector-machine}{%
 \subsubsection{Linear Support Vector Machine}\label{linear-support-vector-machine}}
 
-The linear kernel SVM model had the highest training accuracy at 0.51 when cost parameter held constant at a value of 1. The final model contained 5915 support vectors.
+The linear kernel SVM model had the highest training accuracy at 0.50 when cost parameter held constant at a value of 1. The final model contained 5894 support vectors. The linear kernel SVM model on the 5 classes data held the cost parameter constant at 1 predicted the grouped tree classes with an accuracy of 0.61 contained 5398 support vectors.
 
 \hypertarget{radial-support-vector-machine}{%
 \subsubsection{Radial Support Vector Machine}\label{radial-support-vector-machine}}
 
-Figure \ref{fig:svm2} displays the results of different cost parameters on training accuracy for the radial basis function kernel. The radial kernel SVM model performed best when cost was 16 and \(\sigma = 0.25\) for a training accuracy of 0.56. The final model had 5587 support vectors.
+Figure \ref{fig:svm2} displays the results of different cost parameters on training accuracy for the radial basis kernel function. The radial kernel SVM model on the 7 classes data set performed best when cost was 16 and \(\sigma = 0.25\) for a training accuracy of 0.56. The final model had 5577 support vectors. The final values for the radial model on the 5 classes data set were \(\sigma = 0.26\) and cost = 1 with an accuracy of 0.64 and 5099 support vectors.
 \begin{figure}
 
-{\centering \includegraphics[width=0.7\linewidth]{figure/svm2} 
+{\centering \includegraphics[width=0.9\linewidth]{figure/svm2} 
 
 }
 
-\caption{Comparison of accuracy results from different cost parameters with sigma held constant at 0.25 for radial basis function kernel.}\label{fig:svm2}
+\caption{Comparison of accuracy results from different cost parameters for radial basis kernel function.}\label{fig:svm2}
 \end{figure}
 \hypertarget{polynomial-support-vector-machine}{%
 \subsubsection{Polynomial Support Vector Machine}\label{polynomial-support-vector-machine}}
 
-Figure \ref{fig:svm3} displays the results of different cost parameters on training accuracy for the polynomial basis function kernel. The final values used for the model were degree = 3, scale = 0.1, and cost = 1, which corresponded to a training accuracy of 0.54. The final model had a total of 5697 support vectors.
+Figure \ref{fig:svm3} displays the results of different cost parameters on training accuracy for the polynomial basis function kernel. The final values used for the model predicting 7 classes were degree = 3, scale = 0.1, and cost = 1, which corresponded to a training accuracy of 0.38. The final model had a total of 5665 support vectors. The final model predicting only 5 classes produced an accuracy of 0.58 under degree = 3, scale = 0.1, and cost = 1. This final model had 5144 support vectors.
 \begin{figure}
 
-{\centering \includegraphics[width=0.7\linewidth]{figure/svm3} 
+{\centering \includegraphics[width=0.9\linewidth]{figure/svm3} 
 
 }
 
@@ -741,90 +733,90 @@ Figure \ref{fig:svm3} displays the results of different cost parameters on train
 \hypertarget{best-support-vector-machine}{%
 \subsubsection{Best Support Vector Machine}\label{best-support-vector-machine}}
 
-Figure \ref{fig:svmresults} displays the results of the linear, radial basis, and polynomial basis support vector machine models. Based on the overall prediction accuracy, the radial basis is an appropriate kernel choice for the pixels data since it has a higher median model accuracy than the other two kernel options.
+Figure \ref{fig:svmresults} displays the results of the linear, radial basis, and polynomial basis support vector machine models. Based on the overall prediction accuracy, the radial basis is an appropriate kernel choice for the pixels data with the full 7 class prediction as well as 5 class prediction since it has a higher mean and median model accuracy than the other two kernel options.
 \begin{figure}
 
-{\centering \includegraphics[width=0.7\linewidth]{figure/svmresults} 
+{\centering \includegraphics[width=0.9\linewidth]{figure/svmresults} 
 
 }
 
 \caption{Comparison of results from support vector machine models with different kernel types: linear, radial, and polynomial.}\label{fig:svmresults}
 \end{figure}
-As with the random forest model comparisons, a confusion matrix was constructed using the average counts over all ten cross-validation resamples to obtain the model results predicting Western redcedars. The support vector machine model that performed best overall was the radial basis kernel model, and it had the highest prediction accuracy of the Western redcedar class, 41\%. The polynomial basis kernel had a 34\% prediction accuracy and the linear kernel had 32\% accuracy for Western redcedar.
+As with the random forest model comparisons, a confusion matrix was constructed using the average counts over all ten cross-validation resamples to obtain the model results predicting Western redcedars. The support vector machine model that performed best overall was the radial basis kernel model, and it had the highest prediction accuracy of the Western redcedar class, 37\%. The polynomial basis kernel had a 33\% prediction accuracy and the linear kernel had 33\% accuracy for Western redcedar. For Western redcedar prediction on the grouped classes, the radial model had 50\% accuracy, and the polynomial model had 67\% accuracy, and the linear model did not predict any Western redcedar pixels on average.
 
 Table \ref{tab:resultsSVM} compares the hyperparameters accross all support vector machine models.
 \begin{table}
 
 \caption{\label{tab:resultsSVM}Accuracy of support vector machine models with different kernels. Best parameter is determined by ten-fold cross validation.}
 \centering
-\begin{tabular}[t]{l|r|r|l}
+\begin{tabular}[t]{l|r|r}
 \hline
-SVM Model Kernel & Accuracy & Kappa & Parameter\\
+SVM Model Kernel & Accuracy & Kappa\\
 \hline
-Linear & 0.5053 & 0.3843 & C = 1\\
+Linear, C = 7 & 0.5030 & 0.3800\\
 \hline
-Polynomial & 0.5403 & 0.4322 & C = 16 sigma = 0.2483\\
+Radial, C = 7 & 0.5595 & 0.4600\\
 \hline
-Radial & 0.5604 & 0.4614 & C = 1 , scale = 0.1 , degree = 3\\
+Poly, C = 7 & 0.5367 & 0.4265\\
+\hline
+Linear, C = 5 & 0.6105 & 0.4158\\
+\hline
+Radial, C = 5 & 0.6438 & 0.4805\\
+\hline
+Poly, C = 5 & 0.6360 & 0.4616\\
 \hline
 \end{tabular}
 \end{table}
-The models are saved to be used for later prediction over the entire region of Portland.
-
 \hypertarget{testing-models}{%
 \section{Testing Models}\label{testing-models}}
 
-The best models from the random forest models and the support vector machine models were used to predict the tree type on the test dataset. The results for the overall accuracy and the prediction accuracy for Western redcedars are shown in Table \ref{tab:resultsTest}.
+A subset of the data was withhold from training the models as test data to provide some measure of how the models perform in predicting results that the answer is unknown. Based on overall and redcedar accuracy, the appropriate models to consider with the testing data are the 7 class 8 predictor random forest, the 7 class radial support vector machine, the 5 class 8 predictor random forest, and the 5 class polynomial support vector machine. The results for the overall test accuracy and the prediction test accuracy for Western redcedars are shown in Tables \ref{tab:resultsTest} and \ref{tab:resultsTest2}.
 \begin{table}
 
-\caption{\label{tab:resultsTest}Overall accuracy of 8 predictor RF model compared to Radial SVM model on test data}
+\caption{\label{tab:resultsTest}Overall accuracy of 8 predictor RF (Full),  Radial SVM (Full), 8 predictor RF (Grouped), and Polynomial SVM (Grouped) models on test data}
 \centering
-\begin{tabular}[t]{r|r}
+\begin{tabular}[t]{l|r|r}
 \hline
-RF Accuracy & SVM Accuracy\\
+Type & RF Accuracy & SVM Accuracy\\
 \hline
-0.5472637 & 0.5604331\\
+Full & 0.5382 & 0.5531\\
+\hline
+Grouped & 0.6368 & 0.6280\\
 \hline
 \end{tabular}
 \end{table}
 \begin{table}
 
-\caption{\label{tab:resultsTest}Western redcedar accuracy of 8 predictor RF model compared to Radial SVM model on test data}
+\caption{\label{tab:resultsTest2}Western redcedar accuracy of 8 predictor RF (Full),  Radial SVM (Full), 8 predictor RF (Grouped), and Polynomial SVM (Grouped) models on test data}
 \centering
-\begin{tabular}[t]{r|r}
+\begin{tabular}[t]{l|r|r}
 \hline
-RF Accuracy & SVM Accuracy\\
+Type & RF Accuracy & SVM Accuracy\\
 \hline
-0.3430657 & 0.3260341\\
+Full & 0.3382 & 0.3260\\
+\hline
+Grouped & 0.2287 & 0.0268\\
 \hline
 \end{tabular}
 \end{table}
+According to the test data, the best performing models for further analysis are the radial support vector machine model for 7 class prediction and the 8 predictor random forest model for 5 class prediction.
+
 The polygon prediction accuracy on the test dataset was also computed to see how pixels of the same tree were classified compared to individual pixel classification. A ``correct'' prediction was indicated if more than half the pixels in a polygon are correctly predicted. Table \ref{tab:polyTab} displays the results over polygons in the test dataset.
 \begin{table}
 
-\caption{\label{tab:polyTab}Accuracy of 8 predictor random forest model for polygons in test data. A 'correct' prediction is considered to be a polygon with more than half of the pixels correctly classified.}
+\caption{\label{tab:polyTab}Accuracy of radial SVM model with 7 classes and 8 predictor RF model with 5 classes for polygons in test data. A 'correct' prediction is considered to be a polygon with more than half of the pixels correctly classified.}
 \centering
-\begin{tabular}[t]{l|r}
+\begin{tabular}[t]{l|l|r}
 \hline
-result & n\\
+Type & Result & n\\
 \hline
-correct & 205\\
+Full SVM & Correct & 215\\
 \hline
-incorrect & 444\\
+Full SVM & Incorrect & 447\\
 \hline
-\end{tabular}
-\end{table}
-\begin{table}
-
-\caption{\label{tab:polyTab}Accuracy of radial support vector machine model for polygons in test data. A 'correct' prediction is considered to be a polygon with more than half of the pixels correctly classified.}
-\centering
-\begin{tabular}[t]{l|r}
+Grouped RF & Correct & 345\\
 \hline
-result & n\\
-\hline
-correct & 233\\
-\hline
-incorrect & 416\\
+Grouped RF & Incorrect & 317\\
 \hline
 \end{tabular}
 \end{table}
@@ -834,7 +826,9 @@ incorrect & 416\\
 \hypertarget{training-results}{%
 \section{Training Results}\label{training-results}}
 
-The best hyperparameters settings for the random forest training model were an mtry value of 4 predictors at each split and the following predictors: red, green, blue, infrared, NDVI, \(\frac{\mbox{red}}{\mbox{green}}\), \(\frac{\mbox{red}}{\mbox{blue}}\), \(\frac{\mbox{blue}}{\mbox{green}}\). This model had a training predictive accuracy of 0.55 overall and 0.38 for Western redcedars specifically. On the test dataset, this model still accurately predicted 55\% of the pixels, while the accuracy for predicting more than half the pixels correctly in the same polygon was 32\%. The selected hyperparameter for the support vector machine model was a radial basis kernel with cost equal to 16 and \(\sigma = 0.25\). The radial support vector machine had a training accuracy of 0.56 overall, 0.41 for just Western redcedars, and testing accuracy of 0.56 overall and 0.32 for Western redcedar pixels. For polygon predictions, the radial support vector machine had an accuracy of 36\%. Between the random forest model and the support vector machine model, the radial basis kernel support vector machine model slightly outperforms the random forest 8 predictor model in overall accuracy, but the random forest has a slightly higher performance in predicting Western redcedars. Since these models produced similar results, both models are used to proceed with the final model over Portland.
+Predicting on the grouped data produced the highest accuracies. The best model on the grouped data was the random forest training model with an mtry value of 1 predictor at each split and the following predictors: red, green, blue, infrared, NDVI, \(\frac{\mbox{red}}{\mbox{green}}\), \(\frac{\mbox{red}}{\mbox{blue}}\), \(\frac{\mbox{blue}}{\mbox{green}}\). This model had a training predictive accuracy of 0.65 overall and 0.42 for Western redcedars specifically. On the test dataset, this model still accurately predicted 64\% of the pixels, while the accuracy for predicting more than half the pixels correctly in the same polygon was 52\%.
+
+The model that performed best at predicting all 7 tree classes was the radial SVM model with cost equal to 16 and \(\sigma = 0.25\). The radial support vector machine had a training accuracy of 0.56 overall, 0.37 for just Western redcedars, and testing accuracy of 0.55 overall and 0.33 for Western redcedar pixels. For polygon predictions, the radial support vector machine had an accuracy of 32\%. Between the 8 predictor RF model on the 5 classes data and the radial SVM model on the 7 classes data, the RF model outperforms the SVM model. This model is used to proceed with the final model over Portland.
 
 \hypertarget{modelling-tree-species-in-portland}{%
 \section{Modelling Tree Species in Portland}\label{modelling-tree-species-in-portland}}

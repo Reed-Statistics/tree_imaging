@@ -71,6 +71,8 @@ stack_e <- stack("planet/20200902_184430_1005_3B_AnalyticMS_clip.tif")
 raster_crs <- CRS(projection(stack_a))
 poly_join_reprojected <- spTransform(as_Spatial(poly_join), raster_crs)
 
+# saveRDS(poly_join_reprojected, "data/poly_join_reprojected.rds")
+
 # extract pixel values from polygons into a dataframe
 val_a <- raster::extract(stack_a, poly_join_reprojected, df = TRUE)
 val_b <- raster::extract(stack_b, poly_join_reprojected, df = TRUE)

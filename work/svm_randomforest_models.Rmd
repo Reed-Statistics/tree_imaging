@@ -20,6 +20,13 @@ library(nnet)
 # load data
 pixels_data <- read.csv('data/pixels_data.csv')
 
+# adding different ratio predictors
+pixels_data <- pixels_data %>%
+  mutate(red_blue = red/blue,
+         ir_red = ir/red,
+         red_green = red/green,
+         blue_green = blue/green)
+
 # group by number of polygons per tree class per strip
 poly_count <- pixels_data %>%
   group_by("Raster Strip" = rstrip, "Tree Name" = Cmmn_Nm) %>%
@@ -38,23 +45,32 @@ train %>%
   group_by("Raster Strip" = rstrip, "Tree Name" = Cmmn_Nm) %>%
   count("Polygons" = length(unique(ID)))
 
+train <- train %>%
+  dplyr::select(red, green, blue, ir, ndvi, Cmmn_Nm, red_blue, ir_red, red_green, blue_green)
+
 # test data
 test_full <- anti_join(pixels_data, train)
-
-# adding different ratio predictors
-train <- train %>%
-  dplyr::select(red, green, blue, ir, ndvi, Cmmn_Nm) %>%
-  mutate(red_blue = red/blue,
-         ir_red = ir/red,
-         red_green = red/green,
-         blue_green = blue/green)
-
 test <- test_full %>%
-  dplyr::select(red, green, blue, ir, ndvi, Cmmn_Nm) %>%
-  mutate(red_blue = red/blue,
-         ir_red = ir/red,
-         red_green = red/green,
-         blue_green = blue/green)
+  dplyr::select(red, green, blue, ir, ndvi, Cmmn_Nm, red_blue, ir_red, red_green, blue_green)
+
+# grouped data to reduce class prediction size (douglas fir, sequoia, redcedar, broadleaf)
+test_full_grouped <- test_full %>%
+  mutate(Cmmn_Nm = case_when(
+      Cmmn_Nm %in% c("Bigleaf Maple", "English Oak", "Norway Maple") ~ "Broadleaf",
+      TRUE ~ as.character(Cmmn_Nm)
+    ))
+
+train_grouped <- train %>%
+  mutate(Cmmn_Nm = case_when(
+    Cmmn_Nm %in% c("Bigleaf Maple", "English Oak", "Norway Maple") ~ "Broadleaf",
+    TRUE ~ as.character(Cmmn_Nm)
+  ))
+
+test_grouped <- test %>%
+  mutate(Cmmn_Nm = case_when(
+    Cmmn_Nm %in% c("Bigleaf Maple", "English Oak", "Norway Maple") ~ "Broadleaf",
+    TRUE ~ as.character(Cmmn_Nm)
+  ))
 ```
 
 ```{r}
@@ -66,7 +82,7 @@ train_pca$rotation
 ```
 
 ```{r}
-# look at correlation matrix
+# look at correlation matrix to select predictors
 corr_matrix <- round(cor(train %>% select(-Cmmn_Nm)), 2)
 corrplot(corr_matrix, type = "upper", order = "hclust", 
          tl.col = "black", tl.srt = 45)
@@ -75,101 +91,141 @@ corrplot(corr_matrix, type = "upper", order = "hclust",
 # red_green strongest correlation with green at -0.81
 # red_blue strongest correlation with blue
 
-train1 <- train %>%
-  select(red, green, blue, ir, ndvi, Cmmn_Nm)
+# train1 <- train %>%
+#   dplyr::select(red, green, blue, ir, ndvi, Cmmn_Nm)
 
 train2 <- train %>%
-  select(red, green, blue, ir, ndvi, red_green, blue_green, Cmmn_Nm)
+  dplyr::select(red, green, blue, ir, ndvi, red_green, blue_green, Cmmn_Nm)
+train2_grouped <- train_grouped %>%
+  dplyr::select(red, green, blue, ir, ndvi, red_green, blue_green, Cmmn_Nm)
 
 train3 <- train %>%
-  select(red, green, blue, ir, ndvi, red_green, red_blue, blue_green, Cmmn_Nm)
-
-# random forest
-
-# random search random forest using caret package
-control <- trainControl(method = "repeatedcv", number = 10, search = "random")
-rf_random1 <- train(Cmmn_Nm~., data = train1, method = "rf", trControl = control)
-rf_random2 <- train(Cmmn_Nm~., data = train2, method = "rf", trControl = control)
-rf_random3 <- train(Cmmn_Nm~., data = train3, method = "rf", trControl = control)
-
-#predict(test, rf_random)
+  dplyr::select(red, green, blue, ir, ndvi, red_green, red_blue, blue_green, Cmmn_Nm)
+train3_grouped <- train_grouped %>%
+  dplyr::select(red, green, blue, ir, ndvi, red_green, red_blue, blue_green, Cmmn_Nm)
 ```
 
 ```{r}
-# random forest mtry tuning
+# random search random forest using caret package
+control <- trainControl(method = "repeatedcv", number = 10, search = "random")
+set.seed(2)
+# rf_random1 <- train(Cmmn_Nm~., data = train1, method = "rf", trControl = control)
+rf_random2 <- train(Cmmn_Nm~., data = train2, method = "rf", trControl = control)
+rf_random3 <- train(Cmmn_Nm~., data = train3, method = "rf", trControl = control)
 
-# Random Search
-control <- trainControl(method="repeatedcv", number = 10, repeats = 3, search = "random")
-set.seed(12)
-mtry <- sqrt(ncol(train3))
-rf_random <- train(Cmmn_Nm~., data = train3, method = "rf", tuneLength = 15,
-                   trControl = control)
-print(rf_random)
-plot(rf_random)
-confusionMatrix(rf_random,  mode = "prec_recall")
-# rf_random western redcedar prediction accuracy: 0.36
+# random forest on grouped data
+rf2_grouped <- train(Cmmn_Nm~., data = train2_grouped, method = "rf", trControl = control)
+rf3_grouped <- train(Cmmn_Nm~., data = train3_grouped, method = "rf", trControl = control)
 ```
 
 ```{r}
 # compare rf models
 
 # collect resamples
-results <- rbind(cbind(rf_random1$resample, Model = rep("5", nrow(rf_random1$resample))), 
-                 cbind(rf_random2$resample, Model = rep("7", nrow(rf_random2$resample))), 
-                 cbind(rf_random3$resample, Model = rep("8", nrow(rf_random3$resample))))
+results <- rbind(cbind(rf_random2$resample, Model = rep("P = 7, C = 7", 10)), 
+                 cbind(rf_random3$resample, Model = rep("P = 8, C = 7", 10)),
+                 cbind(rf2_grouped$resample, Model = rep("P = 7, C = 5", 10)),
+                 cbind(rf3_grouped$resample, Model = rep("P = 8, C = 5", 10)))
 
+# visualize rf model results
 ggplot(results, aes(x = Model, y = Accuracy, fill = Model)) +
   geom_boxplot(alpha = 0.6) +
   theme_minimal() + 
   scale_fill_viridis_d() +
-  labs(title = "Model Accuracy of Random Forest Models with 10-Fold CV", x = " ", fill = "Number of Predictors") + 
+  labs(title = "Model Accuracy of Random Forest Models with 10-Fold CV", 
+       x = " ", fill = "P = Predictors, C = Classes") + 
   theme(axis.text.x = element_blank())
 
-confusionMatrix(rf_random3,  mode = "prec_recall")
-rf_random1[["finalModel"]]
-rf_random2[["finalModel"]]
-rf_random3[["finalModel"]]
-varImp(rf_random1)
-varImp(rf_random2)
-varImp(rf_random3)
-# rf_random1 western redcedar prediction accuracy: 0.33
-# rf_random2 western redcedar prediction accuracy: 0.37
-# rf_random3 western redcedar prediction accuracy: 0.37
+# rf results by class
+cm1 <- confusionMatrix(rf_random2,  mode = "prec_recall")
+cm2 <- confusionMatrix(rf_random3,  mode = "prec_recall")
+cm3 <- confusionMatrix(rf2_grouped,  mode = "prec_recall")
+cm4 <- confusionMatrix(rf3_grouped,  mode = "prec_recall")
 
-results_rf <- rbind(cbind(rf_random1$resample, Model = rep("5", 10), 
-                          mtry = rep(rf_random1$bestTune[1,1], 10)),
-                    cbind(rf_random2$resample, Model = rep("7", 10),
+# rf mtry cross validation
+grid.arrange(plot(rf_random2, main = "RF P = 7, C = 7"),
+             plot(rf2_grouped, main = "RF P = 7, C = 5"), nrow = 1)
+
+# save confusion matrices
+# saveRDS(cm1, "data/cm1.rds")
+# saveRDS(cm2, "data/cm2.rds")
+# saveRDS(cm3, "data/cm3.rds")
+# saveRDS(cm4, "data/cm4.rds")
+
+# view specific results
+rf3_grouped[["finalModel"]]
+varImp(rf3_grouped)
+
+# table comparing models
+results_rf <- rbind(cbind(rf_random2$resample, Model = rep("P = 7, C = 7", 10),
                           mtry = rep(rf_random2$bestTune[1,1], 10)),
-                    cbind(rf_random3$resample, Model = rep("8", 10),
-                          mtry = rep(rf_random3$bestTune[1,1], 10)))
+                    cbind(rf_random3$resample, Model = rep("P = 8, C = 7", 10),
+                          mtry = rep(rf_random3$bestTune[1,1], 10)),
+                    cbind(rf2_grouped$resample, Model = rep("P = 7, C = 5", 10),
+                          mtry = rep(rf2_grouped$bestTune[1,1], 10)),
+                    cbind(rf3_grouped$resample, Model = rep("P = 8, C = 5", 10),
+                          mtry = rep(rf3_grouped$bestTune[1,1], 10)))
 ```
 
 
 ```{r}
-train <- train %>%
-  mutate(Cmmn_Nm = make.names(Cmmn_Nm))
+# fix class names
+# ******************************
+# need to fix make.names
+# run all svm models again and rf svm model comparison
+# save confusion matrices, results tables, hyperparameter plots, and comparison plots
+# train <- train %>%
+#   mutate(Cmmn_Nm = make.names(Cmmn_Nm))
+# train_grouped <- train_grouped %>%
+#   dplyr::select(c(red, green, blue, ir, ndvi, red_green, red_blue, blue_green, Cmmn_Nm)) %>%
+#   mutate(Cmmn_Nm = make.names(Cmmn_Nm))
 
 # 10 fold cross validation
-train_control <- trainControl(method = "cv", number = 10, classProbs = T)
-
+train_control <- trainControl(method = "cv", number = 10)
+set.seed(2)
 # fit svm model with normalized variables
-svm1 <- train(Cmmn_Nm ~., data = train, method = "svmLinear", trControl = train_control,  preProcess = c("center","scale"))
+svm1 <- train(Cmmn_Nm ~., data = train, method = "svmLinear", trControl = train_control,
+              preProcess = c("center","scale"))
 
 # fit nonlinear svm model (radial basis)
-svm2 <- train(Cmmn_Nm ~., data = train, method = "svmRadial", trControl = train_control, preProcess = c("center","scale"), tuneLength = 10)
+svm2 <- train(Cmmn_Nm ~., data = train, method = "svmRadial", trControl = train_control, 
+              preProcess = c("center","scale"), tuneLength = 10)
 
 # fit nonlinear svm model (polynomial basis)
-svm3 <- train(Cmmn_Nm ~., data = train, method = "svmPoly", trControl = train_control, preProcess = c("center","scale"))
+svm3 <- train(Cmmn_Nm ~., data = train, method = "svmPoly", trControl = train_control, 
+              preProcess = c("center","scale"))
+
+# fit svm models on grouped data
+svm4 <- train(Cmmn_Nm ~., data = train_grouped, method = "svmLinear", 
+              trControl = train_control,  preProcess = c("center","scale"))
+svm5 <- train(Cmmn_Nm ~., data = train_grouped, method = "svmRadial", 
+              trControl = train_control, preProcess = c("center","scale"))
+svm6 <- train(Cmmn_Nm ~., data = train_grouped, method = "svmPoly", 
+              trControl = train_control, preProcess = c("center","scale"))
 ```
 
 ```{r}
 # compare svm models
 
 # collect resamples
-results_svm <- rbind(cbind(svm1$resample, Model = rep("svmLinear", nrow(svm1$resample), 10)),
-                     cbind(svm2$resample, Model = rep("svmRadial", nrow(svm2$resample), 10)),
-                     cbind(svm3$resample, Model = rep("svmPoly", nrow(svm3$resample), 10)))
+results_svm <- rbind(cbind(svm1$resample, Model = rep("Linear, C = 7", 10, 10),
+                           Parameter = paste("C =", svm1$bestTune[1,1])),
+                     cbind(svm2$resample, Model = rep("Radial, C = 7", 10, 10),
+                           Parameter = paste("C =", svm2$bestTune[1,2], "sigma =", 
+                                 round(svm2$bestTune[1,1], 4))),
+                     cbind(svm3$resample, Model = rep("Poly, C = 7", 10, 10),
+                           Parameter = paste("C =", svm3$bestTune[1,3], ", scale =", 
+                                 svm3$bestTune[1,2], ", degree =", svm3$bestTune[1,1])),
+                     cbind(svm4$resample, Model = rep("Linear, C = 5", 10, 10),
+                           Parameter = paste("C =", svm4$bestTune[1,1])),
+                     cbind(svm5$resample, Model = rep("Radial, C = 5", 10, 10),
+                           Parameter = paste("C =", svm5$bestTune[1,2], "sigma =",
+                                             round(svm5$bestTune[1,1], 4))),
+                     cbind(svm6$resample, Model = rep("Poly, C = 5", 10, 10),
+                           Parameter = paste("C =", svm6$bestTune[1,3], ", scale =", 
+                                 svm6$bestTune[1,2], ", degree =", svm6$bestTune[1,1])))
 
+# visualize svm model results
 ggplot(results_svm, aes(x = Model, y = Accuracy, fill = Model)) +
   geom_boxplot(alpha = 0.6) +
   theme_minimal() + 
@@ -177,50 +233,46 @@ ggplot(results_svm, aes(x = Model, y = Accuracy, fill = Model)) +
   labs(title = "Model Accuracy of SVM Models with 10-Fold CV", x = " ", fill = " ") + 
   theme(axis.text.x = element_blank())
 
-confusionMatrix(svm1,  mode = "prec_recall")
-# svm1 western redcedar prediction accuracy: 0.32
-# svm2 western redcedar prediction accuracy: 0.41
-# svm3 western redcedar prediction accuracy: 0.34
-```
+grid.arrange(plot(svm2, main = "SVM C = 7"),
+             plot(svm5, main = "SVM C = 5"), nrow = 1)
 
-```{r}
-# fit CNN model
-train_control <- trainControl(method = "repeatedcv", number = 10, repeats = 3, classProbs = T)
+# svm results by class
+scm1 <- confusionMatrix(svm1,  mode = "prec_recall")
+scm2 <- confusionMatrix(svm2,  mode = "prec_recall")
+scm3 <- confusionMatrix(svm3,  mode = "prec_recall")
+scm4 <- confusionMatrix(svm4,  mode = "prec_recall")
+scm5 <- confusionMatrix(svm5,  mode = "prec_recall")
+scm6 <- confusionMatrix(svm6,  mode = "prec_recall")
 
-cnn <- train(Cmmn_Nm ~., data = train, method = "nnet", trControl = train_control)
+# save confusion matrices
+# saveRDS(scm1, "data/scm1.rds")
+# saveRDS(scm2, "data/scm2.rds")
+# saveRDS(scm3, "data/scm3.rds")
+# saveRDS(scm4, "data/scm4.rds")
+# saveRDS(scm5, "data/scm5.rds")
+# saveRDS(scm6, "data/scm6.rds")
 ```
-https://joparga3.github.io/ud_deep_learning_cnns/
 
 ```{r}
 # combined hyperparameters results table
 results_r <- results_rf %>%
-  mutate(Model = recode(as.character(Model), '5'= '5 predictors',
-                        '7' = '7 predictors', '8' = '8 predictors')) %>%
   group_by(Model) %>%
   summarise("Accuracy" = round(mean(Accuracy), 4), "Kappa" = round(mean(Kappa), 4),
             "mtry" = mean(mtry)) %>%
   rename("Random Forest Model" = Model)
 
 results_s <- results_svm %>%
-  mutate(Model = recode(as.character(Model), 'svmLinear'= 'Linear',
-                        'svmRadial' = 'Radial', 'svmPoly' = 'Polynomial')) %>%
   group_by(Model) %>%
   summarise("Accuracy" = round(mean(Accuracy), 4), "Kappa" = round(mean(Kappa), 4)) %>%
   rename("SVM Model Kernel" = Model)
 
-results_s$Parameter <- c(paste("C =", svm1$bestTune[1,1]), 
-                         paste("C =", svm2$bestTune[1,2], 
-                               "sigma =", round(svm2$bestTune[1,1], 4)), 
-                         paste("C =", svm3$bestTune[1,3], 
-                               ", scale =", svm3$bestTune[1,2], 
-                               ", degree =", svm3$bestTune[1,1]))
+# save results tables
+# write.csv(results_r,'data/results_r.csv', row.names = F)
+# write.csv(results_s,'data/results_s.csv', row.names = F)
 
-# save results
-# write.csv(results_r,'results_r.csv', row.names = F)
-# write.csv(results_s,'results_s.csv', row.names = F)
 # save best models
-# saveRDS(rf_random3, "rf_model.rds")
-# saveRDS(svm2, "svm_model.rds")
+# saveRDS(rf3_grouped, "data/rf_model.rds")
+# saveRDS(svm2, "data/svm_model.rds")
 ```
 
 ```{r}
@@ -229,41 +281,55 @@ test_results <- data.frame(Class = test$Cmmn_Nm)
 test_results$RF <- predict(rf_random3, test)
 test_results$SVM <- predict(svm2, test)
 
+test_results_grouped <- data.frame(Class = test_grouped$Cmmn_Nm)
+test_results_grouped$RF <- predict(rf3_grouped, test_grouped)
+test_results_grouped$SVM <- predict(svm6, test_grouped)
+
 test_results %>%
+  summarise("RF Accuracy" = sum(Class == RF)/nrow(test_results), 
+            "SVM Accuracy" = sum(Class == SVM)/nrow(test_results))
+test_results_grouped %>%
   summarise("RF Accuracy" = sum(Class == RF)/nrow(test_results), 
             "SVM Accuracy" = sum(Class == SVM)/nrow(test_results))
 
 # test set results for predicting Western Redcedar
 test_results_redceder <- test_results %>%
   filter(Class %in% "Western Redcedar")
+test_grouped_redceder <- test_results_grouped %>%
+  filter(Class %in% "Western Redcedar")
 
 test_results_redceder %>%
-  summarise(rf_accuracy = sum(Class == RF)/nrow(test_results), 
-            svm_accuracy = sum(Class == SVM)/nrow(test_results))
+  summarise(rf_accuracy = sum(Class == RF)/nrow(test_results_redceder), 
+            svm_accuracy = sum(Class == SVM)/nrow(test_results_redceder))
 
-# overall test set results for polygons
+```
+
+```{r}
+# overall polygons results (7 class radial svm, 5 class 8 predictor rf)
+
 # join test results to full test data (with polygon info)
-test_dat <- cbind(test_full, test_results[,-1]) 
+test_dat <- cbind(test_full, SVM = test_results$SVM) 
+test_dat_grouped <- cbind(test_full_grouped, RF = test_results_grouped$RF) 
 
 # "correct" prediction if more than half pixels in polygon are correctly predicted
 
-# rf polygon results
-poly_test_rf <- test_dat %>%
+# rf polygon results for 5 class prediction
+poly_test_rf <- test_dat_grouped %>%
   group_by(ID) %>%
-  count(ID, same_rf = (RF == Cmmn_Nm), total = n()) %>%
+  count(ID, same_rf = (RF %in% Cmmn_Nm), total = n()) %>%
   pivot_wider(names_from = same_rf, values_from = n)
 
 poly_test_rf[is.na(poly_test_rf)] <- 0 # replace na with 0
 
 poly_test_rf <- poly_test_rf %>%
-  mutate(result = case_when(`TRUE` > `FALSE` ~ "correct",
-                                   `TRUE` <= `FALSE` ~ "incorrect"))
+  mutate(Result = case_when(`TRUE` > `FALSE` ~ "Correct",
+                                   `TRUE` <= `FALSE` ~ "Incorrect"))
 
 poly_test_rf %>%
-  group_by(result) %>%
-  count(result)
+  group_by(Result) %>%
+  count(Result)
 
-# svm polygon results
+# svm polygon results for 7 class prediction
 poly_test_svm <- test_dat %>%
   group_by(ID) %>%
   count(ID, same_svm = (SVM == Cmmn_Nm), total = n()) %>%
@@ -272,17 +338,18 @@ poly_test_svm <- test_dat %>%
 poly_test_svm[is.na(poly_test_svm)] <- 0 # replace na with 0
 
 poly_test_svm <- poly_test_svm %>%
-  mutate(result = case_when(`TRUE` > `FALSE` ~ "correct",
-                                   `TRUE` <= `FALSE` ~ "incorrect"))
+  mutate(Result = case_when(`TRUE` > `FALSE` ~ "Correct",
+                                   `TRUE` <= `FALSE` ~ "Incorrect"))
 
 poly_test_svm %>%
-  group_by(result) %>%
-  count(result)
+  group_by(Result) %>%
+  count(Result)
 
 # save results
-# write.csv(test_results,'test_results.csv', row.names = F)
-# write.csv(poly_test_rf,'poly_test_rf.csv', row.names = F)
-# write.csv(poly_test_svm,'poly_test_svm.csv', row.names = F)
+# write.csv(test_results,'data/test_results.csv', row.names = F)
+# write.csv(test_results_grouped,'data/test_results_grouped.csv', row.names = F)
+# write.csv(poly_test_rf,'data/poly_test_rf.csv', row.names = F)
+# write.csv(poly_test_svm,'data/poly_test_svm.csv', row.names = F)
 ```
 
 Plot results
