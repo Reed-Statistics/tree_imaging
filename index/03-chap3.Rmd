@@ -153,7 +153,8 @@ A subset of the data was withhold from training the models as test data to provi
 
 ```{r resultsTest, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
 test_results <- read.csv('~/tree_imaging/data/test_results.csv', check.names = F)
-test_results_grouped <- read.csv('~/tree_imaging/data/test_results_grouped.csv', check.names = F)
+test_results_grouped <- read.csv('~/tree_imaging/data/test_results_grouped.csv', 
+                                 check.names = F)
 
 test_results$Type <- rep("Full", nrow(test_results))
 test_results_grouped$Type <- rep("Grouped", nrow(test_results_grouped))

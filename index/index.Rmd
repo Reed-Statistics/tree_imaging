@@ -8,7 +8,7 @@ advisor: 'Tom Allen'
 # Delete line 6 if you only have one advisor
 department: 'Mathematics - Statistics'
 degree: 'Bachelor of Arts'
-title: 'Thesis'
+title: 'Statistical Learning Methods for Tree Classification using Remote Sensing Imagery'
 knit: "bookdown::render_book"
 site: bookdown::bookdown_site
 output: 

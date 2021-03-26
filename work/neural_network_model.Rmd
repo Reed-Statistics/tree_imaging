@@ -1,0 +1,150 @@
+---
+title: "Neural Networks"
+author: "Sarah"
+date: "3/19/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(caret)
+library(tidyverse)
+library(keras)
+```
+
+```{r}
+# load data
+pixels_data <- read.csv('data/pixels_data.csv')
+
+# adding different ratio predictors
+pixels_data <- pixels_data %>%
+  mutate(red_blue = red/blue,
+         ir_red = ir/red,
+         red_green = red/green,
+         blue_green = blue/green)
+
+# training data
+train <- pixels_data %>%
+  group_by(rstrip, Cmmn_Nm) %>%
+  slice_sample(prop = 0.7) %>%
+  ungroup()
+
+train <- train %>%
+  dplyr::select(red, green, blue, ir, ndvi, Cmmn_Nm, red_blue, ir_red, red_green, blue_green)
+
+# test data
+test <- anti_join(pixels_data, train)
+
+# grouped data to reduce class prediction size (douglas fir, sequoia, redcedar, broadleaf)
+train_grouped <- train %>%
+  mutate(Cmmn_Nm = case_when(
+    Cmmn_Nm %in% c("Bigleaf Maple", "English Oak", "Norway Maple") ~ "Broadleaf",
+    TRUE ~ as.character(Cmmn_Nm)
+  ))
+
+test_grouped <- test %>%
+  mutate(Cmmn_Nm = case_when(
+    Cmmn_Nm %in% c("Bigleaf Maple", "English Oak", "Norway Maple") ~ "Broadleaf",
+    TRUE ~ as.character(Cmmn_Nm)
+  ))
+```
+
+
+```{r}
+# simple neural network model
+train_control <- trainControl(method = "repeatedcv", number = 10)
+
+# cnn <- train(Cmmn_Nm ~., data = train, method = "nnet", trControl = train_control)
+nn_grouped <- train(Cmmn_Nm ~., data = train_grouped, method = "nnet", 
+                     trControl = train_control)
+
+
+
+```
+https://joparga3.github.io/ud_deep_learning_cnns/
+
+```{r}
+# # convert pixels data to raster data
+# pixels_data <- read.csv('data/pixels_data.csv')
+# pixels_data <- pixels_data %>%
+#   mutate(Cmmn_Nm = case_when(
+#     Cmmn_Nm %in% c("Bigleaf Maple", "English Oak", "Norway Maple") ~ "Broadleaf",
+#     TRUE ~ as.character(Cmmn_Nm)
+#   ))
+# 
+# # randomly select 70% of polygons
+# poly_list <- sample(unique(pixels_data$ID), round(length(unique(pixels_data$ID))*0.7))
+# 
+# # training data
+# train <- pixels_data %>%
+#   dplyr::filter(ID %in% poly_list) %>%
+#   dplyr::select(ID, red, green, blue, ir, ndvi, Cmmn_Nm)
+# 
+# # test data
+# test <- anti_join(pixels_data, train)
+# 
+# # polygon data
+# poly_join_reprojected <- readRDS("data/poly_join_reprojected.rds")
+# 
+# # subset to training polygons and join with pixels
+# p_train <- poly_join_reprojected[poly_list,]
+# p_train@data <- p_train@data %>%
+#   dplyr::select(id) %>%
+#   full_join(train, by = c("id" = "ID"))
+# p_r <- rasterize(p_train, raster(p_train, resolution = 2))
+
+
+# # load raster layer object
+# stack_a <- stack("planet/20200902_184428_1005_3B_AnalyticMS_clip.tif")
+# stack_b <- stack("planet/20200902_184429_1005_3B_AnalyticMS_clip.tif")
+# stack_c <- stack("planet/20200902_183008_24_1065_3B_AnalyticMS_clip.tif")
+# stack_d <- stack("planet/20200902_183006_18_1065_3B_AnalyticMS_clip.tif")
+# stack_e <- stack("planet/20200902_184430_1005_3B_AnalyticMS_clip.tif")
+# 
+# # mask raster to only include pixels inside polygons
+# stack_a <- raster::mask(stack_a, p_train)
+
+
+# training data as raster
+# r <- raster(ext = extent(p_train))
+# r1 <- rasterize(p_train, r, field = as.factor(id))
+# r2 <- rasterize(p_train[,2], r)
+
+# r_train <- stack(r1, r2)
+# create raster of polygons
+
+# Build CNN model
+model <- keras_model_sequential() 
+model %>% 
+      layer_conv_2d(kernel_size = c(3, 3), filter = 32,
+activation = "relu", padding = "same",
+input_shape = c(50, 50, 1),
+data_format = "channels_last") %>%
+      layer_conv_2d(kernel_size = c(3, 3), filter = 32,
+activation = "relu", padding = "valid") %>%
+      layer_max_pooling_2d(pool_size = 2) %>%
+      layer_dropout(rate = 0.25) %>%
+      layer_conv_2d(kernel_size = c(3, 3), filter = 64, strides = 2,
+activation = "relu", padding = "same") %>%
+      layer_conv_2d(kernel_size = c(3, 3), filter = 64,
+activation = "relu", padding = "valid") %>%
+      layer_max_pooling_2d(pool_size = 2) %>%
+      layer_dropout(rate = 0.25) %>%
+      layer_flatten() %>%
+      layer_dense(units = 50, activation = "relu") %>% 
+      layer_dropout(rate = 0.25) %>%
+      layer_dense(units = 1, activation = "sigmoid")
+summary(model)
+model %>% compile(
+loss = 'binary_crossentropy',
+optimizer = "adam",
+metrics = c('accuracy')
+)
+history <- model %>% fit(
+x = train_array, y = as.numeric(trainData$y), 
+epochs = 30, batch_size = 100, 
+validation_split = 0.2
+)
+plot(history)
+```
+

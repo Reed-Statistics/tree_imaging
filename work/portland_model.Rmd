@@ -84,11 +84,11 @@ results_d <- predRaster(stack_d)
 results_e <- predRaster(stack_e)
 
 # save results
-# writeRaster(results_a,"data/results_a.grd", format = "raster")
-# writeRaster(results_b,"data/results_b.grd", format = "raster")
-# writeRaster(results_c,"data/results_c.grd", format = "raster")
-# writeRaster(results_d,"data/results_d.grd", format = "raster")
-# writeRaster(results_e,"data/results_e.grd", format = "raster")
+# writeRaster(results_a,"data/results_a.grd", format = "raster", overwrite = T)
+# writeRaster(results_b,"data/results_b.grd", format = "raster", overwrite = T)
+# writeRaster(results_c,"data/results_c.grd", format = "raster", overwrite = T)
+# writeRaster(results_d,"data/results_d.grd", format = "raster", overwrite = T)
+# writeRaster(results_e,"data/results_e.grd", format = "raster", overwrite = T)
 ```
 
 Visualize results
@@ -111,6 +111,7 @@ m_SVM <- do.call(merge, r_list_SVM)
 # compare rasters
 r_matches <- m_RF == m_SVM
 freq(r_matches)
+freq(r_matches)[2, ]/(freq(r_matches)[2, ] + freq(r_matches)[1, ])
 # (r_matches == 1)/((r_matches == 0) + (r_matches == 1)) percentage in common: 85%
 plot(r_matches == 1, main = "RF and SVM Predictions Comparisons",
      labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "lightgreen")
@@ -121,15 +122,16 @@ plot(r_matches == 0, col = "maroon", labels = F, xaxt = 'n', yaxt = 'n',
 or_cities <- places("OR")
 portland <- or_cities %>%
   filter(NAME == "Portland")
-portland_wgs84 <- spTransform(portland, CRS("+proj=utm +zone=10 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"))
+portland_wgs84 <- spTransform(portland, 
+                              CRS("+proj=utm +zone=10 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"))
 
 # plot predictions
 plot(m_RF, main = "RF Western Redcedar Predictions", 
-     labels = F, xaxt = 'n', yaxt = 'n', legend = F)
+     labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
 plot(portland_wgs84, add = T)
 
 plot(m_SVM, main = "SVM Western Redcedar Predictions", 
-     labels = F, xaxt = 'n', yaxt = 'n', legend = F)
+     labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
 plot(portland_wgs84, add = T)
 ```
 
@@ -139,8 +141,15 @@ Compare to pdxTrees
 pdxTrees_parks <- get_pdxTrees_parks()
 pdxTrees_streets <- get_pdxTrees_streets()
 
-redcedar_dat <- pdxTrees_streets %>%
-  filter(Common_Name %in% "Western Redcedar")
+redcedar_dat_street <- pdxTrees_streets %>%
+  filter(Common_Name %in% "Western Redcedar") %>%
+  select(Longitude, Latitude, Common_Name)
+redcedar_dat_park <- pdxTrees_parks %>%
+  filter(Common_Name %in% "Western Redcedar") %>%
+  select(Longitude, Latitude, Common_Name)
+redcedar_dat <- rbind(redcedar_dat_street, redcedar_dat_park)
+
+# match coordinate reference system
 coordinates(redcedar_dat) <- c("Longitude", "Latitude")
 proj4string(redcedar_dat) <- CRS("+init=epsg:4326")
 dat_transformed <- spTransform(redcedar_dat, CRS("+proj=utm +zone=10 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"))
@@ -148,12 +157,12 @@ dat_transformed <- spTransform(redcedar_dat, CRS("+proj=utm +zone=10 +ellps=WGS8
 
 # plot pdxTrees with predictions
 plot(m_RF, main = "RF Predictions with pdxTrees", 
-     labels = F, xaxt = 'n', yaxt = 'n', legend = F)
+     labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
 plot(dat_transformed, col = rgb(red = 0.2, green = 0.2, blue = 1.0, alpha = 0.2), cex = .2, add = T)
 plot(portland_wgs84, add = T)
 
 plot(m_SVM, main = "SVM Predictions with pdxTrees", 
-     labels = F, xaxt = 'n', yaxt = 'n', legend = F)
+     labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
 plot(dat_transformed, col = rgb(red = 0.2, green = 0.2, blue = 1.0, alpha = 0.2), cex = .2, add = T)
 plot(portland_wgs84, add = T)
 

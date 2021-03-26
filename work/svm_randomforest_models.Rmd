@@ -202,6 +202,9 @@ svm5 <- train(Cmmn_Nm ~., data = train_grouped, method = "svmRadial",
               trControl = train_control, preProcess = c("center","scale"))
 svm6 <- train(Cmmn_Nm ~., data = train_grouped, method = "svmPoly", 
               trControl = train_control, preProcess = c("center","scale"))
+
+svm7 <- train(Cmmn_Nm ~., data = train_grouped, method = "svmRadial", 
+              trControl = train_control, preProcess = "range")
 ```
 
 ```{r}
@@ -298,10 +301,13 @@ test_results_redceder <- test_results %>%
 test_grouped_redceder <- test_results_grouped %>%
   filter(Class %in% "Western Redcedar")
 
-test_results_redceder %>%
+full <- test_results_redceder %>%
   summarise(rf_accuracy = sum(Class == RF)/nrow(test_results_redceder), 
             svm_accuracy = sum(Class == SVM)/nrow(test_results_redceder))
 
+grouped <- test_grouped_redceder %>%
+  summarise(rf_accuracy = sum(Class == RF)/nrow(test_grouped_redceder), 
+            svm_accuracy = sum(Class == SVM)/nrow(test_grouped_redceder))
 ```
 
 ```{r}

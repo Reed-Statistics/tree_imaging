@@ -18,12 +18,26 @@ include_graphics("figure/rfPortland.png")
 include_graphics("figure/svmPortland.png")
 ```
 
+In comparing the SVM model results to the RF results, 80% of the pixel predictions were the same predictions.
+
 To assess the performance of the model over the Portland region, the results are compared to the remaining Western redcedars from `pdxTrees` both street and park data. The shapefiles for `pdxTrees` Western redcedars ground data are mapped over the classified pixel predictions, and the number of correctly and incorrectly classified pixels is recorded. Figure \@ref(fig:resultsToStreet) visualizes this comparison.
 
 ```{r resultsToStreet, results="asis", echo=FALSE, fig.cap="Comparison of Wester redcedar RF pixel predictions (in green) to Western redcedar trees from pdxTrees (in blue).", out.width='70%', fig.align='center'}
 include_graphics("figure/resultsToStreet.png")
 ```
 
+# Discussion {#discussion}
+(Summarizes the findings
+Describes limitations of the particular project and analysis
+Discusses aspects of the analysis that could be expanded on
+Provides key takeaways and recommendations from the domain audience)
+
+
+
+Comparison of svm versus random forest, 5 class versus 7 classes
+Comparison of data to Fricker (1m v 3m), best model to Fricker
+Key takeaways: benefit of 4 band data is lighter computations
+Methods of improvement: higher resolution and more bands
 
 <!-- If we don't want Conclusion to have a chapter number next to it, we can add the `{-}` attribute. -->
 
