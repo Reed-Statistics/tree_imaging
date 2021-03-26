@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.1.7)  25 MAR 2021 20:03
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.1.7)  26 MAR 2021 16:36
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -713,17 +713,17 @@ map}] [2
 ] [2
 
 
-] (./thesis.toc)
+] (./thesis.toc [3])
 \tf@toc=\write5
 \openout5 = `thesis.toc'.
 
-[3] [4
-
-] (./thesis.lot)
+[4] (./thesis.lot)
 \tf@lot=\write6
 \openout6 = `thesis.lot'.
 
-[5] [6
+[5
+
+] [6
 
 ] (./thesis.lof
 Underfull \vbox (badness 10000) has occurred while \output is active []
@@ -786,19 +786,19 @@ LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 2
 (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) [6]
-<thesis_files/figure-latex/crownWidth-1.pdf, id=342, 427.5975pt x 280.04625pt>
+<thesis_files/figure-latex/crownWidth-1.pdf, id=362, 427.5975pt x 280.04625pt>
 File: thesis_files/figure-latex/crownWidth-1.pdf Graphic file (type pdf)
 <use thesis_files/figure-latex/crownWidth-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/crownWidth-1.pdf  used on in
 put line 268.
 (pdftex.def)             Requested size: 427.59645pt x 280.04555pt.
 [7 <./thesis_files/figure-latex/crownWidth-1.pdf>]
-<figure/polyimage.png, id=366, 250.9375pt x 129.48375pt>
+<figure/polyimage.png, id=386, 250.9375pt x 129.48375pt>
 File: figure/polyimage.png Graphic file (type png)
 <use figure/polyimage.png>
 Package pdftex.def Info: figure/polyimage.png  used on input line 305.
 (pdftex.def)             Requested size: 216.81pt x 111.87938pt.
-<figure/redcedar.png, id=368, 250.9375pt x 128.98187pt>
+<figure/redcedar.png, id=388, 250.9375pt x 128.98187pt>
 File: figure/redcedar.png Graphic file (type png)
 <use figure/redcedar.png>
 Package pdftex.def Info: figure/redcedar.png  used on input line 313.
@@ -807,7 +807,7 @@ Package pdftex.def Info: figure/redcedar.png  used on input line 313.
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [8] [9 <./figure/polyimage.png> <./figure/redcedar.png>] [10]
-<thesis_files/figure-latex/pixDensity-1.pdf, id=390, 423.5825pt x 280.04625pt>
+<thesis_files/figure-latex/pixDensity-1.pdf, id=410, 423.5825pt x 280.04625pt>
 File: thesis_files/figure-latex/pixDensity-1.pdf Graphic file (type pdf)
 <use thesis_files/figure-latex/pixDensity-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/pixDensity-1.pdf  used on in
@@ -817,14 +817,14 @@ put line 464.
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [11]
-<thesis_files/figure-latex/ndvival-1.pdf, id=399, 279.0425pt x 280.04625pt>
+<thesis_files/figure-latex/ndvival-1.pdf, id=419, 279.0425pt x 280.04625pt>
 File: thesis_files/figure-latex/ndvival-1.pdf Graphic file (type pdf)
 <use thesis_files/figure-latex/ndvival-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/ndvival-1.pdf  used on input
  line 481.
 (pdftex.def)             Requested size: 279.04181pt x 280.04555pt.
 [12 <./thesis_files/figure-latex/pixDensity-1.pdf>]
-<thesis_files/figure-latex/grassval-1.pdf, id=414, 489.83pt x 280.04625pt>
+<thesis_files/figure-latex/grassval-1.pdf, id=435, 489.83pt x 280.04625pt>
 File: thesis_files/figure-latex/grassval-1.pdf Graphic file (type pdf)
 <use thesis_files/figure-latex/grassval-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/grassval-1.pdf  used on inpu
@@ -836,7 +836,7 @@ Overfull \hbox (56.2088pt too wide) in paragraph at lines 493--494
  []
 
 [13 <./thesis_files/figure-latex/ndvival-1.pdf>]
-<figure/beforeaftermask.png, id=437, 301.125pt x 454.19687pt>
+<figure/beforeaftermask.png, id=457, 301.125pt x 454.19687pt>
 File: figure/beforeaftermask.png Graphic file (type png)
 <use figure/beforeaftermask.png>
 Package pdftex.def Info: figure/beforeaftermask.png  used on input line 502.
@@ -845,7 +845,7 @@ Package pdftex.def Info: figure/beforeaftermask.png  used on input line 502.
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [14 <./thesis_files/figure-latex/grassval-1.pdf>]
-<figure/masklimit.png, id=453, 301.125pt x 457.20813pt>
+<figure/masklimit.png, id=473, 301.125pt x 457.20813pt>
 File: figure/masklimit.png Graphic file (type png)
 <use figure/masklimit.png>
 Package pdftex.def Info: figure/masklimit.png  used on input line 518.
@@ -858,24 +858,24 @@ Chapter 2.
 [17
 
 ] [18]
-<figure/corrmatrix.png, id=484, 1514.65875pt x 1178.4025pt>
+<figure/corrmatrix.png, id=504, 1514.65875pt x 1178.4025pt>
 File: figure/corrmatrix.png Graphic file (type png)
 <use figure/corrmatrix.png>
 Package pdftex.def Info: figure/corrmatrix.png  used on input line 580.
 (pdftex.def)             Requested size: 303.53267pt x 236.14383pt.
 [19] [20 <./figure/corrmatrix.png>]
-<figure/rf7_mtry.png, id=497, 1337.99875pt x 1034.86626pt>
+<figure/rf7_mtry.png, id=517, 1337.99875pt x 1034.86626pt>
 File: figure/rf7_mtry.png Graphic file (type png)
 <use figure/rf7_mtry.png>
 Package pdftex.def Info: figure/rf7_mtry.png  used on input line 606.
 (pdftex.def)             Requested size: 390.25534pt x 301.84052pt.
-<figure/rf8_mtry.png, id=499, 1472.50125pt x 1139.25626pt>
+<figure/rf8_mtry.png, id=519, 1472.50125pt x 1139.25626pt>
 File: figure/rf8_mtry.png Graphic file (type png)
 <use figure/rf8_mtry.png>
 Package pdftex.def Info: figure/rf8_mtry.png  used on input line 618.
 (pdftex.def)             Requested size: 390.25534pt x 301.93623pt.
 [21 <./figure/rf7_mtry.png>]
-<figure/rfresults.png, id=509, 1498.59875pt x 1233.60875pt>
+<figure/rfresults.png, id=529, 1498.59875pt x 1233.60875pt>
 File: figure/rfresults.png Graphic file (type png)
 <use figure/rfresults.png>
 Package pdftex.def Info: figure/rfresults.png  used on input line 630.
@@ -887,16 +887,16 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 5460) has occurred while \output is active []
 
 [23 <./figure/rfresults.png>]
-<figure/svm2.png, id=527, 2212.265pt x 1280.785pt>
+<figure/svm2.png, id=547, 2212.265pt x 1280.785pt>
 File: figure/svm2.png Graphic file (type png)
 <use figure/svm2.png>
 Package pdftex.def Info: figure/svm2.png  used on input line 675.
 (pdftex.def)             Requested size: 390.25534pt x 225.91916pt.
 
-Underfull \vbox (badness 10000) has occurred while \output is active []
+Underfull \vbox (badness 1968) has occurred while \output is active []
 
 [24]
-<figure/svm3.png, id=537, 2212.265pt x 1280.785pt>
+<figure/svm3.png, id=558, 2212.265pt x 1280.785pt>
 File: figure/svm3.png Graphic file (type png)
 <use figure/svm3.png>
 Package pdftex.def Info: figure/svm3.png  used on input line 687.
@@ -905,7 +905,7 @@ Package pdftex.def Info: figure/svm3.png  used on input line 687.
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [25 <./figure/svm2.png>]
-<figure/svmresults.png, id=547, 1358.07375pt x 1063.975pt>
+<figure/svmresults.png, id=567, 1358.07375pt x 1063.975pt>
 File: figure/svmresults.png Graphic file (type png)
 <use figure/svmresults.png>
 Package pdftex.def Info: figure/svmresults.png  used on input line 699.
@@ -917,38 +917,49 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 
 ]
 Chapter 3.
-<figure/rfPortland.png, id=581, 2039.62pt x 1575.8875pt>
+<figure/rfPortland.png, id=601, 715.67375pt x 885.3075pt>
 File: figure/rfPortland.png Graphic file (type png)
 <use figure/rfPortland.png>
 Package pdftex.def Info: figure/rfPortland.png  used on input line 799.
-(pdftex.def)             Requested size: 303.53267pt x 234.52138pt.
-<figure/svmPortland.png, id=582, 1854.93pt x 1432.35126pt>
+(pdftex.def)             Requested size: 433.62pt x 536.40294pt.
+<figure/svmPortland.png, id=602, 749.80125pt x 804.00375pt>
 File: figure/svmPortland.png Graphic file (type png)
 <use figure/svmPortland.png>
 Package pdftex.def Info: figure/svmPortland.png  used on input line 807.
-(pdftex.def)             Requested size: 303.53267pt x 234.38258pt.
+(pdftex.def)             Requested size: 433.62pt x 464.97302pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [31]
-<figure/resultsToStreet.png, id=590, 2274.4975pt x 1732.4725pt>
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[32 <./figure/rfPortland.png>]
+<figure/resultsToStreet.png, id=615, 647.41875pt x 971.63pt>
 File: figure/resultsToStreet.png Graphic file (type png)
 <use figure/resultsToStreet.png>
 Package pdftex.def Info: figure/resultsToStreet.png  used on input line 818.
-(pdftex.def)             Requested size: 303.53267pt x 231.17729pt.
-[32 <./figure/rfPortland.png> <./figure/svmPortland.png>] [33 <./figure/results
-ToStreet.png>] [34
+(pdftex.def)             Requested size: 433.62pt x 650.76634pt.
 
-]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[33 <./figure/svmPortland.png>]
+Overfull \vbox (39.33633pt too high) has occurred while \output is active []
+
+[34 <./figure/resultsToStreet.png>]
 Chapter 4.
-[35] [36
 
-]
+Underfull \vbox (badness 1975) has occurred while \output is active []
+
+[35
+
+] [36]
 Appendix A.
 
-LaTeX Warning: Reference `ref-labels' on page 37 undefined on input line 846.
+LaTeX Warning: Reference `ref-labels' on page 37 undefined on input line 856.
 
-[37] [38
+[37
+
+] [38
 
 ]
 Appendix B.
@@ -961,13 +972,13 @@ Appendix B.
 LaTeX Warning: There were undefined references.
 
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 0B14F99C9E6E63E3D1A1CF6F7D4A8F76;1826.
+(rerunfilecheck)             Checksum: 8062DC6C75E3CA92212D924348E33AB5;2185.
  ) 
 Here is how much of TeX's memory you used:
- 10962 strings out of 481233
- 172286 string characters out of 5913274
- 498915 words of memory out of 5000000
- 27433 multiletter control sequences out of 15000+600000
+ 10979 strings out of 481233
+ 172761 string characters out of 5913274
+ 499199 words of memory out of 5000000
+ 27441 multiletter control sequences out of 15000+600000
  455055 words of font info for 62 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  68i,12n,70p,2133b,379s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -990,10 +1001,10 @@ onts/type1/public/lm/lmsy10.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-dis
 t/fonts/type1/public/lm/lmsy6.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf-d
 ist/fonts/type1/public/lm/lmsy8.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf
 -dist/fonts/type1/public/lm/lmtt12.pfb>
-Output written on thesis.pdf (55 pages, 4588966 bytes).
+Output written on thesis.pdf (55 pages, 4541038 bytes).
 PDF statistics:
- 747 PDF objects out of 1000 (max. 8388607)
- 631 compressed objects within 7 object streams
- 169 named destinations out of 1000 (max. 500000)
- 307 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 775 PDF objects out of 1000 (max. 8388607)
+ 659 compressed objects within 7 object streams
+ 178 named destinations out of 1000 (max. 500000)
+ 339 words of extra memory for PDF output out of 10000 (max. 10000000)
 

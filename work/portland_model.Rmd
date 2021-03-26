@@ -143,10 +143,10 @@ pdxTrees_streets <- get_pdxTrees_streets()
 
 redcedar_dat_street <- pdxTrees_streets %>%
   filter(Common_Name %in% "Western Redcedar") %>%
-  select(Longitude, Latitude, Common_Name)
+  dplyr::select(Longitude, Latitude, Common_Name)
 redcedar_dat_park <- pdxTrees_parks %>%
   filter(Common_Name %in% "Western Redcedar") %>%
-  select(Longitude, Latitude, Common_Name)
+  dplyr::select(Longitude, Latitude, Common_Name)
 redcedar_dat <- rbind(redcedar_dat_street, redcedar_dat_park)
 
 # match coordinate reference system
@@ -168,8 +168,8 @@ plot(portland_wgs84, add = T)
 
 # match pixels with pdxTrees to test for accuracy
 street_mask <- mask(m_RF, dat_transformed)
-freq(street_mask) # testing accuracy estimates for Western redcedars
-# 34%
+freq(street_mask)[1, 2]/nrow(dat_transformed) # testing accuracy estimates for Western redcedars
+# 65%
 ```
 
 https://mgimond.github.io/Spatial/mapping-data-in-r.html

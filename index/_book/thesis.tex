@@ -536,14 +536,14 @@ In building a decision tree for classification, recursive binary splits are made
 
 \[G = \sum_{k = 1}^K\hat{p}_{mk}(1 - \hat{p}_{mk}),\]
 
-where \(\hat{p}_{mk}\) is the proportion of observations in the \(m^{\text{th}}\) region from the \(k^{\text{th}}\) class. A small Gini index value represents a region containing mostly observations from a single class, while a large Gini index value represents a lot of variation within classes. Then the decision tree is constructed by repeatedly considering different attributes and making splits where the Gini index is minimized. Note that this top-down, greedy approach tends to overfit the training data, so finding the decision tree that performs the best on test data involves a cost-complexity pruning algorithm to obtain smaller trees and apply k-fold cross validation to choose the best tree that minimizes the average error.
+where \(\hat{p}_{mk}\) is the proportion of observations in the \(m^{\text{th}}\) region from the \(k^{\text{th}}\) class (James, Witten, Hastie, \& Tibshirani, 2013). A small Gini index value represents a region containing mostly observations from a single class, while a large Gini index value represents a lot of variation within classes. Then the decision tree is constructed by repeatedly considering different attributes and making splits where the Gini index is minimized. Note that this top-down, greedy approach tends to overfit the training data, so finding the decision tree that performs the best on test data involves a cost-complexity pruning algorithm to obtain smaller trees and apply k-fold cross validation to choose the best tree that minimizes the average error.
 
 In the classification setting, a stronger predictive model than a decision tree is a random forest, which uses an element of randomness to decorrelate bootstrapped decision trees. Bootstrapped samples from the training dataset are used to construct decision trees, where splits are based on minimizing the Gini index when selecting from a random sample \(m\) of attributes from all \(p\) available. In common random forest applications, the number of attributes considered at a split is \(m \approx \sqrt{p}\). Theoretically, by forcing only a subset of attributes to be featured in the tree, this expands the number of possible subtrees that might not have been achieved by the top-down, greedy approach. Hence, random forests provide a method of predicting classes with low variance while also keeping bias at a minimum.
 
 \hypertarget{support-vector-machine}{%
 \subsection{Support Vector Machine}\label{support-vector-machine}}
 
-Another method investigated in this study imagines the multidimensional data in space and classifies the data using hyperplanes positioned to minimize misclassification error and maximize distance from observations to separate the data. Support vectors are vectors in space that represent the subset of observations which influence the hyperplane classifier. For example, in two dimensions, imagine a line separating A's one one side and B's on the other side. This line is the maximal margin hyperplane if it is the farthest possible from the observations and also separates the two classes perfectly. Observations that are closer to the hyperplane (support vectors) have more influence over the line if they move than observations that are further. Consequently, more support vectors indicates a classifier with lower variance and high bias. A tuning parameter can be altered to expand or shrink the margin of error surrounding the hyperplane (how far away the observations have to be from the plane) and decide the level of tolerance for misclassifying observations.
+Another method investigated in this study imagines the multidimensional data in space and classifies the data using hyperplanes positioned to minimize misclassification error and maximize distance from observations to separate the data (James et al., 2013). Support vectors are vectors in space that represent the subset of observations which influence the hyperplane classifier. For example, in two dimensions, imagine a line separating A's one one side and B's on the other side. This line is the maximal margin hyperplane if it is the farthest possible from the observations and also separates the two classes perfectly. Observations that are closer to the hyperplane (support vectors) have more influence over the line if they move than observations that are further. Consequently, more support vectors indicates a classifier with lower variance and high bias. A tuning parameter can be altered to expand or shrink the margin of error surrounding the hyperplane (how far away the observations have to be from the plane) and decide the level of tolerance for misclassifying observations.
 
 Support vector machines can be applied in a linear or nonlinear setting with the use of kernels. A kernel is a function \(K(x_i, x_{i'})\) of two observations specifying the similarities between two points. Given data with \(n\) observations, let \(x_i\) be an observation, where \(i = 1, ... ,n\). A linear kernel is
 
@@ -572,9 +572,9 @@ Support vector machines are less sensitive to outliers and successful predictors
 \hypertarget{training-models}{%
 \section{Training Models}\label{training-models}}
 
-To model the tree type of the pixels in raster image, a random forest model and a support vector machine model are trained using the pixels training data. First the data is separated into a training set and then a test set by a ratio of 70\% training data and 30\% testing data. The \texttt{dplyr} function \texttt{slice\_sample} was used to take a stratified sample from the entire pixels dataset where 70\% of each tree species in an individual raster strip was randomly selected. For example, 70\% of the bigleaf maple trees in raster strip `A' were randomly selected for the training set. To train these models, k-fold cross validation is used. The data gets split into \(k = 10\) folds and ten models are trained each time withholding one of the ten folds until the process goes through every fold. This process aids in understanding how the models will perform against data that has not been included in training the model.
+To model the tree type of the pixels in raster image, a random forest model and a support vector machine model are trained using the pixels training data. First the data is separated into a training set and then a test set by a ratio of 70\% training data and 30\% testing data. The \texttt{dplyr} function \texttt{slice\_sample} was used to take a stratified sample from the entire pixels dataset where 70\% of each tree species in an individual raster strip was randomly selected. For example, the training set consisted of 70\% of the bigleaf maple trees in raster strip `A', 70\% of bigleaf maple trees in raster strip `B', and so on. To train these models, k-fold cross validation is used. The data gets split into \(k = 10\) folds and ten models are trained each time withholding one of the ten folds until the process goes through every fold. This process aids in understanding how the models will perform against data that has not been included in training the model.
 
-The selected variables for training the models are the four bands (red, green, blue, infrared) and an NDVI variable, and the predictive variable is the tree species name. Some predictor variables were manually computed using ratios of bands. Typically, a long over short band ratio provides some more information to train the model. The following bands were created: red/blue, ir/red, red/green, and blue/green. Examining a correlation matrix with these predictors reveals possibly useful and not too highly correlated variables are red/green, red/blue, and blue/green (see Figure \ref{fig:corrmatrix}.
+The selected variables for training the models are the four bands (red, green, blue, infrared) and an NDVI variable, and the predictive variable is the tree species name. Some predictor variables were manually computed using ratios of bands. Typically, a long over short band ratio provides some more information to train the model. The following bands were created: red/blue, ir/red, red/green, and blue/green. Examining a correlation matrix with these predictors reveals possibly useful and not too highly correlated variables are red/green, red/blue, and blue/green (see Figure \ref{fig:corrmatrix}).
 \begin{figure}
 
 {\centering \includegraphics[width=0.7\linewidth]{figure/corrmatrix} 
@@ -659,7 +659,7 @@ P = 8, C = 5 & 0.6478 & 0.5067 & 1\\
 \hypertarget{support-vector-machine-tuning}{%
 \subsection{Support Vector Machine Tuning}\label{support-vector-machine-tuning}}
 
-The \texttt{train} function has the \texttt{method\ =\ svmLinear/svmRadial/svmPoly} option to train a support vector machine model on the dataset to classify pixels into species of trees. This option also has parameters for cost, loss function, class weights, and normalized variables. For this project, three support vector machines were trained: linear, radial basis, and polynomial basis, and all three were specified to normalize the variables. The \texttt{caret} package selects the best cost tuning parameter based on accuracy through cross-validation.
+The \texttt{train} function has the \texttt{method\ =\ svmLinear/svmRadial/svmPoly} option to train a support vector machine model on the dataset to classify pixels into species of trees. This option also has parameters for cost, loss function, class weights, and normalized variables. For this project, three support vector machines were trained: linear, radial basis, and polynomial basis, and the preprocess setting for all three models were specified to center and scale (in R: \texttt{preProcess\ =\ c("center",\ "scale")}), which standardizes the variables. This is commonly performed with SVM models because the scale of the variables influences the optimal hyperplane decision. Since the light intensities extracted from the band data are only positive values, it is reasonable to consider normalizing the variables by setting the maximum value in the variable to 1 and the minimum value to 0, however, in comparing the SVM models under this preprocess setting (in R: \texttt{preProcess\ =\ "range"}) to the standardized setting, the accuracy of the models is not as high as the accuracy of the standardized variable models. The \texttt{caret} package selects the best cost tuning parameters based on accuracy through cross-validation.
 
 \hypertarget{linear-support-vector-machine}{%
 \subsubsection{Linear Support Vector Machine}\label{linear-support-vector-machine}}
@@ -793,10 +793,10 @@ The model that performed best at predicting all 7 tree classes was the radial SV
 \hypertarget{modelling-tree-species-in-portland}{%
 \section{Modelling Tree Species in Portland}\label{modelling-tree-species-in-portland}}
 
-After masking the raster images of the entire region of Portland, the pre-trained models are used to predict the tree species of individual pixels in the masked raster images. The \texttt{predict.raster} function from RStudio's \texttt{raster} package takes a model and applying that model to each cell of the raster, leaving a raster with tree classification predictions. This function is used to predict tree species over all five raster strips, and the raster strips are merged to display predictions for the entire city. Figure \ref{fig:rfPortland} displays the tree classification predictions given by the optimal random forest model over Portland and figure \ref{fig:svmPortland} displays the predictions from the support vector machine model.
+After masking the raster images of the entire region of Portland, the pre-trained models are used to predict the tree species of individual pixels in the masked raster images. The \texttt{predict.raster} function from RStudio's \texttt{raster} package takes a model and applies that model to each cell of the raster, leaving a raster with tree classification predictions. This function is used to predict tree species over all five raster strips, and the raster strips are merged to display predictions for the entire city. Figure \ref{fig:rfPortland} displays the tree classification predictions given by the optimal random forest model over Portland and figure \ref{fig:svmPortland} displays the predictions from the support vector machine model.
 \begin{figure}
 
-{\centering \includegraphics[width=0.7\linewidth]{figure/rfPortland} 
+{\centering \includegraphics[width=1\linewidth]{figure/rfPortland} 
 
 }
 
@@ -804,18 +804,18 @@ After masking the raster images of the entire region of Portland, the pre-traine
 \end{figure}
 \begin{figure}
 
-{\centering \includegraphics[width=0.7\linewidth]{figure/svmPortland} 
+{\centering \includegraphics[width=1\linewidth]{figure/svmPortland} 
 
 }
 
 \caption{Model tree classification predictions over entire Portland region using the support vector machine model with radial basis kernel.}\label{fig:svmPortland}
 \end{figure}
-In comparing the SVM model results to the RF results, 80\% of the pixel predictions were the same predictions.
+In comparing the SVM model results to the RF results, 80\% of the pixel predictions were the same predictions under both models.
 
-To assess the performance of the model over the Portland region, the results are compared to the remaining Western redcedars from \texttt{pdxTrees} both street and park data. The shapefiles for \texttt{pdxTrees} Western redcedars ground data are mapped over the classified pixel predictions, and the number of correctly and incorrectly classified pixels is recorded. Figure \ref{fig:resultsToStreet} visualizes this comparison.
+To assess the performance of the model over the Portland region, the results are compared to the remaining Western redcedars from \texttt{pdxTrees} both street and park data. The shapefiles for \texttt{pdxTrees} Western redcedars ground data are mapped over the classified pixel predictions, and the number of correctly and incorrectly classified pixels is recorded to be 65\% accurate. Figure \ref{fig:resultsToStreet} visualizes this comparison.
 \begin{figure}
 
-{\centering \includegraphics[width=0.7\linewidth]{figure/resultsToStreet} 
+{\centering \includegraphics[width=1\linewidth]{figure/resultsToStreet} 
 
 }
 
@@ -824,15 +824,25 @@ To assess the performance of the model over the Portland region, the results are
 \hypertarget{discussion}{%
 \chapter{Discussion}\label{discussion}}
 
-(Summarizes the findings
-Describes limitations of the particular project and analysis
-Discusses aspects of the analysis that could be expanded on
-Provides key takeaways and recommendations from the domain audience)
+\hypertarget{rf-grouped-data-performance-versus-svm-full-data-performance}{%
+\section{RF Grouped Data Performance Versus SVM Full Data Performance}\label{rf-grouped-data-performance-versus-svm-full-data-performance}}
 
-Comparison of svm versus random forest, 5 class versus 7 classes
-Comparison of data to Fricker (1m v 3m), best model to Fricker
-Key takeaways: benefit of 4 band data is lighter computations
-Methods of improvement: higher resolution and more bands
+The RF model predicting 5 classes outperforms the SVM model predicting all 7 classes in training and testing overall accuracy as well as in prediction of the whole polygons. It was observed that the models predicting less classes (Broadleaf, Douglas-Fir, Giant Sequoia, Grass, and Western Redcedar) outperformed models predicting on all available tree classes (Bigleaf Maple, English Oak, Norway Maple, Douglas-Fir, Giant Sequoia, Grass, and Western Redcedar). This is likely a result of only having 4-band imagery plus the variables that are linear combinations of these 4 bands; 8 predictors training a model to predict 7 classes will not predict as well as 8 predictors training a model to predict 5 classes. In comparing the entire RF results on Portland to the \texttt{pdxTrees}, the test accuracy was 0.65.
+
+\hypertarget{model-results-compared-to-fricker-methods-fricker_convolutional_2019}{%
+\section{Model Results Compared to Fricker Methods (Fricker et al., 2019)}\label{model-results-compared-to-fricker-methods-fricker_convolutional_2019}}
+
+Fricker's methods are conducted under ideal circumstances. The single image strip used in the study had a spatial resolution of 1 meter, they had access to both hyperspectral imagery and RGB imagery, and the ground data was carefully collected to consist of all seven tree species (Fricker et al., 2019). Fricker's results show that models using hyperspectral images performed better than RGB image models because they include spectral band combinations not available from RGB images. For this research, the images only consist of 4 bands (red, green, blue, and infrared), are accessible online, and have a spatial resolution of 3 meters. Fricker's methods applying a convolution neural network using hyperspectral imagery produced cross-validation training accuracies of 87\%. On just RGB imagery, this accuracy dropped to 64\%, which is slightly less than the best performing model (RF P = 8, C = 5) from this research which had a cross-validation training accuracy of 65\%.
+
+\hypertarget{methods-of-improvementfurther-work}{%
+\section{Methods of Improvement/Further Work}\label{methods-of-improvementfurther-work}}
+
+As Fricker's article has shown, increasing the spectral resolution by having access to hyperspectral data adds more information to the models and improves performance. In terms of data, another improvement to this research would be to increase the spatial resolution to 1 meter if possible. This refines the process of creating polygons by enhancing the visibility of the tree canopy outlines and reduces noise introduced by having shadows, dirt, building structures, and other non-tree pixels within the polygons. The benefits of high spatial and spectral resolution imagery also extends to improving the masks applied to the images, which were successful, for example, in removing building structures and dead fields of grass, but incorrectly recognized mossy lakes as trees. Carefully masking the images improves the ability of the model to locate tree pixels and classify them.
+
+\hypertarget{conclusion}{%
+\section{Conclusion}\label{conclusion}}
+
+The results of this research are replicable, since it involves data from open sources and the coding is completed in RStudio, and not too computationally intensive to require more than a day to run all of the code. The research was completed using 5 4-band image strips at a spatial resolution of 3 meters, which is worse than the ideal conditions of Fricker's data, however, applying and assessing models reveals that the predictive results almost match the RGB results from Fricker's research. A key takeaway is that this research provides a guideline for general areas to focus on locating Western redcedars. Mapping the locations of redcedars in Portland provides a way to track future changes in redcedar trees's health, and
 
 \appendix
 
@@ -868,6 +878,9 @@ Castelluccio, M., Poggi, G., Sansone, C., \& Verdoliva, L. (2015). Land Use Clas
 
 \leavevmode\hypertarget{ref-fricker_convolutional_2019}{}%
 Fricker, G. A., Ventura, J. D., Wolf, J. A., North, M. P., Davis, F. W., \& Franklin, J. (2019). A Convolutional Neural Network Classifier Identifies Tree Species in Mixed-Conifer Forest from Hyperspectral Imagery. \emph{Remote Sensing}, \emph{11}(19), 2326. \url{http://doi.org/10.3390/rs11192326}
+
+\leavevmode\hypertarget{ref-james_introduction_2013}{}%
+James, G., Witten, D., Hastie, T., \& Tibshirani, R. (2013). \emph{An Introduction to Statistical Learning} (Vol. 103). New York, NY: Springer New York. \url{http://doi.org/10.1007/978-1-4614-7138-7}
 
 \leavevmode\hypertarget{ref-caret}{}%
 Kuhn, M. (2020). \emph{Caret: Classification and regression training}. Retrieved from \url{https://CRAN.R-project.org/package=caret}

@@ -8,36 +8,37 @@ The model that performed best at predicting all 7 tree classes was the radial SV
 
 ## Modelling Tree Species in Portland
 
-After masking the raster images of the entire region of Portland, the pre-trained models are used to predict the tree species of individual pixels in the masked raster images. The `predict.raster` function from RStudio's `raster` package takes a model and applying that model to each cell of the raster, leaving a raster with tree classification predictions. This function is used to predict tree species over all five raster strips, and the raster strips are merged to display predictions for the entire city. Figure \@ref(fig:rfPortland) displays the tree classification predictions given by the optimal random forest model over Portland and figure \@ref(fig:svmPortland) displays the predictions from the support vector machine model.
+After masking the raster images of the entire region of Portland, the pre-trained models are used to predict the tree species of individual pixels in the masked raster images. The `predict.raster` function from RStudio's `raster` package takes a model and applies that model to each cell of the raster, leaving a raster with tree classification predictions. This function is used to predict tree species over all five raster strips, and the raster strips are merged to display predictions for the entire city. Figure \@ref(fig:rfPortland) displays the tree classification predictions given by the optimal random forest model over Portland and figure \@ref(fig:svmPortland) displays the predictions from the support vector machine model.
 
-```{r rfPortland, results="asis", echo=FALSE, fig.cap="Model tree classification predictions over entire Portland region using the random forest model with 8 predictors.", out.width='70%', fig.align='center'}
+```{r rfPortland, results="asis", echo=FALSE, fig.cap="Model tree classification predictions over entire Portland region using the random forest model with 8 predictors.", out.width='100%', fig.align='center'}
 include_graphics("figure/rfPortland.png")
 ```
 
-```{r svmPortland, results="asis", echo=FALSE, fig.cap="Model tree classification predictions over entire Portland region using the support vector machine model with radial basis kernel.", out.width='70%', fig.align='center'}
+```{r svmPortland, results="asis", echo=FALSE, fig.cap="Model tree classification predictions over entire Portland region using the support vector machine model with radial basis kernel.", out.width='100%', fig.align='center'}
 include_graphics("figure/svmPortland.png")
 ```
 
-In comparing the SVM model results to the RF results, 80% of the pixel predictions were the same predictions.
+In comparing the SVM model results to the RF results, 80% of the pixel predictions were the same predictions under both models.
 
-To assess the performance of the model over the Portland region, the results are compared to the remaining Western redcedars from `pdxTrees` both street and park data. The shapefiles for `pdxTrees` Western redcedars ground data are mapped over the classified pixel predictions, and the number of correctly and incorrectly classified pixels is recorded. Figure \@ref(fig:resultsToStreet) visualizes this comparison.
+To assess the performance of the model over the Portland region, the results are compared to the remaining Western redcedars from `pdxTrees` both street and park data. The shapefiles for `pdxTrees` Western redcedars ground data are mapped over the classified pixel predictions, and the number of correctly and incorrectly classified pixels is recorded to be 65% accurate. Figure \@ref(fig:resultsToStreet) visualizes this comparison.
 
-```{r resultsToStreet, results="asis", echo=FALSE, fig.cap="Comparison of Wester redcedar RF pixel predictions (in green) to Western redcedar trees from pdxTrees (in blue).", out.width='70%', fig.align='center'}
+```{r resultsToStreet, results="asis", echo=FALSE, fig.cap="Comparison of Wester redcedar RF pixel predictions (in green) to Western redcedar trees from pdxTrees (in blue).", out.width='100%', fig.align='center'}
 include_graphics("figure/resultsToStreet.png")
 ```
 
 # Discussion {#discussion}
-(Summarizes the findings
-Describes limitations of the particular project and analysis
-Discusses aspects of the analysis that could be expanded on
-Provides key takeaways and recommendations from the domain audience)
 
+## RF Grouped Data Performance Versus SVM Full Data Performance
+The RF model predicting 5 classes outperforms the SVM model predicting all 7 classes in training and testing overall accuracy as well as in prediction of the whole polygons. It was observed that the models predicting less classes (Broadleaf, Douglas-Fir, Giant Sequoia, Grass, and Western Redcedar) outperformed models predicting on all available tree classes (Bigleaf Maple, English Oak, Norway Maple, Douglas-Fir, Giant Sequoia, Grass, and Western Redcedar). This is likely a result of only having 4-band imagery plus the variables that are linear combinations of these 4 bands; 8 predictors training a model to predict 7 classes will not predict as well as 8 predictors training a model to predict 5 classes. In comparing the entire RF results on Portland to the `pdxTrees`, the test accuracy was 0.65.
 
+## Model Results Compared to Fricker Methods [@fricker_convolutional_2019]
+Fricker's methods are conducted under ideal circumstances. The single image strip used in the study had a spatial resolution of 1 meter, they had access to both hyperspectral imagery and RGB imagery, and the ground data was carefully collected to consist of all seven tree species [@fricker_convolutional_2019]. Fricker's results show that models using hyperspectral images performed better than RGB image models because they include spectral band combinations not available from RGB images. For this research, the images only consist of 4 bands (red, green, blue, and infrared), are accessible online, and have a spatial resolution of 3 meters. Fricker's methods applying a convolution neural network using hyperspectral imagery produced cross-validation training accuracies of 87%. On just RGB imagery, this accuracy dropped to 64%, which is slightly less than the best performing model (RF P = 8, C = 5) from this research which had a cross-validation training accuracy of 65%.
 
-Comparison of svm versus random forest, 5 class versus 7 classes
-Comparison of data to Fricker (1m v 3m), best model to Fricker
-Key takeaways: benefit of 4 band data is lighter computations
-Methods of improvement: higher resolution and more bands
+## Methods of Improvement/Further Work
+As Fricker's article has shown, increasing the spectral resolution by having access to hyperspectral data adds more information to the models and improves performance. In terms of data, another improvement to this research would be to increase the spatial resolution to 1 meter if possible. This refines the process of creating polygons by enhancing the visibility of the tree canopy outlines and reduces noise introduced by having shadows, dirt, building structures, and other non-tree pixels within the polygons. The benefits of high spatial and spectral resolution imagery also extends to improving the masks applied to the images, which were successful, for example, in removing building structures and dead fields of grass, but incorrectly recognized mossy lakes as trees. Carefully masking the images improves the ability of the model to locate tree pixels and classify them.
+
+## Conclusion
+The results of this research are replicable, since it involves data from open sources and the coding is completed in RStudio, and not too computationally intensive to require more than a day to run all of the code. The research was completed using 5 4-band image strips at a spatial resolution of 3 meters, which is worse than the ideal conditions of Fricker's data, however, applying and assessing models reveals that the predictive results almost match the RGB results from Fricker's research. A key takeaway is that this research provides a guideline for general areas to focus on locating Western redcedars. Mapping the locations of redcedars in Portland provides a way to track future changes in redcedar trees's health, and 
 
 <!-- If we don't want Conclusion to have a chapter number next to it, we can add the `{-}` attribute. -->
 

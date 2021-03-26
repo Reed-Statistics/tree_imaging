@@ -203,7 +203,9 @@ svm5 <- train(Cmmn_Nm ~., data = train_grouped, method = "svmRadial",
 svm6 <- train(Cmmn_Nm ~., data = train_grouped, method = "svmPoly", 
               trControl = train_control, preProcess = c("center","scale"))
 
-svm7 <- train(Cmmn_Nm ~., data = train_grouped, method = "svmRadial", 
+svm7 <- train(Cmmn_Nm ~., data = train, method = "svmRadial", 
+              trControl = train_control, preProcess = "range")
+svm8 <- train(Cmmn_Nm ~., data = train, method = "svmPoly", 
               trControl = train_control, preProcess = "range")
 ```
 
