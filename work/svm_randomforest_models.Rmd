@@ -296,6 +296,10 @@ grouped <- test_grouped_redceder %>%
 # precision and recall for Western Redcedar
 cm_test <- confusionMatrix(test_results$RF, test_results$Class)
 cm_test_grouped <- confusionMatrix(test_results_grouped$RF, test_results_grouped$Class)
+
+# save matrices
+# saveRDS(cm_test, "data/cm_test.rds")
+# saveRDS(cm_test_grouped, "data/cm_test_grouped.rds")
 ```
 
 ```{r}
