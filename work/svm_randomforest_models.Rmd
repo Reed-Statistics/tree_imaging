@@ -13,14 +13,14 @@ library(maptools)
 library(tigris)
 library(caret)
 library(corrplot)
-library(nnet)
+library(gridExtra)
 ```
 
 ```{r}
 # load data
 pixels_data <- read.csv('data/pixels_data.csv')
 
-# adding different ratio predictors
+# adding different ratio predictors, removing grass
 pixels_data <- pixels_data %>%
   mutate(red_blue = red/blue,
          ir_red = ir/red,
@@ -35,17 +35,13 @@ poly_count <- pixels_data %>%
 # split into 70% train, 30% test, stratified on tree classes per raster strip
 
 # training data
+set.seed(2)
 train <- pixels_data %>%
   group_by(rstrip, Cmmn_Nm) %>%
-  slice_sample(prop = 0.7) %>%
-  ungroup()
-
-# check 70% in each class
-train %>%
-  group_by("Raster Strip" = rstrip, "Tree Name" = Cmmn_Nm) %>%
-  count("Polygons" = length(unique(ID)))
-
-train <- train %>%
+  slice_sample(prop = 0.7) %>% # takes 70% from each 
+  ungroup() %>%
+  group_by(Cmmn_Nm) %>%
+  slice_sample(n = 500) %>% # selects n pixels from each class in each raster
   dplyr::select(red, green, blue, ir, ndvi, Cmmn_Nm, red_blue, ir_red, red_green, blue_green)
 
 # test data
@@ -83,22 +79,16 @@ train_pca$rotation
 
 ```{r}
 # look at correlation matrix to select predictors
-corr_matrix <- round(cor(train %>% select(-Cmmn_Nm)), 2)
+corr_matrix <- round(cor(train %>% ungroup() %>% dplyr::select(-Cmmn_Nm)), 2)
 corrplot(corr_matrix, type = "upper", order = "hclust", 
          tl.col = "black", tl.srt = 45)
 
-# ir_red not as highly correlated as other ratio predictors, but still highly correlated with ndvi
-# red_green strongest correlation with green at -0.81
-# red_blue strongest correlation with blue
-
 # train1 <- train %>%
 #   dplyr::select(red, green, blue, ir, ndvi, Cmmn_Nm)
-
 train2 <- train %>%
   dplyr::select(red, green, blue, ir, ndvi, red_green, blue_green, Cmmn_Nm)
 train2_grouped <- train_grouped %>%
   dplyr::select(red, green, blue, ir, ndvi, red_green, blue_green, Cmmn_Nm)
-
 train3 <- train %>%
   dplyr::select(red, green, blue, ir, ndvi, red_green, red_blue, blue_green, Cmmn_Nm)
 train3_grouped <- train_grouped %>%
@@ -107,15 +97,18 @@ train3_grouped <- train_grouped %>%
 
 ```{r}
 # random search random forest using caret package
-control <- trainControl(method = "repeatedcv", number = 10, search = "random")
+control <- trainControl(method = "repeatedcv", number = 10, 
+                        search = "random")
 set.seed(2)
 # rf_random1 <- train(Cmmn_Nm~., data = train1, method = "rf", trControl = control)
 rf_random2 <- train(Cmmn_Nm~., data = train2, method = "rf", trControl = control)
 rf_random3 <- train(Cmmn_Nm~., data = train3, method = "rf", trControl = control)
 
 # random forest on grouped data
-rf2_grouped <- train(Cmmn_Nm~., data = train2_grouped, method = "rf", trControl = control)
-rf3_grouped <- train(Cmmn_Nm~., data = train3_grouped, method = "rf", trControl = control)
+rf2_grouped <- train(Cmmn_Nm~., data = train2_grouped, method = "rf", 
+                     trControl = control)
+rf3_grouped <- train(Cmmn_Nm~., data = train3_grouped, method = "rf", 
+                     trControl = control)
 ```
 
 ```{r}
@@ -145,12 +138,14 @@ cm4 <- confusionMatrix(rf3_grouped,  mode = "prec_recall")
 # rf mtry cross validation
 grid.arrange(plot(rf_random2, main = "RF P = 7, C = 7"),
              plot(rf2_grouped, main = "RF P = 7, C = 5"), nrow = 1)
+grid.arrange(plot(rf_random3, main = "RF P = 8, C = 7"),
+             plot(rf3_grouped, main = "RF P = 8, C = 5"), nrow = 1)
 
 # save confusion matrices
-# saveRDS(cm1, "data/cm1.rds")
-# saveRDS(cm2, "data/cm2.rds")
-# saveRDS(cm3, "data/cm3.rds")
-# saveRDS(cm4, "data/cm4.rds")
+saveRDS(cm1, "data/cm1.rds")
+saveRDS(cm2, "data/cm2.rds")
+saveRDS(cm3, "data/cm3.rds")
+saveRDS(cm4, "data/cm4.rds")
 
 # view specific results
 rf3_grouped[["finalModel"]]
@@ -169,17 +164,6 @@ results_rf <- rbind(cbind(rf_random2$resample, Model = rep("P = 7, C = 7", 10),
 
 
 ```{r}
-# fix class names
-# ******************************
-# need to fix make.names
-# run all svm models again and rf svm model comparison
-# save confusion matrices, results tables, hyperparameter plots, and comparison plots
-# train <- train %>%
-#   mutate(Cmmn_Nm = make.names(Cmmn_Nm))
-# train_grouped <- train_grouped %>%
-#   dplyr::select(c(red, green, blue, ir, ndvi, red_green, red_blue, blue_green, Cmmn_Nm)) %>%
-#   mutate(Cmmn_Nm = make.names(Cmmn_Nm))
-
 # 10 fold cross validation
 train_control <- trainControl(method = "cv", number = 10)
 set.seed(2)
@@ -202,11 +186,11 @@ svm5 <- train(Cmmn_Nm ~., data = train_grouped, method = "svmRadial",
               trControl = train_control, preProcess = c("center","scale"))
 svm6 <- train(Cmmn_Nm ~., data = train_grouped, method = "svmPoly", 
               trControl = train_control, preProcess = c("center","scale"))
-
-svm7 <- train(Cmmn_Nm ~., data = train, method = "svmRadial", 
-              trControl = train_control, preProcess = "range")
-svm8 <- train(Cmmn_Nm ~., data = train, method = "svmPoly", 
-              trControl = train_control, preProcess = "range")
+# models with normalized variables
+# svm7 <- train(Cmmn_Nm ~., data = train, method = "svmRadial", 
+#               trControl = train_control, preProcess = "range")
+# svm8 <- train(Cmmn_Nm ~., data = train, method = "svmPoly", 
+#               trControl = train_control, preProcess = "range")
 ```
 
 ```{r}
@@ -240,6 +224,8 @@ ggplot(results_svm, aes(x = Model, y = Accuracy, fill = Model)) +
 
 grid.arrange(plot(svm2, main = "SVM C = 7"),
              plot(svm5, main = "SVM C = 5"), nrow = 1)
+grid.arrange(plot(svm3, main = "SVM C = 7"),
+             plot(svm6, main = "SVM C = 5"), nrow = 1)
 
 # svm results by class
 scm1 <- confusionMatrix(svm1,  mode = "prec_recall")
@@ -274,10 +260,6 @@ results_s <- results_svm %>%
 # save results tables
 # write.csv(results_r,'data/results_r.csv', row.names = F)
 # write.csv(results_s,'data/results_s.csv', row.names = F)
-
-# save best models
-# saveRDS(rf3_grouped, "data/rf_model.rds")
-# saveRDS(svm2, "data/svm_model.rds")
 ```
 
 ```{r}
@@ -287,7 +269,7 @@ test_results$RF <- predict(rf_random3, test)
 test_results$SVM <- predict(svm2, test)
 
 test_results_grouped <- data.frame(Class = test_grouped$Cmmn_Nm)
-test_results_grouped$RF <- predict(rf3_grouped, test_grouped)
+test_results_grouped$RF <- predict(rf2_grouped, test_grouped)
 test_results_grouped$SVM <- predict(svm6, test_grouped)
 
 test_results %>%
@@ -310,6 +292,10 @@ full <- test_results_redceder %>%
 grouped <- test_grouped_redceder %>%
   summarise(rf_accuracy = sum(Class == RF)/nrow(test_grouped_redceder), 
             svm_accuracy = sum(Class == SVM)/nrow(test_grouped_redceder))
+
+# precision and recall for Western Redcedar
+cm_test <- confusionMatrix(test_results$RF, test_results$Class)
+cm_test_grouped <- confusionMatrix(test_results_grouped$RF, test_results_grouped$Class)
 ```
 
 ```{r}
@@ -358,56 +344,48 @@ poly_test_svm %>%
 # write.csv(test_results_grouped,'data/test_results_grouped.csv', row.names = F)
 # write.csv(poly_test_rf,'data/poly_test_rf.csv', row.names = F)
 # write.csv(poly_test_svm,'data/poly_test_svm.csv', row.names = F)
+
+# save best models
+# saveRDS(rf_random3, "data/rf_model.rds")
+# saveRDS(rf2_grouped, "data/rf_model_grouped.rds")
 ```
 
 Plot results
 ```{r}
-# combine with latitude info from poly_reprojected in work/geographic_join.Rmd
-poly_join_reprojected@data <- poly_join_reprojected@data %>%
-  left_join(poly_test_vector, by = c("id" = "ID"))
-
-# make key to match projected data with vector using spCbind
-o <- match(poly_join_reprojected@data$id, poly_test_vector$ID)
-results_vector <- poly_test_vector[o,]
-spCbind(obj = poly_join_reprojected, x = results_vector)
-
-# make dataframe for ggplot
-results_pts <- fortify(poly_join_reprojected, region = "id")
-results_df <- merge(results_pts, poly_join_reprojected@data, by = "id")
-
-# initial ggplot
-ggplot(results_df, aes(x = long, y = lat, group = id, color = result)) + 
-  geom_polygon(size = 2) +
-  scale_fill_brewer() + theme_minimal() +
-  theme(axis.title=element_blank(),
-        axis.text=element_blank(),
-        axis.ticks=element_blank(), 
-        panel.grid.major = element_blank(),
-        panel.grid.minor = element_blank(),
-        legend.position = "none")
-
-# add city outline
-mult_county <- county_subdivisions('Oregon', 'Multnomah')
-
-poly_sf <- st_as_sf(poly_join_reprojected)
-
-ggplot(data = poly_sf, aes(color = result)) + 
-  geom_sf(size = 2) +
-  scale_color_viridis_d(direction = -1)
+# # polygon data
+# poly_join_reprojected <- readRDS("data/poly_join_reprojected.rds")
+# 
+# # combine with latitude info from poly_reprojected in work/geographic_join.Rmd
+# poly_join_reprojected@data <- poly_join_reprojected@data %>%
+#   left_join(poly_test_vector, by = c("id" = "ID"))
+# 
+# # make key to match projected data with vector using spCbind
+# o <- match(poly_join_reprojected@data$id, poly_test_vector$ID)
+# results_vector <- poly_test_vector[o,]
+# spCbind(obj = poly_join_reprojected, x = results_vector)
+# 
+# # make dataframe for ggplot
+# results_pts <- fortify(poly_join_reprojected, region = "id")
+# results_df <- merge(results_pts, poly_join_reprojected@data, by = "id")
+# 
+# # initial ggplot
+# ggplot(results_df, aes(x = long, y = lat, group = id, color = result)) + 
+#   geom_polygon(size = 2) +
+#   scale_fill_brewer() + theme_minimal() +
+#   theme(axis.title=element_blank(),
+#         axis.text=element_blank(),
+#         axis.ticks=element_blank(), 
+#         panel.grid.major = element_blank(),
+#         panel.grid.minor = element_blank(),
+#         legend.position = "none")
+# 
+# # add city outline
+# mult_county <- county_subdivisions('Oregon', 'Multnomah')
+# 
+# poly_sf <- st_as_sf(poly_join_reprojected)
+# 
+# ggplot(data = poly_sf, aes(color = result)) + 
+#   geom_sf(size = 2) +
+#   scale_color_viridis_d(direction = -1)
 ```
 
-```{r}
-# boosted tree using caret package
-fitControl <- trainControl(## 10-fold CV
-                           method = "repeatedcv",
-                           number = 10,
-                           repeats = 3)
-set.seed(825)
-gbmFit1 <- train(Cmmn_Nm ~ ., data = train, 
-                 method = "gbm", 
-                 trControl = fitControl,
-                 ## This last option is actually one
-                 ## for gbm() that passes through
-                 verbose = FALSE)
-gbmFit1
-```

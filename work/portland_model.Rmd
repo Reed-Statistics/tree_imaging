@@ -15,19 +15,20 @@ library(doParallel)
 library(pdxTrees)
 library(sf)
 library(tigris)
+library(gridExtra)
 ```
 
 ```{r}
 # load masked raster images
-stack_a <- stack("data/grass_mask_a.tif")
-stack_b <- stack("data/grass_mask_b.tif")
-stack_c <- stack("data/grass_mask_c.tif")
-stack_d <- stack("data/grass_mask_d.tif")
-stack_e <- stack("data/grass_mask_e.tif")
+stack_a <- stack("data/ndvi_mask_a.tif")
+stack_b <- stack("data/ndvi_mask_b.tif")
+stack_c <- stack("data/ndvi_mask_c.tif")
+stack_d <- stack("data/ndvi_mask_d.tif")
+stack_e <- stack("data/ndvi_mask_e.tif")
 
 # load trained models
 rf_model <- readRDS("data/rf_model.rds")
-svm_model <- readRDS("data/svm_model.rds")
+rf_model_grouped <- readRDS("data/rf_model_grouped.rds")
 ```
 
 
@@ -68,8 +69,8 @@ predRaster <- function(stack) {
   cl <- makeCluster(3, type = "FORK")  
   registerDoParallel(cl)  
   results_RF <- raster::predict(stack, rf_model, progress = "text")
-  results_SVM <- raster::predict(stack, svm_model, progress = "text")
-  results <- stack(results_RF, results_SVM)
+  results_RF_group <- raster::predict(stack, rf_model_grouped, progress = "text")
+  results <- stack(results_RF, results_RF_group)
   stopCluster(cl)
   return(results)
 }
@@ -103,17 +104,17 @@ results_e <- stack("data/results_e.grd")
 # merge rasters into one for plotting
 r_list_RF <- list(results_a[[1]] == 7, results_b[[1]] == 7, results_c[[1]] == 7,
                   results_d[[1]] == 7, results_e[[1]] == 7)
-r_list_SVM <- list(results_a[[2]] == 7, results_b[[2]] == 7, results_c[[2]] == 7,
+r_list_RF_group <- list(results_a[[2]] == 7, results_b[[2]] == 7, results_c[[2]] == 7,
                   results_d[[2]] == 7, results_e[[2]] == 7)
 m_RF <- do.call(merge, r_list_RF)
-m_SVM <- do.call(merge, r_list_SVM)
+m_RF_group <- do.call(merge, r_list_RF_group)
 
 # compare rasters
-r_matches <- m_RF == m_SVM
+r_matches <- m_RF == m_RF_group
 freq(r_matches)
 freq(r_matches)[2, ]/(freq(r_matches)[2, ] + freq(r_matches)[1, ])
-# (r_matches == 1)/((r_matches == 0) + (r_matches == 1)) percentage in common: 85%
-plot(r_matches == 1, main = "RF and SVM Predictions Comparisons",
+# (r_matches == 1)/((r_matches == 0) + (r_matches == 1)) percentage in common: 83%
+plot(r_matches == 1, main = "RF C = 7 and RF C = 5 Predictions Comparisons",
      labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "lightgreen")
 plot(r_matches == 0, col = "maroon", labels = F, xaxt = 'n', yaxt = 'n',
      legend = F, add = T)
@@ -130,7 +131,7 @@ plot(m_RF, main = "RF Western Redcedar Predictions",
      labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
 plot(portland_wgs84, add = T)
 
-plot(m_SVM, main = "SVM Western Redcedar Predictions", 
+plot(m_RF_group, main = "RF Grouped Western Redcedar Predictions", 
      labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
 plot(portland_wgs84, add = T)
 ```
@@ -156,22 +157,27 @@ dat_transformed <- spTransform(redcedar_dat, CRS("+proj=utm +zone=10 +ellps=WGS8
 
 
 # plot pdxTrees with predictions
-plot(m_RF, main = "RF Predictions with pdxTrees", 
+p1 <- plot(m_RF, main = "RF C = 7 with pdxTrees", 
      labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
 plot(dat_transformed, col = rgb(red = 0.2, green = 0.2, blue = 1.0, alpha = 0.2), cex = .2, add = T)
 plot(portland_wgs84, add = T)
 
-plot(m_SVM, main = "SVM Predictions with pdxTrees", 
+plot(m_RF_group, main = "RF C = 5 with pdxTrees", 
      labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
 plot(dat_transformed, col = rgb(red = 0.2, green = 0.2, blue = 1.0, alpha = 0.2), cex = .2, add = T)
 plot(portland_wgs84, add = T)
 
 # match pixels with pdxTrees to test for accuracy
 street_mask <- mask(m_RF, dat_transformed)
+street_mask_group <- mask(m_RF_group, dat_transformed)
 freq(street_mask)[1, 2]/nrow(dat_transformed) # testing accuracy estimates for Western redcedars
-# 65%
+# 52%
+freq(street_mask_group)[1, 2]/nrow(dat_transformed) # testing accuracy estimates for Western redcedars
+# 66%
+
 ```
 
+Sources:
 https://mgimond.github.io/Spatial/mapping-data-in-r.html
 https://www.r-bloggers.com/2020/05/threading-and-caret-burning-your-cpu-to-improve-model-training-speed/
 http://amsantac.co/blog/en/2015/11/28/classification-r.html

@@ -54,19 +54,19 @@ ndvi_c[ndvi_c < 0] <- NA
 ndvi_d[ndvi_d < 0] <- NA
 ndvi_e[ndvi_e < 0] <- NA
 
-ndvi_mask_a <- mask(stack_a, ndvi_a, filename = "ndvi_mask_a.tif", overwrite = T)
-ndvi_mask_b <- mask(stack_b, ndvi_b, filename = "ndvi_mask_b.tif", overwrite = T)
-ndvi_mask_c <- mask(stack_c, ndvi_c, filename = "ndvi_mask_c.tif", overwrite = T)
-ndvi_mask_d <- mask(stack_d, ndvi_d, filename = "ndvi_mask_d.tif", overwrite = T)
-ndvi_mask_e <- mask(stack_e, ndvi_e, filename = "ndvi_mask_e.tif", overwrite = T)
+ndvi_mask_a <- mask(stack_a, ndvi_a, filename = "data/ndvi_mask_a.tif", overwrite = T)
+ndvi_mask_b <- mask(stack_b, ndvi_b, filename = "data/ndvi_mask_b.tif", overwrite = T)
+ndvi_mask_c <- mask(stack_c, ndvi_c, filename = "data/ndvi_mask_c.tif", overwrite = T)
+ndvi_mask_d <- mask(stack_d, ndvi_d, filename = "data/ndvi_mask_d.tif", overwrite = T)
+ndvi_mask_e <- mask(stack_e, ndvi_e, filename = "data/ndvi_mask_e.tif", overwrite = T)
 ```
 
 ```{r}
-stack_a <- stack("ndvi_mask_a.tif")
-stack_b <- stack("ndvi_mask_b.tif")
-stack_c <- stack("ndvi_mask_c.tif")
-stack_d <- stack("ndvi_mask_d.tif")
-stack_e <- stack("ndvi_mask_e.tif")
+stack_a <- stack("data/ndvi_mask_a.tif")
+stack_b <- stack("data/ndvi_mask_b.tif")
+stack_c <- stack("data/ndvi_mask_c.tif")
+stack_d <- stack("data/ndvi_mask_d.tif")
+stack_e <- stack("data/ndvi_mask_e.tif")
 
 # Grass Index  = (ir + red + blue + green)/4
 gi_a <- (stack_a[[1]] + stack_a[[2]] + stack_a[[3]] + stack_a[[4]])/4
@@ -82,11 +82,11 @@ gi_c[gi_c > 4900] <- NA
 gi_d[gi_d > 4900] <- NA
 gi_e[gi_e > 4900] <- NA
 
-gi_mask_a <- mask(stack_a, gi_a, filename = "grass_mask_a.tif", overwrite = T)
-gi_mask_b <- mask(stack_b, gi_b, filename = "grass_mask_b.tif", overwrite = T)
-gi_mask_c <- mask(stack_c, gi_c, filename = "grass_mask_c.tif", overwrite = T)
-gi_mask_d <- mask(stack_d, gi_d, filename = "grass_mask_d.tif", overwrite = T)
-gi_mask_e <- mask(stack_e, gi_e, filename = "grass_mask_e.tif", overwrite = T)
+gi_mask_a <- mask(stack_a, gi_a, filename = "data/grass_mask_a.tif", overwrite = T)
+gi_mask_b <- mask(stack_b, gi_b, filename = "data/rass_mask_b.tif", overwrite = T)
+gi_mask_c <- mask(stack_c, gi_c, filename = "data/grass_mask_c.tif", overwrite = T)
+gi_mask_d <- mask(stack_d, gi_d, filename = "data/grass_mask_d.tif", overwrite = T)
+gi_mask_e <- mask(stack_e, gi_e, filename = "data/grass_mask_e.tif", overwrite = T)
 
 plotRGB(gi_mask_a, main = "ndvi and grass mask", axes = FALSE, box = FALSE)
 
@@ -96,7 +96,7 @@ plotRGB(gi_mask_a, main = "ndvi and grass mask", axes = FALSE, box = FALSE)
 
 ```{r}
 # look at ndvi/grass values from pixels dataset to determine threshold
-pixels_data <- read.csv('pixels_data.csv')
+pixels_data <- read.csv('data/pixels_data.csv')
 
 ggplot(pixels_data, mapping = aes(x = ndvi)) +
   geom_histogram(alpha = 0.6, fill = "blue") +
