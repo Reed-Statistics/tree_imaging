@@ -75,9 +75,6 @@ predRaster <- function(stack) {
   return(results)
 }
 
-results_small <- predRaster(small_stack[[1:4]])
-raster::spplot(results_small)
-
 results_a <- predRaster(stack_a) # 41min
 results_b <- predRaster(stack_b)
 results_c <- predRaster(stack_c)
@@ -175,6 +172,21 @@ freq(street_mask)[1, 2]/nrow(dat_transformed) # testing accuracy estimates for W
 freq(street_mask_group)[1, 2]/nrow(dat_transformed) # testing accuracy estimates for Western redcedars
 # 66%
 
+# smaller visualization around Reed
+reed_stack <- crop(m_RF, extent(525000, 530000, 5035000, 5040000))
+trees_reed <- crop(dat_transformed, extent(525000, 530000, 5035000, 5040000))
+
+# Portland with extent box
+plot(m_RF, main = "RF C = 7 with pdxTrees", 
+     labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
+plot(dat_transformed, col = rgb(red = 0.2, green = 0.2, blue = 1.0, alpha = 0.6), cex = .2, add = T, pch = 1)
+plot(portland_wgs84, add = T)
+plot(extent(reed_stack), add = T, col = "maroon")
+
+# Reed plot
+plot(reed_stack, main = "", labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
+plot(trees_reed, col = rgb(red = 0.2, green = 0.2, blue = 1.0, alpha = 1), cex = .2, add = T, pch = 1)
+plot(extent(reed_stack), add = T, col = "maroon")
 ```
 
 Sources:
