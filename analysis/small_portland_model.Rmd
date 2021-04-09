@@ -1,0 +1,36 @@
+---
+title: "Small Example Modelling on Raster"
+author: "Sarah"
+date: "4/8/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# predictions on a raster object
+stack_a <- stack(stack_a, ((stack_a[[4]] - stack_a[[1]])/(stack_a[[4]] + stack_a[[1]])),
+                 (stack_a[[1]]/stack_a[[3]]), (stack_a[[4]]/stack_a[[1]]),
+                 (stack_a[[1]]/stack_a[[2]]), (stack_a[[3]]/stack_a[[2]]))
+names(stack_a) <- c("red", "green", "blue", "ir", "ndvi", "red_blue", 
+                    "ir_red", "red_green", "blue_green")
+
+# baby example prediction
+small_stack <- crop(stack_a, extent(515000, 515100, 5050000, 5050100))
+results <- raster::predict(small_stack, rf_model, progress = "text", 
+                           factors = levels(small_stack))
+raster::spplot(results)
+
+# whole image prediction
+cl <- makeCluster(3, type = "FORK")  
+registerDoParallel(cl)  
+start <- proc.time()
+results <- raster::predict(stack_a, rf_model, progress = "text")
+do_loop <- proc.time() - start
+stopCluster(cl)
+# about 10 min
+
+raster::spplot(results)
+```

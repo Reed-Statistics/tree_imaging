@@ -27,35 +27,8 @@ stack_d <- stack("data/ndvi_mask_d.tif")
 stack_e <- stack("data/ndvi_mask_e.tif")
 
 # load trained models
-rf_model <- readRDS("data/rf_model.rds")
-rf_model_grouped <- readRDS("data/rf_model_grouped.rds")
-```
-
-
-```{r}
-# predictions on a raster object
-stack_a <- stack(stack_a, ((stack_a[[4]] - stack_a[[1]])/(stack_a[[4]] + stack_a[[1]])),
-                 (stack_a[[1]]/stack_a[[3]]), (stack_a[[4]]/stack_a[[1]]),
-                 (stack_a[[1]]/stack_a[[2]]), (stack_a[[3]]/stack_a[[2]]))
-names(stack_a) <- c("red", "green", "blue", "ir", "ndvi", "red_blue", 
-                    "ir_red", "red_green", "blue_green")
-
-# baby example prediction
-small_stack <- crop(stack_a, extent(515000, 515100, 5050000, 5050100))
-results <- raster::predict(small_stack, rf_model, progress = "text", 
-                           factors = levels(small_stack))
-raster::spplot(results)
-
-# whole image prediction
-cl <- makeCluster(3, type = "FORK")  
-registerDoParallel(cl)  
-start <- proc.time()
-results <- raster::predict(stack_a, rf_model, progress = "text")
-do_loop <- proc.time() - start
-stopCluster(cl)
-# about 10 min
-
-raster::spplot(results)
+rf_small_grouped <- readRDS("data/rf_small_grouped.rds")
+svm2_grouped <- readRDS("data/svm2_grouped.rds")
 ```
 
 ```{r}
@@ -68,9 +41,9 @@ predRaster <- function(stack) {
                     "ir_red", "red_green", "blue_green")
   cl <- makeCluster(3, type = "FORK")  
   registerDoParallel(cl)  
-  results_RF <- raster::predict(stack, rf_model, progress = "text")
-  results_RF_group <- raster::predict(stack, rf_model_grouped, progress = "text")
-  results <- stack(results_RF, results_RF_group)
+  results_RF <- raster::predict(stack, rf_small_grouped, progress = "text")
+  results_SVM <- raster::predict(stack, svm2_grouped, progress = "text")
+  results <- stack(results_RF, results_SVM)
   stopCluster(cl)
   return(results)
 }
@@ -101,17 +74,17 @@ results_e <- stack("data/results_e.grd")
 # merge rasters into one for plotting
 r_list_RF <- list(results_a[[1]] == 7, results_b[[1]] == 7, results_c[[1]] == 7,
                   results_d[[1]] == 7, results_e[[1]] == 7)
-r_list_RF_group <- list(results_a[[2]] == 7, results_b[[2]] == 7, results_c[[2]] == 7,
+r_list_SVM <- list(results_a[[2]] == 7, results_b[[2]] == 7, results_c[[2]] == 7,
                   results_d[[2]] == 7, results_e[[2]] == 7)
 m_RF <- do.call(merge, r_list_RF)
-m_RF_group <- do.call(merge, r_list_RF_group)
+m_SVM <- do.call(merge, r_list_SVM)
 
 # compare rasters
-r_matches <- m_RF == m_RF_group
+r_matches <- m_RF == m_SVM
 freq(r_matches)
 freq(r_matches)[2, ]/(freq(r_matches)[2, ] + freq(r_matches)[1, ])
 # (r_matches == 1)/((r_matches == 0) + (r_matches == 1)) percentage in common: 83%
-plot(r_matches == 1, main = "RF C = 7 and RF C = 5 Predictions Comparisons",
+plot(r_matches == 1, main = "RF C = 5 and SVM C = 5 Predictions Comparisons",
      labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "lightgreen")
 plot(r_matches == 0, col = "maroon", labels = F, xaxt = 'n', yaxt = 'n',
      legend = F, add = T)
@@ -128,7 +101,7 @@ plot(m_RF, main = "RF Western Redcedar Predictions",
      labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
 plot(portland_wgs84, add = T)
 
-plot(m_RF_group, main = "RF Grouped Western Redcedar Predictions", 
+plot(m_SVM, main = "SVM Western Redcedar Predictions", 
      labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
 plot(portland_wgs84, add = T)
 ```
@@ -154,19 +127,19 @@ dat_transformed <- spTransform(redcedar_dat, CRS("+proj=utm +zone=10 +ellps=WGS8
 
 
 # plot pdxTrees with predictions
-p1 <- plot(m_RF, main = "RF C = 7 with pdxTrees", 
+p1 <- plot(m_RF, main = "RF C = 5 with pdxTrees", 
      labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
 plot(dat_transformed, col = rgb(red = 0.2, green = 0.2, blue = 1.0, alpha = 0.2), cex = .2, add = T)
 plot(portland_wgs84, add = T)
 
-plot(m_RF_group, main = "RF C = 5 with pdxTrees", 
+plot(m_SVM, main = "SVM C = 5 with pdxTrees", 
      labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
 plot(dat_transformed, col = rgb(red = 0.2, green = 0.2, blue = 1.0, alpha = 0.2), cex = .2, add = T)
 plot(portland_wgs84, add = T)
 
 # match pixels with pdxTrees to test for accuracy
 street_mask <- mask(m_RF, dat_transformed)
-street_mask_group <- mask(m_RF_group, dat_transformed)
+street_mask_group <- mask(m_SVM, dat_transformed)
 freq(street_mask)[1, 2]/nrow(dat_transformed) # testing accuracy estimates for Western redcedars
 # 52%
 freq(street_mask_group)[1, 2]/nrow(dat_transformed) # testing accuracy estimates for Western redcedars
