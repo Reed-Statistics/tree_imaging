@@ -1,0 +1,88 @@
+---
+title: "Creating Training/Testing Datasets"
+author: "Sarah"
+date: "4/7/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+# load data
+pixels_data <- read.csv('data/pixels_data.csv')
+pix_tree_center <- read.csv('data/pix_tree_center.csv')
+
+# note distribution of classes
+pixels_data %>%
+  count(Cmmn_Nm)
+pix_tree_center %>%
+  count(Cmmn_Nm)
+```
+
+```{r}
+# function to sample data
+sampling_data <- function(dat, ratio, n_pixels) {
+  dat_sampled <- dat %>%
+  group_by(rstrip, Cmmn_Nm) %>%
+  slice_sample(prop = ratio) %>%
+  ungroup() %>%
+  group_by(Cmmn_Nm) %>%
+  slice_sample(n = n_pixels) # selects n pixels from each class
+  return(dat_sampled)
+}
+
+selecting_data <- function(dat) {
+  dat_selected <- dat %>%
+  dplyr::select(red, green, blue, ir, ndvi, Cmmn_Nm, red_blue, red_green, blue_green)
+  return(dat_selected)
+}
+
+# function to create grouped data
+grouping_data <- function(dat) {
+  dat_grouped <- dat %>%
+    mutate(Cmmn_Nm = case_when(
+    Cmmn_Nm %in% c("Bigleaf Maple", "English Oak", "Norway Maple") ~ "Broadleaf",
+    TRUE ~ as.character(Cmmn_Nm)
+  ))
+  return(dat_grouped)
+}
+```
+
+```{r}
+# training data
+set.seed(2)
+train_full <- sampling_data(pixels_data, 0.7, 500)
+train <- selecting_data(train_full)
+train_grouped <- grouping_data(train)
+train_center <- sampling_data(pix_tree_center, 0.7, 192)
+train_center_grouped <- grouping_data(train_center)
+```
+
+```{r}
+# testing data
+test_full <- anti_join(pixels_data, train_full)
+test_full_grouped <- grouping_data(test_full)
+test <- test_full %>%
+  dplyr::select(red, green, blue, ir, ndvi, Cmmn_Nm, red_blue, red_green, blue_green)
+test_grouped <- grouping_data(test)
+test_center <- anti_join(pix_tree_center, train_center) %>%
+  dplyr::select(red, green, blue, ir, ndvi, Cmmn_Nm, red_blue, red_green, blue_green)
+test_center_grouped <- grouping_data(test_center)
+```
+
+```{r}
+# save results
+# write.csv(train,'data/train.csv', row.names = F)
+# write.csv(train_grouped,'data/train_grouped.csv', row.names = F)
+# write.csv(train_center,'data/train_center.csv', row.names = F)
+# write.csv(train_center_grouped,'data/train_center_grouped.csv', row.names = F)
+# write.csv(test,'data/test.csv', row.names = F)
+# write.csv(test_grouped,'data/test_grouped.csv', row.names = F)
+# write.csv(test_center,'data/test_center.csv', row.names = F)
+# write.csv(test_center_grouped,'data/test_center_grouped.csv', row.names = F)
+# write.csv(test_full, 'data/test_full.csv', row.names = F)
+# write.csv(test_full_grouped, 'data/test_full_grouped.csv', row.names = F)
+```
+

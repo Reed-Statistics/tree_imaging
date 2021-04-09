@@ -1,0 +1,50 @@
+---
+title: "test polygon plotting"
+author: "Sarah"
+date: "4/8/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+Plot results
+```{r}
+# # polygon data
+# poly_join_reprojected <- readRDS("data/poly_join_reprojected.rds")
+# 
+# # combine with latitude info from poly_reprojected in work/geographic_join.Rmd
+# poly_join_reprojected@data <- poly_join_reprojected@data %>%
+#   left_join(poly_test_vector, by = c("id" = "ID"))
+# 
+# # make key to match projected data with vector using spCbind
+# o <- match(poly_join_reprojected@data$id, poly_test_vector$ID)
+# results_vector <- poly_test_vector[o,]
+# spCbind(obj = poly_join_reprojected, x = results_vector)
+# 
+# # make dataframe for ggplot
+# results_pts <- fortify(poly_join_reprojected, region = "id")
+# results_df <- merge(results_pts, poly_join_reprojected@data, by = "id")
+# 
+# # initial ggplot
+# ggplot(results_df, aes(x = long, y = lat, group = id, color = result)) + 
+#   geom_polygon(size = 2) +
+#   scale_fill_brewer() + theme_minimal() +
+#   theme(axis.title=element_blank(),
+#         axis.text=element_blank(),
+#         axis.ticks=element_blank(), 
+#         panel.grid.major = element_blank(),
+#         panel.grid.minor = element_blank(),
+#         legend.position = "none")
+# 
+# # add city outline
+# mult_county <- county_subdivisions('Oregon', 'Multnomah')
+# 
+# poly_sf <- st_as_sf(poly_join_reprojected)
+# 
+# ggplot(data = poly_sf, aes(color = result)) + 
+#   geom_sf(size = 2) +
+#   scale_color_viridis_d(direction = -1)
+```

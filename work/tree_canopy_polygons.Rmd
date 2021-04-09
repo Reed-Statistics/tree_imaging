@@ -17,78 +17,46 @@ library(pdxTrees)
 library(rjson)
 library(rgdal)
 library(rworldmap)
+library(sp)
+library(raster)
 ```
 
 ```{r}
 # load data
 pdxTrees_parks <- get_pdxTrees_parks()
 pdxTrees_streets <- get_pdxTrees_streets() # site width in ft., diameter in in.
-
 pdxTrees_parks_filtered <- pdxTrees_parks %>%
   select(Longitude, Latitude, Genus, Species, Common_Name, Crown_Width_NS, Crown_Width_EW, Crown_Base_Height, Condition)
-
 pdxTrees_streets_filtered <- pdxTrees_streets %>%
   select(Longitude, Latitude, Genus, Species, Common_Name, Site_Width, Condition)
 
 pdxTrees_combined <- full_join(pdxTrees_parks_filtered, pdxTrees_streets_filtered)
-
-sequoia_names <- unique(pdxTrees_combined[startsWith(pdxTrees_combined$Genus, "Sequoia"),]$Genus)
-
-# maples, oak, douglas fir, western red cedar, oregon bigleaf, sequoia
-
-train_redcedar <- pdxTrees_combined %>%
-  filter(Common_Name %in% "Western Redcedar", Crown_Width_NS >= 20)
-
-train_quru <- pdxTrees_combined %>%
-  filter(Species %in% "QURO", Crown_Width_NS >= 20)
-
-train_segi <- pdxTrees_combined %>%
-  filter(Species %in% "SEGI", Crown_Width_NS >= 20)
-
-train_acpl <- pdxTrees_combined %>%
-  filter(Species %in% "ACPL", Crown_Width_NS >= 20)
-
-train_psme <- pdxTrees_combined %>%
-  filter(Species %in% "PSME", Crown_Width_NS >= 20)
-
-train_acma <- pdxTrees_combined %>%
-  filter(Species %in% "ACMA", Crown_Width_NS >= 20)
-
 ```
 
+```{r}
+# write shapefile function
+species_shapefile <- function(species, id){
+  train <- pdxTrees_combined %>%
+  filter(Species %in% species, Crown_Width_NS >= 20)
+  coordinates(train) = ~ Longitude + Latitude
+  proj4string(train)<- CRS("+proj=longlat +datum=WGS84")
+  raster::shapefile(train, paste0(id, "_shapefile.shp"))
+}
+```
 
 ```{r}
-library(sp)
-library(raster)
+# species shapefiles
+species_shapefile("QURO", "quro")
+species_shapefile("SEGI", "segi")
+species_shapefile("ACPL", "acpl")
+species_shapefile("PSME", "psme")
+species_shapefile("ACMA", "acma")
 
-# redwood
+# Western redcedar shapefile
+train_redcedar <- pdxTrees_combined %>%
+  filter(Common_Name %in% "Western Redcedar", Crown_Width_NS >= 20)
 coordinates(train_redcedar) = ~ Longitude + Latitude
 proj4string(train_redcedar)<- CRS("+proj=longlat +datum=WGS84")
 raster::shapefile(train_redcedar, "redcedar_shapefile.shp")
-
-# quru
-coordinates(train_quru) = ~ Longitude + Latitude
-proj4string(train_quru)<- CRS("+proj=longlat +datum=WGS84")
-raster::shapefile(train_quru, "quru_shapefile.shp")
-
-# segi
-coordinates(train_segi) = ~ Longitude + Latitude
-proj4string(train_segi)<- CRS("+proj=longlat +datum=WGS84")
-raster::shapefile(train_segi, "segi_shapefile.shp")
-
-# acpl
-coordinates(train_acpl) = ~ Longitude + Latitude
-proj4string(train_acpl)<- CRS("+proj=longlat +datum=WGS84")
-raster::shapefile(train_acpl, "acpl_shapefile.shp")
-
-# psme
-coordinates(train_psme) = ~ Longitude + Latitude
-proj4string(train_psme)<- CRS("+proj=longlat +datum=WGS84")
-raster::shapefile(train_psme, "psme_shapefile.shp")
-
-# acma
-coordinates(train_acma) = ~ Longitude + Latitude
-proj4string(train_acma) <- CRS("+proj=longlat +datum=WGS84")
-raster::shapefile(train_acma, "acma_shapefile.shp")
 ```
 

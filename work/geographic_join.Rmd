@@ -13,6 +13,8 @@ library(sp)
 library(sf)
 library(rgdal)
 library(hsdar)
+library(rgeos)
+library(pdxTrees)
 ```
 
 ```{r}
@@ -56,7 +58,19 @@ poly_join <- st_join(combined_poly, combined_pts, largest = T)
 
 # tidy polygon-point dataset
 poly_join <- poly_join %>%
-  mutate(id = c(1:675))
+  mutate(id = c(1:nrow(poly_join)))
+```
+
+```{r}
+# extract values and tidy function
+names <- c("ID", "red", "green", "blue", "ir")
+pixels_extraction <- function(stack, poly_df, id) {
+  val <- raster::extract(stack, poly_df, df = TRUE)
+  colnames(val) <- names
+  val <- drop_na(val) %>%
+    mutate(rstrip = id)
+  return(val)
+}
 ```
 
 ```{r}
@@ -70,68 +84,82 @@ stack_e <- stack("planet/20200902_184430_1005_3B_AnalyticMS_clip.tif")
 # match raster project to polygons
 raster_crs <- CRS(projection(stack_a))
 poly_join_reprojected <- spTransform(as_Spatial(poly_join), raster_crs)
-
 # saveRDS(poly_join_reprojected, "data/poly_join_reprojected.rds")
 
 # extract pixel values from polygons into a dataframe
-val_a <- raster::extract(stack_a, poly_join_reprojected, df = TRUE)
-val_b <- raster::extract(stack_b, poly_join_reprojected, df = TRUE)
-val_c <- raster::extract(stack_c, poly_join_reprojected, df = TRUE)
-val_d <- raster::extract(stack_d, poly_join_reprojected, df = TRUE)
-val_e <- raster::extract(stack_e, poly_join_reprojected, df = TRUE)
-
-
-```
-
-```{r}
-# tidy and combine extracted values
-names <- c("ID", "red", "green", "blue", "ir")
-colnames(val_a) <- names
-colnames(val_b) <- names
-colnames(val_c) <- names
-colnames(val_d) <- names
-colnames(val_e) <- names
-
-val_a <- drop_na(val_a)
-val_b <- drop_na(val_b)
-val_c <- drop_na(val_c)
-val_d <- drop_na(val_d)
-val_e <- drop_na(val_e)
-
-# add raster strip id column
-val_a <- val_a %>%
-  mutate(rstrip = "a")
-val_b <- val_b %>%
-  mutate(rstrip = "b")
-val_c <- val_c %>%
-  mutate(rstrip = "c")
-val_d <- val_d %>%
-  mutate(rstrip = "d")
-val_e <- val_e %>%
-  mutate(rstrip = "e")
+val_a <- pixels_extraction(stack_a, poly_join_reprojected, "a")
+val_b <- pixels_extraction(stack_b, poly_join_reprojected, "b")
+val_c <- pixels_extraction(stack_c, poly_join_reprojected, "c")
+val_d <- pixels_extraction(stack_d, poly_join_reprojected, "d")
+val_e <- pixels_extraction(stack_e, poly_join_reprojected, "e")
 
 # semi_join returns rows of x where it can find a match in y
 val_combined <- rbind(val_a, anti_join(val_b, val_a, by = "ID"))
 val_combined <- rbind(val_combined, anti_join(val_c, val_combined, by = "ID"))
 val_combined <- rbind(val_combined, anti_join(val_d, val_combined, by = "ID"))
 val_combined <- rbind(val_combined, anti_join(val_e, val_combined, by = "ID"))
+
+# tidy pixel table
+pixels_data <-left_join(val_combined, poly_join_reprojected %>% rename(ID = id)) %>%
+  mutate(ndvi = (ir - red)/(ir + red), 
+         Cmmn_Nm = replace_na(as.character(Cmmn_Nm), "grass"),
+         red_blue = red/blue,
+         # ir_red = ir/red,
+         red_green = red/green,
+         blue_green = blue/green)
+```
+
+
+```{r}
+# load single pixel tree points
+pdxTrees_parks <- get_pdxTrees_parks()
+pdxTrees_streets <- get_pdxTrees_streets()
+pdxTrees_combined <- full_join(pdxTrees_parks, pdxTrees_streets)
+trees_dat <- pdxTrees_combined %>%
+  dplyr::filter(DBH >= 25)
+
+# convert to spatial points and reproject
+coordinates(trees_dat) <- ~ Longitude + Latitude
+proj4string(trees_dat)<- CRS("+proj=longlat +datum=WGS84")
+trees_reprojected <- spTransform(trees_dat, raster_crs)
+
+# extract pixels for all trees
+pix_a <- pixels_extraction(stack_a, trees_reprojected, "a")
+pix_b <- pixels_extraction(stack_b, trees_reprojected, "b")
+pix_c <- pixels_extraction(stack_c, trees_reprojected, "c")
+pix_d <- pixels_extraction(stack_d, trees_reprojected, "d")
+pix_e <- pixels_extraction(stack_e, trees_reprojected, "e")
+
+# semi_join returns rows of x where it can find a match in y
+pix_combined <- rbind(pix_a, anti_join(pix_b, pix_a, by = "ID"))
+pix_combined <- rbind(pix_combined, anti_join(pix_c, pix_combined, by = "ID"))
+pix_combined <- rbind(pix_combined, anti_join(pix_d, pix_combined, by = "ID"))
+pix_combined <- rbind(pix_combined, anti_join(pix_e, pix_combined, by = "ID"))
+
+# tidy centers pixel table
+pix_tree_center <- pix_combined %>%
+  mutate(ID = as.character(ID)) %>%
+  left_join(trees_reprojected@data, by = c("ID" = "UserID")) %>%
+  mutate(Cmmn_Nm = replace_na(as.character(Common_Name), "grass"),
+         ndvi = (ir - red)/(ir + red),
+         red_blue = red/blue,
+         # ir_red = ir/red,
+         red_green = red/green,
+         blue_green = blue/green) %>%
+  dplyr::filter(Cmmn_Nm %in% c("Western Redcedar", "Bigleaf Maple", "Douglas-Fir",
+                        "Giant Sequoia", "grass", "Norway Maple"))
+pix_tree_center %>%
+  count(Cmmn_Nm)
+pixels_data %>%
+  count(Cmmn_Nm)
 ```
 
 ```{r}
 # save results
-#write.csv(poly_join_reprojected,'poly_join_reprojected1.csv', row.names = F)
-poly_join_reprojected <- read.csv('poly_join_reprojected1.csv')
-#write.csv(val_combined,'val_combined1.csv', row.names = F)
-val_combined <- read.csv('val_combined1.csv')
-
-# tidy pixel table
-poly_join_reprojected <- poly_join_reprojected %>%
-  rename(ID = id)
-pixels_data <-left_join(val_combined, poly_join_reprojected)
-pixels_data <- pixels_data %>%
-  mutate(ndvi = (ir - red)/(ir + red), 
-         Cmmn_Nm = replace_na(as.character(Cmmn_Nm), "grass"))
-
-#write.csv(pixels_data,'pixels_data.csv', row.names = F)
+# write.csv(poly_join_reprojected,'data/poly_join_reprojected1.csv', row.names = F)
+# write.csv(val_combined,'data/val_combined1.csv', row.names = F)
+# write.csv(pixels_data,'data/pixels_data.csv', row.names = F)
+# write.csv(pix_tree_center,'data/pix_tree_center.csv', row.names = F)
 ```
+
 

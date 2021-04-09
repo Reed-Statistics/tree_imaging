@@ -7,11 +7,12 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(corrplot)
 ```
 
 ```{r}
 # load data
-pixels_data <- read.csv('pixels_data.csv')
+pixels_data <- read.csv('data/pixels_data.csv')
 ```
 
 ```{r}
@@ -24,7 +25,26 @@ pixels_data %>%
   count(id_type)
 
 n_distinct(pixels_data)
+
+# group by number of polygons per tree class per strip
+poly_count <- pixels_data %>%
+  group_by("Raster Strip" = rstrip, "Tree Name" = Cmmn_Nm) %>%
+  count("Polygons" = length(unique(ID)))
 ```
+
+```{r}
+# preprocess pca
+train_pca <- preProcess(dplyr::select(train, -Cmmn_Nm), method = c("center", "scale", "pca"))
+train_pca
+train_pca$method
+train_pca$rotation
+
+# look at correlation matrix to select predictors
+corr_matrix <- round(cor(train %>% ungroup() %>% dplyr::select(-Cmmn_Nm)), 2)
+corrplot(corr_matrix, type = "upper", order = "hclust", 
+         tl.col = "black", tl.srt = 45)
+```
+
 
 ```{r}
 # distributions across bands

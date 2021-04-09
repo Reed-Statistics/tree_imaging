@@ -1,0 +1,274 @@
+---
+title: "Model Results"
+author: "Sarah"
+date: "4/7/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+RF Analysis
+
+```{r}
+# load rf models
+rf_small <- readRDS("data/rf_small.rds")
+rf_small_grouped <- readRDS("data/rf_small_grouped.rds")
+rf_full <- readRDS("data/rf_full.rds")
+rf_full_grouped <- readRDS("data/rf_full_grouped.rds")
+rf_center <- readRDS("data/rf_center.rds")
+rf_center_grouped <- readRDS("data/rf_center_grouped.rds")
+
+# rf mtry cross validation
+grid.arrange(plot(rf_small, main = "RF P = 7, C = 7"),
+             plot(rf_small_grouped, main = "RF P = 7, C = 5"), nrow = 1)
+grid.arrange(plot(rf_full, main = "RF P = 8, C = 7"),
+             plot(rf_full_grouped, main = "RF P = 8, C = 5"), nrow = 1)
+grid.arrange(plot(rf_center, main = "RF P = 8, C = 7 (point)"),
+             plot(rf_center_grouped, main = "RF P = 8, C = 5 (point)"), nrow = 1)
+
+# data frame to compare rf models
+results <- rbind(cbind(rf_small$resample, Model = rep("P = 7, C = 7", 10)), 
+                 cbind(rf_full$resample, Model = rep("P = 8, C = 7", 10)),
+                 cbind(rf_center$resample, Model = rep("P = 8, C = 7 (point)", 10)),
+                 cbind(rf_small_grouped$resample, Model = rep("P = 7, C = 5", 10)),
+                 cbind(rf_full_grouped$resample, Model = rep("P = 8, C = 5", 10)),
+                 cbind(rf_center_grouped$resample, Model = rep("P = 8, C = 5 (point)", 10)))
+
+# visualize rf model results
+ggplot(results, aes(x = Model, y = Accuracy, fill = Model)) +
+  geom_boxplot(alpha = 0.6) +
+  theme_minimal() + 
+  scale_fill_viridis_d() +
+  labs(title = "Model Accuracy of Random Forest Models with 10-Fold CV", 
+       x = " ", fill = "P = Predictors, C = Classes") + 
+  theme(axis.text.x = element_blank())
+
+# rf results by class
+cm_small_rf <- confusionMatrix(rf_small,  mode = "prec_recall")
+cm_full_rf <- confusionMatrix(rf_full,  mode = "prec_recall")
+cm_center_rf <- confusionMatrix(rf_center,  mode = "prec_recall")
+cm_small_grouped_rf <- confusionMatrix(rf_small_grouped,  mode = "prec_recall")
+cm_full_grouped_rf <- confusionMatrix(rf_full_grouped,  mode = "prec_recall")
+cm_center_grouped_rf <- confusionMatrix(rf_center_grouped,  mode = "prec_recall")
+
+# save confusion matrices
+# saveRDS(cm_small_rf, "data/cm_small_rf.rds")
+# saveRDS(cm_full_rf, "data/cm_full_rf.rds")
+# saveRDS(cm_center_rf, "data/cm_center_rf.rds")
+# saveRDS(cm_small_grouped_rf, "data/cm_small_grouped_rf.rds")
+# saveRDS(cm_full_grouped_rf, "data/cm_full_grouped_rf.rds")
+# saveRDS(cm_center_grouped_rf, "data/cm_center_grouped_rf.rds")
+
+# table comparing models
+results_rf <- rbind(cbind(rf_small$resample, Model = rep("P = 7, C = 7", 10),
+                          mtry = rep(rf_small$bestTune[1,1], 10)),
+                    cbind(rf_full$resample, Model = rep("P = 8, C = 7", 10),
+                          mtry = rep(rf_full$bestTune[1,1], 10)),
+                    cbind(rf_center$resample, Model = rep("P = 8, C = 7 (point)", 10),
+                          mtry = rep(rf_center$bestTune[1,1], 10)),
+                    cbind(rf_small_grouped$resample, Model = rep("P = 7, C = 5", 10),
+                          mtry = rep(rf_small_grouped$bestTune[1,1], 10)),
+                    cbind(rf_full_grouped$resample, Model = rep("P = 8, C = 5", 10),
+                          mtry = rep(rf_full_grouped$bestTune[1,1], 10)),
+                    cbind(rf_center_grouped$resample, Model = rep("P = 8, C = 5 (point)", 10),
+                          mtry = rep(rf_center_grouped$bestTune[1,1], 10)))
+
+results_r <- results_rf %>%
+  group_by(Model) %>%
+  summarise("Accuracy" = round(mean(Accuracy), 4), "Kappa" = round(mean(Kappa), 4),
+            "mtry" = mean(mtry)) %>%
+  rename("Random Forest Model" = Model)
+
+# save table
+# write.csv(results_r,'data/results_r.csv', row.names = F)
+```
+
+SVM Analysis
+
+```{r}
+# load svm models
+svm1 <- readRDS("data/svm1.rds")
+svm2 <- readRDS("data/svm2.rds")
+svm3 <- readRDS("data/svm3.rds")
+svm1_center <- readRDS("data/svm1_center.rds")
+svm2_center <- readRDS("data/svm2_center.rds")
+svm3_center <- readRDS("data/svm3_center.rds")
+svm1_grouped <- readRDS("data/svm1_grouped.rds")
+svm2_grouped <- readRDS("data/svm2_grouped.rds")
+svm3_grouped <- readRDS("data/svm3_grouped.rds")
+
+# collect resamples
+results_svm <- rbind(cbind(svm1$resample, Model = rep("Linear, C = 7", 10, 10),
+                           Parameter = paste("C =", svm1$bestTune[1,1])),
+                     cbind(svm2$resample, Model = rep("Radial, C = 7", 10, 10),
+                           Parameter = paste("C =", svm2$bestTune[1,2], "sigma =", 
+                                 round(svm2$bestTune[1,1], 4))),
+                     cbind(svm3$resample, Model = rep("Poly, C = 7", 10, 10),
+                           Parameter = paste("C =", svm3$bestTune[1,3], ", scale =", 
+                                 svm3$bestTune[1,2], ", degree =", svm3$bestTune[1,1])),
+                     cbind(svm1_center$resample, Model = rep("Linear, C = 7 (point)", 10, 10),
+                           Parameter = paste("C =", svm1_center$bestTune[1,1])),
+                     cbind(svm2_center$resample, Model = rep("Radial, C = 7 (point)", 10, 10),
+                           Parameter = paste("C =", svm2_center$bestTune[1,2], "sigma =", 
+                                 round(svm2_center$bestTune[1,1], 4))),
+                     cbind(svm3_center$resample, Model = rep("Poly, C = 7 (point)", 10, 10),
+                           Parameter = paste("C =", svm3_center$bestTune[1,3], ", scale =", 
+                                 svm3_center$bestTune[1,2], ", degree =", svm3_center$bestTune[1,1])),
+                     cbind(svm1_grouped$resample, Model = rep("Linear, C = 5", 10, 10),
+                           Parameter = paste("C =", svm1_grouped$bestTune[1,1])),
+                     cbind(svm2_grouped$resample, Model = rep("Radial, C = 5", 10, 10),
+                           Parameter = paste("C =", svm2_grouped$bestTune[1,2], "sigma =",
+                                             round(svm2_grouped$bestTune[1,1], 4))),
+                     cbind(svm3_grouped$resample, Model = rep("Poly, C = 5", 10, 10),
+                           Parameter = paste("C =", svm3_grouped$bestTune[1,3], ", scale =", 
+                                 svm3_grouped$bestTune[1,2], ", degree =", svm3_grouped$bestTune[1,1])),
+                     cbind(svm1_center_grouped$resample, Model = rep("Linear, C = 5 (point)", 10, 10),
+                           Parameter = paste("C =", svm1_center_grouped$bestTune[1,1])),
+                     cbind(svm2_center_grouped$resample, Model = rep("Radial, C = 5 (point)", 10, 10),
+                           Parameter = paste("C =", svm2_center_grouped$bestTune[1,2], "sigma =",
+                                             round(svm2_center_grouped$bestTune[1,1], 4))),
+                     cbind(svm3_center_grouped$resample, Model = rep("Poly, C = 5 (point)", 10, 10),
+                           Parameter = paste("C =", svm3_center_grouped$bestTune[1,3], ", scale =", 
+                                 svm3_center_grouped$bestTune[1,2], ", degree =", svm3_center_grouped$bestTune[1,1])))
+
+# visualize svm model results
+ggplot(results_svm, aes(x = Model, y = Accuracy, fill = Model)) +
+  geom_boxplot(alpha = 0.8) +
+  theme_minimal() + 
+  scale_fill_discrete() +
+  labs(title = "Model Accuracy of SVM Models with 10-Fold CV", x = " ", fill = " ") + 
+  theme(axis.text.x = element_blank())
+
+grid.arrange(plot(svm2, main = "SVM C = 7"),
+             plot(svm2_grouped, main = "SVM C = 5"), nrow = 1)
+grid.arrange(plot(svm3, main = "SVM C = 7"),
+             plot(svm3_grouped, main = "SVM C = 5"), nrow = 1)
+grid.arrange(plot(svm2_center, main = "SVM C = 7 (point)"),
+             plot(svm2_center_grouped, main = "SVM C = 5 (point)"), nrow = 1)
+grid.arrange(plot(svm3_center, main = "SVM C = 7 (point)"),
+             plot(svm3_center_grouped, main = "SVM C = 5 (point)"), nrow = 1)
+
+# svm results by class
+scm1 <- confusionMatrix(svm1,  mode = "prec_recall")
+scm2 <- confusionMatrix(svm2,  mode = "prec_recall")
+scm3 <- confusionMatrix(svm3,  mode = "prec_recall")
+scm1_center <- confusionMatrix(svm1_center,  mode = "prec_recall")
+scm2_center <- confusionMatrix(svm2_center,  mode = "prec_recall")
+scm3_center <- confusionMatrix(svm3_center,  mode = "prec_recall")
+scm1_grouped <- confusionMatrix(svm1_grouped,  mode = "prec_recall")
+scm2_grouped <- confusionMatrix(svm2_grouped,  mode = "prec_recall")
+scm3_grouped <- confusionMatrix(svm3_grouped,  mode = "prec_recall")
+scm1_center_grouped <- confusionMatrix(svm1_center_grouped,  mode = "prec_recall")
+scm2_center_grouped <- confusionMatrix(svm2_center_grouped,  mode = "prec_recall")
+scm3_center_grouped <- confusionMatrix(svm3_center_grouped,  mode = "prec_recall")
+
+# save confusion matrices
+# saveRDS(scm1, "data/scm1.rds")
+# saveRDS(scm2, "data/scm2.rds")
+# saveRDS(scm3, "data/scm3.rds")
+# saveRDS(scm1_center, "data/scm1_center.rds")
+# saveRDS(scm2_center, "data/scm2_center.rds")
+# saveRDS(scm3_center, "data/scm3_center.rds")
+# saveRDS(scm1_grouped, "data/scm1.rds")
+# saveRDS(scm2_grouped, "data/scm2_grouped.rds")
+# saveRDS(scm3_grouped, "data/scm3_grouped.rds")
+# saveRDS(scm1_center_grouped, "data/scm1.rds")
+# saveRDS(scm2_center_grouped, "data/scm2_center_grouped.rds")
+# saveRDS(scm3_center_grouped, "data/scm3_center_grouped.rds")
+
+# table comparing models
+results_s <- results_svm %>%
+  group_by(Model) %>%
+  summarise("Accuracy" = round(mean(Accuracy), 4), "Kappa" = round(mean(Kappa), 4)) %>%
+  rename("SVM Model Kernel" = Model)
+
+# save table
+# write.csv(results_s,'data/results_s.csv', row.names = F)
+```
+
+Test Results
+
+```{r}
+# load test data
+test <- read.csv('data/test.csv')
+test_grouped <- read.csv('data/test_grouped.csv')
+test_center <- read.csv('data/test_center.csv')
+test_center_grouped <- read.csv('data/test_center_grouped.csv')
+test_full <- read.csv('data/test_full.csv')
+test_full_grouped <- read.csv('data/test_full_grouped.csv')
+
+# test set results for overall prediction
+test_results <- data.frame(Class = test_grouped$Cmmn_Nm)
+test_results$RF <- predict(rf_small_grouped, test_grouped)
+test_results$SVM <- predict(svm2_grouped, test_grouped)
+
+# test results accuracy table
+test_results %>%
+  summarise("RF Accuracy" = sum(Class == RF)/nrow(test_results), 
+            "SVM Accuracy" = sum(Class == SVM)/nrow(test_results))
+
+# Western Redcedar test results
+test_results_redceder <- test_results %>%
+  dplyr::filter(Class %in% "Western Redcedar")
+
+test_results_redceder %>%
+  summarise(rf_accuracy = sum(Class == RF)/nrow(test_results_redceder), 
+            svm_accuracy = sum(Class == SVM)/nrow(test_results_redceder))
+
+# confusion matrix with precision/recall
+cm_test_rf <- confusionMatrix(test_results$RF, test_results$Class)
+cm_test_svm <- confusionMatrix(test_results$SVM, test_results$Class)
+
+# save matrices
+# saveRDS(cm_test_rf, "data/cm_test_rf.rds")
+# saveRDS(cm_test_svm, "data/cm_test_svm.rds")
+
+# save results
+# write.csv(test_results,'data/test_results.csv', row.names = F)
+```
+
+Polygon Test Results
+(A "correct" prediction occurs if more than half pixels in polygon are correctly predicted)
+```{r}
+# join test results to full test data (with polygon info)
+test_dat_rf <- cbind(test_full_grouped, RF = test_results$RF)
+test_dat_svm <- cbind(test_full_grouped, SVM = test_results$SVM) 
+
+# rf polygon results for 5 class prediction
+poly_test_rf <- test_dat_rf %>%
+  group_by(ID) %>%
+  count(ID, same_rf = (RF %in% Cmmn_Nm), total = n()) %>%
+  pivot_wider(names_from = same_rf, values_from = n)
+
+poly_test_rf[is.na(poly_test_rf)] <- 0 # replace na with 0
+
+poly_test_rf <- poly_test_rf %>%
+  mutate(Result = case_when(`TRUE` > `FALSE` ~ "Correct",
+                                   `TRUE` <= `FALSE` ~ "Incorrect"))
+
+poly_test_rf %>%
+  group_by(Result) %>%
+  count(Result)
+
+# svm polygon results for 7 class prediction
+poly_test_svm <- test_dat_svm %>%
+  group_by(ID) %>%
+  count(ID, same_svm = (SVM == Cmmn_Nm), total = n()) %>%
+  pivot_wider(names_from = same_svm, values_from = n)
+
+poly_test_svm[is.na(poly_test_svm)] <- 0 # replace na with 0
+
+poly_test_svm <- poly_test_svm %>%
+  mutate(Result = case_when(`TRUE` > `FALSE` ~ "Correct",
+                                   `TRUE` <= `FALSE` ~ "Incorrect"))
+
+poly_test_svm %>%
+  group_by(Result) %>%
+  count(Result)
+
+# save poly test results
+# write.csv(poly_test_rf,'data/poly_test_rf.csv', row.names = F)
+# write.csv(poly_test_svm,'data/poly_test_svm.csv', row.names = F)
+```
