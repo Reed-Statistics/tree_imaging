@@ -69,6 +69,46 @@
 % \usepackage{times} % other fonts are available like times, bookman, charter, palatino
 
 % Syntax highlighting #22
+  \usepackage{color}
+  \usepackage{fancyvrb}
+  \newcommand{\VerbBar}{|}
+  \newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+  \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+  % Add ',fontsize=\small' for more characters per line
+  \usepackage{framed}
+  \definecolor{shadecolor}{RGB}{248,248,248}
+  \newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+  \newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+  \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+  \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+  \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+  \newcommand{\BuiltInTok}[1]{#1}
+  \newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+  \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+  \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+  \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+  \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+  \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+  \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+  \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+  \newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+  \newcommand{\ExtensionTok}[1]{#1}
+  \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+  \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+  \newcommand{\ImportTok}[1]{#1}
+  \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+  \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+  \newcommand{\NormalTok}[1]{#1}
+  \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+  \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+  \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+  \newcommand{\RegionMarkerTok}[1]{#1}
+  \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+  \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+  \newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+  \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+  \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+  \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
 
 % To pass between YAML and LaTeX the dollar signs are added by CII
 \title{Statistical Learning Methods for Tree Classification using Remote Sensing Imagery}
@@ -607,7 +647,7 @@ The \texttt{train} function from the \texttt{caret} package (Kuhn, 2020) with th
 \hypertarget{predictor-random-forest}{%
 \subsubsection{7 predictor Random Forest}\label{predictor-random-forest}}
 
-The 7 predictor random forest model uses the following predictors: red, green, blue, infrared, NDVI, \(\frac{\mbox{red}}{\mbox{green}}\) and \(\frac{\mbox{blue}}{\mbox{green}}\) band values predictors. Figure \ref{fig:rf7} displays the accuracy of the model predicting all 7 tree classes and the grouped 5 classes with the pixels training set with a range of mtry values. The 7 predictor model with the highest accuracy (determined by cross-validation) randomly selected 6 predictors at each split with an accuracy of 0.44. The variable with the highest predictive power was infrared band values with NDVI values with the second highest predictive power. For the grouped data, the optimal mtry value of 3 produced an accuracy of 0.57. The most important variable for this model was infrared followed by NDVI values.
+The 7 predictor random forest model uses the following predictors: red, green, blue, infrared, NDVI, \(\frac{\mbox{red}}{\mbox{green}}\) and \(\frac{\mbox{blue}}{\mbox{green}}\) band values predictors. Figure \ref{fig:rf7} displays the accuracy of the model predicting all 7 tree classes and the grouped 5 classes with the pixels training set with a range of mtry values. The 7 predictor model with the highest accuracy (determined by cross-validation) randomly selected 6 predictors at each split with an accuracy of 0.44. The variable with the highest predictive power was infrared band values with NDVI values with the second highest predictive power. For the grouped data, the optimal mtry value of 1 produced an accuracy of 0.57. The most important variable for this model was infrared followed by NDVI values.
 \begin{figure}
 
 {\centering \includegraphics[width=0.9\linewidth]{figure/rf7_mtry} 
@@ -619,7 +659,7 @@ The 7 predictor random forest model uses the following predictors: red, green, b
 \hypertarget{predictor-random-forest-1}{%
 \subsubsection{8 predictor Random Forest}\label{predictor-random-forest-1}}
 
-The 8 predictor random forest model added a \(\frac{\mbox{blue}}{\mbox{green}}\) predictor to the 7 predictor model. Figure \ref{fig:rf8} displays the results of a different number of randomly selected predictors to be considered at each split in the tree for 7 class data and 5 class. For modelling all 7 classes, the optimal mtry value was 4 with an accuracy of 0.44. The variables with the higher predictive power in decreasing order were infrared, NDVI, and \(\frac{\mbox{red}}{\mbox{green}}\) band values predictors. The model using grouped data with 4 tree classes, had an optimal mtry value of 2 with an accuracy of 0.56. The most important variable was infrared.
+The 8 predictor random forest model added a \(\frac{\mbox{blue}}{\mbox{green}}\) predictor to the 7 predictor model. Figure \ref{fig:rf8} displays the results of a different number of randomly selected predictors to be considered at each split in the tree for 7 class data and 5 class. For modelling all 7 classes, the optimal mtry value was 4 with an accuracy of 0.45. The variables with the higher predictive power in decreasing order were infrared, NDVI, and \(\frac{\mbox{red}}{\mbox{green}}\) band values predictors. The model using grouped data with 5 tree classes, had an optimal mtry value of 8 with an accuracy of 0.57. The most important variable was infrared.
 \begin{figure}
 
 {\centering \includegraphics[width=0.9\linewidth]{figure/rf8_mtry} 
@@ -631,14 +671,14 @@ The 8 predictor random forest model added a \(\frac{\mbox{blue}}{\mbox{green}}\)
 \hypertarget{predictor-random-forest-on-point-pixels}{%
 \subsubsection{8 predictor Random Forest on Point Pixels}\label{predictor-random-forest-on-point-pixels}}
 
-A RF model was trained using the 8 predictors from the previous model on the point pixels data. According to Figure \ref{fig:rf8c}, for modelling all 7 classes, the optimal mtry value was 7 with an accuracy of 0.18. The variables with the higher predictive power were \(\frac{\mbox{red}}{\mbox{green}}\) and infrared band values predictors. The model using grouped data with 5 tree classes, had an optimal mtry value of 6 with an accuracy of 0.26. The most important variable was \(\frac{\mbox{red}}{\mbox{green}}\).
+A RF model was trained using the 8 predictors from the previous model on the point pixels data. According to Figure \ref{fig:rf8c}, for modelling all 5 classes (Bigleaf Maple, Douglas-Fir, Giant Sequoia, Norway Maple, Western Redcedar), the optimal mtry value was 5 with an accuracy of 0.22. The variables with the higher predictive power were \(\frac{\mbox{red}}{\mbox{green}}\) and red band values predictors. The model using grouped data with 4 tree classes (Broadleaf, Douglas-Fir, Giant Sequoia, Western Redcedar), had an optimal mtry value of 1 with an accuracy of 0.33. The most important variable was \(\frac{\mbox{red}}{\mbox{green}}\).
 \begin{figure}
 
 {\centering \includegraphics[width=0.9\linewidth]{figure/rf8c_mtry} 
 
 }
 
-\caption{Accuracy of the 8 predictor RF Model on point pixels data for different mtry numbers over 10-fold cross-validation on 7 class and 5 class training data. (P = Predictors, C = Classes)}\label{fig:rf8c}
+\caption{Accuracy of the 8 predictor RF Model on point pixels data for different mtry numbers over 10-fold cross-validation on 5 class and 4 class training data. (P = Predictors, C = Classes)}\label{fig:rf8c}
 \end{figure}
 \hypertarget{best-random-forest}{%
 \subsubsection{Best Random Forest}\label{best-random-forest}}
@@ -652,9 +692,9 @@ Figure \ref{fig:rfresults} compares the results of the models based on overall m
 
 \caption{Comparison of results from random forest models with different predictors included}\label{fig:rfresults}
 \end{figure}
-For modelling the 7 individual tree classes, the model with the 7 predictors included has a slightly higher maximum overall accuracy than the 8 predictor model. A confusion matrix located in (cite appendix) was constructed for each model averaging the entry counts over all ten cross validation resamples to investigate model performance just predicting Western Redcedar tree pixels. Both the 7 and the 8 predictor models performed similarly classifying Western Redceder pixels, the 7 predictor model had a prediction accuracy of 32\%, the 8 predictor model had a prediction accuracy of 31\%. Out of both models, Western Redcedars tend to be inaccurately classified under douglas-firs, english oak, and norway maple trees. The 8 predictor model trained on the point pixels data had a prediction accuracy of 23\%. This model also misclassified Western Redcedars as norway maples, giant sequoias, and bigleaf maples.
+For modelling the 7 individual tree classes, the model with the 7 predictors included has a slightly higher maximum overall accuracy than the 8 predictor model. A confusion matrix located in (cite appendix) was constructed for each model averaging the entry counts over all ten cross validation resamples to investigate model performance just predicting Western Redcedar tree pixels. Both the 7 and the 8 predictor models performed similarly classifying Western Redceder pixels, the 7 predictor model had a prediction accuracy of 32\%, the 8 predictor model had a prediction accuracy of 33\%. Out of both models, Western Redcedars tend to be inaccurately classified under douglas-firs, english oak, and norway maple trees. The 8 predictor model trained on the point pixels data had a prediction accuracy of 29\% for 5 class predictions. This model also misclassified Western Redcedars as norway maples, giant sequoias, and bigleaf maples.
 
-Modelling only 5 tree classes with the grouped data produced higher accuracies than the full classes models. The 7 predictor model produced the highest accuracies of 0.57 through cross-validation, while the 8 predictor model had an overall accuracy of 0.56. The 7 predictor model and the 8 predictor model accurately predicted Western redcedars 35\% percent of the time. Most inaccurately predicted redcedars were classified under the broadleaf category. Models on both training sets predicted grass pixels with the highest accuracy. The 5 class model with the point pixel data had an overall accuracy of 0.26 with 0.22 Western Redcedar prediction accuracy.
+Modelling only 5 tree classes by grouping some categories produced higher overall accuracies than the full classes models. The 7 predictor and 8 predictor model produced the highest overall average accuracies of 0.57 through cross-validation. The 7 predictor model and the 8 predictor model accurately predicted Western redcedars 36\% and 35\% of the time respectively. Most inaccurately predicted redcedars were classified under the broadleaf category. Models on both training sets predicted grass pixels with the highest accuracy. The 4 class model with the point pixel data had an overall accuracy of 0.33 with 0.25 Western Redcedar prediction accuracy.
 
 Table \ref{tab:resultsRF} compares the hyperparameters accross all random forest models.
 \begin{table}
@@ -665,17 +705,17 @@ Table \ref{tab:resultsRF} compares the hyperparameters accross all random forest
 \hline
 Random Forest Model & Accuracy & Kappa & mtry\\
 \hline
-P = 7, C = 7 & 0.4360 & 0.3420 & 6\\
+P = 7, C = 7 & 0.4386 & 0.3450 & 1\\
 \hline
-P = 8, C = 7 & 0.4386 & 0.3450 & 4\\
+P = 8, C = 7 & 0.4460 & 0.3537 & 4\\
 \hline
-P = 8, C = 7 (point) & 0.1820 & 0.0184 & 7\\
+P = 8, C = 5 (point) & 0.2242 & 0.0300 & 5\\
 \hline
-P = 7, C = 5 & 0.5709 & 0.3825 & 3\\
+P = 7, C = 5 & 0.5740 & 0.3819 & 1\\
 \hline
-P = 8, C = 5 & 0.5620 & 0.3676 & 2\\
+P = 8, C = 5 & 0.5666 & 0.3772 & 8\\
 \hline
-P = 8, C = 5 (point) & 0.2594 & 0.0093 & 6\\
+P = 8, C = 4 (point) & 0.3253 & 0.0024 & 1\\
 \hline
 \end{tabular}
 \end{table}
@@ -687,12 +727,12 @@ The \texttt{train} function has the \texttt{method\ =\ svmLinear/svmRadial/svmPo
 \hypertarget{linear-support-vector-machine}{%
 \subsubsection{Linear Support Vector Machine}\label{linear-support-vector-machine}}
 
-The linear kernel SVM model had the highest training accuracy at 0.41 when cost parameter held constant at a value of 1. The final model contained 3017 support vectors. The linear kernel SVM model on the 5 classes data held the cost parameter constant at 1 predicted the grouped tree classes with an accuracy of 0.55 contained 2739 support vectors. The SVM model with point pixel data had an accuracy of 0.17 with C = 1 and 1147 support vectors. On 5 class data, the linear SVM model with point pixel data had a prediction accuracy of 0.33 with C = 1 and 1119 support vectors.
+The linear kernel SVM model had the highest training accuracy at 0.41 when cost parameter held constant at a value of 1. The final model contained 3017 support vectors. The linear kernel SVM model on the 5 classes data held the cost parameter constant at 1 predicted the grouped tree classes with an accuracy of 0.55 contained 2739 support vectors. The SVM model with point pixel data had an accuracy of 0.23 with C = 1 and 866 support vectors on 5 class data. On 4 class data, the linear SVM model with point pixel data had a prediction accuracy of 0.40 with C = 1 and 837 support vectors.
 
 \hypertarget{radial-support-vector-machine}{%
 \subsubsection{Radial Support Vector Machine}\label{radial-support-vector-machine}}
 
-Figure \ref{fig:svm2} displays the results of different cost parameters on training accuracy for the radial basis kernel function on pixel data. The radial kernel SVM model on the 7 classes data set performed best when cost was 25 and \(\sigma = 0.25\) for a training accuracy of 0.44. The final model had 3016 support vectors. The final values for the radial model on the 5 classes data set were \(\sigma = 0.27\) and cost = 1 with an accuracy of 0.59 and 2615 support vectors. On the point pixels data, these values were C = 0.5, overall accuracy of 0.20, and 1145 support vectors for the 7 class model. For the 5 class model on the point pixels data, the values were C = 0.25, accuracy of 0.33, and 1124 vectors. See figure \ref{fig:svm2c}.
+Figure \ref{fig:svm2} displays the results of different cost parameters on training accuracy for the radial basis kernel function on pixel data. The radial kernel SVM model on the 7 classes data set performed best when cost was 0.5 and \(\sigma = 0.27\) for a training accuracy of 0.45. The final model had 2972 support vectors. The final values for the radial model on the 5 classes data set were \(\sigma = 0.23\) and cost = 1 with an accuracy of 0.59 and 2630 support vectors. On the point pixels data, these values were C = 1, \(\sigma = 0.32\), overall accuracy of 0.21, and 868 support vectors for the 5 class model. For the 4 class model on the point pixels data, the values were C = 0.1, accuracy of 0.40, and 849 vectors. See figure \ref{fig:svm2c}.
 \begin{figure}
 
 {\centering \includegraphics[width=0.9\linewidth]{figure/svm2} 
@@ -712,7 +752,7 @@ Figure \ref{fig:svm2} displays the results of different cost parameters on train
 \hypertarget{polynomial-support-vector-machine}{%
 \subsubsection{Polynomial Support Vector Machine}\label{polynomial-support-vector-machine}}
 
-Figure \ref{fig:svm3} displays the results of different cost parameters on training accuracy for the polynomial basis function kernel. The final values used for the model predicting 7 classes were degree = 3, scale = 0.1, and cost = 1, which corresponded to a training accuracy of 0.45. The final model had a total of 2959 support vectors. The final model predicting only 5 classes produced an accuracy of 0.57 under degree = 3, scale = 0.1, and cost = 1. This final model had 2643 support vectors. Figure \ref{fig:svm3c} shows that the results for the point pixels data with 7 class predictions had an accuracy of 0.19 for degree = 3, scale = 0.001, cost = 1, and 1149 support vectors. For 5 class predictions, the overall accuracy was 0.33 with degree = 1, scale = 0.001, cost = 0.25, and 1102 support vectors.
+Figure \ref{fig:svm3} displays the results of different cost parameters on training accuracy for the polynomial basis function kernel. The final values used for the model predicting 7 classes were degree = 3, scale = 0.1, and cost = 1, which corresponded to a training accuracy of 0.44. The final model had a total of 2959 support vectors. The final model predicting only 5 classes produced an accuracy of 0.57 under degree = 3, scale = 0.1, and cost = 1. This final model had 2643 support vectors. Figure \ref{fig:svm3c} shows that the results for the point pixels data with 5 class predictions had an accuracy of 0.23 for degree = 1, scale = 0.1, cost = 1, and 869 support vectors. For 4 class predictions, the overall accuracy was 0.41 with degree = 3, scale = 0.1, cost = 0.1, and 852 support vectors.
 \begin{figure}
 
 {\centering \includegraphics[width=0.9\linewidth]{figure/svm3} 
@@ -741,7 +781,7 @@ Figure \ref{fig:svmresults} displays the results of the linear, radial basis, an
 
 \caption{Comparison of results from support vector machine models with different kernel types: linear, radial, and polynomial.}\label{fig:svmresults}
 \end{figure}
-As with the random forest model comparisons, a confusion matrix was constructed using the average counts over all ten cross-validation resamples to obtain the model results predicting Western redcedars. The support vector machine model that performed best overall was the radial basis kernel model, and it had a prediction accuracy of 33\% for the Western Redcedar class. The polynomial basis kernel had a 34\% prediction accuracy and the linear kernel also had an accuracy of 33\% for Western Redcedars. For Western redcedar prediction on the grouped classes, the radial model had 45\% accuracy. The highest Western Redcedar prediction accuracy for SVM models with point pixel training data was for the radial basis model at 29\%.
+As with the random forest model comparisons, a confusion matrix was constructed using the average counts over all ten cross-validation resamples to obtain the model results predicting Western redcedars. The support vector machine model that performed best overall was the radial basis kernel model, and it had a prediction accuracy of 35\% for the Western Redcedar class. The polynomial basis kernel had a 34\% prediction accuracy and the linear kernel also had an accuracy of 33\% for Western Redcedars. For Western redcedar prediction on the grouped classes, the radial model had 44\% accuracy. The highest Western Redcedar prediction accuracy for SVM models with point pixel training data was for the polynomial basis model at 24\%.
 
 Table \ref{tab:resultsSVM} compares the hyperparameters accross all support vector machine models.
 \begin{table}
@@ -752,29 +792,29 @@ Table \ref{tab:resultsSVM} compares the hyperparameters accross all support vect
 \hline
 SVM Model Kernel & Accuracy & Kappa\\
 \hline
-Linear, C = 7 & 0.4134 & 0.3157\\
+Linear, C = 7 & 0.4100 & 0.3117\\
 \hline
-Radial, C = 7 & 0.4437 & 0.3510\\
+Radial, C = 7 & 0.4534 & 0.3623\\
 \hline
-Poly, C = 7 & 0.4469 & 0.3547\\
+Poly, C = 7 & 0.4449 & 0.3523\\
 \hline
-Linear, C = 7 (point) & 0.1670 & 0.0017\\
+Linear, C = 5 (point) & 0.2314 & 0.0402\\
 \hline
-Radial, C = 7 (point) & 0.2054 & 0.0468\\
+Radial, C = 5 (point) & 0.2131 & 0.0169\\
 \hline
-Poly, C = 7 (point) & 0.1863 & 0.0243\\
+Poly, C = 5 (point) & 0.2382 & 0.0484\\
 \hline
-Linear, C = 5 & 0.5489 & 0.2788\\
+Linear, C = 5 & 0.5486 & 0.2778\\
 \hline
-Radial, C = 5 & 0.5863 & 0.3694\\
+Radial, C = 5 & 0.5860 & 0.3675\\
 \hline
-Poly, C = 5 & 0.5731 & 0.3310\\
+Poly, C = 5 & 0.5729 & 0.3310\\
 \hline
-Linear, C = 5 (point) & 0.3316 & 0.0000\\
+Linear, C = 4 (point) & 0.4009 & 0.0000\\
 \hline
-Radial, C = 5 (point) & 0.3316 & 0.0000\\
+Radial, C = 4 (point) & 0.4032 & 0.0120\\
 \hline
-Poly, C = 5 (point) & 0.3316 & 0.0000\\
+Poly, C = 4 (point) & 0.4067 & 0.0140\\
 \hline
 \end{tabular}
 \end{table}
@@ -790,7 +830,7 @@ A subset of the data was withheld from training the models as test data to provi
 \hline
 RF Accuracy & SVM Accuracy\\
 \hline
-0.6480326 & 0.6596205\\
+0.6533809 & 0.6583471\\
 \hline
 \end{tabular}
 \end{table}
@@ -802,7 +842,7 @@ RF Accuracy & SVM Accuracy\\
 \hline
 rf\_accuracy & svm\_accuracy\\
 \hline
-0.2349537 & 0.1215278\\
+0.2164352 & 0.1134259\\
 \hline
 \end{tabular}
 \end{table}
@@ -817,13 +857,13 @@ The polygon prediction accuracy on the test dataset was also computed to see how
 \hline
 Type & Result & n\\
 \hline
-SVM C = 5 & Correct & 364\\
+SVM C = 5 & Correct & 362\\
 \hline
-SVM C = 5 & Incorrect & 309\\
+SVM C = 5 & Incorrect & 311\\
 \hline
-RF P = 7, C = 5 & Correct & 344\\
+RF P = 7, C = 5 & Correct & 349\\
 \hline
-RF P = 7, C = 5 & Incorrect & 329\\
+RF P = 7, C = 5 & Incorrect & 324\\
 \hline
 \end{tabular}
 \end{table}
@@ -906,18 +946,1238 @@ The results of this research are replicable, since it involves data from open so
 
 \appendix
 
-\hypertarget{the-first-appendix}{%
-\chapter{The First Appendix}\label{the-first-appendix}}
+\hypertarget{tables}{%
+\chapter{Tables}\label{tables}}
 
-This first appendix includes all of the R chunks of code that were hidden throughout the document (using the \texttt{include\ =\ FALSE} chunk tag) to help with readibility and/or setup.
+This appendix includes the cross-validation confusion matrices for all of the models on the training data and the confusion matrices on the testing data.
 
-\textbf{In the main Rmd file}
+\ref{tab:cmsmallrf}
+\begin{table}[!h]
 
-\textbf{In Chapter \ref{ref-labels}:}
+\caption{\label{tab:cmsmallrf}RF Cross-Validation Confusion Matrix for P = 7, C = 7}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{l|r|r|r|r|r|r|r}
+\hline
+  & Bigleaf Maple & Douglas-Fir & English Oak & Giant Sequoia & grass & Norway Maple & Western Redcedar\\
+\hline
+Bigleaf Maple & 6.3714 & 0.8286 & 1.4857 & 1.7429 & 0.0571 & 3.3714 & 1.8286\\
+\hline
+Douglas-Fir & 0.9143 & 4.4571 & 1.8000 & 1.8571 & 0.0286 & 0.8857 & 2.2000\\
+\hline
+English Oak & 1.0286 & 2.8000 & 5.3143 & 2.2857 & 0.0000 & 1.1143 & 2.4571\\
+\hline
+Giant Sequoia & 1.4857 & 2.2000 & 2.1714 & 4.7429 & 0.0286 & 1.6000 & 1.2286\\
+\hline
+grass & 0.9429 & 0.0000 & 0.0286 & 0.1429 & 13.8286 & 1.0286 & 0.3429\\
+\hline
+Norway Maple & 2.4857 & 1.3714 & 0.9429 & 1.8571 & 0.2857 & 4.5429 & 1.6286\\
+\hline
+Western Redcedar & 1.0571 & 2.6286 & 2.5429 & 1.6571 & 0.0571 & 1.7429 & 4.6000\\
+\hline
+\end{tabular}}
+\end{table}
+\ref{tab:cmfullrf}
+\begin{table}[!h]
 
-\hypertarget{the-second-appendix-for-fun}{%
-\chapter{The Second Appendix, for Fun}\label{the-second-appendix-for-fun}}
+\caption{\label{tab:cmfullrf}RF Cross-Validation Confusion Matrix for P = 8, C = 7}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{l|r|r|r|r|r|r|r}
+\hline
+  & Bigleaf Maple & Douglas-Fir & English Oak & Giant Sequoia & grass & Norway Maple & Western Redcedar\\
+\hline
+Bigleaf Maple & 6.4000 & 0.7143 & 1.6857 & 1.8571 & 0.1714 & 3.2000 & 1.6857\\
+\hline
+Douglas-Fir & 0.8857 & 4.8000 & 1.8857 & 1.5143 & 0.0286 & 1.2571 & 1.9143\\
+\hline
+English Oak & 0.9429 & 2.8571 & 5.4571 & 2.4000 & 0.0000 & 0.8857 & 2.5143\\
+\hline
+Giant Sequoia & 1.5429 & 2.2571 & 2.0000 & 4.8286 & 0.0000 & 1.6571 & 1.4000\\
+\hline
+grass & 0.8571 & 0.0000 & 0.0286 & 0.1429 & 13.6571 & 0.9143 & 0.3714\\
+\hline
+Norway Maple & 2.5429 & 1.1714 & 0.7143 & 1.9714 & 0.3429 & 4.7714 & 1.7143\\
+\hline
+Western Redcedar & 1.1143 & 2.4857 & 2.5143 & 1.5714 & 0.0857 & 1.6000 & 4.6857\\
+\hline
+\end{tabular}}
+\end{table}
+\ref{tab:cmcenterrf}
+\begin{table}[!h]
 
+\caption{\label{tab:cmcenterrf}RF Cross-Validation Confusion Matrix for P = 8, C = 5 (point)}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Bigleaf Maple & Douglas-Fir & Giant Sequoia & Norway Maple & Western Redcedar\\
+\hline
+Bigleaf Maple & 2.6346 & 4.4674 & 4.6964 & 3.7801 & 5.0401\\
+\hline
+Douglas-Fir & 4.8110 & 5.9565 & 3.4364 & 4.0092 & 2.9782\\
+\hline
+Giant Sequoia & 4.9255 & 2.7491 & 3.2073 & 4.5819 & 2.1764\\
+\hline
+Norway Maple & 2.9782 & 4.0092 & 3.5510 & 4.2383 & 3.4364\\
+\hline
+Western Redcedar & 4.6964 & 2.8637 & 4.9255 & 3.4364 & 6.4147\\
+\hline
+\end{tabular}}
+\end{table}
+\ref{tab:cmsmallgroupedrf}
+\begin{table}[!h]
+
+\caption{\label{tab:cmsmallgroupedrf}RF Cross-Validation Confusion Matrix for P = 7, C = 5}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Broadleaf & Douglas-Fir & Giant Sequoia & grass & Western Redcedar\\
+\hline
+Broadleaf & 33.2000 & 7.2000 & 8.7429 & 0.6000 & 9.0286\\
+\hline
+Douglas-Fir & 2.0571 & 4.1429 & 1.1143 & 0.0286 & 1.1714\\
+\hline
+Giant Sequoia & 2.8000 & 1.4571 & 3.3143 & 0.0000 & 0.6857\\
+\hline
+grass & 1.8286 & 0.0000 & 0.1143 & 13.6286 & 0.2857\\
+\hline
+Western Redcedar & 2.9714 & 1.4857 & 1.0000 & 0.0286 & 3.1143\\
+\hline
+\end{tabular}}
+\end{table}
+\ref{tab:cmfullgroupedrf}
+\begin{table}[!h]
+
+\caption{\label{tab:cmfullgroupedrf}RF Cross-Validation Confusion Matrix for P = 8, C = 5}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Broadleaf & Douglas-Fir & Giant Sequoia & grass & Western Redcedar\\
+\hline
+Broadleaf & 32.2000 & 6.6571 & 8.0857 & 0.8571 & 8.6000\\
+\hline
+Douglas-Fir & 2.3429 & 4.2857 & 1.4571 & 0.0286 & 1.3714\\
+\hline
+Giant Sequoia & 3.3714 & 1.6000 & 3.5429 & 0.0000 & 0.8000\\
+\hline
+grass & 1.6571 & 0.0000 & 0.1143 & 13.3714 & 0.2571\\
+\hline
+Western Redcedar & 3.2857 & 1.7429 & 1.0857 & 0.0286 & 3.2571\\
+\hline
+\end{tabular}}
+\end{table}
+\ref{tab:cmcentergroupedrf}
+\begin{table}[!h]
+
+\caption{\label{tab:cmcentergroupedrf}RF Cross-Validation Confusion Matrix for P = 8, C = 4 (point)}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{l|r|r|r|r}
+\hline
+  & Broadleaf & Douglas-Fir & Giant Sequoia & Western Redcedar\\
+\hline
+Broadleaf & 22.7950 & 13.6312 & 12.8293 & 12.3711\\
+\hline
+Douglas-Fir & 5.1546 & 3.2073 & 1.8328 & 2.2910\\
+\hline
+Giant Sequoia & 5.7274 & 1.4891 & 3.0928 & 1.9473\\
+\hline
+Western Redcedar & 6.4147 & 1.7182 & 2.0619 & 3.4364\\
+\hline
+\end{tabular}}
+\end{table}
+\ref{tab:scm1}
+\begin{table}[!h]
+
+\caption{\label{tab:scm1}Linear SVM Cross-Validation Confusion Matrix C = 7}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{l|r|r|r|r}
+\hline
+  & Broadleaf & Douglas-Fir & Giant Sequoia & Western Redcedar\\
+\hline
+Broadleaf & 40.0916 & 20.0458 & 19.8167 & 20.0458\\
+\hline
+Douglas-Fir & 0.0000 & 0.0000 & 0.0000 & 0.0000\\
+\hline
+Giant Sequoia & 0.0000 & 0.0000 & 0.0000 & 0.0000\\
+\hline
+Western Redcedar & 0.0000 & 0.0000 & 0.0000 & 0.0000\\
+\hline
+\end{tabular}}
+\end{table}
+\ref{tab:scm2}
+\begin{table}[!h]
+
+\caption{\label{tab:scm2}Radial SVM Cross-Validation Confusion Matrix C = 7}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{l|r|r|r|r|r|r|r}
+\hline
+  & Bigleaf Maple & Douglas-Fir & English Oak & Giant Sequoia & grass & Norway Maple & Western Redcedar\\
+\hline
+Bigleaf Maple & 7.1429 & 0.8000 & 1.6857 & 2.4286 & 0.0000 & 4.3429 & 2.2286\\
+\hline
+Douglas-Fir & 0.5714 & 3.6000 & 0.4857 & 0.2286 & 0.0000 & 0.1143 & 0.7143\\
+\hline
+English Oak & 0.6286 & 2.7714 & 5.0857 & 2.1429 & 0.0000 & 0.9143 & 2.0286\\
+\hline
+Giant Sequoia & 1.5143 & 3.1143 & 3.1429 & 5.9714 & 0.0000 & 1.8286 & 1.4000\\
+\hline
+grass & 1.3429 & 0.0000 & 0.0571 & 0.2286 & 14.0000 & 1.2571 & 0.4571\\
+\hline
+Norway Maple & 2.2000 & 1.0571 & 0.7714 & 1.3429 & 0.2857 & 3.8286 & 1.7429\\
+\hline
+Western Redcedar & 0.8857 & 2.9429 & 3.0571 & 1.9429 & 0.0000 & 2.0000 & 5.7143\\
+\hline
+\end{tabular}}
+\end{table}
+\ref{tab:scm3}
+\begin{table}[!h]
+
+\caption{\label{tab:scm3}Polynomial SVM Cross-Validation Confusion Matrix C = 7}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{l|r|r|r|r|r|r|r}
+\hline
+  & Bigleaf Maple & Douglas-Fir & English Oak & Giant Sequoia & grass & Norway Maple & Western Redcedar\\
+\hline
+Bigleaf Maple & 8.2000 & 1.4857 & 2.1714 & 3.1714 & 0.0286 & 5.4000 & 2.9429\\
+\hline
+Douglas-Fir & 0.4571 & 3.1714 & 0.4286 & 0.1143 & 0.0000 & 0.0857 & 0.4286\\
+\hline
+English Oak & 0.6000 & 2.9429 & 4.6571 & 1.9429 & 0.0000 & 0.8286 & 2.2286\\
+\hline
+Giant Sequoia & 1.2857 & 3.1429 & 3.3143 & 5.8857 & 0.0000 & 1.7714 & 1.3143\\
+\hline
+grass & 1.0857 & 0.0000 & 0.0286 & 0.1429 & 14.0000 & 1.2286 & 0.4286\\
+\hline
+Norway Maple & 1.7143 & 0.8000 & 0.6286 & 0.9429 & 0.2286 & 3.0857 & 1.4571\\
+\hline
+Western Redcedar & 0.9429 & 2.7429 & 3.0571 & 2.0857 & 0.0286 & 1.8857 & 5.4857\\
+\hline
+\end{tabular}}
+\end{table}
+\ref{tab:scm2grouped}
+\begin{table}[!h]
+
+\caption{\label{tab:scm2grouped}Radial SVM Cross-Validation Confusion Matrix C = 5}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Broadleaf & Douglas-Fir & Giant Sequoia & grass & Western Redcedar\\
+\hline
+Broadleaf & 37.7143 & 9.5143 & 11.4857 & 0.3714 & 11.8000\\
+\hline
+Douglas-Fir & 0.7429 & 3.0571 & 0.1143 & 0.0000 & 0.4286\\
+\hline
+Giant Sequoia & 1.0857 & 1.2571 & 2.3143 & 0.0000 & 0.1143\\
+\hline
+grass & 2.1429 & 0.0000 & 0.1143 & 13.9143 & 0.3429\\
+\hline
+Western Redcedar & 1.1714 & 0.4571 & 0.2571 & 0.0000 & 1.6000\\
+\hline
+\end{tabular}}
+\end{table}
+\ref{tab:scm3grouped}
+\begin{table}[!h]
+
+\caption{\label{tab:scm3grouped}Polynomial SVM Cross-Validation Confusion Matrix C = 5}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Broadleaf & Douglas-Fir & Giant Sequoia & grass & Western Redcedar\\
+\hline
+Broadleaf & 39.2286 & 10.9143 & 12.4000 & 0.4286 & 13.5714\\
+\hline
+Douglas-Fir & 0.7143 & 2.4571 & 0.0857 & 0.0000 & 0.2000\\
+\hline
+Giant Sequoia & 0.5714 & 0.8857 & 1.6857 & 0.0000 & 0.1429\\
+\hline
+grass & 2.1714 & 0.0000 & 0.1143 & 13.8571 & 0.3143\\
+\hline
+Western Redcedar & 0.1714 & 0.0286 & 0.0000 & 0.0000 & 0.0571\\
+\hline
+\end{tabular}}
+\end{table}
+\ref{tab:scm1center}
+\begin{table}[!h]
+
+\caption{\label{tab:scm1center}Linear SVM Cross-Validation Confusion Matrix C = 5 (point)}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Bigleaf Maple & Douglas-Fir & Giant Sequoia & Norway Maple & Western Redcedar\\
+\hline
+Bigleaf Maple & 1.4891 & 1.3746 & 1.6037 & 1.2600 & 2.4055\\
+\hline
+Douglas-Fir & 4.5819 & 7.3310 & 5.0401 & 5.3837 & 4.2383\\
+\hline
+Giant Sequoia & 10.6529 & 8.0183 & 10.3093 & 8.2474 & 9.2784\\
+\hline
+Norway Maple & 1.3746 & 1.3746 & 1.0309 & 1.8328 & 1.9473\\
+\hline
+Western Redcedar & 1.9473 & 1.9473 & 1.8328 & 3.3219 & 2.1764\\
+\hline
+\end{tabular}}
+\end{table}
+\ref{tab:scm2center}
+\begin{table}[!h]
+
+\caption{\label{tab:scm2center}Radial SVM Cross-Validation Confusion Matrix C = 5 (point)}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Bigleaf Maple & Douglas-Fir & Giant Sequoia & Norway Maple & Western Redcedar\\
+\hline
+Bigleaf Maple & 1.2600 & 2.2910 & 1.7182 & 1.7182 & 1.6037\\
+\hline
+Douglas-Fir & 5.3837 & 6.5292 & 4.1237 & 5.7274 & 4.1237\\
+\hline
+Giant Sequoia & 5.8419 & 3.8946 & 6.1856 & 4.9255 & 5.6128\\
+\hline
+Norway Maple & 2.1764 & 2.7491 & 3.2073 & 2.0619 & 3.4364\\
+\hline
+Western Redcedar & 5.3837 & 4.5819 & 4.5819 & 5.6128 & 5.2692\\
+\hline
+\end{tabular}}
+\end{table}
+\ref{tab:scm3center}
+\begin{table}[!h]
+
+\caption{\label{tab:scm3center}Polynomial SVM Cross-Validation Confusion Matrix C = 5 (point)}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{l|r|r|r|r|r}
+\hline
+  & Bigleaf Maple & Douglas-Fir & Giant Sequoia & Norway Maple & Western Redcedar\\
+\hline
+Bigleaf Maple & 2.0619 & 2.1764 & 2.8637 & 2.2910 & 2.6346\\
+\hline
+Douglas-Fir & 5.1546 & 7.5601 & 4.8110 & 5.9565 & 4.6964\\
+\hline
+Giant Sequoia & 9.3929 & 6.7583 & 9.3929 & 6.8729 & 8.4765\\
+\hline
+Norway Maple & 0.8018 & 1.0309 & 0.6873 & 1.3746 & 0.8018\\
+\hline
+Western Redcedar & 2.6346 & 2.5200 & 2.0619 & 3.5510 & 3.4364\\
+\hline
+\end{tabular}}
+\end{table}
+\ref{tab:scm2centergrouped}
+\begin{table}[!h]
+
+\caption{\label{tab:scm2centergrouped}Radial SVM Cross-Validation Confusion Matrix C = 4 (point)}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{l|r|r|r|r}
+\hline
+  & Broadleaf & Douglas-Fir & Giant Sequoia & Western Redcedar\\
+\hline
+Broadleaf & 39.0607 & 18.7858 & 19.7022 & 19.8167\\
+\hline
+Douglas-Fir & 0.9164 & 1.1455 & 0.1145 & 0.1145\\
+\hline
+Giant Sequoia & 0.0000 & 0.0000 & 0.0000 & 0.0000\\
+\hline
+Western Redcedar & 0.1145 & 0.1145 & 0.0000 & 0.1145\\
+\hline
+\end{tabular}}
+\end{table}
+\ref{tab:scm3centergrouped}
+\begin{table}[!h]
+
+\caption{\label{tab:scm3centergrouped}Polynomial SVM Cross-Validation Confusion Matrix C = 4 (point)}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{l|r|r|r|r}
+\hline
+  & Broadleaf & Douglas-Fir & Giant Sequoia & Western Redcedar\\
+\hline
+Broadleaf & 39.8625 & 19.2440 & 19.7022 & 19.8167\\
+\hline
+Douglas-Fir & 0.1145 & 0.8018 & 0.1145 & 0.2291\\
+\hline
+Giant Sequoia & 0.1145 & 0.0000 & 0.0000 & 0.0000\\
+\hline
+Western Redcedar & 0.0000 & 0.0000 & 0.0000 & 0.0000\\
+\hline
+\end{tabular}}
+\end{table}
+\ref{tab:cmtestrf}
+\begin{table}[!h]
+
+\caption{\label{tab:cmtestrf}RF Test Data Confusion Matrix for P = 7, C = 5}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{l|r|r|r|r|r|r|r|r|r|r|r}
+\hline
+  & Sensitivity & Specificity & Pos Pred Value & Neg Pred Value & Precision & Recall & F1 & Prevalence & Detection Rate & Detection Prevalence & Balanced Accuracy\\
+\hline
+Class: Broadleaf & 0.78 & 0.68 & 0.57 & 0.85 & 0.57 & 0.78 & 0.66 & 0.35 & 0.27 & 0.48 & 0.73\\
+\hline
+Class: Douglas-Fir & 0.32 & 0.96 & 0.52 & 0.92 & 0.52 & 0.32 & 0.40 & 0.11 & 0.04 & 0.07 & 0.64\\
+\hline
+Class: Giant Sequoia & 0.23 & 0.96 & 0.45 & 0.90 & 0.45 & 0.23 & 0.31 & 0.12 & 0.03 & 0.06 & 0.60\\
+\hline
+Class: grass & 0.95 & 0.96 & 0.92 & 0.98 & 0.92 & 0.95 & 0.93 & 0.31 & 0.29 & 0.32 & 0.95\\
+\hline
+Class: Western Redcedar & 0.22 & 0.95 & 0.35 & 0.91 & 0.35 & 0.22 & 0.27 & 0.11 & 0.02 & 0.07 & 0.58\\
+\hline
+\end{tabular}}
+\end{table}
+\ref{tab:cmtestsvm}
+\begin{table}[!h]
+
+\caption{\label{tab:cmtestsvm}SVM Test Data Confusion Matrix C = 5}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{l|r|r|r|r|r|r|r|r|r|r|r}
+\hline
+  & Sensitivity & Specificity & Pos Pred Value & Neg Pred Value & Precision & Recall & F1 & Prevalence & Detection Rate & Detection Prevalence & Balanced Accuracy\\
+\hline
+Class: Broadleaf & 0.87 & 0.58 & 0.53 & 0.90 & 0.53 & 0.87 & 0.66 & 0.35 & 0.31 & 0.58 & 0.73\\
+\hline
+Class: Douglas-Fir & 0.22 & 0.99 & 0.73 & 0.91 & 0.73 & 0.22 & 0.33 & 0.11 & 0.02 & 0.03 & 0.60\\
+\hline
+Class: Giant Sequoia & 0.15 & 0.98 & 0.50 & 0.90 & 0.50 & 0.15 & 0.23 & 0.12 & 0.02 & 0.04 & 0.57\\
+\hline
+Class: grass & 0.96 & 0.96 & 0.91 & 0.98 & 0.91 & 0.96 & 0.94 & 0.31 & 0.30 & 0.33 & 0.96\\
+\hline
+Class: Western Redcedar & 0.11 & 0.98 & 0.47 & 0.90 & 0.47 & 0.11 & 0.18 & 0.11 & 0.01 & 0.03 & 0.55\\
+\hline
+\end{tabular}}
+\end{table}
+\hypertarget{code}{%
+\chapter{Code}\label{code}}
+
+This appendix includes the workflow and all the R code for replicating this research. First the rasters need to be downloaded from Planet.com by creating an account and selecting a date with clear weather and Portland's location. The following libraries and functions are necessary to be loaded into your workspace:
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# libraries}
+\KeywordTok{library}\NormalTok{(caret)}
+\KeywordTok{library}\NormalTok{(doParallel)}
+\KeywordTok{library}\NormalTok{(gridExtra)}
+\KeywordTok{library}\NormalTok{(pdxTrees)}
+\KeywordTok{library}\NormalTok{(raster)}
+\KeywordTok{library}\NormalTok{(sf)}
+\KeywordTok{library}\NormalTok{(sp)}
+\KeywordTok{library}\NormalTok{(tidyverse)}
+\KeywordTok{library}\NormalTok{(tigris)}
+
+\CommentTok{# write shapefile function}
+\NormalTok{species_shapefile <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(species, id)\{}
+\NormalTok{  train <-}\StringTok{ }\NormalTok{pdxTrees_combined }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(Species }\OperatorTok{%in%}\StringTok{ }\NormalTok{species, Crown_Width_NS }\OperatorTok{>=}\StringTok{ }\DecValTok{20}\NormalTok{)}
+  \KeywordTok{coordinates}\NormalTok{(train) =}\StringTok{ }\ErrorTok{~}\StringTok{ }\NormalTok{Longitude }\OperatorTok{+}\StringTok{ }\NormalTok{Latitude}
+  \KeywordTok{proj4string}\NormalTok{(train)<-}\StringTok{ }\KeywordTok{CRS}\NormalTok{(}\StringTok{"+proj=longlat +datum=WGS84"}\NormalTok{)}
+\NormalTok{  raster}\OperatorTok{::}\KeywordTok{shapefile}\NormalTok{(train, }\KeywordTok{paste0}\NormalTok{(id, }\StringTok{"_shapefile.shp"}\NormalTok{))}
+\NormalTok{\}}
+
+\CommentTok{# extract values and tidy function}
+\NormalTok{names <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"ID"}\NormalTok{, }\StringTok{"red"}\NormalTok{, }\StringTok{"green"}\NormalTok{, }\StringTok{"blue"}\NormalTok{, }\StringTok{"ir"}\NormalTok{)}
+\NormalTok{pixels_extraction <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(stack, poly_df, id) \{}
+\NormalTok{  val <-}\StringTok{ }\NormalTok{raster}\OperatorTok{::}\KeywordTok{extract}\NormalTok{(stack, poly_df, }\DataTypeTok{df =} \OtherTok{TRUE}\NormalTok{)}
+  \KeywordTok{colnames}\NormalTok{(val) <-}\StringTok{ }\NormalTok{names}
+\NormalTok{  val <-}\StringTok{ }\KeywordTok{drop_na}\NormalTok{(val) }\OperatorTok{%>%}
+\StringTok{    }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{rstrip =}\NormalTok{ id)}
+  \KeywordTok{return}\NormalTok{(val)}
+\NormalTok{\}}
+
+\CommentTok{# function to sample data}
+\NormalTok{sampling_data <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(dat, ratio, n_pixels) \{}
+\NormalTok{  dat_sampled <-}\StringTok{ }\NormalTok{dat }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(rstrip, Cmmn_Nm) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{slice_sample}\NormalTok{(}\DataTypeTok{prop =}\NormalTok{ ratio) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{ungroup}\NormalTok{() }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(Cmmn_Nm) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{slice_sample}\NormalTok{(}\DataTypeTok{n =}\NormalTok{ n_pixels) }\CommentTok{# selects n pixels from each class}
+  \KeywordTok{return}\NormalTok{(dat_sampled)}
+\NormalTok{\}}
+
+\CommentTok{# function to select columns from data}
+\NormalTok{selecting_data <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(dat) \{}
+\NormalTok{  dat_selected <-}\StringTok{ }\NormalTok{dat }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(red, green, blue, ir, ndvi, Cmmn_Nm, red_blue, red_green, }
+\NormalTok{                blue_green)}
+  \KeywordTok{return}\NormalTok{(dat_selected)}
+\NormalTok{\}}
+
+\CommentTok{# function to create grouped data}
+\NormalTok{grouping_data <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(dat) \{}
+\NormalTok{  dat_grouped <-}\StringTok{ }\NormalTok{dat }\OperatorTok{%>%}
+\StringTok{    }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Cmmn_Nm =} \KeywordTok{case_when}\NormalTok{(}
+\NormalTok{    Cmmn_Nm }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Bigleaf Maple"}\NormalTok{, }\StringTok{"English Oak"}\NormalTok{, }\StringTok{"Norway Maple"}\NormalTok{) }\OperatorTok{~}\StringTok{ "Broadleaf"}\NormalTok{,}
+    \OtherTok{TRUE} \OperatorTok{~}\StringTok{ }\KeywordTok{as.character}\NormalTok{(Cmmn_Nm)}
+\NormalTok{  ))}
+  \KeywordTok{return}\NormalTok{(dat_grouped)}
+\NormalTok{\}}
+
+\CommentTok{# random forest function}
+\NormalTok{training_rf <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(dat) \{}
+\NormalTok{  model <-}\StringTok{ }\KeywordTok{train}\NormalTok{(Cmmn_Nm}\OperatorTok{~}\NormalTok{., }\DataTypeTok{data =}\NormalTok{ dat, }\DataTypeTok{method =} \StringTok{"rf"}\NormalTok{, }\DataTypeTok{trControl =}\NormalTok{ control)}
+  \KeywordTok{return}\NormalTok{(model)}
+\NormalTok{\}}
+
+\CommentTok{# support vector machine function}
+\NormalTok{training_svm <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(dat, method) \{}
+\NormalTok{  model <-}\StringTok{ }\KeywordTok{train}\NormalTok{(Cmmn_Nm }\OperatorTok{~}\NormalTok{., }\DataTypeTok{data =}\NormalTok{ dat, }\DataTypeTok{method =}\NormalTok{ method, }
+                 \DataTypeTok{trControl =}\NormalTok{ train_control,}
+              \DataTypeTok{preProcess =} \KeywordTok{c}\NormalTok{(}\StringTok{"center"}\NormalTok{,}\StringTok{"scale"}\NormalTok{))}
+  \KeywordTok{return}\NormalTok{(model)}
+\NormalTok{\}}
+
+\CommentTok{# prep rasters function}
+\NormalTok{predRaster <-}\StringTok{ }\ControlFlowTok{function}\NormalTok{(stack) \{}
+\NormalTok{  stack <-}\StringTok{ }\KeywordTok{stack}\NormalTok{(stack, ((stack[[}\DecValTok{4}\NormalTok{]] }\OperatorTok{-}\StringTok{ }\NormalTok{stack[[}\DecValTok{1}\NormalTok{]])}\OperatorTok{/}\NormalTok{(stack[[}\DecValTok{4}\NormalTok{]] }\OperatorTok{+}\StringTok{ }\NormalTok{stack[[}\DecValTok{1}\NormalTok{]])),}
+\NormalTok{                 (stack[[}\DecValTok{1}\NormalTok{]]}\OperatorTok{/}\NormalTok{stack[[}\DecValTok{3}\NormalTok{]]), (stack[[}\DecValTok{4}\NormalTok{]]}\OperatorTok{/}\NormalTok{stack[[}\DecValTok{1}\NormalTok{]]),}
+\NormalTok{                 (stack[[}\DecValTok{1}\NormalTok{]]}\OperatorTok{/}\NormalTok{stack[[}\DecValTok{2}\NormalTok{]]), (stack[[}\DecValTok{3}\NormalTok{]]}\OperatorTok{/}\NormalTok{stack[[}\DecValTok{2}\NormalTok{]]))}
+  \KeywordTok{names}\NormalTok{(stack) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"red"}\NormalTok{, }\StringTok{"green"}\NormalTok{, }\StringTok{"blue"}\NormalTok{, }\StringTok{"ir"}\NormalTok{, }\StringTok{"ndvi"}\NormalTok{, }\StringTok{"red_blue"}\NormalTok{, }
+                    \StringTok{"ir_red"}\NormalTok{, }\StringTok{"red_green"}\NormalTok{, }\StringTok{"blue_green"}\NormalTok{)}
+\NormalTok{  cl <-}\StringTok{ }\KeywordTok{makeCluster}\NormalTok{(}\DecValTok{3}\NormalTok{, }\DataTypeTok{type =} \StringTok{"FORK"}\NormalTok{)  }
+  \KeywordTok{registerDoParallel}\NormalTok{(cl)  }
+\NormalTok{  results_RF <-}\StringTok{ }\NormalTok{raster}\OperatorTok{::}\KeywordTok{predict}\NormalTok{(stack, rf_small_grouped, }\DataTypeTok{progress =} \StringTok{"text"}\NormalTok{)}
+\NormalTok{  results_SVM <-}\StringTok{ }\NormalTok{raster}\OperatorTok{::}\KeywordTok{predict}\NormalTok{(stack, svm2_grouped, }\DataTypeTok{progress =} \StringTok{"text"}\NormalTok{)}
+\NormalTok{  results <-}\StringTok{ }\KeywordTok{stack}\NormalTok{(results_RF, results_SVM)}
+  \KeywordTok{stopCluster}\NormalTok{(cl)}
+  \KeywordTok{return}\NormalTok{(results)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+This code creates shapefiles for six tree species from \texttt{pdxTrees}:
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# load data}
+\NormalTok{pdxTrees_parks <-}\StringTok{ }\KeywordTok{get_pdxTrees_parks}\NormalTok{()}
+\NormalTok{pdxTrees_streets <-}\StringTok{ }\KeywordTok{get_pdxTrees_streets}\NormalTok{() }\CommentTok{# site width in ft., diameter in in.}
+\NormalTok{pdxTrees_parks_filtered <-}\StringTok{ }\NormalTok{pdxTrees_parks }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{select}\NormalTok{(Longitude, Latitude, Genus, Species, Common_Name, Crown_Width_NS, }
+\NormalTok{         Crown_Width_EW, Crown_Base_Height, Condition)}
+\NormalTok{pdxTrees_streets_filtered <-}\StringTok{ }\NormalTok{pdxTrees_streets }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{select}\NormalTok{(Longitude, Latitude, Genus, Species, Common_Name, Site_Width, Condition)}
+
+\NormalTok{pdxTrees_combined <-}\StringTok{ }\KeywordTok{full_join}\NormalTok{(pdxTrees_parks_filtered, pdxTrees_streets_filtered)}
+
+\CommentTok{# species shapefiles}
+\KeywordTok{species_shapefile}\NormalTok{(}\StringTok{"QURO"}\NormalTok{, }\StringTok{"quro"}\NormalTok{)}
+\KeywordTok{species_shapefile}\NormalTok{(}\StringTok{"SEGI"}\NormalTok{, }\StringTok{"segi"}\NormalTok{)}
+\KeywordTok{species_shapefile}\NormalTok{(}\StringTok{"ACPL"}\NormalTok{, }\StringTok{"acpl"}\NormalTok{)}
+\KeywordTok{species_shapefile}\NormalTok{(}\StringTok{"PSME"}\NormalTok{, }\StringTok{"psme"}\NormalTok{)}
+\KeywordTok{species_shapefile}\NormalTok{(}\StringTok{"ACMA"}\NormalTok{, }\StringTok{"acma"}\NormalTok{)}
+
+\CommentTok{# Western redcedar shapefile}
+\NormalTok{train_redcedar <-}\StringTok{ }\NormalTok{pdxTrees_combined }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(Common_Name }\OperatorTok{%in%}\StringTok{ "Western Redcedar"}\NormalTok{, Crown_Width_NS }\OperatorTok{>=}\StringTok{ }\DecValTok{20}\NormalTok{)}
+\KeywordTok{coordinates}\NormalTok{(train_redcedar) =}\StringTok{ }\ErrorTok{~}\StringTok{ }\NormalTok{Longitude }\OperatorTok{+}\StringTok{ }\NormalTok{Latitude}
+\KeywordTok{proj4string}\NormalTok{(train_redcedar)<-}\StringTok{ }\KeywordTok{CRS}\NormalTok{(}\StringTok{"+proj=longlat +datum=WGS84"}\NormalTok{)}
+\NormalTok{raster}\OperatorTok{::}\KeywordTok{shapefile}\NormalTok{(train_redcedar, }\StringTok{"redcedar_shapefile.shp"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+Once the tree species shapefiles are created, they are imported into QGIS for manual polygons to be drawn around 100 of each tree species. Since the Planet.com imagery has a spatial resolution of 3 meters, the drawn polygons should try to contain around 10-20 pixels. The polygon layer is imported into RStudio for further analysis. To create the pixels data, the polygons are used to indicate the pixels that should be extracted. The point pixels data comes from filtering \texttt{pdxTrees}. The following code performs this geographic join of data:
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# load polygon shapefiles}
+\NormalTok{acpl <-}\StringTok{ }\KeywordTok{st_read}\NormalTok{(}\StringTok{"~/Documents/Fall_2020_Reed/Thesis/tree_canopy/acpl_polygon.shp"}\NormalTok{)}
+\NormalTok{psme <-}\StringTok{ }\KeywordTok{st_read}\NormalTok{(}\StringTok{"~/Documents/Fall_2020_Reed/Thesis/tree_canopy/psme_polygon.shp"}\NormalTok{)}
+\NormalTok{quru <-}\StringTok{ }\KeywordTok{st_read}\NormalTok{(}\StringTok{"~/Documents/Fall_2020_Reed/Thesis/tree_canopy/quru_polygon.shp"}\NormalTok{)}
+\NormalTok{redcedar <-}\StringTok{ }\KeywordTok{st_read}\NormalTok{(}\StringTok{"~/Documents/Fall_2020_Reed/Thesis/tree_canopy/redwood_polygon.shp"}\NormalTok{)}
+\NormalTok{segi <-}\StringTok{ }\KeywordTok{st_read}\NormalTok{(}\StringTok{"~/Documents/Fall_2020_Reed/Thesis/tree_canopy/segi_polygon.shp"}\NormalTok{)}
+\NormalTok{acma <-}\StringTok{ }\KeywordTok{st_read}\NormalTok{(}\StringTok{"~/Documents/Fall_2020_Reed/Thesis/tree_canopy/acma_polygon.shp"}\NormalTok{)}
+\NormalTok{grass <-}\StringTok{ }\KeywordTok{st_read}\NormalTok{(}\StringTok{"~/Documents/Fall_2020_Reed/Thesis/tree_canopy/grass_polygon.shp"}\NormalTok{)}
+
+\CommentTok{# add polygon tree type column}
+\NormalTok{acpl}\OperatorTok{$}\NormalTok{id_type <-}\StringTok{ "acpl"}
+\NormalTok{psme}\OperatorTok{$}\NormalTok{id_type <-}\StringTok{ "psme"}
+\NormalTok{quru}\OperatorTok{$}\NormalTok{id_type <-}\StringTok{ "quru"}
+\NormalTok{redcedar}\OperatorTok{$}\NormalTok{id_type <-}\StringTok{ "redcedar"}
+\NormalTok{segi}\OperatorTok{$}\NormalTok{id_type <-}\StringTok{ "segi"}
+\NormalTok{acma}\OperatorTok{$}\NormalTok{id_type <-}\StringTok{ "acma"}
+\NormalTok{grass}\OperatorTok{$}\NormalTok{id_type <-}\StringTok{ "grass"}
+
+\CommentTok{# combine polygon shapefiles}
+\NormalTok{combined_poly <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(acpl, psme, quru, redcedar, segi, acma, grass)}
+
+\CommentTok{# create multipolygon object}
+\NormalTok{multi_poly <-}\StringTok{ }\KeywordTok{st_multipolygon}\NormalTok{(combined_poly}\OperatorTok{$}\NormalTok{geometry)}
+
+\CommentTok{# load point datasets}
+\NormalTok{acpl_pts <-}\StringTok{ }\KeywordTok{st_read}\NormalTok{(}\StringTok{"~/tree_imaging/shapefiles/acpl_shapefile.shp"}\NormalTok{)}
+\NormalTok{psme_pts <-}\StringTok{ }\KeywordTok{st_read}\NormalTok{(}\StringTok{"~/tree_imaging/shapefiles/psme_shapefile.shp"}\NormalTok{)}
+\NormalTok{quru_pts <-}\StringTok{ }\KeywordTok{st_read}\NormalTok{(}\StringTok{"~/tree_imaging/shapefiles/quru_shapefile.shp"}\NormalTok{)}
+\NormalTok{redcedar_pts <-}\StringTok{ }\KeywordTok{st_read}\NormalTok{(}\StringTok{"~/tree_imaging/shapefiles/redcedar_shapefile.shp"}\NormalTok{)}
+\NormalTok{segi_pts <-}\StringTok{ }\KeywordTok{st_read}\NormalTok{(}\StringTok{"~/tree_imaging/shapefiles/segi_shapefile.shp"}\NormalTok{)}
+\NormalTok{acma_pts <-}\StringTok{ }\KeywordTok{st_read}\NormalTok{(}\StringTok{"~/tree_imaging/shapefiles/acma_shapefile.shp"}\NormalTok{)}
+
+\CommentTok{# combine point datasets}
+\NormalTok{combined_pts <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(acpl_pts, psme_pts, quru_pts, redcedar_pts, segi_pts, }
+\NormalTok{                      acma_pts)}
+
+\CommentTok{# join combined points to combined polygons}
+\NormalTok{poly_join <-}\StringTok{ }\KeywordTok{st_join}\NormalTok{(combined_poly, combined_pts, }\DataTypeTok{largest =}\NormalTok{ T)}
+
+\CommentTok{# tidy polygon-point dataset}
+\NormalTok{poly_join <-}\StringTok{ }\NormalTok{poly_join }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{id =} \KeywordTok{c}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\KeywordTok{nrow}\NormalTok{(poly_join)))}
+
+\CommentTok{# load raster layer object}
+\NormalTok{stack_a <-}\StringTok{ }\KeywordTok{stack}\NormalTok{(}\StringTok{"planet/20200902_184428_1005_3B_AnalyticMS_clip.tif"}\NormalTok{)}
+\NormalTok{stack_b <-}\StringTok{ }\KeywordTok{stack}\NormalTok{(}\StringTok{"planet/20200902_184429_1005_3B_AnalyticMS_clip.tif"}\NormalTok{)}
+\NormalTok{stack_c <-}\StringTok{ }\KeywordTok{stack}\NormalTok{(}\StringTok{"planet/20200902_183008_24_1065_3B_AnalyticMS_clip.tif"}\NormalTok{)}
+\NormalTok{stack_d <-}\StringTok{ }\KeywordTok{stack}\NormalTok{(}\StringTok{"planet/20200902_183006_18_1065_3B_AnalyticMS_clip.tif"}\NormalTok{)}
+\NormalTok{stack_e <-}\StringTok{ }\KeywordTok{stack}\NormalTok{(}\StringTok{"planet/20200902_184430_1005_3B_AnalyticMS_clip.tif"}\NormalTok{)}
+
+\CommentTok{# match raster project to polygons}
+\NormalTok{raster_crs <-}\StringTok{ }\KeywordTok{CRS}\NormalTok{(}\KeywordTok{projection}\NormalTok{(stack_a))}
+\NormalTok{poly_join_reprojected <-}\StringTok{ }\KeywordTok{spTransform}\NormalTok{(}\KeywordTok{as_Spatial}\NormalTok{(poly_join), raster_crs)}
+\CommentTok{# saveRDS(poly_join_reprojected, "data/poly_join_reprojected.rds")}
+
+\CommentTok{# extract pixel values from polygons into a dataframe}
+\NormalTok{val_a <-}\StringTok{ }\KeywordTok{pixels_extraction}\NormalTok{(stack_a, poly_join_reprojected, }\StringTok{"a"}\NormalTok{)}
+\NormalTok{val_b <-}\StringTok{ }\KeywordTok{pixels_extraction}\NormalTok{(stack_b, poly_join_reprojected, }\StringTok{"b"}\NormalTok{)}
+\NormalTok{val_c <-}\StringTok{ }\KeywordTok{pixels_extraction}\NormalTok{(stack_c, poly_join_reprojected, }\StringTok{"c"}\NormalTok{)}
+\NormalTok{val_d <-}\StringTok{ }\KeywordTok{pixels_extraction}\NormalTok{(stack_d, poly_join_reprojected, }\StringTok{"d"}\NormalTok{)}
+\NormalTok{val_e <-}\StringTok{ }\KeywordTok{pixels_extraction}\NormalTok{(stack_e, poly_join_reprojected, }\StringTok{"e"}\NormalTok{)}
+
+\CommentTok{# semi_join returns rows of x where it can find a match in y}
+\NormalTok{val_combined <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(val_a, }\KeywordTok{anti_join}\NormalTok{(val_b, val_a, }\DataTypeTok{by =} \StringTok{"ID"}\NormalTok{))}
+\NormalTok{val_combined <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(val_combined, }\KeywordTok{anti_join}\NormalTok{(val_c, val_combined, }\DataTypeTok{by =} \StringTok{"ID"}\NormalTok{))}
+\NormalTok{val_combined <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(val_combined, }\KeywordTok{anti_join}\NormalTok{(val_d, val_combined, }\DataTypeTok{by =} \StringTok{"ID"}\NormalTok{))}
+\NormalTok{val_combined <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(val_combined, }\KeywordTok{anti_join}\NormalTok{(val_e, val_combined, }\DataTypeTok{by =} \StringTok{"ID"}\NormalTok{))}
+
+\CommentTok{# tidy pixel table}
+\NormalTok{pixels_data <-}\KeywordTok{left_join}\NormalTok{(val_combined, poly_join_reprojected }\OperatorTok{%>%}\StringTok{ }
+\StringTok{                          }\KeywordTok{rename}\NormalTok{(}\DataTypeTok{ID =}\NormalTok{ id)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{ndvi =}\NormalTok{ (ir }\OperatorTok{-}\StringTok{ }\NormalTok{red)}\OperatorTok{/}\NormalTok{(ir }\OperatorTok{+}\StringTok{ }\NormalTok{red), }
+         \DataTypeTok{Cmmn_Nm =} \KeywordTok{replace_na}\NormalTok{(}\KeywordTok{as.character}\NormalTok{(Cmmn_Nm), }\StringTok{"grass"}\NormalTok{),}
+         \DataTypeTok{red_blue =}\NormalTok{ red}\OperatorTok{/}\NormalTok{blue,}
+         \CommentTok{# ir_red = ir/red,}
+         \DataTypeTok{red_green =}\NormalTok{ red}\OperatorTok{/}\NormalTok{green,}
+         \DataTypeTok{blue_green =}\NormalTok{ blue}\OperatorTok{/}\NormalTok{green)}
+
+\CommentTok{# load single pixel tree points}
+\NormalTok{pdxTrees_parks <-}\StringTok{ }\KeywordTok{get_pdxTrees_parks}\NormalTok{()}
+\NormalTok{pdxTrees_streets <-}\StringTok{ }\KeywordTok{get_pdxTrees_streets}\NormalTok{()}
+\NormalTok{pdxTrees_combined <-}\StringTok{ }\KeywordTok{full_join}\NormalTok{(pdxTrees_parks, pdxTrees_streets)}
+\NormalTok{trees_dat <-}\StringTok{ }\NormalTok{pdxTrees_combined }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{filter}\NormalTok{(Common_Name }\OperatorTok{%in%}\StringTok{ "Western Redcedar"} \OperatorTok{|}\StringTok{ }\NormalTok{Species }\OperatorTok{%in%}\StringTok{ }\KeywordTok{unique}\NormalTok{(pixels_data}\OperatorTok{$}\NormalTok{Species),}
+\NormalTok{                DBH }\OperatorTok{>=}\StringTok{ }\DecValTok{15}\NormalTok{)}
+
+
+\CommentTok{# convert to spatial points and reproject}
+\KeywordTok{coordinates}\NormalTok{(trees_dat) <-}\StringTok{ }\ErrorTok{~}\StringTok{ }\NormalTok{Longitude }\OperatorTok{+}\StringTok{ }\NormalTok{Latitude}
+\KeywordTok{proj4string}\NormalTok{(trees_dat)<-}\StringTok{ }\KeywordTok{CRS}\NormalTok{(}\StringTok{"+proj=longlat +datum=WGS84"}\NormalTok{)}
+\NormalTok{trees_reprojected <-}\StringTok{ }\KeywordTok{spTransform}\NormalTok{(trees_dat, raster_crs)}
+
+\CommentTok{# extract pixels for all trees}
+\NormalTok{pix_a <-}\StringTok{ }\KeywordTok{pixels_extraction}\NormalTok{(stack_a, trees_reprojected, }\StringTok{"a"}\NormalTok{)}
+\NormalTok{pix_b <-}\StringTok{ }\KeywordTok{pixels_extraction}\NormalTok{(stack_b, trees_reprojected, }\StringTok{"b"}\NormalTok{)}
+\NormalTok{pix_c <-}\StringTok{ }\KeywordTok{pixels_extraction}\NormalTok{(stack_c, trees_reprojected, }\StringTok{"c"}\NormalTok{)}
+\NormalTok{pix_d <-}\StringTok{ }\KeywordTok{pixels_extraction}\NormalTok{(stack_d, trees_reprojected, }\StringTok{"d"}\NormalTok{)}
+\NormalTok{pix_e <-}\StringTok{ }\KeywordTok{pixels_extraction}\NormalTok{(stack_e, trees_reprojected, }\StringTok{"e"}\NormalTok{)}
+
+\CommentTok{# semi_join returns rows of x where it can find a match in y}
+\NormalTok{pix_combined <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(pix_a, }\KeywordTok{anti_join}\NormalTok{(pix_b, pix_a, }\DataTypeTok{by =} \StringTok{"ID"}\NormalTok{))}
+\NormalTok{pix_combined <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(pix_combined, }\KeywordTok{anti_join}\NormalTok{(pix_c, pix_combined, }\DataTypeTok{by =} \StringTok{"ID"}\NormalTok{))}
+\NormalTok{pix_combined <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(pix_combined, }\KeywordTok{anti_join}\NormalTok{(pix_d, pix_combined, }\DataTypeTok{by =} \StringTok{"ID"}\NormalTok{))}
+\NormalTok{pix_combined <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(pix_combined, }\KeywordTok{anti_join}\NormalTok{(pix_e, pix_combined, }\DataTypeTok{by =} \StringTok{"ID"}\NormalTok{))}
+
+\CommentTok{# tidy centers pixel table}
+\NormalTok{pix_tree_center <-}\StringTok{ }\NormalTok{pix_combined }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{ID =} \KeywordTok{as.character}\NormalTok{(ID)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{left_join}\NormalTok{(trees_reprojected}\OperatorTok{@}\NormalTok{data, }\DataTypeTok{by =} \KeywordTok{c}\NormalTok{(}\StringTok{"ID"}\NormalTok{ =}\StringTok{ "UserID"}\NormalTok{)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{ndvi =}\NormalTok{ (ir }\OperatorTok{-}\StringTok{ }\NormalTok{red)}\OperatorTok{/}\NormalTok{(ir }\OperatorTok{+}\StringTok{ }\NormalTok{red),}
+         \DataTypeTok{red_blue =}\NormalTok{ red}\OperatorTok{/}\NormalTok{blue,}
+         \CommentTok{# ir_red = ir/red,}
+         \DataTypeTok{red_green =}\NormalTok{ red}\OperatorTok{/}\NormalTok{green,}
+         \DataTypeTok{blue_green =}\NormalTok{ blue}\OperatorTok{/}\NormalTok{green,}
+         \DataTypeTok{Cmmn_Nm =} \KeywordTok{case_when}\NormalTok{(}
+\NormalTok{           Common_Name }\OperatorTok{%in%}\StringTok{ "Maple, Norway"} \OperatorTok{~}\StringTok{ "Norway Maple"}\NormalTok{,}
+\NormalTok{           Common_Name }\OperatorTok{%in%}\StringTok{ "Maple, Bigleaf"} \OperatorTok{~}\StringTok{ "Bigleaf Maple"}\NormalTok{,}
+           \OtherTok{TRUE} \OperatorTok{~}\StringTok{ }\KeywordTok{as.character}\NormalTok{(Common_Name)}
+\NormalTok{         )) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{filter}\NormalTok{(Cmmn_Nm }\OperatorTok{%in%}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Western Redcedar"}\NormalTok{, }\StringTok{"Bigleaf Maple"}\NormalTok{, }\StringTok{"Douglas-Fir"}\NormalTok{, }
+                               \CommentTok{#"English Oak",}
+                        \StringTok{"Giant Sequoia"}\NormalTok{, }\StringTok{"Norway Maple"}\NormalTok{))}
+
+\CommentTok{# save results}
+\CommentTok{# write.csv(poly_join_reprojected,'data/poly_join_reprojected1.csv', row.names = F)}
+\CommentTok{# write.csv(val_combined,'data/val_combined1.csv', row.names = F)}
+\CommentTok{# write.csv(pixels_data,'data/pixels_data.csv', row.names = F)}
+\CommentTok{# write.csv(pix_tree_center,'data/pix_tree_center.csv', row.names = F)}
+\end{Highlighting}
+\end{Shaded}
+To prepare the data for training and testing the models, the pixels and point pixels data are split into training and testing data:
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# load data}
+\NormalTok{pixels_data <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{'data/pixels_data.csv'}\NormalTok{)}
+\NormalTok{pix_tree_center <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{'data/pix_tree_center.csv'}\NormalTok{)}
+
+\CommentTok{# take note of distribution of classes}
+\NormalTok{pixels_data }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(Cmmn_Nm)}
+\NormalTok{pix_tree_center }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(Cmmn_Nm)}
+
+\CommentTok{# training data}
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{2}\NormalTok{)}
+\NormalTok{train_full <-}\StringTok{ }\KeywordTok{sampling_data}\NormalTok{(pixels_data, }\FloatTok{0.7}\NormalTok{, }\DecValTok{500}\NormalTok{)}
+\NormalTok{train <-}\StringTok{ }\KeywordTok{selecting_data}\NormalTok{(train_full)}
+\NormalTok{train_grouped <-}\StringTok{ }\KeywordTok{grouping_data}\NormalTok{(train)}
+\NormalTok{train_center <-}\StringTok{ }\KeywordTok{selecting_data}\NormalTok{(}\KeywordTok{sampling_data}\NormalTok{(pix_tree_center, }\FloatTok{0.7}\NormalTok{, }\DecValTok{175}\NormalTok{))}
+\NormalTok{train_center_grouped <-}\StringTok{ }\KeywordTok{grouping_data}\NormalTok{(train_center)}
+
+\CommentTok{# testing data}
+\NormalTok{test_full <-}\StringTok{ }\KeywordTok{anti_join}\NormalTok{(pixels_data, train_full)}
+\NormalTok{test_full_grouped <-}\StringTok{ }\KeywordTok{grouping_data}\NormalTok{(test_full)}
+\NormalTok{test <-}\StringTok{ }\NormalTok{test_full }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(red, green, blue, ir, ndvi, Cmmn_Nm, red_blue, red_green, }
+\NormalTok{                blue_green)}
+\NormalTok{test_grouped <-}\StringTok{ }\KeywordTok{grouping_data}\NormalTok{(test)}
+\NormalTok{test_center <-}\StringTok{ }\KeywordTok{anti_join}\NormalTok{(pix_tree_center, train_center) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(red, green, blue, ir, ndvi, Cmmn_Nm, red_blue, red_green, }
+\NormalTok{                blue_green)}
+\NormalTok{test_center_grouped <-}\StringTok{ }\KeywordTok{grouping_data}\NormalTok{(test_center)}
+
+\CommentTok{# save results}
+\CommentTok{# write.csv(train,'data/train.csv', row.names = F)}
+\CommentTok{# write.csv(train_grouped,'data/train_grouped.csv', row.names = F)}
+\CommentTok{# write.csv(train_center,'data/train_center.csv', row.names = F)}
+\CommentTok{# write.csv(train_center_grouped,'data/train_center_grouped.csv', row.names = F)}
+\CommentTok{# write.csv(test,'data/test.csv', row.names = F)}
+\CommentTok{# write.csv(test_grouped,'data/test_grouped.csv', row.names = F)}
+\CommentTok{# write.csv(test_center,'data/test_center.csv', row.names = F)}
+\CommentTok{# write.csv(test_center_grouped,'data/test_center_grouped.csv', row.names = F)}
+\CommentTok{# write.csv(test_full, 'data/test_full.csv', row.names = F)}
+\CommentTok{# write.csv(test_full_grouped, 'data/test_full_grouped.csv', row.names = F)}
+\end{Highlighting}
+\end{Shaded}
+The training data is used to train the models:
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# load training data}
+\NormalTok{train <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{'data/train.csv'}\NormalTok{)}
+\NormalTok{train_grouped <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{'data/train_grouped.csv'}\NormalTok{)}
+\NormalTok{train_center <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{'data/train_center.csv'}\NormalTok{)}
+\NormalTok{train_center_grouped <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{'data/train_center_grouped.csv'}\NormalTok{)}
+
+\CommentTok{# random search random forest using caret package}
+\NormalTok{control <-}\StringTok{ }\KeywordTok{trainControl}\NormalTok{(}\DataTypeTok{method =} \StringTok{"repeatedcv"}\NormalTok{, }\DataTypeTok{number =} \DecValTok{10}\NormalTok{, }
+                        \DataTypeTok{search =} \StringTok{"random"}\NormalTok{)}
+
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{2}\NormalTok{)}
+\NormalTok{rf_small <-}\StringTok{ }\KeywordTok{training_rf}\NormalTok{(train }\OperatorTok{%>%}\StringTok{ }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\KeywordTok{c}\NormalTok{(red_blue)))}
+\NormalTok{rf_small_grouped <-}\StringTok{ }\KeywordTok{training_rf}\NormalTok{(train_grouped }\OperatorTok{%>%}\StringTok{ }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(}\OperatorTok{-}\KeywordTok{c}\NormalTok{(red_blue)))}
+\NormalTok{rf_full <-}\StringTok{ }\KeywordTok{training_rf}\NormalTok{(train)}
+\NormalTok{rf_full_grouped <-}\StringTok{ }\KeywordTok{training_rf}\NormalTok{(train_grouped)}
+\NormalTok{rf_center <-}\StringTok{ }\KeywordTok{training_rf}\NormalTok{(train_center)}
+\NormalTok{rf_center_grouped <-}\StringTok{ }\KeywordTok{training_rf}\NormalTok{(train_center_grouped)}
+
+\CommentTok{# 10 fold cross validation}
+\NormalTok{train_control <-}\StringTok{ }\KeywordTok{trainControl}\NormalTok{(}\DataTypeTok{method =} \StringTok{"cv"}\NormalTok{, }\DataTypeTok{number =} \DecValTok{10}\NormalTok{)}
+
+\KeywordTok{set.seed}\NormalTok{(}\DecValTok{2}\NormalTok{)}
+\CommentTok{# fit svm model with normalized variables}
+\NormalTok{svm1 <-}\StringTok{ }\KeywordTok{training_svm}\NormalTok{(train, }\StringTok{"svmLinear"}\NormalTok{)}
+\NormalTok{svm2 <-}\StringTok{ }\KeywordTok{training_svm}\NormalTok{(train, }\StringTok{"svmRadial"}\NormalTok{)}
+\NormalTok{svm3 <-}\StringTok{ }\KeywordTok{training_svm}\NormalTok{(train, }\StringTok{"svmPoly"}\NormalTok{)}
+\NormalTok{svm1_grouped <-}\StringTok{ }\KeywordTok{training_svm}\NormalTok{(train_grouped, }\StringTok{"svmLinear"}\NormalTok{)}
+\NormalTok{svm2_grouped <-}\StringTok{ }\KeywordTok{training_svm}\NormalTok{(train_grouped, }\StringTok{"svmRadial"}\NormalTok{)}
+\NormalTok{svm3_grouped <-}\StringTok{ }\KeywordTok{training_svm}\NormalTok{(train_grouped, }\StringTok{"svmPoly"}\NormalTok{)}
+\NormalTok{svm1_center <-}\StringTok{ }\KeywordTok{training_svm}\NormalTok{(train_center, }\StringTok{"svmLinear"}\NormalTok{)}
+\NormalTok{svm2_center <-}\StringTok{ }\KeywordTok{training_svm}\NormalTok{(train_center, }\StringTok{"svmRadial"}\NormalTok{)}
+\NormalTok{svm3_center <-}\StringTok{ }\KeywordTok{training_svm}\NormalTok{(train_center, }\StringTok{"svmPoly"}\NormalTok{)}
+\NormalTok{svm1_center_grouped <-}\StringTok{ }\KeywordTok{training_svm}\NormalTok{(train_center_grouped, }\StringTok{"svmLinear"}\NormalTok{)}
+\NormalTok{svm2_center_grouped <-}\StringTok{ }\KeywordTok{training_svm}\NormalTok{(train_center_grouped, }\StringTok{"svmRadial"}\NormalTok{)}
+\NormalTok{svm3_center_grouped <-}\StringTok{ }\KeywordTok{training_svm}\NormalTok{(train_center_grouped, }\StringTok{"svmPoly"}\NormalTok{)}
+
+\CommentTok{# save models}
+\CommentTok{# saveRDS(rf_small, "data/rf_small.rds")}
+\CommentTok{# saveRDS(rf_small_grouped, "data/rf_small_grouped.rds")}
+\CommentTok{# saveRDS(rf_full, "data/rf_full.rds")}
+\CommentTok{# saveRDS(rf_full_grouped, "data/rf_full_grouped.rds")}
+\CommentTok{# saveRDS(rf_center, "data/rf_center.rds")}
+\CommentTok{# saveRDS(rf_center_grouped, "data/rf_center_grouped.rds")}
+\CommentTok{# saveRDS(svm1, "data/svm1.rds")}
+\CommentTok{# saveRDS(svm2, "data/svm2.rds")}
+\CommentTok{# saveRDS(svm3, "data/svm3.rds")}
+\CommentTok{# saveRDS(svm1_center, "data/svm1_center.rds")}
+\CommentTok{# saveRDS(svm2_center, "data/svm2_center.rds")}
+\CommentTok{# saveRDS(svm3_center, "data/svm3_center.rds")}
+\CommentTok{# saveRDS(svm1_grouped, "data/svm1_grouped.rds")}
+\CommentTok{# saveRDS(svm2_grouped, "data/svm2_grouped.rds")}
+\CommentTok{# saveRDS(svm3_grouped, "data/svm3_grouped.rds")}
+\end{Highlighting}
+\end{Shaded}
+Analysis on the trained models included in this research is conducted with the following code:
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# load rf models}
+\NormalTok{rf_small <-}\StringTok{ }\KeywordTok{readRDS}\NormalTok{(}\StringTok{"data/rf_small.rds"}\NormalTok{)}
+\NormalTok{rf_small_grouped <-}\StringTok{ }\KeywordTok{readRDS}\NormalTok{(}\StringTok{"data/rf_small_grouped.rds"}\NormalTok{)}
+\NormalTok{rf_full <-}\StringTok{ }\KeywordTok{readRDS}\NormalTok{(}\StringTok{"data/rf_full.rds"}\NormalTok{)}
+\NormalTok{rf_full_grouped <-}\StringTok{ }\KeywordTok{readRDS}\NormalTok{(}\StringTok{"data/rf_full_grouped.rds"}\NormalTok{)}
+\NormalTok{rf_center <-}\StringTok{ }\KeywordTok{readRDS}\NormalTok{(}\StringTok{"data/rf_center.rds"}\NormalTok{)}
+\NormalTok{rf_center_grouped <-}\StringTok{ }\KeywordTok{readRDS}\NormalTok{(}\StringTok{"data/rf_center_grouped.rds"}\NormalTok{)}
+
+\CommentTok{# rf mtry cross validation}
+\KeywordTok{grid.arrange}\NormalTok{(}\KeywordTok{plot}\NormalTok{(rf_small, }\DataTypeTok{main =} \StringTok{"RF P = 7, C = 7"}\NormalTok{),}
+             \KeywordTok{plot}\NormalTok{(rf_small_grouped, }\DataTypeTok{main =} \StringTok{"RF P = 7, C = 5"}\NormalTok{), }\DataTypeTok{nrow =} \DecValTok{1}\NormalTok{)}
+\KeywordTok{grid.arrange}\NormalTok{(}\KeywordTok{plot}\NormalTok{(rf_full, }\DataTypeTok{main =} \StringTok{"RF P = 8, C = 7"}\NormalTok{),}
+             \KeywordTok{plot}\NormalTok{(rf_full_grouped, }\DataTypeTok{main =} \StringTok{"RF P = 8, C = 5"}\NormalTok{), }\DataTypeTok{nrow =} \DecValTok{1}\NormalTok{)}
+\KeywordTok{grid.arrange}\NormalTok{(}\KeywordTok{plot}\NormalTok{(rf_center, }\DataTypeTok{main =} \StringTok{"RF P = 8, C = 5 (point)"}\NormalTok{),}
+             \KeywordTok{plot}\NormalTok{(rf_center_grouped, }\DataTypeTok{main =} \StringTok{"RF P = 8, C = 4 (point)"}\NormalTok{), }
+             \DataTypeTok{nrow =} \DecValTok{1}\NormalTok{)}
+
+\CommentTok{# data frame to compare rf models}
+\NormalTok{results <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(}\KeywordTok{cbind}\NormalTok{(rf_small}\OperatorTok{$}\NormalTok{resample, }\DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"P = 7, C = 7"}\NormalTok{, }\DecValTok{10}\NormalTok{)), }
+                 \KeywordTok{cbind}\NormalTok{(rf_full}\OperatorTok{$}\NormalTok{resample, }\DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"P = 8, C = 7"}\NormalTok{, }\DecValTok{10}\NormalTok{)),}
+                 \KeywordTok{cbind}\NormalTok{(rf_center}\OperatorTok{$}\NormalTok{resample, }
+                       \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"P = 8, C = 5 (point)"}\NormalTok{, }\DecValTok{10}\NormalTok{)),}
+                 \KeywordTok{cbind}\NormalTok{(rf_small_grouped}\OperatorTok{$}\NormalTok{resample, }
+                       \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"P = 7, C = 5"}\NormalTok{, }\DecValTok{10}\NormalTok{)),}
+                 \KeywordTok{cbind}\NormalTok{(rf_full_grouped}\OperatorTok{$}\NormalTok{resample, }
+                       \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"P = 8, C = 5"}\NormalTok{, }\DecValTok{10}\NormalTok{)),}
+                 \KeywordTok{cbind}\NormalTok{(rf_center_grouped}\OperatorTok{$}\NormalTok{resample, }
+                       \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"P = 8, C = 4 (point)"}\NormalTok{, }\DecValTok{10}\NormalTok{)))}
+
+\CommentTok{# visualize rf model results}
+\KeywordTok{ggplot}\NormalTok{(results, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ Model, }\DataTypeTok{y =}\NormalTok{ Accuracy, }\DataTypeTok{fill =}\NormalTok{ Model)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_boxplot}\NormalTok{(}\DataTypeTok{alpha =} \FloatTok{0.6}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme_minimal}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{scale_fill_viridis_d}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Model Accuracy of Random Forest Models with 10-Fold CV"}\NormalTok{, }
+       \DataTypeTok{x =} \StringTok{" "}\NormalTok{, }\DataTypeTok{fill =} \StringTok{"P = Predictors, C = Classes"}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.text.x =} \KeywordTok{element_blank}\NormalTok{())}
+
+\CommentTok{# rf results by class}
+\NormalTok{cm_small_rf <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(rf_small,  }\DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
+\NormalTok{cm_full_rf <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(rf_full,  }\DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
+\NormalTok{cm_center_rf <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(rf_center,  }\DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
+\NormalTok{cm_small_grouped_rf <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(rf_small_grouped,  }\DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
+\NormalTok{cm_full_grouped_rf <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(rf_full_grouped,  }\DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
+\NormalTok{cm_center_grouped_rf <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(rf_center_grouped,  }\DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
+
+\CommentTok{# save confusion matrices}
+\CommentTok{# saveRDS(cm_small_rf, "data/cm_small_rf.rds")}
+\CommentTok{# saveRDS(cm_full_rf, "data/cm_full_rf.rds")}
+\CommentTok{# saveRDS(cm_center_rf, "data/cm_center_rf.rds")}
+\CommentTok{# saveRDS(cm_small_grouped_rf, "data/cm_small_grouped_rf.rds")}
+\CommentTok{# saveRDS(cm_full_grouped_rf, "data/cm_full_grouped_rf.rds")}
+\CommentTok{# saveRDS(cm_center_grouped_rf, "data/cm_center_grouped_rf.rds")}
+
+\CommentTok{# table comparing models}
+\NormalTok{results_rf <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(}\KeywordTok{cbind}\NormalTok{(rf_small}\OperatorTok{$}\NormalTok{resample, }\DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"P = 7, C = 7"}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+                          \DataTypeTok{mtry =} \KeywordTok{rep}\NormalTok{(rf_small}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{], }\DecValTok{10}\NormalTok{)),}
+                    \KeywordTok{cbind}\NormalTok{(rf_full}\OperatorTok{$}\NormalTok{resample, }\DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"P = 8, C = 7"}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+                          \DataTypeTok{mtry =} \KeywordTok{rep}\NormalTok{(rf_full}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{], }\DecValTok{10}\NormalTok{)),}
+                    \KeywordTok{cbind}\NormalTok{(rf_center}\OperatorTok{$}\NormalTok{resample, }
+                          \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"P = 8, C = 5 (point)"}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+                          \DataTypeTok{mtry =} \KeywordTok{rep}\NormalTok{(rf_center}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{], }\DecValTok{10}\NormalTok{)),}
+                    \KeywordTok{cbind}\NormalTok{(rf_small_grouped}\OperatorTok{$}\NormalTok{resample, }
+                          \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"P = 7, C = 5"}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+                          \DataTypeTok{mtry =} \KeywordTok{rep}\NormalTok{(rf_small_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{], }\DecValTok{10}\NormalTok{)),}
+                    \KeywordTok{cbind}\NormalTok{(rf_full_grouped}\OperatorTok{$}\NormalTok{resample, }
+                          \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"P = 8, C = 5"}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+                          \DataTypeTok{mtry =} \KeywordTok{rep}\NormalTok{(rf_full_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{], }\DecValTok{10}\NormalTok{)),}
+                    \KeywordTok{cbind}\NormalTok{(rf_center_grouped}\OperatorTok{$}\NormalTok{resample, }
+                          \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"P = 8, C = 4 (point)"}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+                          \DataTypeTok{mtry =} \KeywordTok{rep}\NormalTok{(rf_center_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{], }\DecValTok{10}\NormalTok{)))}
+
+\NormalTok{results_r <-}\StringTok{ }\NormalTok{results_rf }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(Model) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\StringTok{"Accuracy"}\NormalTok{ =}\StringTok{ }\KeywordTok{round}\NormalTok{(}\KeywordTok{mean}\NormalTok{(Accuracy), }\DecValTok{4}\NormalTok{), }
+            \StringTok{"Kappa"}\NormalTok{ =}\StringTok{ }\KeywordTok{round}\NormalTok{(}\KeywordTok{mean}\NormalTok{(Kappa), }\DecValTok{4}\NormalTok{),}
+            \StringTok{"mtry"}\NormalTok{ =}\StringTok{ }\KeywordTok{mean}\NormalTok{(mtry)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{rename}\NormalTok{(}\StringTok{"Random Forest Model"}\NormalTok{ =}\StringTok{ }\NormalTok{Model)}
+
+\CommentTok{# save table}
+\CommentTok{# write.csv(results_r,'data/results_r.csv', row.names = F)}
+
+\CommentTok{# load svm models}
+\NormalTok{svm1 <-}\StringTok{ }\KeywordTok{readRDS}\NormalTok{(}\StringTok{"data/svm1.rds"}\NormalTok{)}
+\NormalTok{svm2 <-}\StringTok{ }\KeywordTok{readRDS}\NormalTok{(}\StringTok{"data/svm2.rds"}\NormalTok{)}
+\NormalTok{svm3 <-}\StringTok{ }\KeywordTok{readRDS}\NormalTok{(}\StringTok{"data/svm3.rds"}\NormalTok{)}
+\NormalTok{svm1_center <-}\StringTok{ }\KeywordTok{readRDS}\NormalTok{(}\StringTok{"data/svm1_center.rds"}\NormalTok{)}
+\NormalTok{svm2_center <-}\StringTok{ }\KeywordTok{readRDS}\NormalTok{(}\StringTok{"data/svm2_center.rds"}\NormalTok{)}
+\NormalTok{svm3_center <-}\StringTok{ }\KeywordTok{readRDS}\NormalTok{(}\StringTok{"data/svm3_center.rds"}\NormalTok{)}
+\NormalTok{svm1_grouped <-}\StringTok{ }\KeywordTok{readRDS}\NormalTok{(}\StringTok{"data/svm1_grouped.rds"}\NormalTok{)}
+\NormalTok{svm2_grouped <-}\StringTok{ }\KeywordTok{readRDS}\NormalTok{(}\StringTok{"data/svm2_grouped.rds"}\NormalTok{)}
+\NormalTok{svm3_grouped <-}\StringTok{ }\KeywordTok{readRDS}\NormalTok{(}\StringTok{"data/svm3_grouped.rds"}\NormalTok{)}
+
+\CommentTok{# collect resamples}
+\NormalTok{results_svm <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(}\KeywordTok{cbind}\NormalTok{(svm1}\OperatorTok{$}\NormalTok{resample, }\DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Linear, C = 7"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+                           \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm1}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{])),}
+                     \KeywordTok{cbind}\NormalTok{(svm2}\OperatorTok{$}\NormalTok{resample, }\DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Radial, C = 7"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+                           \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm2}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{], }\StringTok{"sigma ="}\NormalTok{, }
+                                 \KeywordTok{round}\NormalTok{(svm2}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{], }\DecValTok{4}\NormalTok{))),}
+                     \KeywordTok{cbind}\NormalTok{(svm3}\OperatorTok{$}\NormalTok{resample, }\DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Poly, C = 7"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+                           \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm3}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{], }\StringTok{", scale ="}\NormalTok{, }
+\NormalTok{                                 svm3}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{], }\StringTok{", degree ="}\NormalTok{, svm3}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{])),}
+                     \KeywordTok{cbind}\NormalTok{(svm1_center}\OperatorTok{$}\NormalTok{resample, }
+                           \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Linear, C = 5 (point)"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+                           \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm1_center}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{])),}
+                     \KeywordTok{cbind}\NormalTok{(svm2_center}\OperatorTok{$}\NormalTok{resample, }
+                           \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Radial, C = 5 (point)"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+                           \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm2_center}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{], }
+                                             \StringTok{"sigma ="}\NormalTok{, }
+                                 \KeywordTok{round}\NormalTok{(svm2_center}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{], }\DecValTok{4}\NormalTok{))),}
+                     \KeywordTok{cbind}\NormalTok{(svm3_center}\OperatorTok{$}\NormalTok{resample, }
+                           \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Poly, C = 5 (point)"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+                           \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm3_center}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{], }
+                                             \StringTok{", scale ="}\NormalTok{, }
+\NormalTok{                                 svm3_center}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{], }
+                                 \StringTok{", degree ="}\NormalTok{, svm3_center}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{])),}
+                     \KeywordTok{cbind}\NormalTok{(svm1_grouped}\OperatorTok{$}\NormalTok{resample, }
+                           \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Linear, C = 5"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+                           \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm1_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{])),}
+                     \KeywordTok{cbind}\NormalTok{(svm2_grouped}\OperatorTok{$}\NormalTok{resample, }
+                           \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Radial, C = 5"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+                           \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm2_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{], }
+                                             \StringTok{"sigma ="}\NormalTok{,}
+                                             \KeywordTok{round}\NormalTok{(svm2_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{], }\DecValTok{4}\NormalTok{))),}
+                     \KeywordTok{cbind}\NormalTok{(svm3_grouped}\OperatorTok{$}\NormalTok{resample, }
+                           \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Poly, C = 5"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+                           \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm3_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{], }
+                                             \StringTok{", scale ="}\NormalTok{, }
+\NormalTok{                                 svm3_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{], }
+                                 \StringTok{", degree ="}\NormalTok{, svm3_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{])),}
+                     \KeywordTok{cbind}\NormalTok{(svm1_center_grouped}\OperatorTok{$}\NormalTok{resample, }
+                           \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Linear, C = 4 (point)"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+                           \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm1_center_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{])),}
+                     \KeywordTok{cbind}\NormalTok{(svm2_center_grouped}\OperatorTok{$}\NormalTok{resample, }
+                           \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Radial, C = 4 (point)"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+                           \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm2_center_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{], }
+                                             \StringTok{"sigma ="}\NormalTok{,}
+                                             \KeywordTok{round}\NormalTok{(svm2_center_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{], }\DecValTok{4}\NormalTok{))),}
+                     \KeywordTok{cbind}\NormalTok{(svm3_center_grouped}\OperatorTok{$}\NormalTok{resample, }
+                           \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Poly, C = 4 (point)"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+                           \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm3_center_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{], }
+                                             \StringTok{", scale ="}\NormalTok{, }
+\NormalTok{                                 svm3_center_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{], }
+                                 \StringTok{", degree ="}\NormalTok{, svm3_center_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{])))}
+
+\CommentTok{# visualize svm model results}
+\KeywordTok{ggplot}\NormalTok{(results_svm, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ Model, }\DataTypeTok{y =}\NormalTok{ Accuracy, }\DataTypeTok{fill =}\NormalTok{ Model)) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{geom_boxplot}\NormalTok{(}\DataTypeTok{alpha =} \FloatTok{0.8}\NormalTok{) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme_minimal}\NormalTok{() }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{scale_fill_discrete}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Model Accuracy of SVM Models with 10-Fold CV"}\NormalTok{, }\DataTypeTok{x =} \StringTok{" "}\NormalTok{, }\DataTypeTok{fill =} \StringTok{" "}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.text.x =} \KeywordTok{element_blank}\NormalTok{())}
+
+\KeywordTok{grid.arrange}\NormalTok{(}\KeywordTok{plot}\NormalTok{(svm2, }\DataTypeTok{main =} \StringTok{"SVM C = 7"}\NormalTok{),}
+             \KeywordTok{plot}\NormalTok{(svm2_grouped, }\DataTypeTok{main =} \StringTok{"SVM C = 5"}\NormalTok{), }\DataTypeTok{nrow =} \DecValTok{1}\NormalTok{)}
+\KeywordTok{grid.arrange}\NormalTok{(}\KeywordTok{plot}\NormalTok{(svm3, }\DataTypeTok{main =} \StringTok{"SVM C = 7"}\NormalTok{),}
+             \KeywordTok{plot}\NormalTok{(svm3_grouped, }\DataTypeTok{main =} \StringTok{"SVM C = 5"}\NormalTok{), }\DataTypeTok{nrow =} \DecValTok{1}\NormalTok{)}
+\KeywordTok{grid.arrange}\NormalTok{(}\KeywordTok{plot}\NormalTok{(svm2_center, }\DataTypeTok{main =} \StringTok{"SVM C = 5 (point)"}\NormalTok{),}
+             \KeywordTok{plot}\NormalTok{(svm2_center_grouped, }\DataTypeTok{main =} \StringTok{"SVM C = 4 (point)"}\NormalTok{), }\DataTypeTok{nrow =} \DecValTok{1}\NormalTok{)}
+\KeywordTok{grid.arrange}\NormalTok{(}\KeywordTok{plot}\NormalTok{(svm3_center, }\DataTypeTok{main =} \StringTok{"SVM C = 5 (point)"}\NormalTok{),}
+             \KeywordTok{plot}\NormalTok{(svm3_center_grouped, }\DataTypeTok{main =} \StringTok{"SVM C = 4 (point)"}\NormalTok{), }\DataTypeTok{nrow =} \DecValTok{1}\NormalTok{)}
+
+\CommentTok{# svm results by class}
+\NormalTok{scm1 <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(svm1,  }\DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
+\NormalTok{scm2 <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(svm2,  }\DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
+\NormalTok{scm3 <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(svm3,  }\DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
+\NormalTok{scm1_center <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(svm1_center,  }\DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
+\NormalTok{scm2_center <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(svm2_center,  }\DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
+\NormalTok{scm3_center <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(svm3_center,  }\DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
+\NormalTok{scm1_grouped <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(svm1_grouped,  }\DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
+\NormalTok{scm2_grouped <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(svm2_grouped,  }\DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
+\NormalTok{scm3_grouped <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(svm3_grouped,  }\DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
+\NormalTok{scm1_center_grouped <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(svm1_center_grouped,  }\DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
+\NormalTok{scm2_center_grouped <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(svm2_center_grouped,  }\DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
+\NormalTok{scm3_center_grouped <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(svm3_center_grouped,  }\DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
+
+\CommentTok{# save confusion matrices}
+\CommentTok{# saveRDS(scm1, "data/scm1.rds")}
+\CommentTok{# saveRDS(scm2, "data/scm2.rds")}
+\CommentTok{# saveRDS(scm3, "data/scm3.rds")}
+\CommentTok{# saveRDS(scm1_center, "data/scm1_center.rds")}
+\CommentTok{# saveRDS(scm2_center, "data/scm2_center.rds")}
+\CommentTok{# saveRDS(scm3_center, "data/scm3_center.rds")}
+\CommentTok{# saveRDS(scm1_grouped, "data/scm1.rds")}
+\CommentTok{# saveRDS(scm2_grouped, "data/scm2_grouped.rds")}
+\CommentTok{# saveRDS(scm3_grouped, "data/scm3_grouped.rds")}
+\CommentTok{# saveRDS(scm1_center_grouped, "data/scm1.rds")}
+\CommentTok{# saveRDS(scm2_center_grouped, "data/scm2_center_grouped.rds")}
+\CommentTok{# saveRDS(scm3_center_grouped, "data/scm3_center_grouped.rds")}
+
+\CommentTok{# table comparing models}
+\NormalTok{results_s <-}\StringTok{ }\NormalTok{results_svm }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(Model) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\StringTok{"Accuracy"}\NormalTok{ =}\StringTok{ }\KeywordTok{round}\NormalTok{(}\KeywordTok{mean}\NormalTok{(Accuracy), }\DecValTok{4}\NormalTok{), }
+            \StringTok{"Kappa"}\NormalTok{ =}\StringTok{ }\KeywordTok{round}\NormalTok{(}\KeywordTok{mean}\NormalTok{(Kappa), }\DecValTok{4}\NormalTok{)) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{rename}\NormalTok{(}\StringTok{"SVM Model Kernel"}\NormalTok{ =}\StringTok{ }\NormalTok{Model)}
+
+\CommentTok{# save table}
+\CommentTok{# write.csv(results_s,'data/results_s.csv', row.names = F)}
+
+\CommentTok{# load test data}
+\NormalTok{test <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{'data/test.csv'}\NormalTok{)}
+\NormalTok{test_grouped <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{'data/test_grouped.csv'}\NormalTok{)}
+\NormalTok{test_center <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{'data/test_center.csv'}\NormalTok{)}
+\NormalTok{test_center_grouped <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{'data/test_center_grouped.csv'}\NormalTok{)}
+\NormalTok{test_full <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{'data/test_full.csv'}\NormalTok{)}
+\NormalTok{test_full_grouped <-}\StringTok{ }\KeywordTok{read.csv}\NormalTok{(}\StringTok{'data/test_full_grouped.csv'}\NormalTok{)}
+
+\CommentTok{# test set results for overall prediction}
+\NormalTok{test_results <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(}\DataTypeTok{Class =}\NormalTok{ test_grouped}\OperatorTok{$}\NormalTok{Cmmn_Nm)}
+\NormalTok{test_results}\OperatorTok{$}\NormalTok{RF <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(rf_small_grouped, test_grouped)}
+\NormalTok{test_results}\OperatorTok{$}\NormalTok{SVM <-}\StringTok{ }\KeywordTok{predict}\NormalTok{(svm2_grouped, test_grouped)}
+
+\CommentTok{# test results accuracy table}
+\NormalTok{test_results }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\StringTok{"RF Accuracy"}\NormalTok{ =}\StringTok{ }\KeywordTok{sum}\NormalTok{(Class }\OperatorTok{==}\StringTok{ }\NormalTok{RF)}\OperatorTok{/}\KeywordTok{nrow}\NormalTok{(test_results), }
+            \StringTok{"SVM Accuracy"}\NormalTok{ =}\StringTok{ }\KeywordTok{sum}\NormalTok{(Class }\OperatorTok{==}\StringTok{ }\NormalTok{SVM)}\OperatorTok{/}\KeywordTok{nrow}\NormalTok{(test_results))}
+
+\CommentTok{# Western Redcedar test results}
+\NormalTok{test_results_redceder <-}\StringTok{ }\NormalTok{test_results }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{filter}\NormalTok{(Class }\OperatorTok{%in%}\StringTok{ "Western Redcedar"}\NormalTok{)}
+
+\NormalTok{test_results_redceder }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{rf_accuracy =} \KeywordTok{sum}\NormalTok{(Class }\OperatorTok{==}\StringTok{ }\NormalTok{RF)}\OperatorTok{/}\KeywordTok{nrow}\NormalTok{(test_results_redceder), }
+            \DataTypeTok{svm_accuracy =} \KeywordTok{sum}\NormalTok{(Class }\OperatorTok{==}\StringTok{ }\NormalTok{SVM)}\OperatorTok{/}\KeywordTok{nrow}\NormalTok{(test_results_redceder))}
+
+\CommentTok{# confusion matrix with precision/recall}
+\NormalTok{cm_test_rf <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(test_results}\OperatorTok{$}\NormalTok{RF, test_results}\OperatorTok{$}\NormalTok{Class)}
+\NormalTok{cm_test_svm <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(test_results}\OperatorTok{$}\NormalTok{SVM, test_results}\OperatorTok{$}\NormalTok{Class)}
+
+\CommentTok{# save matrices}
+\CommentTok{# saveRDS(cm_test_rf, "data/cm_test_rf.rds")}
+\CommentTok{# saveRDS(cm_test_svm, "data/cm_test_svm.rds")}
+
+\CommentTok{# save results}
+\CommentTok{# write.csv(test_results,'data/test_results.csv', row.names = F)}
+
+\CommentTok{# join test results to full test data (with polygon info)}
+\NormalTok{test_dat_rf <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(test_full_grouped, }\DataTypeTok{RF =}\NormalTok{ test_results}\OperatorTok{$}\NormalTok{RF)}
+\NormalTok{test_dat_svm <-}\StringTok{ }\KeywordTok{cbind}\NormalTok{(test_full_grouped, }\DataTypeTok{SVM =}\NormalTok{ test_results}\OperatorTok{$}\NormalTok{SVM) }
+
+\CommentTok{# rf polygon results for 5 class prediction}
+\NormalTok{poly_test_rf <-}\StringTok{ }\NormalTok{test_dat_rf }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(ID) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(ID, }\DataTypeTok{same_rf =}\NormalTok{ (RF }\OperatorTok{%in%}\StringTok{ }\NormalTok{Cmmn_Nm), }\DataTypeTok{total =} \KeywordTok{n}\NormalTok{()) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{pivot_wider}\NormalTok{(}\DataTypeTok{names_from =}\NormalTok{ same_rf, }\DataTypeTok{values_from =}\NormalTok{ n)}
+
+\NormalTok{poly_test_rf[}\KeywordTok{is.na}\NormalTok{(poly_test_rf)] <-}\StringTok{ }\DecValTok{0} \CommentTok{# replace na with 0}
+
+\NormalTok{poly_test_rf <-}\StringTok{ }\NormalTok{poly_test_rf }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Result =} \KeywordTok{case_when}\NormalTok{(}\StringTok{`}\DataTypeTok{TRUE}\StringTok{`} \OperatorTok{>}\StringTok{ `}\DataTypeTok{FALSE}\StringTok{`} \OperatorTok{~}\StringTok{ "Correct"}\NormalTok{,}
+                                   \StringTok{`}\DataTypeTok{TRUE}\StringTok{`} \OperatorTok{<=}\StringTok{ `}\DataTypeTok{FALSE}\StringTok{`} \OperatorTok{~}\StringTok{ "Incorrect"}\NormalTok{))}
+
+\NormalTok{poly_test_rf }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(Result) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(Result)}
+
+\CommentTok{# svm polygon results for 7 class prediction}
+\NormalTok{poly_test_svm <-}\StringTok{ }\NormalTok{test_dat_svm }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(ID) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(ID, }\DataTypeTok{same_svm =}\NormalTok{ (SVM }\OperatorTok{==}\StringTok{ }\NormalTok{Cmmn_Nm), }\DataTypeTok{total =} \KeywordTok{n}\NormalTok{()) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{pivot_wider}\NormalTok{(}\DataTypeTok{names_from =}\NormalTok{ same_svm, }\DataTypeTok{values_from =}\NormalTok{ n)}
+
+\NormalTok{poly_test_svm[}\KeywordTok{is.na}\NormalTok{(poly_test_svm)] <-}\StringTok{ }\DecValTok{0} \CommentTok{# replace na with 0}
+
+\NormalTok{poly_test_svm <-}\StringTok{ }\NormalTok{poly_test_svm }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Result =} \KeywordTok{case_when}\NormalTok{(}\StringTok{`}\DataTypeTok{TRUE}\StringTok{`} \OperatorTok{>}\StringTok{ `}\DataTypeTok{FALSE}\StringTok{`} \OperatorTok{~}\StringTok{ "Correct"}\NormalTok{,}
+                                   \StringTok{`}\DataTypeTok{TRUE}\StringTok{`} \OperatorTok{<=}\StringTok{ `}\DataTypeTok{FALSE}\StringTok{`} \OperatorTok{~}\StringTok{ "Incorrect"}\NormalTok{))}
+
+\NormalTok{poly_test_svm }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{group_by}\NormalTok{(Result) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{count}\NormalTok{(Result)}
+
+\CommentTok{# save poly test results}
+\CommentTok{# write.csv(poly_test_rf,'data/poly_test_rf.csv', row.names = F)}
+\CommentTok{# write.csv(poly_test_svm,'data/poly_test_svm.csv', row.names = F)}
+\end{Highlighting}
+\end{Shaded}
+The rasters are prepped for the Portland model by masking NDVI values with the code:
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# load city boundary shapefile}
+\NormalTok{or_cities <-}\StringTok{ }\KeywordTok{places}\NormalTok{(}\StringTok{"OR"}\NormalTok{)}
+\NormalTok{portland <-}\StringTok{ }\NormalTok{or_cities }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(NAME }\OperatorTok{==}\StringTok{ "Portland"}\NormalTok{)}
+
+\CommentTok{# load raster layer object}
+\NormalTok{stack_a <-}\StringTok{ }\KeywordTok{stack}\NormalTok{(}\StringTok{"planet/20200902_184428_1005_3B_AnalyticMS_clip.tif"}\NormalTok{)}
+\NormalTok{stack_b <-}\StringTok{ }\KeywordTok{stack}\NormalTok{(}\StringTok{"planet/20200902_184429_1005_3B_AnalyticMS_clip.tif"}\NormalTok{)}
+\NormalTok{stack_c <-}\StringTok{ }\KeywordTok{stack}\NormalTok{(}\StringTok{"planet/20200902_183008_24_1065_3B_AnalyticMS_clip.tif"}\NormalTok{)}
+\NormalTok{stack_d <-}\StringTok{ }\KeywordTok{stack}\NormalTok{(}\StringTok{"planet/20200902_183006_18_1065_3B_AnalyticMS_clip.tif"}\NormalTok{)}
+\NormalTok{stack_e <-}\StringTok{ }\KeywordTok{stack}\NormalTok{(}\StringTok{"planet/20200902_184430_1005_3B_AnalyticMS_clip.tif"}\NormalTok{)}
+
+\CommentTok{## crop and mask pixels outside portland}
+\NormalTok{stack_a <-}\StringTok{ }\KeywordTok{crop}\NormalTok{(}\KeywordTok{mask}\NormalTok{(stack_a, }\KeywordTok{spTransform}\NormalTok{(portland, }\KeywordTok{crs}\NormalTok{(stack_a))), }
+                \KeywordTok{extent}\NormalTok{(portland))}
+\NormalTok{stack_b <-}\StringTok{ }\KeywordTok{crop}\NormalTok{(}\KeywordTok{mask}\NormalTok{(stack_b, }\KeywordTok{spTransform}\NormalTok{(portland, }\KeywordTok{crs}\NormalTok{(stack_b))), }
+                \KeywordTok{extent}\NormalTok{(portland))}
+\NormalTok{stack_c <-}\StringTok{ }\KeywordTok{crop}\NormalTok{(}\KeywordTok{mask}\NormalTok{(stack_c, }\KeywordTok{spTransform}\NormalTok{(portland, }\KeywordTok{crs}\NormalTok{(stack_c))), }
+                \KeywordTok{extent}\NormalTok{(portland))}
+\NormalTok{stack_d <-}\StringTok{ }\KeywordTok{crop}\NormalTok{(}\KeywordTok{mask}\NormalTok{(stack_d, }\KeywordTok{spTransform}\NormalTok{(portland, }\KeywordTok{crs}\NormalTok{(stack_d))), }
+                \KeywordTok{extent}\NormalTok{(portland))}
+\NormalTok{stack_e <-}\StringTok{ }\KeywordTok{crop}\NormalTok{(}\KeywordTok{mask}\NormalTok{(stack_e, }\KeywordTok{spTransform}\NormalTok{(portland, }\KeywordTok{crs}\NormalTok{(stack_e))), }
+                \KeywordTok{extent}\NormalTok{(portland))}
+
+\CommentTok{# ndvi mask remove values below 0}
+\NormalTok{ndvi_a <-}\StringTok{ }\NormalTok{(stack_a[[}\DecValTok{4}\NormalTok{]] }\OperatorTok{-}\StringTok{ }\NormalTok{stack_a[[}\DecValTok{1}\NormalTok{]]) }\OperatorTok{/}\StringTok{ }\NormalTok{(stack_a[[}\DecValTok{4}\NormalTok{]] }\OperatorTok{+}\StringTok{ }\NormalTok{stack_a[[}\DecValTok{1}\NormalTok{]])}
+\NormalTok{ndvi_b <-}\StringTok{ }\NormalTok{(stack_b[[}\DecValTok{4}\NormalTok{]] }\OperatorTok{-}\StringTok{ }\NormalTok{stack_b[[}\DecValTok{1}\NormalTok{]]) }\OperatorTok{/}\StringTok{ }\NormalTok{(stack_b[[}\DecValTok{4}\NormalTok{]] }\OperatorTok{+}\StringTok{ }\NormalTok{stack_b[[}\DecValTok{1}\NormalTok{]])}
+\NormalTok{ndvi_c <-}\StringTok{ }\NormalTok{(stack_c[[}\DecValTok{4}\NormalTok{]] }\OperatorTok{-}\StringTok{ }\NormalTok{stack_c[[}\DecValTok{1}\NormalTok{]]) }\OperatorTok{/}\StringTok{ }\NormalTok{(stack_c[[}\DecValTok{4}\NormalTok{]] }\OperatorTok{+}\StringTok{ }\NormalTok{stack_c[[}\DecValTok{1}\NormalTok{]])}
+\NormalTok{ndvi_d <-}\StringTok{ }\NormalTok{(stack_d[[}\DecValTok{4}\NormalTok{]] }\OperatorTok{-}\StringTok{ }\NormalTok{stack_d[[}\DecValTok{1}\NormalTok{]]) }\OperatorTok{/}\StringTok{ }\NormalTok{(stack_d[[}\DecValTok{4}\NormalTok{]] }\OperatorTok{+}\StringTok{ }\NormalTok{stack_d[[}\DecValTok{1}\NormalTok{]])}
+\NormalTok{ndvi_e <-}\StringTok{ }\NormalTok{(stack_e[[}\DecValTok{4}\NormalTok{]] }\OperatorTok{-}\StringTok{ }\NormalTok{stack_e[[}\DecValTok{1}\NormalTok{]]) }\OperatorTok{/}\StringTok{ }\NormalTok{(stack_e[[}\DecValTok{4}\NormalTok{]] }\OperatorTok{+}\StringTok{ }\NormalTok{stack_e[[}\DecValTok{1}\NormalTok{]])}
+
+\KeywordTok{plot}\NormalTok{(ndvi_a, }\DataTypeTok{main =} \StringTok{"NDVI"}\NormalTok{, }\DataTypeTok{axes =} \OtherTok{FALSE}\NormalTok{, }\DataTypeTok{box =} \OtherTok{FALSE}\NormalTok{)}
+
+\CommentTok{# masked ndvi values}
+\NormalTok{ndvi_a[ndvi_a }\OperatorTok{<}\StringTok{ }\DecValTok{0}\NormalTok{] <-}\StringTok{ }\OtherTok{NA}
+\NormalTok{ndvi_b[ndvi_b }\OperatorTok{<}\StringTok{ }\DecValTok{0}\NormalTok{] <-}\StringTok{ }\OtherTok{NA}
+\NormalTok{ndvi_c[ndvi_c }\OperatorTok{<}\StringTok{ }\DecValTok{0}\NormalTok{] <-}\StringTok{ }\OtherTok{NA}
+\NormalTok{ndvi_d[ndvi_d }\OperatorTok{<}\StringTok{ }\DecValTok{0}\NormalTok{] <-}\StringTok{ }\OtherTok{NA}
+\NormalTok{ndvi_e[ndvi_e }\OperatorTok{<}\StringTok{ }\DecValTok{0}\NormalTok{] <-}\StringTok{ }\OtherTok{NA}
+
+\NormalTok{ndvi_mask_a <-}\StringTok{ }\KeywordTok{mask}\NormalTok{(stack_a, ndvi_a, }\DataTypeTok{filename =} \StringTok{"data/ndvi_mask_a.tif"}\NormalTok{, }
+                    \DataTypeTok{overwrite =}\NormalTok{ T)}
+\NormalTok{ndvi_mask_b <-}\StringTok{ }\KeywordTok{mask}\NormalTok{(stack_b, ndvi_b, }\DataTypeTok{filename =} \StringTok{"data/ndvi_mask_b.tif"}\NormalTok{, }
+                    \DataTypeTok{overwrite =}\NormalTok{ T)}
+\NormalTok{ndvi_mask_c <-}\StringTok{ }\KeywordTok{mask}\NormalTok{(stack_c, ndvi_c, }\DataTypeTok{filename =} \StringTok{"data/ndvi_mask_c.tif"}\NormalTok{, }
+                    \DataTypeTok{overwrite =}\NormalTok{ T)}
+\NormalTok{ndvi_mask_d <-}\StringTok{ }\KeywordTok{mask}\NormalTok{(stack_d, ndvi_d, }\DataTypeTok{filename =} \StringTok{"data/ndvi_mask_d.tif"}\NormalTok{, }
+                    \DataTypeTok{overwrite =}\NormalTok{ T)}
+\NormalTok{ndvi_mask_e <-}\StringTok{ }\KeywordTok{mask}\NormalTok{(stack_e, ndvi_e, }\DataTypeTok{filename =} \StringTok{"data/ndvi_mask_e.tif"}\NormalTok{, }
+                    \DataTypeTok{overwrite =}\NormalTok{ T)}
+\end{Highlighting}
+\end{Shaded}
+Finally the model is applied to the mask images of Portland and visualized with the following code:
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{# load masked raster images}
+\NormalTok{stack_a <-}\StringTok{ }\KeywordTok{stack}\NormalTok{(}\StringTok{"data/ndvi_mask_a.tif"}\NormalTok{)}
+\NormalTok{stack_b <-}\StringTok{ }\KeywordTok{stack}\NormalTok{(}\StringTok{"data/ndvi_mask_b.tif"}\NormalTok{)}
+\NormalTok{stack_c <-}\StringTok{ }\KeywordTok{stack}\NormalTok{(}\StringTok{"data/ndvi_mask_c.tif"}\NormalTok{)}
+\NormalTok{stack_d <-}\StringTok{ }\KeywordTok{stack}\NormalTok{(}\StringTok{"data/ndvi_mask_d.tif"}\NormalTok{)}
+\NormalTok{stack_e <-}\StringTok{ }\KeywordTok{stack}\NormalTok{(}\StringTok{"data/ndvi_mask_e.tif"}\NormalTok{)}
+
+\CommentTok{# load trained models}
+\NormalTok{rf_small_grouped <-}\StringTok{ }\KeywordTok{readRDS}\NormalTok{(}\StringTok{"data/rf_small_grouped.rds"}\NormalTok{)}
+\NormalTok{svm2_grouped <-}\StringTok{ }\KeywordTok{readRDS}\NormalTok{(}\StringTok{"data/svm2_grouped.rds"}\NormalTok{)}
+
+\NormalTok{results_a <-}\StringTok{ }\KeywordTok{predRaster}\NormalTok{(stack_a) }\CommentTok{# 41min}
+\NormalTok{results_b <-}\StringTok{ }\KeywordTok{predRaster}\NormalTok{(stack_b)}
+\NormalTok{results_c <-}\StringTok{ }\KeywordTok{predRaster}\NormalTok{(stack_c)}
+\NormalTok{results_d <-}\StringTok{ }\KeywordTok{predRaster}\NormalTok{(stack_d)}
+\NormalTok{results_e <-}\StringTok{ }\KeywordTok{predRaster}\NormalTok{(stack_e)}
+
+\CommentTok{# save results}
+\CommentTok{# writeRaster(results_a,"data/results_a.grd", format = "raster", overwrite = T)}
+\CommentTok{# writeRaster(results_b,"data/results_b.grd", format = "raster", overwrite = T)}
+\CommentTok{# writeRaster(results_c,"data/results_c.grd", format = "raster", overwrite = T)}
+\CommentTok{# writeRaster(results_d,"data/results_d.grd", format = "raster", overwrite = T)}
+\CommentTok{# writeRaster(results_e,"data/results_e.grd", format = "raster", overwrite = T)}
+
+\CommentTok{# load results}
+\NormalTok{results_a <-}\StringTok{ }\KeywordTok{stack}\NormalTok{(}\StringTok{"data/results_a.grd"}\NormalTok{)}
+\NormalTok{results_b <-}\StringTok{ }\KeywordTok{stack}\NormalTok{(}\StringTok{"data/results_b.grd"}\NormalTok{)}
+\NormalTok{results_c <-}\StringTok{ }\KeywordTok{stack}\NormalTok{(}\StringTok{"data/results_c.grd"}\NormalTok{)}
+\NormalTok{results_d <-}\StringTok{ }\KeywordTok{stack}\NormalTok{(}\StringTok{"data/results_d.grd"}\NormalTok{)}
+\NormalTok{results_e <-}\StringTok{ }\KeywordTok{stack}\NormalTok{(}\StringTok{"data/results_e.grd"}\NormalTok{)}
+
+\CommentTok{# merge rasters into one for plotting}
+\NormalTok{r_list_RF <-}\StringTok{ }\KeywordTok{list}\NormalTok{(results_a[[}\DecValTok{1}\NormalTok{]] }\OperatorTok{==}\StringTok{ }\DecValTok{7}\NormalTok{, results_b[[}\DecValTok{1}\NormalTok{]] }\OperatorTok{==}\StringTok{ }\DecValTok{7}\NormalTok{, results_c[[}\DecValTok{1}\NormalTok{]] }\OperatorTok{==}\StringTok{ }\DecValTok{7}\NormalTok{,}
+\NormalTok{                  results_d[[}\DecValTok{1}\NormalTok{]] }\OperatorTok{==}\StringTok{ }\DecValTok{7}\NormalTok{, results_e[[}\DecValTok{1}\NormalTok{]] }\OperatorTok{==}\StringTok{ }\DecValTok{7}\NormalTok{)}
+\NormalTok{r_list_SVM <-}\StringTok{ }\KeywordTok{list}\NormalTok{(results_a[[}\DecValTok{2}\NormalTok{]] }\OperatorTok{==}\StringTok{ }\DecValTok{7}\NormalTok{, results_b[[}\DecValTok{2}\NormalTok{]] }\OperatorTok{==}\StringTok{ }\DecValTok{7}\NormalTok{, results_c[[}\DecValTok{2}\NormalTok{]] }\OperatorTok{==}\StringTok{ }\DecValTok{7}\NormalTok{,}
+\NormalTok{                  results_d[[}\DecValTok{2}\NormalTok{]] }\OperatorTok{==}\StringTok{ }\DecValTok{7}\NormalTok{, results_e[[}\DecValTok{2}\NormalTok{]] }\OperatorTok{==}\StringTok{ }\DecValTok{7}\NormalTok{)}
+\NormalTok{m_RF <-}\StringTok{ }\KeywordTok{do.call}\NormalTok{(merge, r_list_RF)}
+\NormalTok{m_SVM <-}\StringTok{ }\KeywordTok{do.call}\NormalTok{(merge, r_list_SVM)}
+
+\CommentTok{# compare rasters}
+\NormalTok{r_matches <-}\StringTok{ }\NormalTok{m_RF }\OperatorTok{==}\StringTok{ }\NormalTok{m_SVM}
+\KeywordTok{freq}\NormalTok{(r_matches)}
+\KeywordTok{freq}\NormalTok{(r_matches)[}\DecValTok{2}\NormalTok{, ]}\OperatorTok{/}\NormalTok{(}\KeywordTok{freq}\NormalTok{(r_matches)[}\DecValTok{2}\NormalTok{, ] }\OperatorTok{+}\StringTok{ }\KeywordTok{freq}\NormalTok{(r_matches)[}\DecValTok{1}\NormalTok{, ])}
+\CommentTok{# (r_matches == 1)/((r_matches == 0) + (r_matches == 1)) percentage in common: 83%}
+\KeywordTok{plot}\NormalTok{(r_matches }\OperatorTok{==}\StringTok{ }\DecValTok{1}\NormalTok{, }\DataTypeTok{main =} \StringTok{"RF C = 5 and SVM C = 5 Predictions Comparisons"}\NormalTok{,}
+     \DataTypeTok{labels =}\NormalTok{ F, }\DataTypeTok{xaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{yaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{legend =}\NormalTok{ F, }\DataTypeTok{col =} \StringTok{"lightgreen"}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(r_matches }\OperatorTok{==}\StringTok{ }\DecValTok{0}\NormalTok{, }\DataTypeTok{col =} \StringTok{"maroon"}\NormalTok{, }\DataTypeTok{labels =}\NormalTok{ F, }\DataTypeTok{xaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{yaxt =} \StringTok{'n'}\NormalTok{,}
+     \DataTypeTok{legend =}\NormalTok{ F, }\DataTypeTok{add =}\NormalTok{ T)}
+
+\CommentTok{# load city outline}
+\NormalTok{or_cities <-}\StringTok{ }\KeywordTok{places}\NormalTok{(}\StringTok{"OR"}\NormalTok{)}
+\NormalTok{portland <-}\StringTok{ }\NormalTok{or_cities }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(NAME }\OperatorTok{==}\StringTok{ "Portland"}\NormalTok{)}
+\NormalTok{portland_wgs84 <-}\StringTok{ }\KeywordTok{spTransform}\NormalTok{(portland, }
+                              \KeywordTok{CRS}\NormalTok{(}\StringTok{"+proj=utm +zone=10 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"}\NormalTok{))}
+
+\CommentTok{# plot predictions}
+\KeywordTok{plot}\NormalTok{(m_RF, }\DataTypeTok{main =} \StringTok{"RF Western Redcedar Predictions"}\NormalTok{, }
+     \DataTypeTok{labels =}\NormalTok{ F, }\DataTypeTok{xaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{yaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{legend =}\NormalTok{ F, }\DataTypeTok{col =} \StringTok{"darkgreen"}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(portland_wgs84, }\DataTypeTok{add =}\NormalTok{ T)}
+
+\KeywordTok{plot}\NormalTok{(m_SVM, }\DataTypeTok{main =} \StringTok{"SVM Western Redcedar Predictions"}\NormalTok{, }
+     \DataTypeTok{labels =}\NormalTok{ F, }\DataTypeTok{xaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{yaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{legend =}\NormalTok{ F, }\DataTypeTok{col =} \StringTok{"darkgreen"}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(portland_wgs84, }\DataTypeTok{add =}\NormalTok{ T)}
+
+\CommentTok{# load street trees western redcedars}
+\NormalTok{pdxTrees_parks <-}\StringTok{ }\KeywordTok{get_pdxTrees_parks}\NormalTok{()}
+\NormalTok{pdxTrees_streets <-}\StringTok{ }\KeywordTok{get_pdxTrees_streets}\NormalTok{()}
+
+\NormalTok{redcedar_dat_street <-}\StringTok{ }\NormalTok{pdxTrees_streets }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(Common_Name }\OperatorTok{%in%}\StringTok{ "Western Redcedar"}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(Longitude, Latitude, Common_Name)}
+\NormalTok{redcedar_dat_park <-}\StringTok{ }\NormalTok{pdxTrees_parks }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(Common_Name }\OperatorTok{%in%}\StringTok{ "Western Redcedar"}\NormalTok{) }\OperatorTok{%>%}
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{select}\NormalTok{(Longitude, Latitude, Common_Name)}
+\NormalTok{redcedar_dat <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(redcedar_dat_street, redcedar_dat_park)}
+
+\CommentTok{# match coordinate reference system}
+\KeywordTok{coordinates}\NormalTok{(redcedar_dat) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"Longitude"}\NormalTok{, }\StringTok{"Latitude"}\NormalTok{)}
+\KeywordTok{proj4string}\NormalTok{(redcedar_dat) <-}\StringTok{ }\KeywordTok{CRS}\NormalTok{(}\StringTok{"+init=epsg:4326"}\NormalTok{)}
+\NormalTok{dat_transformed <-}\StringTok{ }\KeywordTok{spTransform}\NormalTok{(redcedar_dat, }\KeywordTok{CRS}\NormalTok{(}\StringTok{"+proj=utm +zone=10 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"}\NormalTok{))}
+
+\CommentTok{# plot pdxTrees with predictions}
+\NormalTok{p1 <-}\StringTok{ }\KeywordTok{plot}\NormalTok{(m_RF, }\DataTypeTok{main =} \StringTok{"RF C = 5 with pdxTrees"}\NormalTok{, }
+     \DataTypeTok{labels =}\NormalTok{ F, }\DataTypeTok{xaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{yaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{legend =}\NormalTok{ F, }\DataTypeTok{col =} \StringTok{"darkgreen"}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(dat_transformed, }\DataTypeTok{col =} \KeywordTok{rgb}\NormalTok{(}\DataTypeTok{red =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{green =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{blue =} \FloatTok{1.0}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{0.2}\NormalTok{), }
+     \DataTypeTok{cex =} \FloatTok{.2}\NormalTok{, }\DataTypeTok{add =}\NormalTok{ T)}
+\KeywordTok{plot}\NormalTok{(portland_wgs84, }\DataTypeTok{add =}\NormalTok{ T)}
+
+\KeywordTok{plot}\NormalTok{(m_SVM, }\DataTypeTok{main =} \StringTok{"SVM C = 5 with pdxTrees"}\NormalTok{, }
+     \DataTypeTok{labels =}\NormalTok{ F, }\DataTypeTok{xaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{yaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{legend =}\NormalTok{ F, }\DataTypeTok{col =} \StringTok{"darkgreen"}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(dat_transformed, }\DataTypeTok{col =} \KeywordTok{rgb}\NormalTok{(}\DataTypeTok{red =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{green =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{blue =} \FloatTok{1.0}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{0.2}\NormalTok{), }
+     \DataTypeTok{cex =} \FloatTok{.2}\NormalTok{, }\DataTypeTok{add =}\NormalTok{ T)}
+\KeywordTok{plot}\NormalTok{(portland_wgs84, }\DataTypeTok{add =}\NormalTok{ T)}
+
+\CommentTok{# match pixels with pdxTrees to test for accuracy}
+\NormalTok{street_mask <-}\StringTok{ }\KeywordTok{mask}\NormalTok{(m_RF, dat_transformed)}
+\NormalTok{street_mask_group <-}\StringTok{ }\KeywordTok{mask}\NormalTok{(m_SVM, dat_transformed)}
+\KeywordTok{freq}\NormalTok{(street_mask)[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{]}\OperatorTok{/}\KeywordTok{nrow}\NormalTok{(dat_transformed) }\CommentTok{# estimates for Western redcedars}
+\CommentTok{# 52%}
+\KeywordTok{freq}\NormalTok{(street_mask_group)[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{]}\OperatorTok{/}\KeywordTok{nrow}\NormalTok{(dat_transformed) }\CommentTok{# estimates for Western redcedars}
+\CommentTok{# 66%}
+
+\CommentTok{# smaller visualization around Reed}
+\NormalTok{reed_stack <-}\StringTok{ }\KeywordTok{crop}\NormalTok{(m_RF, }\KeywordTok{extent}\NormalTok{(}\DecValTok{525000}\NormalTok{, }\DecValTok{530000}\NormalTok{, }\DecValTok{5035000}\NormalTok{, }\DecValTok{5040000}\NormalTok{))}
+\NormalTok{trees_reed <-}\StringTok{ }\KeywordTok{crop}\NormalTok{(dat_transformed, }\KeywordTok{extent}\NormalTok{(}\DecValTok{525000}\NormalTok{, }\DecValTok{530000}\NormalTok{, }\DecValTok{5035000}\NormalTok{, }\DecValTok{5040000}\NormalTok{))}
+
+\CommentTok{# Portland with extent box}
+\KeywordTok{plot}\NormalTok{(m_RF, }\DataTypeTok{main =} \StringTok{"RF C = 7 with pdxTrees"}\NormalTok{, }
+     \DataTypeTok{labels =}\NormalTok{ F, }\DataTypeTok{xaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{yaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{legend =}\NormalTok{ F, }\DataTypeTok{col =} \StringTok{"darkgreen"}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(dat_transformed, }\DataTypeTok{col =} \KeywordTok{rgb}\NormalTok{(}\DataTypeTok{red =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{green =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{blue =} \FloatTok{1.0}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{0.6}\NormalTok{), }
+     \DataTypeTok{cex =} \FloatTok{.2}\NormalTok{, }\DataTypeTok{add =}\NormalTok{ T, }\DataTypeTok{pch =} \DecValTok{1}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(portland_wgs84, }\DataTypeTok{add =}\NormalTok{ T)}
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{extent}\NormalTok{(reed_stack), }\DataTypeTok{add =}\NormalTok{ T, }\DataTypeTok{col =} \StringTok{"maroon"}\NormalTok{)}
+
+\CommentTok{# Reed plot}
+\KeywordTok{plot}\NormalTok{(reed_stack, }\DataTypeTok{main =} \StringTok{""}\NormalTok{, }\DataTypeTok{labels =}\NormalTok{ F, }\DataTypeTok{xaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{yaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{legend =}\NormalTok{ F, }
+     \DataTypeTok{col =} \StringTok{"darkgreen"}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(trees_reed, }\DataTypeTok{col =} \KeywordTok{rgb}\NormalTok{(}\DataTypeTok{red =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{green =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{blue =} \FloatTok{1.0}\NormalTok{, }\DataTypeTok{alpha =} \DecValTok{1}\NormalTok{), }
+     \DataTypeTok{cex =} \FloatTok{.2}\NormalTok{, }\DataTypeTok{add =}\NormalTok{ T, }\DataTypeTok{pch =} \DecValTok{1}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(}\KeywordTok{extent}\NormalTok{(reed_stack), }\DataTypeTok{add =}\NormalTok{ T, }\DataTypeTok{col =} \StringTok{"maroon"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
 \backmatter
 
 \hypertarget{references}{%

@@ -116,7 +116,9 @@ pdxTrees_parks <- get_pdxTrees_parks()
 pdxTrees_streets <- get_pdxTrees_streets()
 pdxTrees_combined <- full_join(pdxTrees_parks, pdxTrees_streets)
 trees_dat <- pdxTrees_combined %>%
-  dplyr::filter(DBH >= 25, Common_Name %in% "Western Redcedar" | Species %in% unique(pixels_data$Species))
+  dplyr::filter(Common_Name %in% "Western Redcedar" | Species %in% unique(pixels_data$Species),
+                DBH >= 15)
+
 
 # convert to spatial points and reproject
 coordinates(trees_dat) <- ~ Longitude + Latitude
@@ -150,7 +152,7 @@ pix_tree_center <- pix_combined %>%
            Common_Name %in% "Maple, Bigleaf" ~ "Bigleaf Maple",
            TRUE ~ as.character(Common_Name)
          )) %>%
-  dplyr::filter(Cmmn_Nm %in% c("Western Redcedar", "Bigleaf Maple", "Douglas-Fir",
+  dplyr::filter(Cmmn_Nm %in% c("Western Redcedar", "Bigleaf Maple", "Douglas-Fir", #"English Oak",
                         "Giant Sequoia", "Norway Maple"))
 pix_tree_center %>%
   count(Cmmn_Nm)

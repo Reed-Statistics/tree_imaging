@@ -3,22 +3,1006 @@
 `r if(!knitr:::is_latex_output()) '# (APPENDIX) Appendix {-}'` 
 
 
-# The First Appendix
+# Tables
 
 <!--
 If you feel it necessary to include an appendix, it goes here.
 -->
 
-This first appendix includes all of the R chunks of code that were hidden throughout the document (using the `include = FALSE` chunk tag) to help with readibility and/or setup.
+This appendix includes the cross-validation confusion matrices for all of the models on the training data and the confusion matrices on the testing data.
 
-**In the main Rmd file**
+\@ref(tab:cmsmallrf)
 
-```{r ref.label='include_packages', results='hide', echo = F}
+```{r cmsmallrf, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+cm_small_rf <- readRDS('~/tree_imaging/data/cm_small_rf.rds')
+
+knitr::kable(cm_small_rf$table, "latex", caption = "RF Cross-Validation Confusion Matrix for P = 7, C = 7", digits = 4) %>%
+  kable_styling(latex_options = c("scale_down", "hold_position"))
 ```
 
-**In Chapter \@ref(ref-labels):**
+\@ref(tab:cmfullrf)
 
-```{r ref.label='include_packages_2', results='hide', echo = F}
+```{r cmfullrf, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+cm_full_rf <- readRDS('~/tree_imaging/data/cm_full_rf.rds')
+
+knitr::kable(cm_full_rf$table, "latex", caption = "RF Cross-Validation Confusion Matrix for P = 8, C = 7", digits = 4) %>%
+  kable_styling(latex_options = c("scale_down", "hold_position"))
 ```
 
-# The Second Appendix, for Fun
+\@ref(tab:cmcenterrf)
+
+```{r cmcenterrf, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+cm_center_rf <- readRDS('~/tree_imaging/data/cm_center_rf.rds')
+
+knitr::kable(cm_center_rf$table, "latex", caption = "RF Cross-Validation Confusion Matrix for P = 8, C = 5 (point)", digits = 4) %>%
+  kable_styling(latex_options = c("scale_down", "hold_position"))
+```
+
+\@ref(tab:cmsmallgroupedrf)
+
+```{r cmsmallgroupedrf, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+cm_small_grouped_rf <- readRDS('~/tree_imaging/data/cm_small_grouped_rf.rds')
+
+knitr::kable(cm_small_grouped_rf$table, "latex", caption = "RF Cross-Validation Confusion Matrix for P = 7, C = 5", digits = 4) %>%
+  kable_styling(latex_options = c("scale_down", "hold_position"))
+```
+
+\@ref(tab:cmfullgroupedrf)
+
+```{r cmfullgroupedrf, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+cm_full_grouped_rf <- readRDS('~/tree_imaging/data/cm_full_grouped_rf.rds')
+
+knitr::kable(cm_full_grouped_rf$table, "latex", caption = "RF Cross-Validation Confusion Matrix for P = 8, C = 5", digits = 4) %>%
+  kable_styling(latex_options = c("scale_down", "hold_position"))
+```
+
+\@ref(tab:cmcentergroupedrf)
+
+```{r cmcentergroupedrf, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+cm_center_grouped_rf <- readRDS('~/tree_imaging/data/cm_center_grouped_rf.rds')
+
+knitr::kable(cm_center_grouped_rf$table, "latex", caption = "RF Cross-Validation Confusion Matrix for P = 8, C = 4 (point)", digits = 4) %>%
+  kable_styling(latex_options = c("scale_down", "hold_position"))
+```
+
+\@ref(tab:scm1)
+
+```{r scm1, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+scm1 <- readRDS('~/tree_imaging/data/scm1.rds')
+
+knitr::kable(scm1$table, "latex", caption = "Linear SVM Cross-Validation Confusion Matrix C = 7", digits = 4) %>%
+  kable_styling(latex_options = c("scale_down", "hold_position"))
+```
+
+\@ref(tab:scm2)
+
+```{r scm2, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+scm2 <- readRDS('~/tree_imaging/data/scm2.rds')
+
+knitr::kable(scm2$table, "latex", caption = "Radial SVM Cross-Validation Confusion Matrix C = 7", digits = 4) %>%
+  kable_styling(latex_options = c("scale_down", "hold_position"))
+```
+
+\@ref(tab:scm3)
+
+```{r scm3, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+scm3 <- readRDS('~/tree_imaging/data/scm3.rds')
+
+knitr::kable(scm3$table, "latex", caption = "Polynomial SVM Cross-Validation Confusion Matrix C = 7", digits = 4) %>%
+  kable_styling(latex_options = c("scale_down", "hold_position"))
+```
+
+\@ref(tab:scm2grouped)
+
+```{r scm2grouped, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+scm2_grouped <- readRDS('~/tree_imaging/data/scm2_grouped.rds')
+
+knitr::kable(scm2_grouped$table, "latex", caption = "Radial SVM Cross-Validation Confusion Matrix C = 5", digits = 4) %>%
+  kable_styling(latex_options = c("scale_down", "hold_position"))
+```
+
+\@ref(tab:scm3grouped)
+
+```{r scm3grouped, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+scm3_grouped <- readRDS('~/tree_imaging/data/scm3_grouped.rds')
+
+knitr::kable(scm3_grouped$table, "latex", caption = "Polynomial SVM Cross-Validation Confusion Matrix C = 5", digits = 4) %>%
+  kable_styling(latex_options = c("scale_down", "hold_position"))
+```
+
+\@ref(tab:scm1center)
+
+```{r scm1center, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+scm1_center <- readRDS('~/tree_imaging/data/scm1_center.rds')
+
+knitr::kable(scm1_center$table, "latex", caption = "Linear SVM Cross-Validation Confusion Matrix C = 5 (point)", digits = 4) %>%
+  kable_styling(latex_options = c("scale_down", "hold_position"))
+```
+
+\@ref(tab:scm2center)
+
+```{r scm2center, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+scm2_center <- readRDS('~/tree_imaging/data/scm2_center.rds')
+
+knitr::kable(scm2_center$table, "latex", caption = "Radial SVM Cross-Validation Confusion Matrix C = 5 (point)", digits = 4) %>%
+  kable_styling(latex_options = c("scale_down", "hold_position"))
+```
+
+\@ref(tab:scm3center)
+
+```{r scm3center, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+scm3_center <- readRDS('~/tree_imaging/data/scm3_center.rds')
+
+knitr::kable(scm3_center$table, "latex", caption = "Polynomial SVM Cross-Validation Confusion Matrix C = 5 (point)", digits = 4) %>%
+  kable_styling(latex_options = c("scale_down", "hold_position"))
+```
+
+
+\@ref(tab:scm2centergrouped)
+
+```{r scm2centergrouped, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+scm2_center_grouped <- readRDS('~/tree_imaging/data/scm2_center_grouped.rds')
+
+knitr::kable(scm2_center_grouped$table, "latex", caption = "Radial SVM Cross-Validation Confusion Matrix C = 4 (point)", digits = 4) %>%
+  kable_styling(latex_options = c("scale_down", "hold_position"))
+```
+
+\@ref(tab:scm3centergrouped)
+
+```{r scm3centergrouped, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+scm3_center_grouped <- readRDS('~/tree_imaging/data/scm3_center_grouped.rds')
+
+knitr::kable(scm3_center_grouped$table, "latex", caption = "Polynomial SVM Cross-Validation Confusion Matrix C = 4 (point)", digits = 4) %>%
+  kable_styling(latex_options = c("scale_down", "hold_position"))
+```
+
+\@ref(tab:cmtestrf)
+
+```{r cmtestrf, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+cm_test_rf <- readRDS('~/tree_imaging/data/cm_test_rf.rds')
+
+knitr::kable(cm_test_rf$byClass, "latex", caption = "RF Test Data Confusion Matrix for P = 7, C = 5", digits = 2) %>%
+  kable_styling(latex_options = c("scale_down", "hold_position"))
+```
+
+\@ref(tab:cmtestsvm)
+
+```{r cmtestsvm, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+cm_test_svm <- readRDS('~/tree_imaging/data/cm_test_svm.rds')
+
+knitr::kable(cm_test_svm$byClass, "latex", caption = "SVM Test Data Confusion Matrix C = 5", digits = 2) %>%
+  kable_styling(latex_options = c("scale_down", "hold_position"))
+```
+
+# Code
+
+This appendix includes the workflow and all the R code for replicating this research. First the rasters need to be downloaded from Planet.com by creating an account and selecting a date with clear weather and Portland's location. The following libraries and functions are necessary to be loaded into your workspace:
+
+```{r, eval = F}
+# libraries
+library(caret)
+library(doParallel)
+library(gridExtra)
+library(pdxTrees)
+library(raster)
+library(sf)
+library(sp)
+library(tidyverse)
+library(tigris)
+
+# write shapefile function
+species_shapefile <- function(species, id){
+  train <- pdxTrees_combined %>%
+  filter(Species %in% species, Crown_Width_NS >= 20)
+  coordinates(train) = ~ Longitude + Latitude
+  proj4string(train)<- CRS("+proj=longlat +datum=WGS84")
+  raster::shapefile(train, paste0(id, "_shapefile.shp"))
+}
+
+# extract values and tidy function
+names <- c("ID", "red", "green", "blue", "ir")
+pixels_extraction <- function(stack, poly_df, id) {
+  val <- raster::extract(stack, poly_df, df = TRUE)
+  colnames(val) <- names
+  val <- drop_na(val) %>%
+    mutate(rstrip = id)
+  return(val)
+}
+
+# function to sample data
+sampling_data <- function(dat, ratio, n_pixels) {
+  dat_sampled <- dat %>%
+  group_by(rstrip, Cmmn_Nm) %>%
+  slice_sample(prop = ratio) %>%
+  ungroup() %>%
+  group_by(Cmmn_Nm) %>%
+  slice_sample(n = n_pixels) # selects n pixels from each class
+  return(dat_sampled)
+}
+
+# function to select columns from data
+selecting_data <- function(dat) {
+  dat_selected <- dat %>%
+  dplyr::select(red, green, blue, ir, ndvi, Cmmn_Nm, red_blue, red_green, 
+                blue_green)
+  return(dat_selected)
+}
+
+# function to create grouped data
+grouping_data <- function(dat) {
+  dat_grouped <- dat %>%
+    mutate(Cmmn_Nm = case_when(
+    Cmmn_Nm %in% c("Bigleaf Maple", "English Oak", "Norway Maple") ~ "Broadleaf",
+    TRUE ~ as.character(Cmmn_Nm)
+  ))
+  return(dat_grouped)
+}
+
+# random forest function
+training_rf <- function(dat) {
+  model <- train(Cmmn_Nm~., data = dat, method = "rf", trControl = control)
+  return(model)
+}
+
+# support vector machine function
+training_svm <- function(dat, method) {
+  model <- train(Cmmn_Nm ~., data = dat, method = method, 
+                 trControl = train_control,
+              preProcess = c("center","scale"))
+  return(model)
+}
+
+# prep rasters function
+predRaster <- function(stack) {
+  stack <- stack(stack, ((stack[[4]] - stack[[1]])/(stack[[4]] + stack[[1]])),
+                 (stack[[1]]/stack[[3]]), (stack[[4]]/stack[[1]]),
+                 (stack[[1]]/stack[[2]]), (stack[[3]]/stack[[2]]))
+  names(stack) <- c("red", "green", "blue", "ir", "ndvi", "red_blue", 
+                    "ir_red", "red_green", "blue_green")
+  cl <- makeCluster(3, type = "FORK")  
+  registerDoParallel(cl)  
+  results_RF <- raster::predict(stack, rf_small_grouped, progress = "text")
+  results_SVM <- raster::predict(stack, svm2_grouped, progress = "text")
+  results <- stack(results_RF, results_SVM)
+  stopCluster(cl)
+  return(results)
+}
+```
+
+This code creates shapefiles for six tree species from `pdxTrees`:
+
+```{r, eval = F}
+# load data
+pdxTrees_parks <- get_pdxTrees_parks()
+pdxTrees_streets <- get_pdxTrees_streets() # site width in ft., diameter in in.
+pdxTrees_parks_filtered <- pdxTrees_parks %>%
+  select(Longitude, Latitude, Genus, Species, Common_Name, Crown_Width_NS, 
+         Crown_Width_EW, Crown_Base_Height, Condition)
+pdxTrees_streets_filtered <- pdxTrees_streets %>%
+  select(Longitude, Latitude, Genus, Species, Common_Name, Site_Width, Condition)
+
+pdxTrees_combined <- full_join(pdxTrees_parks_filtered, pdxTrees_streets_filtered)
+
+# species shapefiles
+species_shapefile("QURO", "quro")
+species_shapefile("SEGI", "segi")
+species_shapefile("ACPL", "acpl")
+species_shapefile("PSME", "psme")
+species_shapefile("ACMA", "acma")
+
+# Western redcedar shapefile
+train_redcedar <- pdxTrees_combined %>%
+  filter(Common_Name %in% "Western Redcedar", Crown_Width_NS >= 20)
+coordinates(train_redcedar) = ~ Longitude + Latitude
+proj4string(train_redcedar)<- CRS("+proj=longlat +datum=WGS84")
+raster::shapefile(train_redcedar, "redcedar_shapefile.shp")
+```
+
+Once the tree species shapefiles are created, they are imported into QGIS for manual polygons to be drawn around 100 of each tree species. Since the Planet.com imagery has a spatial resolution of 3 meters, the drawn polygons should try to contain around 10-20 pixels. The polygon layer is imported into RStudio for further analysis. To create the pixels data, the polygons are used to indicate the pixels that should be extracted. The point pixels data comes from filtering `pdxTrees`. The following code performs this geographic join of data:
+
+```{r, eval = F}
+# load polygon shapefiles
+acpl <- st_read("~/Documents/Fall_2020_Reed/Thesis/tree_canopy/acpl_polygon.shp")
+psme <- st_read("~/Documents/Fall_2020_Reed/Thesis/tree_canopy/psme_polygon.shp")
+quru <- st_read("~/Documents/Fall_2020_Reed/Thesis/tree_canopy/quru_polygon.shp")
+redcedar <- st_read("~/Documents/Fall_2020_Reed/Thesis/tree_canopy/redwood_polygon.shp")
+segi <- st_read("~/Documents/Fall_2020_Reed/Thesis/tree_canopy/segi_polygon.shp")
+acma <- st_read("~/Documents/Fall_2020_Reed/Thesis/tree_canopy/acma_polygon.shp")
+grass <- st_read("~/Documents/Fall_2020_Reed/Thesis/tree_canopy/grass_polygon.shp")
+
+# add polygon tree type column
+acpl$id_type <- "acpl"
+psme$id_type <- "psme"
+quru$id_type <- "quru"
+redcedar$id_type <- "redcedar"
+segi$id_type <- "segi"
+acma$id_type <- "acma"
+grass$id_type <- "grass"
+
+# combine polygon shapefiles
+combined_poly <- rbind(acpl, psme, quru, redcedar, segi, acma, grass)
+
+# create multipolygon object
+multi_poly <- st_multipolygon(combined_poly$geometry)
+
+# load point datasets
+acpl_pts <- st_read("~/tree_imaging/shapefiles/acpl_shapefile.shp")
+psme_pts <- st_read("~/tree_imaging/shapefiles/psme_shapefile.shp")
+quru_pts <- st_read("~/tree_imaging/shapefiles/quru_shapefile.shp")
+redcedar_pts <- st_read("~/tree_imaging/shapefiles/redcedar_shapefile.shp")
+segi_pts <- st_read("~/tree_imaging/shapefiles/segi_shapefile.shp")
+acma_pts <- st_read("~/tree_imaging/shapefiles/acma_shapefile.shp")
+
+# combine point datasets
+combined_pts <- rbind(acpl_pts, psme_pts, quru_pts, redcedar_pts, segi_pts, 
+                      acma_pts)
+
+# join combined points to combined polygons
+poly_join <- st_join(combined_poly, combined_pts, largest = T)
+
+# tidy polygon-point dataset
+poly_join <- poly_join %>%
+  mutate(id = c(1:nrow(poly_join)))
+
+# load raster layer object
+stack_a <- stack("planet/20200902_184428_1005_3B_AnalyticMS_clip.tif")
+stack_b <- stack("planet/20200902_184429_1005_3B_AnalyticMS_clip.tif")
+stack_c <- stack("planet/20200902_183008_24_1065_3B_AnalyticMS_clip.tif")
+stack_d <- stack("planet/20200902_183006_18_1065_3B_AnalyticMS_clip.tif")
+stack_e <- stack("planet/20200902_184430_1005_3B_AnalyticMS_clip.tif")
+
+# match raster project to polygons
+raster_crs <- CRS(projection(stack_a))
+poly_join_reprojected <- spTransform(as_Spatial(poly_join), raster_crs)
+# saveRDS(poly_join_reprojected, "data/poly_join_reprojected.rds")
+
+# extract pixel values from polygons into a dataframe
+val_a <- pixels_extraction(stack_a, poly_join_reprojected, "a")
+val_b <- pixels_extraction(stack_b, poly_join_reprojected, "b")
+val_c <- pixels_extraction(stack_c, poly_join_reprojected, "c")
+val_d <- pixels_extraction(stack_d, poly_join_reprojected, "d")
+val_e <- pixels_extraction(stack_e, poly_join_reprojected, "e")
+
+# semi_join returns rows of x where it can find a match in y
+val_combined <- rbind(val_a, anti_join(val_b, val_a, by = "ID"))
+val_combined <- rbind(val_combined, anti_join(val_c, val_combined, by = "ID"))
+val_combined <- rbind(val_combined, anti_join(val_d, val_combined, by = "ID"))
+val_combined <- rbind(val_combined, anti_join(val_e, val_combined, by = "ID"))
+
+# tidy pixel table
+pixels_data <-left_join(val_combined, poly_join_reprojected %>% 
+                          rename(ID = id)) %>%
+  mutate(ndvi = (ir - red)/(ir + red), 
+         Cmmn_Nm = replace_na(as.character(Cmmn_Nm), "grass"),
+         red_blue = red/blue,
+         # ir_red = ir/red,
+         red_green = red/green,
+         blue_green = blue/green)
+
+# load single pixel tree points
+pdxTrees_parks <- get_pdxTrees_parks()
+pdxTrees_streets <- get_pdxTrees_streets()
+pdxTrees_combined <- full_join(pdxTrees_parks, pdxTrees_streets)
+trees_dat <- pdxTrees_combined %>%
+  dplyr::filter(Common_Name %in% "Western Redcedar" | Species %in% unique(pixels_data$Species),
+                DBH >= 15)
+
+
+# convert to spatial points and reproject
+coordinates(trees_dat) <- ~ Longitude + Latitude
+proj4string(trees_dat)<- CRS("+proj=longlat +datum=WGS84")
+trees_reprojected <- spTransform(trees_dat, raster_crs)
+
+# extract pixels for all trees
+pix_a <- pixels_extraction(stack_a, trees_reprojected, "a")
+pix_b <- pixels_extraction(stack_b, trees_reprojected, "b")
+pix_c <- pixels_extraction(stack_c, trees_reprojected, "c")
+pix_d <- pixels_extraction(stack_d, trees_reprojected, "d")
+pix_e <- pixels_extraction(stack_e, trees_reprojected, "e")
+
+# semi_join returns rows of x where it can find a match in y
+pix_combined <- rbind(pix_a, anti_join(pix_b, pix_a, by = "ID"))
+pix_combined <- rbind(pix_combined, anti_join(pix_c, pix_combined, by = "ID"))
+pix_combined <- rbind(pix_combined, anti_join(pix_d, pix_combined, by = "ID"))
+pix_combined <- rbind(pix_combined, anti_join(pix_e, pix_combined, by = "ID"))
+
+# tidy centers pixel table
+pix_tree_center <- pix_combined %>%
+  mutate(ID = as.character(ID)) %>%
+  left_join(trees_reprojected@data, by = c("ID" = "UserID")) %>%
+  mutate(ndvi = (ir - red)/(ir + red),
+         red_blue = red/blue,
+         # ir_red = ir/red,
+         red_green = red/green,
+         blue_green = blue/green,
+         Cmmn_Nm = case_when(
+           Common_Name %in% "Maple, Norway" ~ "Norway Maple",
+           Common_Name %in% "Maple, Bigleaf" ~ "Bigleaf Maple",
+           TRUE ~ as.character(Common_Name)
+         )) %>%
+  dplyr::filter(Cmmn_Nm %in% c("Western Redcedar", "Bigleaf Maple", "Douglas-Fir", 
+                               #"English Oak",
+                        "Giant Sequoia", "Norway Maple"))
+
+# save results
+# write.csv(poly_join_reprojected,'data/poly_join_reprojected1.csv', row.names = F)
+# write.csv(val_combined,'data/val_combined1.csv', row.names = F)
+# write.csv(pixels_data,'data/pixels_data.csv', row.names = F)
+# write.csv(pix_tree_center,'data/pix_tree_center.csv', row.names = F)
+```
+
+To prepare the data for training and testing the models, the pixels and point pixels data are split into training and testing data:
+
+```{r, eval = F}
+# load data
+pixels_data <- read.csv('data/pixels_data.csv')
+pix_tree_center <- read.csv('data/pix_tree_center.csv')
+
+# take note of distribution of classes
+pixels_data %>%
+  count(Cmmn_Nm)
+pix_tree_center %>%
+  count(Cmmn_Nm)
+
+# training data
+set.seed(2)
+train_full <- sampling_data(pixels_data, 0.7, 500)
+train <- selecting_data(train_full)
+train_grouped <- grouping_data(train)
+train_center <- selecting_data(sampling_data(pix_tree_center, 0.7, 175))
+train_center_grouped <- grouping_data(train_center)
+
+# testing data
+test_full <- anti_join(pixels_data, train_full)
+test_full_grouped <- grouping_data(test_full)
+test <- test_full %>%
+  dplyr::select(red, green, blue, ir, ndvi, Cmmn_Nm, red_blue, red_green, 
+                blue_green)
+test_grouped <- grouping_data(test)
+test_center <- anti_join(pix_tree_center, train_center) %>%
+  dplyr::select(red, green, blue, ir, ndvi, Cmmn_Nm, red_blue, red_green, 
+                blue_green)
+test_center_grouped <- grouping_data(test_center)
+
+# save results
+# write.csv(train,'data/train.csv', row.names = F)
+# write.csv(train_grouped,'data/train_grouped.csv', row.names = F)
+# write.csv(train_center,'data/train_center.csv', row.names = F)
+# write.csv(train_center_grouped,'data/train_center_grouped.csv', row.names = F)
+# write.csv(test,'data/test.csv', row.names = F)
+# write.csv(test_grouped,'data/test_grouped.csv', row.names = F)
+# write.csv(test_center,'data/test_center.csv', row.names = F)
+# write.csv(test_center_grouped,'data/test_center_grouped.csv', row.names = F)
+# write.csv(test_full, 'data/test_full.csv', row.names = F)
+# write.csv(test_full_grouped, 'data/test_full_grouped.csv', row.names = F)
+```
+
+The training data is used to train the models:
+
+```{r, eval = F}
+# load training data
+train <- read.csv('data/train.csv')
+train_grouped <- read.csv('data/train_grouped.csv')
+train_center <- read.csv('data/train_center.csv')
+train_center_grouped <- read.csv('data/train_center_grouped.csv')
+
+# random search random forest using caret package
+control <- trainControl(method = "repeatedcv", number = 10, 
+                        search = "random")
+
+set.seed(2)
+rf_small <- training_rf(train %>% dplyr::select(-c(red_blue)))
+rf_small_grouped <- training_rf(train_grouped %>% dplyr::select(-c(red_blue)))
+rf_full <- training_rf(train)
+rf_full_grouped <- training_rf(train_grouped)
+rf_center <- training_rf(train_center)
+rf_center_grouped <- training_rf(train_center_grouped)
+
+# 10 fold cross validation
+train_control <- trainControl(method = "cv", number = 10)
+
+set.seed(2)
+# fit svm model with normalized variables
+svm1 <- training_svm(train, "svmLinear")
+svm2 <- training_svm(train, "svmRadial")
+svm3 <- training_svm(train, "svmPoly")
+svm1_grouped <- training_svm(train_grouped, "svmLinear")
+svm2_grouped <- training_svm(train_grouped, "svmRadial")
+svm3_grouped <- training_svm(train_grouped, "svmPoly")
+svm1_center <- training_svm(train_center, "svmLinear")
+svm2_center <- training_svm(train_center, "svmRadial")
+svm3_center <- training_svm(train_center, "svmPoly")
+svm1_center_grouped <- training_svm(train_center_grouped, "svmLinear")
+svm2_center_grouped <- training_svm(train_center_grouped, "svmRadial")
+svm3_center_grouped <- training_svm(train_center_grouped, "svmPoly")
+
+# save models
+# saveRDS(rf_small, "data/rf_small.rds")
+# saveRDS(rf_small_grouped, "data/rf_small_grouped.rds")
+# saveRDS(rf_full, "data/rf_full.rds")
+# saveRDS(rf_full_grouped, "data/rf_full_grouped.rds")
+# saveRDS(rf_center, "data/rf_center.rds")
+# saveRDS(rf_center_grouped, "data/rf_center_grouped.rds")
+# saveRDS(svm1, "data/svm1.rds")
+# saveRDS(svm2, "data/svm2.rds")
+# saveRDS(svm3, "data/svm3.rds")
+# saveRDS(svm1_center, "data/svm1_center.rds")
+# saveRDS(svm2_center, "data/svm2_center.rds")
+# saveRDS(svm3_center, "data/svm3_center.rds")
+# saveRDS(svm1_grouped, "data/svm1_grouped.rds")
+# saveRDS(svm2_grouped, "data/svm2_grouped.rds")
+# saveRDS(svm3_grouped, "data/svm3_grouped.rds")
+```
+
+Analysis on the trained models included in this research is conducted with the following code:
+
+```{r, eval = F}
+# load rf models
+rf_small <- readRDS("data/rf_small.rds")
+rf_small_grouped <- readRDS("data/rf_small_grouped.rds")
+rf_full <- readRDS("data/rf_full.rds")
+rf_full_grouped <- readRDS("data/rf_full_grouped.rds")
+rf_center <- readRDS("data/rf_center.rds")
+rf_center_grouped <- readRDS("data/rf_center_grouped.rds")
+
+# rf mtry cross validation
+grid.arrange(plot(rf_small, main = "RF P = 7, C = 7"),
+             plot(rf_small_grouped, main = "RF P = 7, C = 5"), nrow = 1)
+grid.arrange(plot(rf_full, main = "RF P = 8, C = 7"),
+             plot(rf_full_grouped, main = "RF P = 8, C = 5"), nrow = 1)
+grid.arrange(plot(rf_center, main = "RF P = 8, C = 5 (point)"),
+             plot(rf_center_grouped, main = "RF P = 8, C = 4 (point)"), 
+             nrow = 1)
+
+# data frame to compare rf models
+results <- rbind(cbind(rf_small$resample, Model = rep("P = 7, C = 7", 10)), 
+                 cbind(rf_full$resample, Model = rep("P = 8, C = 7", 10)),
+                 cbind(rf_center$resample, 
+                       Model = rep("P = 8, C = 5 (point)", 10)),
+                 cbind(rf_small_grouped$resample, 
+                       Model = rep("P = 7, C = 5", 10)),
+                 cbind(rf_full_grouped$resample, 
+                       Model = rep("P = 8, C = 5", 10)),
+                 cbind(rf_center_grouped$resample, 
+                       Model = rep("P = 8, C = 4 (point)", 10)))
+
+# visualize rf model results
+ggplot(results, aes(x = Model, y = Accuracy, fill = Model)) +
+  geom_boxplot(alpha = 0.6) +
+  theme_minimal() + 
+  scale_fill_viridis_d() +
+  labs(title = "Model Accuracy of Random Forest Models with 10-Fold CV", 
+       x = " ", fill = "P = Predictors, C = Classes") + 
+  theme(axis.text.x = element_blank())
+
+# rf results by class
+cm_small_rf <- confusionMatrix(rf_small,  mode = "prec_recall")
+cm_full_rf <- confusionMatrix(rf_full,  mode = "prec_recall")
+cm_center_rf <- confusionMatrix(rf_center,  mode = "prec_recall")
+cm_small_grouped_rf <- confusionMatrix(rf_small_grouped,  mode = "prec_recall")
+cm_full_grouped_rf <- confusionMatrix(rf_full_grouped,  mode = "prec_recall")
+cm_center_grouped_rf <- confusionMatrix(rf_center_grouped,  mode = "prec_recall")
+
+# save confusion matrices
+# saveRDS(cm_small_rf, "data/cm_small_rf.rds")
+# saveRDS(cm_full_rf, "data/cm_full_rf.rds")
+# saveRDS(cm_center_rf, "data/cm_center_rf.rds")
+# saveRDS(cm_small_grouped_rf, "data/cm_small_grouped_rf.rds")
+# saveRDS(cm_full_grouped_rf, "data/cm_full_grouped_rf.rds")
+# saveRDS(cm_center_grouped_rf, "data/cm_center_grouped_rf.rds")
+
+# table comparing models
+results_rf <- rbind(cbind(rf_small$resample, Model = rep("P = 7, C = 7", 10),
+                          mtry = rep(rf_small$bestTune[1,1], 10)),
+                    cbind(rf_full$resample, Model = rep("P = 8, C = 7", 10),
+                          mtry = rep(rf_full$bestTune[1,1], 10)),
+                    cbind(rf_center$resample, 
+                          Model = rep("P = 8, C = 5 (point)", 10),
+                          mtry = rep(rf_center$bestTune[1,1], 10)),
+                    cbind(rf_small_grouped$resample, 
+                          Model = rep("P = 7, C = 5", 10),
+                          mtry = rep(rf_small_grouped$bestTune[1,1], 10)),
+                    cbind(rf_full_grouped$resample, 
+                          Model = rep("P = 8, C = 5", 10),
+                          mtry = rep(rf_full_grouped$bestTune[1,1], 10)),
+                    cbind(rf_center_grouped$resample, 
+                          Model = rep("P = 8, C = 4 (point)", 10),
+                          mtry = rep(rf_center_grouped$bestTune[1,1], 10)))
+
+results_r <- results_rf %>%
+  group_by(Model) %>%
+  summarise("Accuracy" = round(mean(Accuracy), 4), 
+            "Kappa" = round(mean(Kappa), 4),
+            "mtry" = mean(mtry)) %>%
+  rename("Random Forest Model" = Model)
+
+# save table
+# write.csv(results_r,'data/results_r.csv', row.names = F)
+
+# load svm models
+svm1 <- readRDS("data/svm1.rds")
+svm2 <- readRDS("data/svm2.rds")
+svm3 <- readRDS("data/svm3.rds")
+svm1_center <- readRDS("data/svm1_center.rds")
+svm2_center <- readRDS("data/svm2_center.rds")
+svm3_center <- readRDS("data/svm3_center.rds")
+svm1_grouped <- readRDS("data/svm1_grouped.rds")
+svm2_grouped <- readRDS("data/svm2_grouped.rds")
+svm3_grouped <- readRDS("data/svm3_grouped.rds")
+
+# collect resamples
+results_svm <- rbind(cbind(svm1$resample, Model = rep("Linear, C = 7", 10, 10),
+                           Parameter = paste("C =", svm1$bestTune[1,1])),
+                     cbind(svm2$resample, Model = rep("Radial, C = 7", 10, 10),
+                           Parameter = paste("C =", svm2$bestTune[1,2], "sigma =", 
+                                 round(svm2$bestTune[1,1], 4))),
+                     cbind(svm3$resample, Model = rep("Poly, C = 7", 10, 10),
+                           Parameter = paste("C =", svm3$bestTune[1,3], ", scale =", 
+                                 svm3$bestTune[1,2], ", degree =", svm3$bestTune[1,1])),
+                     cbind(svm1_center$resample, 
+                           Model = rep("Linear, C = 5 (point)", 10, 10),
+                           Parameter = paste("C =", svm1_center$bestTune[1,1])),
+                     cbind(svm2_center$resample, 
+                           Model = rep("Radial, C = 5 (point)", 10, 10),
+                           Parameter = paste("C =", svm2_center$bestTune[1,2], 
+                                             "sigma =", 
+                                 round(svm2_center$bestTune[1,1], 4))),
+                     cbind(svm3_center$resample, 
+                           Model = rep("Poly, C = 5 (point)", 10, 10),
+                           Parameter = paste("C =", svm3_center$bestTune[1,3], 
+                                             ", scale =", 
+                                 svm3_center$bestTune[1,2], 
+                                 ", degree =", svm3_center$bestTune[1,1])),
+                     cbind(svm1_grouped$resample, 
+                           Model = rep("Linear, C = 5", 10, 10),
+                           Parameter = paste("C =", svm1_grouped$bestTune[1,1])),
+                     cbind(svm2_grouped$resample, 
+                           Model = rep("Radial, C = 5", 10, 10),
+                           Parameter = paste("C =", svm2_grouped$bestTune[1,2], 
+                                             "sigma =",
+                                             round(svm2_grouped$bestTune[1,1], 4))),
+                     cbind(svm3_grouped$resample, 
+                           Model = rep("Poly, C = 5", 10, 10),
+                           Parameter = paste("C =", svm3_grouped$bestTune[1,3], 
+                                             ", scale =", 
+                                 svm3_grouped$bestTune[1,2], 
+                                 ", degree =", svm3_grouped$bestTune[1,1])),
+                     cbind(svm1_center_grouped$resample, 
+                           Model = rep("Linear, C = 4 (point)", 10, 10),
+                           Parameter = paste("C =", svm1_center_grouped$bestTune[1,1])),
+                     cbind(svm2_center_grouped$resample, 
+                           Model = rep("Radial, C = 4 (point)", 10, 10),
+                           Parameter = paste("C =", svm2_center_grouped$bestTune[1,2], 
+                                             "sigma =",
+                                             round(svm2_center_grouped$bestTune[1,1], 4))),
+                     cbind(svm3_center_grouped$resample, 
+                           Model = rep("Poly, C = 4 (point)", 10, 10),
+                           Parameter = paste("C =", svm3_center_grouped$bestTune[1,3], 
+                                             ", scale =", 
+                                 svm3_center_grouped$bestTune[1,2], 
+                                 ", degree =", svm3_center_grouped$bestTune[1,1])))
+
+# visualize svm model results
+ggplot(results_svm, aes(x = Model, y = Accuracy, fill = Model)) +
+  geom_boxplot(alpha = 0.8) +
+  theme_minimal() + 
+  scale_fill_discrete() +
+  labs(title = "Model Accuracy of SVM Models with 10-Fold CV", x = " ", fill = " ") + 
+  theme(axis.text.x = element_blank())
+
+grid.arrange(plot(svm2, main = "SVM C = 7"),
+             plot(svm2_grouped, main = "SVM C = 5"), nrow = 1)
+grid.arrange(plot(svm3, main = "SVM C = 7"),
+             plot(svm3_grouped, main = "SVM C = 5"), nrow = 1)
+grid.arrange(plot(svm2_center, main = "SVM C = 5 (point)"),
+             plot(svm2_center_grouped, main = "SVM C = 4 (point)"), nrow = 1)
+grid.arrange(plot(svm3_center, main = "SVM C = 5 (point)"),
+             plot(svm3_center_grouped, main = "SVM C = 4 (point)"), nrow = 1)
+
+# svm results by class
+scm1 <- confusionMatrix(svm1,  mode = "prec_recall")
+scm2 <- confusionMatrix(svm2,  mode = "prec_recall")
+scm3 <- confusionMatrix(svm3,  mode = "prec_recall")
+scm1_center <- confusionMatrix(svm1_center,  mode = "prec_recall")
+scm2_center <- confusionMatrix(svm2_center,  mode = "prec_recall")
+scm3_center <- confusionMatrix(svm3_center,  mode = "prec_recall")
+scm1_grouped <- confusionMatrix(svm1_grouped,  mode = "prec_recall")
+scm2_grouped <- confusionMatrix(svm2_grouped,  mode = "prec_recall")
+scm3_grouped <- confusionMatrix(svm3_grouped,  mode = "prec_recall")
+scm1_center_grouped <- confusionMatrix(svm1_center_grouped,  mode = "prec_recall")
+scm2_center_grouped <- confusionMatrix(svm2_center_grouped,  mode = "prec_recall")
+scm3_center_grouped <- confusionMatrix(svm3_center_grouped,  mode = "prec_recall")
+
+# save confusion matrices
+# saveRDS(scm1, "data/scm1.rds")
+# saveRDS(scm2, "data/scm2.rds")
+# saveRDS(scm3, "data/scm3.rds")
+# saveRDS(scm1_center, "data/scm1_center.rds")
+# saveRDS(scm2_center, "data/scm2_center.rds")
+# saveRDS(scm3_center, "data/scm3_center.rds")
+# saveRDS(scm1_grouped, "data/scm1.rds")
+# saveRDS(scm2_grouped, "data/scm2_grouped.rds")
+# saveRDS(scm3_grouped, "data/scm3_grouped.rds")
+# saveRDS(scm1_center_grouped, "data/scm1.rds")
+# saveRDS(scm2_center_grouped, "data/scm2_center_grouped.rds")
+# saveRDS(scm3_center_grouped, "data/scm3_center_grouped.rds")
+
+# table comparing models
+results_s <- results_svm %>%
+  group_by(Model) %>%
+  summarise("Accuracy" = round(mean(Accuracy), 4), 
+            "Kappa" = round(mean(Kappa), 4)) %>%
+  rename("SVM Model Kernel" = Model)
+
+# save table
+# write.csv(results_s,'data/results_s.csv', row.names = F)
+
+# load test data
+test <- read.csv('data/test.csv')
+test_grouped <- read.csv('data/test_grouped.csv')
+test_center <- read.csv('data/test_center.csv')
+test_center_grouped <- read.csv('data/test_center_grouped.csv')
+test_full <- read.csv('data/test_full.csv')
+test_full_grouped <- read.csv('data/test_full_grouped.csv')
+
+# test set results for overall prediction
+test_results <- data.frame(Class = test_grouped$Cmmn_Nm)
+test_results$RF <- predict(rf_small_grouped, test_grouped)
+test_results$SVM <- predict(svm2_grouped, test_grouped)
+
+# test results accuracy table
+test_results %>%
+  summarise("RF Accuracy" = sum(Class == RF)/nrow(test_results), 
+            "SVM Accuracy" = sum(Class == SVM)/nrow(test_results))
+
+# Western Redcedar test results
+test_results_redceder <- test_results %>%
+  dplyr::filter(Class %in% "Western Redcedar")
+
+test_results_redceder %>%
+  summarise(rf_accuracy = sum(Class == RF)/nrow(test_results_redceder), 
+            svm_accuracy = sum(Class == SVM)/nrow(test_results_redceder))
+
+# confusion matrix with precision/recall
+cm_test_rf <- confusionMatrix(test_results$RF, test_results$Class)
+cm_test_svm <- confusionMatrix(test_results$SVM, test_results$Class)
+
+# save matrices
+# saveRDS(cm_test_rf, "data/cm_test_rf.rds")
+# saveRDS(cm_test_svm, "data/cm_test_svm.rds")
+
+# save results
+# write.csv(test_results,'data/test_results.csv', row.names = F)
+
+# join test results to full test data (with polygon info)
+test_dat_rf <- cbind(test_full_grouped, RF = test_results$RF)
+test_dat_svm <- cbind(test_full_grouped, SVM = test_results$SVM) 
+
+# rf polygon results for 5 class prediction
+poly_test_rf <- test_dat_rf %>%
+  group_by(ID) %>%
+  count(ID, same_rf = (RF %in% Cmmn_Nm), total = n()) %>%
+  pivot_wider(names_from = same_rf, values_from = n)
+
+poly_test_rf[is.na(poly_test_rf)] <- 0 # replace na with 0
+
+poly_test_rf <- poly_test_rf %>%
+  mutate(Result = case_when(`TRUE` > `FALSE` ~ "Correct",
+                                   `TRUE` <= `FALSE` ~ "Incorrect"))
+
+poly_test_rf %>%
+  group_by(Result) %>%
+  count(Result)
+
+# svm polygon results for 7 class prediction
+poly_test_svm <- test_dat_svm %>%
+  group_by(ID) %>%
+  count(ID, same_svm = (SVM == Cmmn_Nm), total = n()) %>%
+  pivot_wider(names_from = same_svm, values_from = n)
+
+poly_test_svm[is.na(poly_test_svm)] <- 0 # replace na with 0
+
+poly_test_svm <- poly_test_svm %>%
+  mutate(Result = case_when(`TRUE` > `FALSE` ~ "Correct",
+                                   `TRUE` <= `FALSE` ~ "Incorrect"))
+
+poly_test_svm %>%
+  group_by(Result) %>%
+  count(Result)
+
+# save poly test results
+# write.csv(poly_test_rf,'data/poly_test_rf.csv', row.names = F)
+# write.csv(poly_test_svm,'data/poly_test_svm.csv', row.names = F)
+```
+
+The rasters are prepped for the Portland model by masking NDVI values with the code:
+
+```{r, eval = F}
+# load city boundary shapefile
+or_cities <- places("OR")
+portland <- or_cities %>%
+  filter(NAME == "Portland")
+
+# load raster layer object
+stack_a <- stack("planet/20200902_184428_1005_3B_AnalyticMS_clip.tif")
+stack_b <- stack("planet/20200902_184429_1005_3B_AnalyticMS_clip.tif")
+stack_c <- stack("planet/20200902_183008_24_1065_3B_AnalyticMS_clip.tif")
+stack_d <- stack("planet/20200902_183006_18_1065_3B_AnalyticMS_clip.tif")
+stack_e <- stack("planet/20200902_184430_1005_3B_AnalyticMS_clip.tif")
+
+## crop and mask pixels outside portland
+stack_a <- crop(mask(stack_a, spTransform(portland, crs(stack_a))), 
+                extent(portland))
+stack_b <- crop(mask(stack_b, spTransform(portland, crs(stack_b))), 
+                extent(portland))
+stack_c <- crop(mask(stack_c, spTransform(portland, crs(stack_c))), 
+                extent(portland))
+stack_d <- crop(mask(stack_d, spTransform(portland, crs(stack_d))), 
+                extent(portland))
+stack_e <- crop(mask(stack_e, spTransform(portland, crs(stack_e))), 
+                extent(portland))
+
+# ndvi mask remove values below 0
+ndvi_a <- (stack_a[[4]] - stack_a[[1]]) / (stack_a[[4]] + stack_a[[1]])
+ndvi_b <- (stack_b[[4]] - stack_b[[1]]) / (stack_b[[4]] + stack_b[[1]])
+ndvi_c <- (stack_c[[4]] - stack_c[[1]]) / (stack_c[[4]] + stack_c[[1]])
+ndvi_d <- (stack_d[[4]] - stack_d[[1]]) / (stack_d[[4]] + stack_d[[1]])
+ndvi_e <- (stack_e[[4]] - stack_e[[1]]) / (stack_e[[4]] + stack_e[[1]])
+
+plot(ndvi_a, main = "NDVI", axes = FALSE, box = FALSE)
+
+# masked ndvi values
+ndvi_a[ndvi_a < 0] <- NA
+ndvi_b[ndvi_b < 0] <- NA
+ndvi_c[ndvi_c < 0] <- NA
+ndvi_d[ndvi_d < 0] <- NA
+ndvi_e[ndvi_e < 0] <- NA
+
+ndvi_mask_a <- mask(stack_a, ndvi_a, filename = "data/ndvi_mask_a.tif", 
+                    overwrite = T)
+ndvi_mask_b <- mask(stack_b, ndvi_b, filename = "data/ndvi_mask_b.tif", 
+                    overwrite = T)
+ndvi_mask_c <- mask(stack_c, ndvi_c, filename = "data/ndvi_mask_c.tif", 
+                    overwrite = T)
+ndvi_mask_d <- mask(stack_d, ndvi_d, filename = "data/ndvi_mask_d.tif", 
+                    overwrite = T)
+ndvi_mask_e <- mask(stack_e, ndvi_e, filename = "data/ndvi_mask_e.tif", 
+                    overwrite = T)
+```
+
+Finally the model is applied to the mask images of Portland and visualized with the following code:
+
+```{r, eval = F}
+# load masked raster images
+stack_a <- stack("data/ndvi_mask_a.tif")
+stack_b <- stack("data/ndvi_mask_b.tif")
+stack_c <- stack("data/ndvi_mask_c.tif")
+stack_d <- stack("data/ndvi_mask_d.tif")
+stack_e <- stack("data/ndvi_mask_e.tif")
+
+# load trained models
+rf_small_grouped <- readRDS("data/rf_small_grouped.rds")
+svm2_grouped <- readRDS("data/svm2_grouped.rds")
+
+results_a <- predRaster(stack_a) # 41min
+results_b <- predRaster(stack_b)
+results_c <- predRaster(stack_c)
+results_d <- predRaster(stack_d)
+results_e <- predRaster(stack_e)
+
+# save results
+# writeRaster(results_a,"data/results_a.grd", format = "raster", overwrite = T)
+# writeRaster(results_b,"data/results_b.grd", format = "raster", overwrite = T)
+# writeRaster(results_c,"data/results_c.grd", format = "raster", overwrite = T)
+# writeRaster(results_d,"data/results_d.grd", format = "raster", overwrite = T)
+# writeRaster(results_e,"data/results_e.grd", format = "raster", overwrite = T)
+
+# load results
+results_a <- stack("data/results_a.grd")
+results_b <- stack("data/results_b.grd")
+results_c <- stack("data/results_c.grd")
+results_d <- stack("data/results_d.grd")
+results_e <- stack("data/results_e.grd")
+
+# merge rasters into one for plotting
+r_list_RF <- list(results_a[[1]] == 7, results_b[[1]] == 7, results_c[[1]] == 7,
+                  results_d[[1]] == 7, results_e[[1]] == 7)
+r_list_SVM <- list(results_a[[2]] == 7, results_b[[2]] == 7, results_c[[2]] == 7,
+                  results_d[[2]] == 7, results_e[[2]] == 7)
+m_RF <- do.call(merge, r_list_RF)
+m_SVM <- do.call(merge, r_list_SVM)
+
+# compare rasters
+r_matches <- m_RF == m_SVM
+freq(r_matches)
+freq(r_matches)[2, ]/(freq(r_matches)[2, ] + freq(r_matches)[1, ])
+# (r_matches == 1)/((r_matches == 0) + (r_matches == 1)) percentage in common: 83%
+plot(r_matches == 1, main = "RF C = 5 and SVM C = 5 Predictions Comparisons",
+     labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "lightgreen")
+plot(r_matches == 0, col = "maroon", labels = F, xaxt = 'n', yaxt = 'n',
+     legend = F, add = T)
+
+# load city outline
+or_cities <- places("OR")
+portland <- or_cities %>%
+  filter(NAME == "Portland")
+portland_wgs84 <- spTransform(portland, 
+                              CRS("+proj=utm +zone=10 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"))
+
+# plot predictions
+plot(m_RF, main = "RF Western Redcedar Predictions", 
+     labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
+plot(portland_wgs84, add = T)
+
+plot(m_SVM, main = "SVM Western Redcedar Predictions", 
+     labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
+plot(portland_wgs84, add = T)
+
+# load street trees western redcedars
+pdxTrees_parks <- get_pdxTrees_parks()
+pdxTrees_streets <- get_pdxTrees_streets()
+
+redcedar_dat_street <- pdxTrees_streets %>%
+  filter(Common_Name %in% "Western Redcedar") %>%
+  dplyr::select(Longitude, Latitude, Common_Name)
+redcedar_dat_park <- pdxTrees_parks %>%
+  filter(Common_Name %in% "Western Redcedar") %>%
+  dplyr::select(Longitude, Latitude, Common_Name)
+redcedar_dat <- rbind(redcedar_dat_street, redcedar_dat_park)
+
+# match coordinate reference system
+coordinates(redcedar_dat) <- c("Longitude", "Latitude")
+proj4string(redcedar_dat) <- CRS("+init=epsg:4326")
+dat_transformed <- spTransform(redcedar_dat, CRS("+proj=utm +zone=10 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"))
+
+# plot pdxTrees with predictions
+p1 <- plot(m_RF, main = "RF C = 5 with pdxTrees", 
+     labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
+plot(dat_transformed, col = rgb(red = 0.2, green = 0.2, blue = 1.0, alpha = 0.2), 
+     cex = .2, add = T)
+plot(portland_wgs84, add = T)
+
+plot(m_SVM, main = "SVM C = 5 with pdxTrees", 
+     labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
+plot(dat_transformed, col = rgb(red = 0.2, green = 0.2, blue = 1.0, alpha = 0.2), 
+     cex = .2, add = T)
+plot(portland_wgs84, add = T)
+
+# match pixels with pdxTrees to test for accuracy
+street_mask <- mask(m_RF, dat_transformed)
+street_mask_group <- mask(m_SVM, dat_transformed)
+freq(street_mask)[1, 2]/nrow(dat_transformed) # estimates for Western redcedars
+# 52%
+freq(street_mask_group)[1, 2]/nrow(dat_transformed) # estimates for Western redcedars
+# 66%
+
+# smaller visualization around Reed
+reed_stack <- crop(m_RF, extent(525000, 530000, 5035000, 5040000))
+trees_reed <- crop(dat_transformed, extent(525000, 530000, 5035000, 5040000))
+
+# Portland with extent box
+plot(m_RF, main = "RF C = 7 with pdxTrees", 
+     labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
+plot(dat_transformed, col = rgb(red = 0.2, green = 0.2, blue = 1.0, alpha = 0.6), 
+     cex = .2, add = T, pch = 1)
+plot(portland_wgs84, add = T)
+plot(extent(reed_stack), add = T, col = "maroon")
+
+# Reed plot
+plot(reed_stack, main = "", labels = F, xaxt = 'n', yaxt = 'n', legend = F, 
+     col = "darkgreen")
+plot(trees_reed, col = rgb(red = 0.2, green = 0.2, blue = 1.0, alpha = 1), 
+     cex = .2, add = T, pch = 1)
+plot(extent(reed_stack), add = T, col = "maroon")
+```
+
+
+<!-- **In the main Rmd file** -->
+
+<!-- ```{r ref.label='include_packages', results='hide', echo = F} -->
+<!-- ``` -->
+
+<!-- **In Chapter \@ref(ref-labels):** -->
+
+<!-- ```{r ref.label='include_packages_2', results='hide', echo = F} -->
+<!-- ``` -->

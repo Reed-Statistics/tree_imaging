@@ -7,6 +7,7 @@ output: pdf_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(gridExtra)
 ```
 
 RF Analysis
@@ -25,16 +26,16 @@ grid.arrange(plot(rf_small, main = "RF P = 7, C = 7"),
              plot(rf_small_grouped, main = "RF P = 7, C = 5"), nrow = 1)
 grid.arrange(plot(rf_full, main = "RF P = 8, C = 7"),
              plot(rf_full_grouped, main = "RF P = 8, C = 5"), nrow = 1)
-grid.arrange(plot(rf_center, main = "RF P = 8, C = 7 (point)"),
-             plot(rf_center_grouped, main = "RF P = 8, C = 5 (point)"), nrow = 1)
+grid.arrange(plot(rf_center, main = "RF P = 8, C = 5 (point)"),
+             plot(rf_center_grouped, main = "RF P = 8, C = 4 (point)"), nrow = 1)
 
 # data frame to compare rf models
 results <- rbind(cbind(rf_small$resample, Model = rep("P = 7, C = 7", 10)), 
                  cbind(rf_full$resample, Model = rep("P = 8, C = 7", 10)),
-                 cbind(rf_center$resample, Model = rep("P = 8, C = 7 (point)", 10)),
+                 cbind(rf_center$resample, Model = rep("P = 8, C = 5 (point)", 10)),
                  cbind(rf_small_grouped$resample, Model = rep("P = 7, C = 5", 10)),
                  cbind(rf_full_grouped$resample, Model = rep("P = 8, C = 5", 10)),
-                 cbind(rf_center_grouped$resample, Model = rep("P = 8, C = 5 (point)", 10)))
+                 cbind(rf_center_grouped$resample, Model = rep("P = 8, C = 4 (point)", 10)))
 
 # visualize rf model results
 ggplot(results, aes(x = Model, y = Accuracy, fill = Model)) +
@@ -66,13 +67,13 @@ results_rf <- rbind(cbind(rf_small$resample, Model = rep("P = 7, C = 7", 10),
                           mtry = rep(rf_small$bestTune[1,1], 10)),
                     cbind(rf_full$resample, Model = rep("P = 8, C = 7", 10),
                           mtry = rep(rf_full$bestTune[1,1], 10)),
-                    cbind(rf_center$resample, Model = rep("P = 8, C = 7 (point)", 10),
+                    cbind(rf_center$resample, Model = rep("P = 8, C = 5 (point)", 10),
                           mtry = rep(rf_center$bestTune[1,1], 10)),
                     cbind(rf_small_grouped$resample, Model = rep("P = 7, C = 5", 10),
                           mtry = rep(rf_small_grouped$bestTune[1,1], 10)),
                     cbind(rf_full_grouped$resample, Model = rep("P = 8, C = 5", 10),
                           mtry = rep(rf_full_grouped$bestTune[1,1], 10)),
-                    cbind(rf_center_grouped$resample, Model = rep("P = 8, C = 5 (point)", 10),
+                    cbind(rf_center_grouped$resample, Model = rep("P = 8, C = 4 (point)", 10),
                           mtry = rep(rf_center_grouped$bestTune[1,1], 10)))
 
 results_r <- results_rf %>%
@@ -108,12 +109,12 @@ results_svm <- rbind(cbind(svm1$resample, Model = rep("Linear, C = 7", 10, 10),
                      cbind(svm3$resample, Model = rep("Poly, C = 7", 10, 10),
                            Parameter = paste("C =", svm3$bestTune[1,3], ", scale =", 
                                  svm3$bestTune[1,2], ", degree =", svm3$bestTune[1,1])),
-                     cbind(svm1_center$resample, Model = rep("Linear, C = 7 (point)", 10, 10),
+                     cbind(svm1_center$resample, Model = rep("Linear, C = 5 (point)", 10, 10),
                            Parameter = paste("C =", svm1_center$bestTune[1,1])),
-                     cbind(svm2_center$resample, Model = rep("Radial, C = 7 (point)", 10, 10),
+                     cbind(svm2_center$resample, Model = rep("Radial, C = 5 (point)", 10, 10),
                            Parameter = paste("C =", svm2_center$bestTune[1,2], "sigma =", 
                                  round(svm2_center$bestTune[1,1], 4))),
-                     cbind(svm3_center$resample, Model = rep("Poly, C = 7 (point)", 10, 10),
+                     cbind(svm3_center$resample, Model = rep("Poly, C = 5 (point)", 10, 10),
                            Parameter = paste("C =", svm3_center$bestTune[1,3], ", scale =", 
                                  svm3_center$bestTune[1,2], ", degree =", svm3_center$bestTune[1,1])),
                      cbind(svm1_grouped$resample, Model = rep("Linear, C = 5", 10, 10),
@@ -124,12 +125,12 @@ results_svm <- rbind(cbind(svm1$resample, Model = rep("Linear, C = 7", 10, 10),
                      cbind(svm3_grouped$resample, Model = rep("Poly, C = 5", 10, 10),
                            Parameter = paste("C =", svm3_grouped$bestTune[1,3], ", scale =", 
                                  svm3_grouped$bestTune[1,2], ", degree =", svm3_grouped$bestTune[1,1])),
-                     cbind(svm1_center_grouped$resample, Model = rep("Linear, C = 5 (point)", 10, 10),
+                     cbind(svm1_center_grouped$resample, Model = rep("Linear, C = 4 (point)", 10, 10),
                            Parameter = paste("C =", svm1_center_grouped$bestTune[1,1])),
-                     cbind(svm2_center_grouped$resample, Model = rep("Radial, C = 5 (point)", 10, 10),
+                     cbind(svm2_center_grouped$resample, Model = rep("Radial, C = 4 (point)", 10, 10),
                            Parameter = paste("C =", svm2_center_grouped$bestTune[1,2], "sigma =",
                                              round(svm2_center_grouped$bestTune[1,1], 4))),
-                     cbind(svm3_center_grouped$resample, Model = rep("Poly, C = 5 (point)", 10, 10),
+                     cbind(svm3_center_grouped$resample, Model = rep("Poly, C = 4 (point)", 10, 10),
                            Parameter = paste("C =", svm3_center_grouped$bestTune[1,3], ", scale =", 
                                  svm3_center_grouped$bestTune[1,2], ", degree =", svm3_center_grouped$bestTune[1,1])))
 
@@ -145,10 +146,10 @@ grid.arrange(plot(svm2, main = "SVM C = 7"),
              plot(svm2_grouped, main = "SVM C = 5"), nrow = 1)
 grid.arrange(plot(svm3, main = "SVM C = 7"),
              plot(svm3_grouped, main = "SVM C = 5"), nrow = 1)
-grid.arrange(plot(svm2_center, main = "SVM C = 7 (point)"),
-             plot(svm2_center_grouped, main = "SVM C = 5 (point)"), nrow = 1)
-grid.arrange(plot(svm3_center, main = "SVM C = 7 (point)"),
-             plot(svm3_center_grouped, main = "SVM C = 5 (point)"), nrow = 1)
+grid.arrange(plot(svm2_center, main = "SVM C = 5 (point)"),
+             plot(svm2_center_grouped, main = "SVM C = 4 (point)"), nrow = 1)
+grid.arrange(plot(svm3_center, main = "SVM C = 5 (point)"),
+             plot(svm3_center_grouped, main = "SVM C = 4 (point)"), nrow = 1)
 
 # svm results by class
 scm1 <- confusionMatrix(svm1,  mode = "prec_recall")

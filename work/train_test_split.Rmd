@@ -56,7 +56,7 @@ set.seed(2)
 train_full <- sampling_data(pixels_data, 0.7, 500)
 train <- selecting_data(train_full)
 train_grouped <- grouping_data(train)
-train_center <- sampling_data(pix_tree_center, 0.7, 192)
+train_center <- selecting_data(sampling_data(pix_tree_center, 0.7, 175))
 train_center_grouped <- grouping_data(train_center)
 ```
 
