@@ -83,16 +83,13 @@ m_SVM <- do.call(merge, r_list_SVM)
 r_matches <- m_RF == m_SVM
 freq(r_matches)
 freq(r_matches)[2, ]/(freq(r_matches)[2, ] + freq(r_matches)[1, ])
-# (r_matches == 1)/((r_matches == 0) + (r_matches == 1)) percentage in common: 83%
-plot(r_matches == 1, main = "RF C = 5 and SVM C = 5 Predictions Comparisons",
-     labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "lightgreen")
-plot(r_matches == 0, col = "maroon", labels = F, xaxt = 'n', yaxt = 'n',
-     legend = F, add = T)
+# (r_matches == 1)/((r_matches == 0) + (r_matches == 1)) percentage in common
+
 
 # load city outline
 or_cities <- places("OR")
 portland <- or_cities %>%
-  filter(NAME == "Portland")
+  dplyr::filter(NAME == "Portland")
 portland_wgs84 <- spTransform(portland, 
                               CRS("+proj=utm +zone=10 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"))
 
@@ -127,7 +124,7 @@ dat_transformed <- spTransform(redcedar_dat, CRS("+proj=utm +zone=10 +ellps=WGS8
 
 
 # plot pdxTrees with predictions
-p1 <- plot(m_RF, main = "RF C = 5 with pdxTrees", 
+plot(m_RF, main = "RF C = 5 with pdxTrees", 
      labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
 plot(dat_transformed, col = rgb(red = 0.2, green = 0.2, blue = 1.0, alpha = 0.2), cex = .2, add = T)
 plot(portland_wgs84, add = T)
@@ -138,11 +135,11 @@ plot(dat_transformed, col = rgb(red = 0.2, green = 0.2, blue = 1.0, alpha = 0.2)
 plot(portland_wgs84, add = T)
 
 # match pixels with pdxTrees to test for accuracy
-street_mask <- mask(m_RF, dat_transformed)
-street_mask_group <- mask(m_SVM, dat_transformed)
-freq(street_mask)[1, 2]/nrow(dat_transformed) # testing accuracy estimates for Western redcedars
-# 52%
-freq(street_mask_group)[1, 2]/nrow(dat_transformed) # testing accuracy estimates for Western redcedars
+street_mask_rf <- mask(m_RF, dat_transformed)
+street_mask_svm <- mask(m_SVM, dat_transformed)
+freq(street_mask_rf)[1, 2]/nrow(dat_transformed) # testing accuracy estimates for Western redcedars
+# 66%
+freq(street_mask_svm)[1, 2]/nrow(dat_transformed) # testing accuracy estimates for Western redcedars
 # 66%
 
 # smaller visualization around Reed
@@ -150,7 +147,7 @@ reed_stack <- crop(m_RF, extent(525000, 530000, 5035000, 5040000))
 trees_reed <- crop(dat_transformed, extent(525000, 530000, 5035000, 5040000))
 
 # Portland with extent box
-plot(m_RF, main = "RF C = 7 with pdxTrees", 
+plot(m_RF, main = "RF C = 5 with pdxTrees", 
      labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
 plot(dat_transformed, col = rgb(red = 0.2, green = 0.2, blue = 1.0, alpha = 0.6), cex = .2, add = T, pch = 1)
 plot(portland_wgs84, add = T)

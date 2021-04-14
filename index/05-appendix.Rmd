@@ -302,13 +302,13 @@ Once the tree species shapefiles are created, they are imported into QGIS for ma
 
 ```{r, eval = F}
 # load polygon shapefiles
-acpl <- st_read("~/Documents/Fall_2020_Reed/Thesis/tree_canopy/acpl_polygon.shp")
-psme <- st_read("~/Documents/Fall_2020_Reed/Thesis/tree_canopy/psme_polygon.shp")
-quru <- st_read("~/Documents/Fall_2020_Reed/Thesis/tree_canopy/quru_polygon.shp")
-redcedar <- st_read("~/Documents/Fall_2020_Reed/Thesis/tree_canopy/redwood_polygon.shp")
-segi <- st_read("~/Documents/Fall_2020_Reed/Thesis/tree_canopy/segi_polygon.shp")
-acma <- st_read("~/Documents/Fall_2020_Reed/Thesis/tree_canopy/acma_polygon.shp")
-grass <- st_read("~/Documents/Fall_2020_Reed/Thesis/tree_canopy/grass_polygon.shp")
+acpl <- st_read("~/tree_canopy/acpl_polygon.shp")
+psme <- st_read("~/tree_canopy/psme_polygon.shp")
+quru <- st_read("~/tree_canopy/quru_polygon.shp")
+redcedar <- st_read("~/tree_canopy/redwood_polygon.shp")
+segi <- st_read("~/tree_canopy/segi_polygon.shp")
+acma <- st_read("~/tree_canopy/acma_polygon.shp")
+grass <- st_read("~/tree_canopy/grass_polygon.shp")
 
 # add polygon tree type column
 acpl$id_type <- "acpl"
@@ -384,7 +384,8 @@ pdxTrees_parks <- get_pdxTrees_parks()
 pdxTrees_streets <- get_pdxTrees_streets()
 pdxTrees_combined <- full_join(pdxTrees_parks, pdxTrees_streets)
 trees_dat <- pdxTrees_combined %>%
-  dplyr::filter(Common_Name %in% "Western Redcedar" | Species %in% unique(pixels_data$Species),
+  dplyr::filter(Common_Name %in% "Western Redcedar" | 
+                  Species %in% unique(pixels_data$Species),
                 DBH >= 15)
 
 
@@ -420,9 +421,9 @@ pix_tree_center <- pix_combined %>%
            Common_Name %in% "Maple, Bigleaf" ~ "Bigleaf Maple",
            TRUE ~ as.character(Common_Name)
          )) %>%
-  dplyr::filter(Cmmn_Nm %in% c("Western Redcedar", "Bigleaf Maple", "Douglas-Fir", 
-                               #"English Oak",
-                        "Giant Sequoia", "Norway Maple"))
+  dplyr::filter(Cmmn_Nm %in% c("Western Redcedar", "Bigleaf Maple", 
+                               "Douglas-Fir", #"English Oak",
+                               "Giant Sequoia", "Norway Maple"))
 
 # save results
 # write.csv(poly_join_reprojected,'data/poly_join_reprojected1.csv', row.names = F)
