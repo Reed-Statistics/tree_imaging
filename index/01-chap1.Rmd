@@ -7,8 +7,7 @@ The {#rmd-basics} text after the chapter declaration will allow us to link throu
 -->
 
 ```{r echo=F}
-knitr::opts_chunk$set(fig.width=6, fig.height=4, fig.align='center',
-                      tidy.opts=list(width.cutoff=60),tidy=TRUE)
+knitr::opts_chunk$set(fig.width=6, fig.height=4, fig.align='center')
 ```
 
 

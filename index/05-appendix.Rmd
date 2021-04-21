@@ -190,7 +190,7 @@ This appendix includes the workflow and all the R code for replicating this rese
 
 First the rasters need to be downloaded from Planet.com by creating an account and selecting a date with clear weather and Portland's location. The following libraries and functions are necessary to be loaded into your workspace:
 
-```{r, eval = F}
+```{r, eval = F, tidy.opts=list(width.cutoff=60),tidy=TRUE}
 # libraries
 library(caret)
 library(doParallel)
@@ -283,7 +283,7 @@ predRaster <- function(stack) {
 
 This code creates shapefiles for six tree species from `pdxTrees`:
 
-```{r, eval = F}
+```{r, eval = F, tidy = T}
 # load data
 pdxTrees_parks <- get_pdxTrees_parks()
 pdxTrees_streets <- get_pdxTrees_streets() # site width in ft., diameter in in.
