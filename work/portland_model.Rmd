@@ -16,6 +16,7 @@ library(pdxTrees)
 library(sf)
 library(tigris)
 library(gridExtra)
+library(RColorBrewer)
 ```
 
 ```{r}
@@ -71,19 +72,27 @@ results_c <- stack("data/results_c.grd")
 results_d <- stack("data/results_d.grd")
 results_e <- stack("data/results_e.grd")
 
-# merge rasters into one for plotting
-r_list_RF <- list(results_a[[1]] == 7, results_b[[1]] == 7, results_c[[1]] == 7,
-                  results_d[[1]] == 7, results_e[[1]] == 7)
-r_list_SVM <- list(results_a[[2]] == 7, results_b[[2]] == 7, results_c[[2]] == 7,
-                  results_d[[2]] == 7, results_e[[2]] == 7)
+# RF rasters merged
+r_list_RF <- list(results_a[[1]], results_b[[1]], results_c[[1]],
+                  results_d[[1]], results_e[[1]])
 m_RF <- do.call(merge, r_list_RF)
-m_SVM <- do.call(merge, r_list_SVM)
+m_red <- m_RF == 5 # RF redcedars
+m_grass <- m_RF == 4 # RF grass
+m_seq <- m_RF == 3 # RF Giant Sequoia
+m_fir <- m_RF == 2 # RF Douglas-Fir
+m_broad <- m_RF == 1 # RF Broadleaf
+
+# SVM rasters merged
+r_list_red_SVM <- list(results_a[[2]], results_b[[2]], results_c[[2]],
+                  results_d[[2]], results_e[[2]])
+m_red_SVM <- do.call(merge, r_list_red_SVM)
+m_red_SVM <- m_red_SVM == 5 # SVM redcedars
+
 
 # compare rasters
-r_matches <- m_RF == m_SVM
-freq(r_matches)
+r_matches <- m_red == m_red_SVM
 freq(r_matches)[2, ]/(freq(r_matches)[2, ] + freq(r_matches)[1, ])
-# (r_matches == 1)/((r_matches == 0) + (r_matches == 1)) percentage in common
+# (r_matches == 1)/((r_matches == 0) + (r_matches == 1)) percentage in common 91%
 
 
 # load city outline
@@ -94,12 +103,12 @@ portland_wgs84 <- spTransform(portland,
                               CRS("+proj=utm +zone=10 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"))
 
 # plot predictions
-plot(m_RF, main = "RF Western Redcedar Predictions", 
-     labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
+plot(m_red, main = "RF Western Redcedar Predictions", 
+     labels = F, xaxt = 'n', yaxt = 'n', legend = F)
 plot(portland_wgs84, add = T)
 
-plot(m_SVM, main = "SVM Western Redcedar Predictions", 
-     labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
+plot(m_red_SVM, main = "SVM Western Redcedar Predictions", 
+     labels = F, xaxt = 'n', yaxt = 'n', legend = F)
 plot(portland_wgs84, add = T)
 ```
 
@@ -124,39 +133,62 @@ dat_transformed <- spTransform(redcedar_dat, CRS("+proj=utm +zone=10 +ellps=WGS8
 
 
 # plot pdxTrees with predictions
-plot(m_RF, main = "RF C = 5 with pdxTrees", 
+plot(m_red, main = "RF C = 5 with pdxTrees", 
      labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
 plot(dat_transformed, col = rgb(red = 0.2, green = 0.2, blue = 1.0, alpha = 0.2), cex = .2, add = T)
 plot(portland_wgs84, add = T)
 
-plot(m_SVM, main = "SVM C = 5 with pdxTrees", 
+plot(m_red_SVM, main = "SVM C = 5 with pdxTrees", 
      labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
 plot(dat_transformed, col = rgb(red = 0.2, green = 0.2, blue = 1.0, alpha = 0.2), cex = .2, add = T)
 plot(portland_wgs84, add = T)
 
 # match pixels with pdxTrees to test for accuracy
-street_mask_rf <- mask(m_RF, dat_transformed)
-street_mask_svm <- mask(m_SVM, dat_transformed)
+street_mask_rf <- mask(m_red, dat_transformed)
+street_mask_svm <- mask(m_red_SVM, dat_transformed)
 freq(street_mask_rf)[1, 2]/nrow(dat_transformed) # testing accuracy estimates for Western redcedars
-# 66%
+# 57%
 freq(street_mask_svm)[1, 2]/nrow(dat_transformed) # testing accuracy estimates for Western redcedars
-# 66%
+# 63%
 
 # smaller visualization around Reed
-reed_stack <- crop(m_RF, extent(525000, 530000, 5035000, 5040000))
-trees_reed <- crop(dat_transformed, extent(525000, 530000, 5035000, 5040000))
+reed_stack <- crop(m_red, extent(528000, 529500, 5035500, 5036800))
+trees_reed <- crop(dat_transformed, extent(528000, 529500, 5035500, 5036800))
+reed <- crop(m_RF, extent(528000, 529500, 5035500, 5036800))
 
 # Portland with extent box
-plot(m_RF, main = "RF C = 5 with pdxTrees", 
-     labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
+plot(m_red, main = "RF C = 5 with pdxTrees", 
+     xaxt = 'n', yaxt = 'n', legend = F)
 plot(dat_transformed, col = rgb(red = 0.2, green = 0.2, blue = 1.0, alpha = 0.6), cex = .2, add = T, pch = 1)
 plot(portland_wgs84, add = T)
 plot(extent(reed_stack), add = T, col = "maroon")
 
 # Reed plot
-plot(reed_stack, main = "", labels = F, xaxt = 'n', yaxt = 'n', legend = F, col = "darkgreen")
+plot(reed_stack, main = "", labels = F, xaxt = 'n', yaxt = 'n', legend = F)
 plot(trees_reed, col = rgb(red = 0.2, green = 0.2, blue = 1.0, alpha = 1), cex = .2, add = T, pch = 1)
 plot(extent(reed_stack), add = T, col = "maroon")
+
+r_points <- rasterToPoints(reed)
+r_df <- data.frame(r_points) %>%
+  mutate(layer = case_when(
+    layer == 1 ~ "Broadleaf",
+    layer == 2 ~ "Douglas-Fir",
+    layer == 3 ~ "Giant Sequoia",
+    layer == 4 ~ "Grass",
+    layer == 5 ~ "Western Redcedar"))
+
+m_red <- m_RF == 5 # RF redcedars
+m_grass <- m_RF == 4 # RF grass
+m_seq <- m_RF == 3 # RF Giant Sequoia
+m_fir <- m_RF == 2 # RF Douglas-Fir
+m_broad <- m_RF == 1 # RF Broadleaf
+ggplot(data = r_df) + 
+  geom_tile(aes(x, y, fill = layer), alpha = 0.98) + 
+  scale_fill_viridis_d() +
+  coord_equal() +
+  theme_minimal() +
+  theme(panel.grid.major = element_blank()) +
+  xlab("") + ylab("")
 ```
 
 Sources:

@@ -7,7 +7,8 @@ The {#rmd-basics} text after the chapter declaration will allow us to link throu
 -->
 
 ```{r echo=F}
-knitr::opts_chunk$set(fig.width=6, fig.height=4, fig.align='center')
+knitr::opts_chunk$set(fig.width=6, fig.height=4, fig.align='center',
+                      tidy.opts=list(width.cutoff=60),tidy=TRUE)
 ```
 
 
@@ -148,7 +149,7 @@ Modelling in this research will be conducted by combining information gathered f
 
 Remote sensing is a process for identifying the physical aspects of a large area of land by collecting and measuring the reflected light using airplanes or satellites. This method provides access to lot of information about the region of interest that would otherwise be limited from a human's ground-level persepective. Remote sensing is used to detect characteristics on land as well as the sea. Some remote sensing land applications include tracking forest fires, volcanic eruptions, city growth, and also forest changes.
 
-Satellites orbit the earth, carrying sensors that record levels of electromagnetic radiation detected by the reflection of the sun on the earth. The data collected is the measured radiation from different regions of the spectrum (visible light, infrared, ultraviolet, etc.). Depending on the surface, sunlight gets absorbed or reflected back at the orbiting satellite. The remotely sensed data is available at certain resolutions depending on the instruments used. Spatial resolution is the area imaged by a satellite image, where a detailed image has smaller spatial resolution hence smaller pixels. Spectral resolution is a measure of the size of the wavelength interval, where smaller bands and smaller wavelengths improve the spectral resolution of an image and enhance the level of detail. Satellite images need to be corrected to combine the bands into an image depending on the analysis.
+Satellites orbit the earth, carrying sensors that record levels of electromagnetic radiation detected by the reflection of the sun on the earth. The data collected is the measured radiation from different regions of the spectrum (visible light, infrared, ultraviolet, etc.). Depending on the surface, sunlight gets absorbed or reflected back at the orbiting satellite. The remotely sensed data is available at certain resolutions depending on the instruments used. Spatial resolution is the area imaged by a satellite image, where a detailed image has smaller spatial resolution hence smaller pixels. Spectral resolution is a measure of the size of the wavelength interval, where smaller bands and smaller intervals improve the spectral resolution of an image and enhance the level of detail. Satellite images need to be corrected to combine the bands into an image depending on the analysis.
 
 Imagery come in various band widths and different number of bands. Hyperspectral imagery has narrow bands of sizes 10-20nm and hundreds of bands. So, hyperspectral imagery is successful in distinguishing fine details, but at a cost of more complexity. Multispectral imagery has wider bands and up to 10 total bands. This type of imagery is not complex to work with, but misses some details that hyperspectral imagery detects.
 
@@ -160,6 +161,4 @@ This thesis follows along with the methods in [@fricker_convolutional_2019] for 
 
 ## Overview
 ### A Statistical Learning Approach to Identifying Location of Western Redcedars
-This work combines RGB imagery data from Planet.com with ground level tree data from the RStudio `pdxTrees` library and applies random forest and support vector machine classification methods to predict the location of tree species (specifically western redcedars) in Portland, Oregon and model the condition of western redcedars to ultimately understand the cause of death in this species. Chapter \@ref(data) describes the two levels of data in this research: ground level and pixel level data, where the data comes from, and how the data is combined for modeling. Chapter \@ref(methods) discusses the process behind training random forest and support vector machine models. Chapter \@ref(results) summarizes how the data is prepared for the final model and the outcome of the research followed by a discussion and conclusion.
-
-
+This work combines RGB imagery data from Planet.com with ground level tree data from the RStudio `pdxTrees` library and applies random forest and support vector machine classification methods to predict the location of tree species (specifically western redcedars) in Portland, Oregon and model the condition of western redcedars to ultimately understand the cause of death in this species. Chapter \@ref(data) describes the two levels of data in this research: ground level and pixel level data, where the data comes from, and how the data is combined for modeling. Chapter \@ref(methods) discusses the process behind training random forest and support vector machine models. Chapter \@ref(results) summarizes how the data is prepared for the final model and the outcome of the research. Chapter \@ref(discussion) provides a summary of the research, some limitations, and a discussion of methods of improvement as wells as key takeaways.

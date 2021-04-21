@@ -215,8 +215,8 @@ test_results_redceder <- test_results %>%
   dplyr::filter(Class %in% "Western Redcedar")
 
 test_results_redceder %>%
-  summarise(rf_accuracy = sum(Class == RF)/nrow(test_results_redceder), 
-            svm_accuracy = sum(Class == SVM)/nrow(test_results_redceder))
+  summarise("RF Accuracy" = sum(Class == RF)/nrow(test_results_redceder), 
+            "SVM Accuracy" = sum(Class == SVM)/nrow(test_results_redceder))
 
 # confusion matrix with precision/recall
 cm_test_rf <- confusionMatrix(test_results$RF, test_results$Class)
@@ -242,14 +242,27 @@ poly_test_rf <- test_dat_rf %>%
   group_by(ID) %>%
   count(ID, same_rf = (RF %in% Cmmn_Nm), total = n()) %>%
   pivot_wider(names_from = same_rf, values_from = n)
+poly_test_rf_redcedar <- test_dat_rf %>%
+  filter(Cmmn_Nm %in% "Western Redcedar") %>%
+  group_by(ID) %>%
+  count(ID, same_rf = (RF %in% Cmmn_Nm), total = n()) %>%
+  pivot_wider(names_from = same_rf, values_from = n)
 
 poly_test_rf[is.na(poly_test_rf)] <- 0 # replace na with 0
+poly_test_rf_redcedar[is.na(poly_test_rf_redcedar)] <- 0
 
 poly_test_rf <- poly_test_rf %>%
   mutate(Result = case_when(`TRUE` > `FALSE` ~ "Correct",
                                    `TRUE` <= `FALSE` ~ "Incorrect"))
+poly_test_rf_redcedar <- poly_test_rf_redcedar %>%
+  mutate(Result = case_when(`TRUE` > `FALSE` ~ "Correct",
+                                   `TRUE` <= `FALSE` ~ "Incorrect"))
 
 poly_test_rf %>%
+  group_by(Result) %>%
+  count(Result)
+
+poly_test_rf_redcedar %>%
   group_by(Result) %>%
   count(Result)
 
@@ -258,10 +271,19 @@ poly_test_svm <- test_dat_svm %>%
   group_by(ID) %>%
   count(ID, same_svm = (SVM == Cmmn_Nm), total = n()) %>%
   pivot_wider(names_from = same_svm, values_from = n)
+poly_test_svm_redcedar <- test_dat_svm %>%
+  filter(Cmmn_Nm %in% "Western Redcedar") %>%
+  group_by(ID) %>%
+  count(ID, same_svm = (SVM == Cmmn_Nm), total = n()) %>%
+  pivot_wider(names_from = same_svm, values_from = n)
 
 poly_test_svm[is.na(poly_test_svm)] <- 0 # replace na with 0
+poly_test_svm_redcedar[is.na(poly_test_svm_redcedar)] <- 0 
 
 poly_test_svm <- poly_test_svm %>%
+  mutate(Result = case_when(`TRUE` > `FALSE` ~ "Correct",
+                                   `TRUE` <= `FALSE` ~ "Incorrect"))
+poly_test_svm_redcedar <- poly_test_svm_redcedar %>%
   mutate(Result = case_when(`TRUE` > `FALSE` ~ "Correct",
                                    `TRUE` <= `FALSE` ~ "Incorrect"))
 
@@ -269,7 +291,13 @@ poly_test_svm %>%
   group_by(Result) %>%
   count(Result)
 
+poly_test_svm_redcedar %>%
+  group_by(Result) %>%
+  count(Result)
+
 # save poly test results
 # write.csv(poly_test_rf,'data/poly_test_rf.csv', row.names = F)
 # write.csv(poly_test_svm,'data/poly_test_svm.csv', row.names = F)
+# write.csv(poly_test_rf_redcedar,'data/poly_test_rf_redcedar.csv', row.names = F)
+# write.csv(poly_test_svm_redcedar,'data/poly_test_svm_redcedar.csv', row.names = F)
 ```

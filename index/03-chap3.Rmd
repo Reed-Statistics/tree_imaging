@@ -2,7 +2,7 @@
 
 ## Existing Methods
 
-Since the Western redcedar decline is recent, there are currently no published work for identifying tree species like Western redcedars for the Pacific Northwest using satellite imaging. However, a similar study identifies tree species for a strip of land in California by combining ground-level data with satellite images [@fricker_convolutional_2019]. Their methods involved drawing polygons around rastered images that are layered with ground data as explained in Chapter \@ref(data), but the pixels from the polygons are used to train a convolutional neural network (CNN) model instead of the random forests and support vector machines in this study. The CNN model was then evaluated with k-fold cross validation. CNN models are appropriate in a classification setting and when working with satellite images because they account for spatial relations, which is likely to appear in classifying tree species. This study follows the methods of preparing the data for modelling as well as the method of cross validation to evaluate the performance of the random forests and support vector machines models. Random forests are used in a classification setting or regression setting and have the advantage of being simplier to train than CNN models and still performs at a similar level. Random forests use random feature selections to create decision trees and increase the number of correctly classified observations. Since this research strives to provide a computationally simple method of estimating tree locations to track changes in the ecosystem, a random forest is suitable for the study. If a researcher was interested in making more precise predictions, a CNN would require more time but would produce better estimates.
+Since the Western redcedar decline is recent, there are currently no published work for identifying tree species like Western redcedars for the Pacific Northwest using satellite imaging. One literature investigates the dieback of Wester redcedars in Vancouver, B.C. as a result of dry weather and how this links to climate change [@seebacher_western_2007]. A study identifies tree species for a strip of land in California by combining ground-level data with satellite images [@fricker_convolutional_2019]. Their methods involved drawing polygons around rastered images that are layered with ground data as explained in Chapter \@ref(data), but the pixels from the polygons are used to train a convolutional neural network (CNN) model instead of the random forests and support vector machines in this study. The CNN model was then evaluated with k-fold cross validation. CNN models are appropriate in a classification setting and when working with satellite images because they account for spatial relations, which is likely to appear in classifying tree species. This study follows the methods of preparing the data for modelling as well as the method of cross validation to evaluate the performance of the random forests and support vector machines models. Random forests are used in a classification setting or regression setting and have the advantage of being simplier to train than CNN models and still performs at a similar level. Random forests use random feature selections to create decision trees and increase the number of correctly classified observations. Since this research strives to provide a computationally simple method of estimating tree locations to track changes in the ecosystem, a random forest is suitable for the study. If a researcher was interested in making more precise predictions, a CNN would require more time but would produce better estimates.
 
 ## Current Methods
 
@@ -48,7 +48,7 @@ Support vector machines are less sensitive to outliers and successful predictors
 
 ## Training Models
 
-Data used to train the RF and SVM models are the pixels training data and the point pixels training data. To prepare the data for modelling, first the data is separated into a training set and then a test set by a ratio of 70% training data and 30% testing data. The `dplyr` function `slice_sample` was used to take a stratified sample from the entire pixels dataset where 70% of each tree species in an individual raster strip was randomly selected. For example, the training set consisted of 70% of the bigleaf maple trees in raster strip 'A', 70% of bigleaf maple trees in raster strip 'B', and so on. From the 70% pixels training data, 500 observations for each tree species are extracted to obtain an even distribution of species. From the point pixels training data, 190 observations for each tree species are sampled.
+Data used to train the RF and SVM models are the pixels training data and the point pixels training data. To prepare the data for modelling, first the data is separated into a training set and then a test set by a ratio of 70% training data and 30% testing data. The `dplyr` function `slice_sample` was used to take a stratified sample from the entire pixels dataset where 70% of each tree species in an individual raster strip was randomly selected. For example, the training set consisted of 70% of the bigleaf maple trees in raster strip 'A', 70% of bigleaf maple trees in raster strip 'B', and so on. From the 70% pixels training data, 500 observations for each tree species are randomly extracted to obtain an even distribution of species. From the point pixels training data, 190 observations for each tree species are sampled.
 
 The selected variables for training the models are the four bands (red, green, blue, infrared) and an NDVI variable, and the predictive variable is the tree species name. Some predictor variables were manually computed using ratios of bands. Typically, a long over short band ratio provides some more information to train the model. The following bands were created: red/blue, ir/red, red/green, and blue/green. Examining a correlation matrix with these predictors reveals possibly useful and not too highly correlated variables are red/green, red/blue, and blue/green (see Figure \@ref(fig:corrmatrix)).
 
@@ -58,7 +58,7 @@ include_graphics("figure/corrmatrix.png")
 
 To address the small number of predictor variables available to predict the large number of classes (7 tree species), some species are grouped together. The Bigleaf Maple, Norway Maple, and English Oak species are grouped under a new "Broadleaf" tree category. This reduces the number of classes to 5: Broadleaf, Douglas-Fir, Giant Sequoia, Grass, and Western Redcedar. Both the full 7 tree species training data and the grouped (5 class) species training data are used to train the models.
 
-The `caret` package [@caret] in RStudio stands for classification and regression training, and it contains functions for facilitating the process of creating training models in R and determining the tuning parameters. 
+The `caret` package [@caret] in RStudio provides the framework for the modelling performed in this work. It stands for classification and regression training, and it contains functions for facilitating the process of creating training models in R and determining the tuning parameters. 
 
 ### Random Forest Tuning
 
@@ -166,7 +166,7 @@ knitr::kable(results_s, "latex", caption = "Accuracy of support vector machine m
 
 ## Testing Models
 
-A subset of the data was withheld from training the models as test data to provide some measure of how the models perform in predicting results that the answer is unknown. Based on overall and redcedar accuracy, the appropriate models to consider with the testing data are the 5 class 7 predictor RF and the 5 class radial SVM. The results for the overall test accuracy and the prediction test accuracy for Western redcedars are shown in Tables \@ref(tab:resultsTest) and \@ref(tab:resultsTest2).
+A subset of the data was withheld from training the models as test data to provide some measure of how the models perform in predicting results on new data. Based on overall and redcedar accuracy, the appropriate models to consider with the testing data are the 5 class 7 predictor RF and the 5 class radial SVM. The results for the overall test accuracy and the prediction test accuracy for Western redcedars are shown in Tables \@ref(tab:resultsTest) and \@ref(tab:resultsTest2).
 
 ```{r resultsTest, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
 test_results <- read.csv('~/tree_imaging/data/test_results.csv', check.names = F)
@@ -183,19 +183,20 @@ test_results_redceder <- test_results %>%
   dplyr::filter(Class %in% "Western Redcedar")
 
 results_redcedar_tab <- test_results_redceder %>%
-  summarise(rf_accuracy = sum(Class == RF)/nrow(test_results_redceder), 
-            svm_accuracy = sum(Class == SVM)/nrow(test_results_redceder))
+  summarise("RF Accuracy" = sum(Class == RF)/nrow(test_results_redceder), 
+            "SVM Accuracy" = sum(Class == SVM)/nrow(test_results_redceder))
 
 knitr::kable(results_redcedar_tab, "latex", caption = "Western redcedar accuracy of 7 predictor RF (5 class) and Radial SVM (5 class) models on test data")
 ```
 
 According to the test data, the best performing models for further analysis are the radial SVM model for 5 class prediction and the 7 predictor RF model for 5 class prediction.
 
-The polygon prediction accuracy on the test dataset was also computed to see how pixels of the same tree were classified compared to individual pixel classification. A "correct" prediction was indicated if more than half the pixels in a polygon are correctly predicted. Table \@ref(tab:polyTab) displays the results over polygons in the test dataset.
+The polygon prediction accuracy on the test dataset was also computed to see how pixels of the same tree were classified compared to individual pixel classification. A "correct" prediction was indicated if more than half the pixels in a polygon are correctly predicted. Table \@ref(tab:polyTab) displays the overall results for polygons in the test dataset and Table \@ref(tab:polyTabRed) displays the polygons predictions for Western Redcedars.
 
 ```{r polyTab, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
 poly_test_rf <- read.csv('~/tree_imaging/data/poly_test_rf.csv', check.names = F)
 poly_test_svm <- read.csv('~/tree_imaging/data/poly_test_svm.csv', check.names = F)
+
 
 poly_test_rf <- poly_test_rf %>%
   group_by(Result) %>%
@@ -205,12 +206,32 @@ poly_test_svm <- poly_test_svm %>%
   count(Result)
 
 poly_results <- cbind(Type = c("SVM C = 5", "SVM C = 5", "RF P = 7, C = 5", "RF P = 7, C = 5"), 
-                      rbind(poly_test_svm, poly_test_rf))
+                      rbind(poly_test_svm, poly_test_rf)) %>%
+  rename("Polygons" = n)
 
 
 
-knitr::kable(poly_results, "latex", caption = "Accuracy of radial SVM model with 5 classes and 7 predictor RF model with 5 classes for polygons in test data. A correct prediction is considered to be a polygon with more than half of the pixels correctly classified.")
+knitr::kable(poly_results, "latex", caption = "Overall accuracy of radial SVM model with 5 classes and 7 predictor RF model with 5 classes for polygons in test data. A correct prediction is considered to be a polygon with more than half of the pixels correctly classified.")
 ```
+
+```{r polyTabRed, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+poly_test_rf_redcedar <- read.csv('~/tree_imaging/data/poly_test_rf_redcedar.csv', check.names = F)
+poly_test_svm_redcedar <- read.csv('~/tree_imaging/data/poly_test_svm_redcedar.csv', check.names = F)
+
+poly_test_rf_redcedar <- poly_test_rf_redcedar %>%
+  group_by(Result) %>%
+  count(Result)
+poly_test_svm_redcedar <- poly_test_svm_redcedar %>%
+  group_by(Result) %>%
+  count(Result)
+
+poly_results_redcedar <- cbind(Type = c("SVM C = 5", "SVM C = 5", "RF P = 7, C = 5", "RF P = 7, C = 5"), 
+                      rbind(poly_test_svm_redcedar, poly_test_rf_redcedar)) %>%
+  rename("Polygons" = n)
+
+knitr::kable(poly_results_redcedar, "latex", caption = "Western Redcedar accuracy of radial SVM model with 5 classes and 7 predictor RF model with 5 classes for polygons in test data. A correct prediction is considered to be a polygon with more than half of the pixels correctly classified.")
+```
+
 
 ```{r include_packages_2, include = FALSE}
 # This chunk ensures that the thesisdown package is

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.1.7)  13 APR 2021 22:25
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.1.7)  21 APR 2021 11:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -719,13 +719,13 @@ map}] [2
 \tf@toc=\write5
 \openout5 = `thesis.toc'.
 
-[4] (./thesis.lot)
+[4] (./thesis.lot [5
+
+])
 \tf@lot=\write6
 \openout6 = `thesis.lot'.
 
-[5
-
-] [6] (./thesis.lof
+[6] (./thesis.lof
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [7
@@ -788,7 +788,7 @@ LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 2
 (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 ) [6]
-<thesis_files/figure-latex/crownWidth-1.pdf, id=424, 427.5975pt x 280.04625pt>
+<thesis_files/figure-latex/crownWidth-1.pdf, id=468, 427.5975pt x 280.04625pt>
 File: thesis_files/figure-latex/crownWidth-1.pdf Graphic file (type pdf)
 <use thesis_files/figure-latex/crownWidth-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/crownWidth-1.pdf  used on in
@@ -801,31 +801,31 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 5756) has occurred while \output is active []
 
 [8 <./thesis_files/figure-latex/crownWidth-1.pdf>]
-<figure/polyimage.png, id=454, 250.9375pt x 129.48375pt>
+<figure/polyimage.png, id=497, 250.9375pt x 129.48375pt>
 File: figure/polyimage.png Graphic file (type png)
 <use figure/polyimage.png>
 Package pdftex.def Info: figure/polyimage.png  used on input line 339.
 (pdftex.def)             Requested size: 216.81pt x 111.87938pt.
-<figure/redcedar.png, id=456, 250.9375pt x 128.98187pt>
+<figure/redcedar.png, id=499, 250.9375pt x 128.98187pt>
 File: figure/redcedar.png Graphic file (type png)
 <use figure/redcedar.png>
 Package pdftex.def Info: figure/redcedar.png  used on input line 347.
 (pdftex.def)             Requested size: 216.81pt x 111.44576pt.
 [9 <./figure/polyimage.png> <./figure/redcedar.png>] [10]
-<thesis_files/figure-latex/pixDensity-1.pdf, id=472, 423.5825pt x 280.04625pt>
+<thesis_files/figure-latex/pixDensity-1.pdf, id=515, 423.5825pt x 280.04625pt>
 File: thesis_files/figure-latex/pixDensity-1.pdf Graphic file (type pdf)
 <use thesis_files/figure-latex/pixDensity-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/pixDensity-1.pdf  used on in
 put line 498.
 (pdftex.def)             Requested size: 423.58147pt x 280.04555pt.
 [11] [12 <./thesis_files/figure-latex/pixDensity-1.pdf>]
-<thesis_files/figure-latex/ndvival-1.pdf, id=494, 279.0425pt x 280.04625pt>
+<thesis_files/figure-latex/ndvival-1.pdf, id=537, 279.0425pt x 280.04625pt>
 File: thesis_files/figure-latex/ndvival-1.pdf Graphic file (type pdf)
 <use thesis_files/figure-latex/ndvival-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/ndvival-1.pdf  used on input
  line 515.
 (pdftex.def)             Requested size: 279.04181pt x 280.04555pt.
-<thesis_files/figure-latex/grassval-1.pdf, id=496, 489.83pt x 280.04625pt>
+<thesis_files/figure-latex/grassval-1.pdf, id=539, 489.83pt x 280.04625pt>
 File: thesis_files/figure-latex/grassval-1.pdf Graphic file (type pdf)
 <use thesis_files/figure-latex/grassval-1.pdf>
 Package pdftex.def Info: thesis_files/figure-latex/grassval-1.pdf  used on inpu
@@ -836,36 +836,33 @@ Overfull \hbox (56.2088pt too wide) in paragraph at lines 527--528
  [][] 
  []
 
-
-Underfull \vbox (badness 2495) has occurred while \output is active []
-
 [13 <./thesis_files/figure-latex/ndvival-1.pdf>]
-<figure/beforeaftermask.png, id=519, 301.125pt x 454.19687pt>
+<figure/beforeaftermask.png, id=562, 301.125pt x 454.19687pt>
 File: figure/beforeaftermask.png Graphic file (type png)
 <use figure/beforeaftermask.png>
 Package pdftex.def Info: figure/beforeaftermask.png  used on input line 536.
 (pdftex.def)             Requested size: 173.44534pt x 261.6255pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
 [14 <./thesis_files/figure-latex/grassval-1.pdf>]
-<figure/masklimit.png, id=535, 301.125pt x 457.20813pt>
+<figure/masklimit.png, id=579, 301.125pt x 457.20813pt>
 File: figure/masklimit.png Graphic file (type png)
 <use figure/masklimit.png>
 Package pdftex.def Info: figure/masklimit.png  used on input line 552.
 (pdftex.def)             Requested size: 173.44534pt x 263.36005pt.
 [15 <./figure/beforeaftermask.png>] [16 <./figure/masklimit.png>]
 Chapter 2.
-
-Underfull \vbox (badness 2134) has occurred while \output is active []
-
 [17
 
 ] [18] [19]
-<figure/corrmatrix.png, id=573, 1514.65875pt x 1178.4025pt>
+<figure/corrmatrix.png, id=616, 1514.65875pt x 1178.4025pt>
 File: figure/corrmatrix.png Graphic file (type png)
 <use figure/corrmatrix.png>
 Package pdftex.def Info: figure/corrmatrix.png  used on input line 619.
 (pdftex.def)             Requested size: 303.53267pt x 236.14383pt.
 [20 <./figure/corrmatrix.png>]
-<figure/rf7_mtry.png, id=580, 1445.4pt x 903.375pt>
+<figure/rf7_mtry.png, id=623, 1445.4pt x 903.375pt>
 File: figure/rf7_mtry.png Graphic file (type png)
 <use figure/rf7_mtry.png>
 Package pdftex.def Info: figure/rf7_mtry.png  used on input line 645.
@@ -874,7 +871,7 @@ Package pdftex.def Info: figure/rf7_mtry.png  used on input line 645.
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [21]
-<figure/rf8_mtry.png, id=589, 1445.4pt x 903.375pt>
+<figure/rf8_mtry.png, id=632, 1445.4pt x 903.375pt>
 File: figure/rf8_mtry.png Graphic file (type png)
 <use figure/rf8_mtry.png>
 Package pdftex.def Info: figure/rf8_mtry.png  used on input line 657.
@@ -883,7 +880,7 @@ Package pdftex.def Info: figure/rf8_mtry.png  used on input line 657.
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [22 <./figure/rf7_mtry.png>]
-<figure/rf8c_mtry.png, id=598, 1445.4pt x 903.375pt>
+<figure/rf8c_mtry.png, id=641, 1445.4pt x 903.375pt>
 File: figure/rf8c_mtry.png Graphic file (type png)
 <use figure/rf8c_mtry.png>
 Package pdftex.def Info: figure/rf8c_mtry.png  used on input line 669.
@@ -892,7 +889,7 @@ Package pdftex.def Info: figure/rf8c_mtry.png  used on input line 669.
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [23 <./figure/rf8_mtry.png>]
-<figure/rfresults.png, id=608, 1445.4pt x 901.3675pt>
+<figure/rfresults.png, id=651, 1445.4pt x 901.3675pt>
 File: figure/rfresults.png Graphic file (type png)
 <use figure/rfresults.png>
 Package pdftex.def Info: figure/rfresults.png  used on input line 681.
@@ -904,13 +901,13 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [25 <./figure/rfresults.png>]
-<figure/svm2.png, id=625, 1445.4pt x 903.375pt>
+<figure/svm2.png, id=668, 1445.4pt x 903.375pt>
 File: figure/svm2.png Graphic file (type png)
 <use figure/svm2.png>
 Package pdftex.def Info: figure/svm2.png  used on input line 730.
 (pdftex.def)             Requested size: 390.25534pt x 243.90073pt.
 [26]
-<figure/svm2c.png, id=634, 1445.4pt x 903.375pt>
+<figure/svm2c.png, id=677, 1445.4pt x 903.375pt>
 File: figure/svm2c.png Graphic file (type png)
 <use figure/svm2c.png>
 Package pdftex.def Info: figure/svm2c.png  used on input line 738.
@@ -919,12 +916,12 @@ Package pdftex.def Info: figure/svm2c.png  used on input line 738.
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [27 <./figure/svm2.png>]
-<figure/svm3.png, id=642, 1445.4pt x 903.375pt>
+<figure/svm3.png, id=685, 1445.4pt x 903.375pt>
 File: figure/svm3.png Graphic file (type png)
 <use figure/svm3.png>
 Package pdftex.def Info: figure/svm3.png  used on input line 750.
 (pdftex.def)             Requested size: 390.25534pt x 243.90073pt.
-<figure/svm3c.png, id=643, 1445.4pt x 903.375pt>
+<figure/svm3c.png, id=686, 1445.4pt x 903.375pt>
 File: figure/svm3c.png Graphic file (type png)
 <use figure/svm3c.png>
 Package pdftex.def Info: figure/svm3c.png  used on input line 758.
@@ -933,7 +930,7 @@ Package pdftex.def Info: figure/svm3c.png  used on input line 758.
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [28 <./figure/svm2c.png>]
-<figure/svmresults.png, id=652, 1445.4pt x 903.375pt>
+<figure/svmresults.png, id=695, 1445.4pt x 903.375pt>
 File: figure/svmresults.png Graphic file (type png)
 <use figure/svmresults.png>
 Package pdftex.def Info: figure/svmresults.png  used on input line 770.
@@ -944,16 +941,16 @@ Underfull \vbox (badness 3679) has occurred while \output is active []
 [29 <./figure/svm3.png> <./figure/svm3c.png>] [30 <./figure/svmresults.png>] [3
 1] [32]
 Chapter 3.
-<figure/rfPortland.png, id=684, 409.53pt x 334.24875pt>
+<figure/rfPortland.png, id=728, 362.35374pt x 347.2975pt>
 File: figure/rfPortland.png Graphic file (type png)
 <use figure/rfPortland.png>
-Package pdftex.def Info: figure/rfPortland.png  used on input line 878.
-(pdftex.def)             Requested size: 433.62pt x 353.93475pt.
-<figure/svmPortland.png, id=685, 390.45876pt x 308.15125pt>
+Package pdftex.def Info: figure/rfPortland.png  used on input line 896.
+(pdftex.def)             Requested size: 433.62pt x 415.61026pt.
+<figure/svmPortland.png, id=729, 388.45125pt x 299.1175pt>
 File: figure/svmPortland.png Graphic file (type png)
 <use figure/svmPortland.png>
-Package pdftex.def Info: figure/svmPortland.png  used on input line 886.
-(pdftex.def)             Requested size: 433.62pt x 342.23059pt.
+Package pdftex.def Info: figure/svmPortland.png  used on input line 904.
+(pdftex.def)             Requested size: 433.62pt x 333.90935pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -963,22 +960,31 @@ Underfull \vbox (badness 10000) has occurred while \output is active []
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [34 <./figure/rfPortland.png>]
-<figure/resultsToStreet.png, id=698, 940.51375pt x 436.63126pt>
+<figure/resultsToStreet.png, id=742, 902.37125pt x 444.66125pt>
 File: figure/resultsToStreet.png Graphic file (type png)
 <use figure/resultsToStreet.png>
-Package pdftex.def Info: figure/resultsToStreet.png  used on input line 897.
-(pdftex.def)             Requested size: 433.62pt x 201.30586pt.
+Package pdftex.def Info: figure/resultsToStreet.png  used on input line 915.
+(pdftex.def)             Requested size: 433.62pt x 213.67923pt.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[35 <./figure/svmPortland.png>] [36 <./figure/resultsToStreet.png>]
+[35 <./figure/svmPortland.png>]
+<figure/reedTreesTopdx.png, id=753, 1131.22626pt x 395.4775pt>
+File: figure/reedTreesTopdx.png Graphic file (type png)
+<use figure/reedTreesTopdx.png>
+Package pdftex.def Info: figure/reedTreesTopdx.png  used on input line 924.
+(pdftex.def)             Requested size: 433.62pt x 151.59248pt.
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+[36 <./figure/resultsToStreet.png>] [37 <./figure/reedTreesTopdx.png>] [38
+
+]
 Chapter 4.
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[37
-
-] [38] [39] [40]
+[39] [40] [41] [42]
 Appendix A.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
@@ -1025,357 +1031,392 @@ LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 LaTeX Warning: `!h' float specifier changed to `!ht'.
 
-[41
+[43
 
-] [42] [43] [44]
+] [44] [45] [46]
 Appendix B.
 
-Package xcolor Warning: Incompatible color definition on input line 1356.
+Package xcolor Warning: Incompatible color definition on input line 1404.
 
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <12> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 1359.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 1407.
 
-Package xcolor Warning: Incompatible color definition on input line 1447.
-
-
-Package xcolor Warning: Incompatible color definition on input line 1447.
+Package xcolor Warning: Incompatible color definition on input line 1495.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1447.
+Package xcolor Warning: Incompatible color definition on input line 1495.
 
-[45
+
+Package xcolor Warning: Incompatible color definition on input line 1495.
+
+[47
 
 ]
 
-Package xcolor Warning: Incompatible color definition on input line 1447.
+Package xcolor Warning: Incompatible color definition on input line 1495.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1447.
+Package xcolor Warning: Incompatible color definition on input line 1495.
 
 
-Underfull \vbox (badness 10000) detected at line 1447
+Underfull \vbox (badness 10000) detected at line 1495
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1447
+Underfull \vbox (badness 10000) detected at line 1495
  []
 
 
-Package xcolor Warning: Incompatible color definition on input line 1447.
+Package xcolor Warning: Incompatible color definition on input line 1495.
 
-[46]
+[48]
 
-Package xcolor Warning: Incompatible color definition on input line 1447.
-
-
-Package xcolor Warning: Incompatible color definition on input line 1447.
+Package xcolor Warning: Incompatible color definition on input line 1495.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1449.
+Package xcolor Warning: Incompatible color definition on input line 1495.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1476.
+Package xcolor Warning: Incompatible color definition on input line 1497.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1476.
+Package xcolor Warning: Incompatible color definition on input line 1524.
 
-[47]
 
-Package xcolor Warning: Incompatible color definition on input line 1478.
+Package xcolor Warning: Incompatible color definition on input line 1524.
+
+
+Package xcolor Warning: Incompatible color definition on input line 1524.
+
+[49]
+
+Package xcolor Warning: Incompatible color definition on input line 1524.
+
+
+Package xcolor Warning: Incompatible color definition on input line 1524.
+
+
+Package xcolor Warning: Incompatible color definition on input line 1529.
 
 LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 
-1605.
+1656.
 (/Users/sarahkmaebius/Library/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 
-Package xcolor Warning: Incompatible color definition on input line 1610.
+Package xcolor Warning: Incompatible color definition on input line 1661.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1610.
+Package xcolor Warning: Incompatible color definition on input line 1661.
 
 
-Overfull \vbox (0.12526pt too high) detected at line 1610
- []
-
-
-Package xcolor Warning: Incompatible color definition on input line 1610.
-
-[48]
-
-Package xcolor Warning: Incompatible color definition on input line 1610.
-
-
-Package xcolor Warning: Incompatible color definition on input line 1610.
-
-
-Underfull \vbox (badness 10000) detected at line 1610
- []
-
-
-Underfull \vbox (badness 10000) detected at line 1610
- []
-
-
-Package xcolor Warning: Incompatible color definition on input line 1610.
-
-[49]
-
-Package xcolor Warning: Incompatible color definition on input line 1610.
-
-
-Package xcolor Warning: Incompatible color definition on input line 1610.
-
-
-Underfull \vbox (badness 10000) detected at line 1610
- []
-
-
-Underfull \vbox (badness 10000) detected at line 1610
- []
-
-
-Package xcolor Warning: Incompatible color definition on input line 1610.
+Package xcolor Warning: Incompatible color definition on input line 1661.
 
 [50]
 
-Package xcolor Warning: Incompatible color definition on input line 1610.
+Package xcolor Warning: Incompatible color definition on input line 1661.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1610.
+Package xcolor Warning: Incompatible color definition on input line 1661.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1612.
+Underfull \vbox (badness 10000) detected at line 1661
+ []
 
 
-Package xcolor Warning: Incompatible color definition on input line 1656.
+Underfull \vbox (badness 10000) detected at line 1661
+ []
 
 
-Package xcolor Warning: Incompatible color definition on input line 1656.
-
-
-Package xcolor Warning: Incompatible color definition on input line 1656.
+Package xcolor Warning: Incompatible color definition on input line 1661.
 
 [51]
 
-Package xcolor Warning: Incompatible color definition on input line 1656.
+Package xcolor Warning: Incompatible color definition on input line 1661.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1656.
+Package xcolor Warning: Incompatible color definition on input line 1661.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1658.
+Underfull \vbox (badness 10000) detected at line 1661
+ []
 
 
-Package xcolor Warning: Incompatible color definition on input line 1713.
+Underfull \vbox (badness 10000) detected at line 1661
+ []
 
 
-Package xcolor Warning: Incompatible color definition on input line 1713.
-
-
-Package xcolor Warning: Incompatible color definition on input line 1713.
+Package xcolor Warning: Incompatible color definition on input line 1661.
 
 [52]
 
-Package xcolor Warning: Incompatible color definition on input line 1713.
+Package xcolor Warning: Incompatible color definition on input line 1661.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1713.
+Package xcolor Warning: Incompatible color definition on input line 1661.
+
+
+Package xcolor Warning: Incompatible color definition on input line 1666.
+
+
+Package xcolor Warning: Incompatible color definition on input line 1710.
+
+
+Package xcolor Warning: Incompatible color definition on input line 1710.
+
+
+Package xcolor Warning: Incompatible color definition on input line 1710.
+
+[53]
+
+Package xcolor Warning: Incompatible color definition on input line 1710.
+
+
+Package xcolor Warning: Incompatible color definition on input line 1710.
 
 
 Package xcolor Warning: Incompatible color definition on input line 1715.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1994.
+Package xcolor Warning: Incompatible color definition on input line 1770.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1994.
+Package xcolor Warning: Incompatible color definition on input line 1770.
 
 
-Overfull \vbox (0.68048pt too high) detected at line 1994
- []
-
-
-Package xcolor Warning: Incompatible color definition on input line 1994.
-
-[53]
-
-Package xcolor Warning: Incompatible color definition on input line 1994.
-
-
-Package xcolor Warning: Incompatible color definition on input line 1994.
-
-
-Underfull \vbox (badness 10000) detected at line 1994
- []
-
-
-Underfull \vbox (badness 10000) detected at line 1994
- []
-
-
-Package xcolor Warning: Incompatible color definition on input line 1994.
+Package xcolor Warning: Incompatible color definition on input line 1770.
 
 [54]
 
-Package xcolor Warning: Incompatible color definition on input line 1994.
+Package xcolor Warning: Incompatible color definition on input line 1770.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1994.
+Package xcolor Warning: Incompatible color definition on input line 1770.
 
 
-Underfull \vbox (badness 10000) detected at line 1994
- []
-
-
-Underfull \vbox (badness 10000) detected at line 1994
- []
-
-
-Package xcolor Warning: Incompatible color definition on input line 1994.
+Package xcolor Warning: Incompatible color definition on input line 1775.
 
 [55]
 
-Package xcolor Warning: Incompatible color definition on input line 1994.
+Package xcolor Warning: Incompatible color definition on input line 2055.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1994.
+Package xcolor Warning: Incompatible color definition on input line 2055.
 
 
-Underfull \vbox (badness 10000) detected at line 1994
+Underfull \vbox (badness 10000) detected at line 2055
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1994
+Underfull \vbox (badness 10000) detected at line 2055
  []
 
 
-Package xcolor Warning: Incompatible color definition on input line 1994.
+Package xcolor Warning: Incompatible color definition on input line 2055.
 
 [56]
 
-Package xcolor Warning: Incompatible color definition on input line 1994.
+Package xcolor Warning: Incompatible color definition on input line 2055.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1994.
+Package xcolor Warning: Incompatible color definition on input line 2055.
 
 
-Underfull \vbox (badness 10000) detected at line 1994
+Underfull \vbox (badness 10000) detected at line 2055
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1994
+Underfull \vbox (badness 10000) detected at line 2055
  []
 
 
-Package xcolor Warning: Incompatible color definition on input line 1994.
+Package xcolor Warning: Incompatible color definition on input line 2055.
 
 [57]
 
-Package xcolor Warning: Incompatible color definition on input line 1994.
+Package xcolor Warning: Incompatible color definition on input line 2055.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1994.
+Package xcolor Warning: Incompatible color definition on input line 2055.
 
 
-Underfull \vbox (badness 10000) detected at line 1994
+Underfull \vbox (badness 10000) detected at line 2055
  []
 
 
-Underfull \vbox (badness 10000) detected at line 1994
+Underfull \vbox (badness 10000) detected at line 2055
  []
 
 
-Package xcolor Warning: Incompatible color definition on input line 1994.
+Package xcolor Warning: Incompatible color definition on input line 2055.
 
 [58]
 
-Package xcolor Warning: Incompatible color definition on input line 1994.
+Package xcolor Warning: Incompatible color definition on input line 2055.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1994.
+Package xcolor Warning: Incompatible color definition on input line 2055.
 
 
-Package xcolor Warning: Incompatible color definition on input line 1996.
+Underfull \vbox (badness 10000) detected at line 2055
+ []
 
 
-Package xcolor Warning: Incompatible color definition on input line 2049.
+Underfull \vbox (badness 10000) detected at line 2055
+ []
 
 
-Package xcolor Warning: Incompatible color definition on input line 2049.
-
-
-Package xcolor Warning: Incompatible color definition on input line 2049.
+Package xcolor Warning: Incompatible color definition on input line 2055.
 
 [59]
 
-Package xcolor Warning: Incompatible color definition on input line 2049.
+Package xcolor Warning: Incompatible color definition on input line 2055.
 
 
-Package xcolor Warning: Incompatible color definition on input line 2049.
+Package xcolor Warning: Incompatible color definition on input line 2055.
 
 
-Package xcolor Warning: Incompatible color definition on input line 2051.
+Underfull \vbox (badness 10000) detected at line 2055
+ []
 
 
-Underfull \vbox (badness 1642) has occurred while \output is active []
+Overfull \vbox (1.97pt too high) detected at line 2055
+ []
+
+
+Package xcolor Warning: Incompatible color definition on input line 2055.
 
 [60]
 
-Package xcolor Warning: Incompatible color definition on input line 2175.
+Package xcolor Warning: Incompatible color definition on input line 2055.
 
 
-Package xcolor Warning: Incompatible color definition on input line 2175.
+Package xcolor Warning: Incompatible color definition on input line 2055.
 
 
-Underfull \vbox (badness 10000) detected at line 2175
+Underfull \vbox (badness 10000) detected at line 2055
  []
 
 
-Underfull \vbox (badness 10000) detected at line 2175
+Underfull \vbox (badness 10000) detected at line 2055
  []
 
 
-Package xcolor Warning: Incompatible color definition on input line 2175.
+Package xcolor Warning: Incompatible color definition on input line 2055.
 
 [61]
 
-Package xcolor Warning: Incompatible color definition on input line 2175.
+Package xcolor Warning: Incompatible color definition on input line 2055.
 
 
-Package xcolor Warning: Incompatible color definition on input line 2175.
+Package xcolor Warning: Incompatible color definition on input line 2055.
 
 
-Underfull \vbox (badness 10000) detected at line 2175
- []
+Package xcolor Warning: Incompatible color definition on input line 2060.
 
 
-Underfull \vbox (badness 10000) detected at line 2175
- []
+Package xcolor Warning: Incompatible color definition on input line 2113.
 
 
-Package xcolor Warning: Incompatible color definition on input line 2175.
+Package xcolor Warning: Incompatible color definition on input line 2113.
+
+
+Package xcolor Warning: Incompatible color definition on input line 2113.
 
 [62]
 
-Package xcolor Warning: Incompatible color definition on input line 2175.
+Package xcolor Warning: Incompatible color definition on input line 2113.
 
 
-Package xcolor Warning: Incompatible color definition on input line 2175.
+Package xcolor Warning: Incompatible color definition on input line 2113.
 
-[63] [64
 
-] [65
+Package xcolor Warning: Incompatible color definition on input line 2118.
+
+
+Package xcolor Warning: Incompatible color definition on input line 2191.
+
+
+Package xcolor Warning: Incompatible color definition on input line 2191.
+
+
+Package xcolor Warning: Incompatible color definition on input line 2191.
+
+[63]
+
+Package xcolor Warning: Incompatible color definition on input line 2191.
+
+
+Package xcolor Warning: Incompatible color definition on input line 2191.
+
+
+Underfull \vbox (badness 10000) detected at line 2191
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 2191
+ []
+
+
+Package xcolor Warning: Incompatible color definition on input line 2191.
+
+[64]
+
+Package xcolor Warning: Incompatible color definition on input line 2191.
+
+
+Package xcolor Warning: Incompatible color definition on input line 2191.
+
+
+Package xcolor Warning: Incompatible color definition on input line 2193.
+
+
+Package xcolor Warning: Incompatible color definition on input line 2275.
+
+
+Package xcolor Warning: Incompatible color definition on input line 2275.
+
+
+Package xcolor Warning: Incompatible color definition on input line 2275.
+
+[65]
+
+Package xcolor Warning: Incompatible color definition on input line 2275.
+
+
+Package xcolor Warning: Incompatible color definition on input line 2275.
+
+
+Underfull \vbox (badness 10000) detected at line 2275
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 2275
+ []
+
+
+Package xcolor Warning: Incompatible color definition on input line 2275.
+
+[66]
+
+Package xcolor Warning: Incompatible color definition on input line 2275.
+
+
+Package xcolor Warning: Incompatible color definition on input line 2275.
+
+[67] [68
+
+] [69
 
 ] (./thesis.aux)
 Package rerunfilecheck Info: File `thesis.out' has not changed.
-(rerunfilecheck)             Checksum: 5C660BFF621A4AC3041D1EB3E89EADF2;2290.
+(rerunfilecheck)             Checksum: 0AA6EDE586626477444332C00D8F325F;2805.
  ) 
 Here is how much of TeX's memory you used:
- 11159 strings out of 481233
- 175348 string characters out of 5913274
- 573765 words of memory out of 5000000
- 27560 multiletter control sequences out of 15000+600000
+ 11204 strings out of 481233
+ 176153 string characters out of 5913274
+ 573670 words of memory out of 5000000
+ 27583 multiletter control sequences out of 15000+600000
  456305 words of font info for 66 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  68i,12n,70p,2256b,379s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1400,10 +1441,10 @@ ist/fonts/type1/public/lm/lmsy8.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf
 -dist/fonts/type1/public/lm/lmtk10.pfb></Users/sarahkmaebius/Library/TinyTeX/te
 xmf-dist/fonts/type1/public/lm/lmtt12.pfb></Users/sarahkmaebius/Library/TinyTeX
 /texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on thesis.pdf (79 pages, 7339149 bytes).
+Output written on thesis.pdf (83 pages, 10335355 bytes).
 PDF statistics:
- 996 PDF objects out of 1000 (max. 8388607)
- 846 compressed objects within 9 object streams
- 229 named destinations out of 1000 (max. 500000)
- 370 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1078 PDF objects out of 1200 (max. 8388607)
+ 921 compressed objects within 10 object streams
+ 250 named destinations out of 1000 (max. 500000)
+ 431 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -236,7 +236,7 @@ Modelling in this research will be conducted by combining information gathered f
 
 Remote sensing is a process for identifying the physical aspects of a large area of land by collecting and measuring the reflected light using airplanes or satellites. This method provides access to lot of information about the region of interest that would otherwise be limited from a human's ground-level persepective. Remote sensing is used to detect characteristics on land as well as the sea. Some remote sensing land applications include tracking forest fires, volcanic eruptions, city growth, and also forest changes.
 
-Satellites orbit the earth, carrying sensors that record levels of electromagnetic radiation detected by the reflection of the sun on the earth. The data collected is the measured radiation from different regions of the spectrum (visible light, infrared, ultraviolet, etc.). Depending on the surface, sunlight gets absorbed or reflected back at the orbiting satellite. The remotely sensed data is available at certain resolutions depending on the instruments used. Spatial resolution is the area imaged by a satellite image, where a detailed image has smaller spatial resolution hence smaller pixels. Spectral resolution is a measure of the size of the wavelength interval, where smaller bands and smaller wavelengths improve the spectral resolution of an image and enhance the level of detail. Satellite images need to be corrected to combine the bands into an image depending on the analysis.
+Satellites orbit the earth, carrying sensors that record levels of electromagnetic radiation detected by the reflection of the sun on the earth. The data collected is the measured radiation from different regions of the spectrum (visible light, infrared, ultraviolet, etc.). Depending on the surface, sunlight gets absorbed or reflected back at the orbiting satellite. The remotely sensed data is available at certain resolutions depending on the instruments used. Spatial resolution is the area imaged by a satellite image, where a detailed image has smaller spatial resolution hence smaller pixels. Spectral resolution is a measure of the size of the wavelength interval, where smaller bands and smaller intervals improve the spectral resolution of an image and enhance the level of detail. Satellite images need to be corrected to combine the bands into an image depending on the analysis.
 
 Imagery come in various band widths and different number of bands. Hyperspectral imagery has narrow bands of sizes 10-20nm and hundreds of bands. So, hyperspectral imagery is successful in distinguishing fine details, but at a cost of more complexity. Multispectral imagery has wider bands and up to 10 total bands. This type of imagery is not complex to work with, but misses some details that hyperspectral imagery detects.
 
@@ -252,7 +252,7 @@ This thesis follows along with the methods in (Fricker et al., 2019) for combini
 \hypertarget{a-statistical-learning-approach-to-identifying-location-of-western-redcedars}{%
 \subsection{A Statistical Learning Approach to Identifying Location of Western Redcedars}\label{a-statistical-learning-approach-to-identifying-location-of-western-redcedars}}
 
-This work combines RGB imagery data from Planet.com with ground level tree data from the RStudio \texttt{pdxTrees} library and applies random forest and support vector machine classification methods to predict the location of tree species (specifically western redcedars) in Portland, Oregon and model the condition of western redcedars to ultimately understand the cause of death in this species. Chapter \ref{data} describes the two levels of data in this research: ground level and pixel level data, where the data comes from, and how the data is combined for modeling. Chapter \ref{methods} discusses the process behind training random forest and support vector machine models. Chapter \ref{results} summarizes how the data is prepared for the final model and the outcome of the research followed by a discussion and conclusion.
+This work combines RGB imagery data from Planet.com with ground level tree data from the RStudio \texttt{pdxTrees} library and applies random forest and support vector machine classification methods to predict the location of tree species (specifically western redcedars) in Portland, Oregon and model the condition of western redcedars to ultimately understand the cause of death in this species. Chapter \ref{data} describes the two levels of data in this research: ground level and pixel level data, where the data comes from, and how the data is combined for modeling. Chapter \ref{methods} discusses the process behind training random forest and support vector machine models. Chapter \ref{results} summarizes how the data is prepared for the final model and the outcome of the research. Chapter \ref{discussion} provides a summary of the research, some limitations, and a discussion of methods of improvement as wells as key takeaways.
 
 \hypertarget{data}{%
 \chapter{Data}\label{data}}
@@ -264,16 +264,16 @@ There are two sources of data in this project. Data at a pixel level come from s
 
 Satellite images come from Planet.com's PS2.SD instrument found on Dove-R satellites that were launched in 2017. Satellites have an approximate frame size of 20 km x 12 km parallel to flight path. From a single pass, 4 to 5 overlapping framed scenes are combined to form a tile. To separate the light into red, blue, green, and near-infrared (NIR) channels, the telescope has a high-performance butcher-block filter made of 4 individual pass-band filters. Planet.com equates this pass-band filter with that of Sentinel-2.
 
-As it orbits the Earth, the satellite captures continuous strips of single frame images that are split into a RGB frame and NIR frame. The butcher-block pass separately photographs the red, blue, green, and NIR bands and then combines all four to form an image. Images are are downloaded already fully processed and ready to be analyzed. The process includes corrections for radiometric calibration, terrain distortions corrections, elevation corrections, and atmospheric corrections.
+As it orbits the Earth, the satellite captures continuous strips of single frame images that are split into a RGB frame and NIR frame. The butcher-block pass separately images the red, blue, green, and NIR bands and then combines all four to form an image. Images are are downloaded already fully processed and ready to be analyzed. The process includes corrections for radiometric calibration, terrain distortions corrections, elevation corrections, and atmospheric corrections.
 
 The images used in this research were taken on September 2nd, 2020 at an altitude of 475 km. Images are taken from the summer months to reduce the chance of rain clouds and capture peak greenness of the trees. The compiled multi-spectral image is composed of 4 bands: blue, green, red, and NIR, with center wavelengths 490 nm, 565 nm, 665 nm, and 865 nm respectively, with an average bandwidth of 41 nm. The average spatial extent is around 25 km by 8 km. The images cover the entire Portland area, with specific measurements of 26 km from west to east and 30 km from north to south. The spatial resolution of the pixels is approximately 3 meters.
 
-Planet.com provides a way to download free images that are already processed and corrected for analysis. Some drawbacks to using this data are the limited number of downloads available per free account, the low spatial resolution, which decreases the performance of statistical models trying to predict tree species location, and the low spectral resolution, so the satellite sensor cannot detect wavelengths in detail.
+Planet.com provides a way to download free images that are already processed and corrected for analysis. Some drawbacks to using this data are the limited number of downloads available per free account, the low spatial resolution, which decreases the performance of statistical models trying to predict tree species location, and the low spectral resolution, so the satellite sensor cannot detect spectral features in detail.
 
 \hypertarget{ground-data}{%
 \subsection{Ground Data}\label{ground-data}}
 
-Ground level data is available from the `pdxTrees' package in RStudio. This data was collected as part of the Portland's Parks and Recreation's Urban Forestry Tree Inventory Project, which collected park tree information from 2017 to 2019. Originally, the inventory project started with the goal of improving the city's tree management plans. Under the guidance of US Forestry staff, volunteers around the city's neighborhoods are trained in identifying tree species and provided with tools necessary to record tree measurements. Measurements in feet were made using diameter tape. The Portland park trees inventory consists of over 25,000 trees, each with information about tree location, size, species, and health. For the purposes of this project, the following variables were selected:
+Ground level data is available from the `pdxTrees' package in RStudio. This data was collected as part of Portland's Parks and Recreation's Urban Forestry Tree Inventory Project, which collected park tree information from 2017 to 2019. Originally, the inventory project started with the goal of improving the city's tree management plans. Under the guidance of US Forestry staff, volunteers around the city's neighborhoods are trained in identifying tree species and provided with tools necessary to record tree measurements. Measurements in feet were made using diameter tape. The Portland park trees inventory consists of over 25,000 trees, each with information about tree location, size, species, and health. For the purposes of this project, the following variables were selected:
 \begin{itemize}
 \item
   Spatial information: Longitude and latitude of tree. Location of tree is recorded on a tablet with Collector for ArcGIS and recorders manually select the tree from a satellite image on the screen. The tree's location is mapped over the satellite images in QGIS for analysis.
@@ -291,7 +291,7 @@ Portland's Tree Inventory includes a variable for identifying trees including We
 \hypertarget{training-data}{%
 \subsection{Training Data}\label{training-data}}
 
-To datasets were used to train the models and their performance was compared. A pixels dataset was created by extracting pixel band values (red, green, blue, and infrared) from manually drawn polygons around 100 of each tree species, so that the pixels dataset has multiple pixel observations representing a single tree. The other dataset was a point pixel dataset created by only extracting band values from the pixel directly below the point indicated by a street or park tree. This dataset is smaller than the pixels dataset and differs from the pixels dataset in that it is more likely to have the pure tree pixel values instead of maybe a dirt or shadow pixel value. Having the two datasets allows a comparison between the performance of polygon pixel extraction methods versus single point extraction methods.
+Two datasets were used to train the models and their performance was compared. A pixels dataset was created by extracting pixel band values (red, green, blue, and infrared) from manually drawn polygons around 100 of each tree species, so that the pixels dataset has multiple pixel observations representing a single tree. The other dataset was a point pixel dataset created by only extracting band values from the pixel directly below the point indicated by a street or park tree. This dataset is smaller than the pixels dataset and differs from the pixels dataset in that it is more likely to have the pure tree pixel values instead of maybe a dirt or shadow pixel value. Having the two datasets allows a comparison between the performance of polygon pixel extraction methods versus single point extraction methods.
 
 \hypertarget{characteristics-of-pixels-training-data}{%
 \subsubsection{Characteristics of Pixels Training Data}\label{characteristics-of-pixels-training-data}}
@@ -305,10 +305,10 @@ The training data at the ground-level was filtered by tree size and tree type. T
 
 \caption{Plot comparing North to South Crown Width (ft) to West to East Crown Width (ft). A tree with a higher north-south crown width has a higher west-east crown width, so without loss of generality the north-south crown width variable is used to filter the dataset for larger trees only.}\label{fig:crownWidth}
 \end{figure}
-Six tree types were determined to have large enough canopies on average and appear frequently enough to construct a training dataset with plenty of observations for each species of tree: Douglas-Fir, English Oak, Giant Sequoia, Maple, Western Redcedar. Table \ref{tab:pointsTable} provides the number of trees under each common name category. The largest group contains 6485 observations of Douglas-Fir trees, and the smallest group contains 135 observations of English Oak trees.
+Six tree types were determined to have large enough canopies on average and appear frequently enough to construct a training dataset with sufficient observations for each species of tree: Douglas-Fir, English Oak, Giant Sequoia, Maple, Western Redcedar. Table \ref{tab:pointsTable} provides the number of trees under each common name category. The largest group contains 6485 observations of Douglas-Fir trees, and the smallest group contains 135 observations of English Oak trees.
 \begin{table}
 
-\caption{\label{tab:pointsTable}Common tree names included in the tidy data and their total counts.}
+\caption{\label{tab:pointsTable}Common names of trees included in the data and their total counts.}
 \centering
 \begin{tabular}[t]{l|r}
 \hline
@@ -331,7 +331,7 @@ English Oak & 135\\
 \hypertarget{creating-spatial-polygons}{%
 \subsubsection{Creating Spatial Polygons}\label{creating-spatial-polygons}}
 
-The training dataset was converted into shapefiles for each type of tree and exported into QGIS where polygons were manually drawn around 100 of the trees for each species. The point shapefile layers were displayed over the raster images downloaded from Planet.com in QGIS, which provided a guide point for locating individual trees. Then using QGIS's drawing tool, a polygon is carefully drawn around the tree canopy (see Figure \ref{fig:polyimage} and Figure \ref{fig:redcedar}). Most polygons turned out to be four to six-sided polygons to retain the general shape of the tree canopy. Trees polygons were only created if the outline of the tree canopy was clearly visible or surrounded by other trees of the same species in order to avoid including pixels from the wrong species in that polygon. Also, the shadows of the trees are visible in the raster images, so the polygons were drawn with the intention of not including the tree shadow. For the five different species of trees, at least 100 polygons were drawn around trees of that type, with each polygon containing at least 6 pixels and at most 20 pixels. The polygon shapefiles were then exported into RStudio where the rest of the analysis was conducted.
+The training dataset was converted into shapefiles for each type of tree and exported into QGIS where polygons were manually drawn around 100 of the trees for each species. The point shapefile layers were displayed over the raster images downloaded from Planet.com in QGIS, which provided a guide point for locating individual trees. Then using QGIS's drawing tool, a polygon is carefully drawn around the tree canopy (see Figure \ref{fig:polyimage} and Figure \ref{fig:redcedar}). Most polygons turned out to be four to six-sided polygons to retain the general shape of the tree canopy. Tree polygons were only created if the outline of the tree canopy was clearly visible or surrounded by other trees of the same species in order to avoid including pixels from the wrong species in that polygon. Also, the shadows of the trees are visible in the raster images, so the polygons were drawn with the intention of not including the tree shadow. For the five different species of trees, at least 100 polygons were drawn around trees of that type, with each polygon containing at least 6 pixels and at most 20 pixels. The polygon shapefiles were then exported into RStudio where the rest of the analysis was conducted.
 
 Table \ref{tab:polyCounts} displays the number of polygons per raster strip and the amount of pixels from those polygons. Table \ref{tab:polyCountsTrees} displays these counts in terms of tree species.
 \begin{figure}
@@ -356,7 +356,7 @@ Table \ref{tab:polyCounts} displays the number of polygons per raster strip and 
 \centering
 \begin{tabular}[t]{l|r|r}
 \hline
-Raster Strip & Polygons & n\\
+Raster Strip & Polygons & Pixels\\
 \hline
 a & 197 & 3614\\
 \hline
@@ -376,7 +376,7 @@ e & 177 & 2395\\
 \centering
 \begin{tabular}[t]{l|l|r|r}
 \hline
-Raster Strip & Tree Name & Polygons & n\\
+Raster Strip & Tree Name & Polygons & Pixels\\
 \hline
 a & Bigleaf Maple & 28 & 283\\
 \hline
@@ -439,7 +439,7 @@ e & Western Redcedar & 36 & 507\\
 
 Ideally, the raster strips contain training trees of each species, and as a result, the polygons are evenly distributed across the raster strips, but due to limitations of our ground-level data as well as the coverage of the strips across the city of Portland, this is not achievable. Each of the raster strips contains some number of manually drawn polygons, however, raster strips `C' and `D' are missing some of the tree species. The raster strips do not all cover Portland to the same extent. Strips `A' and `B' encompass most of the city while strips `C' and `D' only make up a small portion that covers the corners of the city not reached by strips `A' and `B'.
 
-The polygons are drawn with the intention of outlining pixels for a known tree species so that the extracted pixels truly represent that species and so that there is a sufficient amount of pixels per species, however, limitations of the satellite images' resolution make some error inevitable. Many parks trees have canopies that overlap, which cause some polygons to contain pixels from trees of different species. Other pixel errors might come from including pixels that are cast in shadow by the polygon's training tree or by surrounding infrastructure. To avoid these errors, polygons with uncertain canopies are cross-checked with the satellite filter on Google Maps. For example, a point in QGIS that is indicated as a douglas-fir tree might appear as one tree on the low-resolution image from Planet.com, but a closer look at Google Maps shows that it is actually two trees in close proximity. Having low spatial resolution decreases the number of pixels available within a polygon, but that has to be balanced out with the need for a large number of pixels. With regards to the number of pixels per tree species, having around the same number of tree polygons per species results in differing amounts of pixels per species due to the different average sizes of tree canopies for different species. After drawing the images, the pixels totals per tree species is computed to ensure that the training pixels data contains at least 800 pixels per tree species.
+The polygons are drawn with the intention of locating and extracting pixels for a known tree species. Ideally, the extracted data is representative of tree pixels and has a sufficient amount of pixels per species. The satellite images' resolution makes some error inevitable. If tree canopies overlap, polygons may contain pixels from different species. If pixels are cast in shadow, the extracted light intensity values will differ from other pixel values. To avoid these errors, polygons with uncertain canopies are cross-checked with the satellite filter on Google Maps. For example, a point in QGIS that is indicated as a douglas-fir tree might appear as one tree on the low-resolution image from Planet.com, but a closer look at Google Maps shows that it is actually two trees in close proximity. Having low spatial resolution decreases the number of pixels available within a polygon, but that has to be balanced out with the need for a large number of pixels. With regards to the number of pixels per tree species, having around the same number of tree polygons per species results in differing amounts of pixels per species due to the different average sizes of tree canopies for different species. After drawing the images, the pixels totals per tree species is computed to ensure that the training pixels data contains at least 800 pixels per tree species.
 
 \hypertarget{combining-ground-level-data-with-pixel-level-data}{%
 \subsubsection{Combining Ground-level Data with Pixel-level Data}\label{combining-ground-level-data-with-pixel-level-data}}
@@ -492,7 +492,7 @@ Western Redcedar & 1364\\
 \hline
 \end{tabular}
 \end{table}
-Figure \ref{fig:pixDensity} displays the range of reflection intensity pixel values per tree type. Each tree species has similar ranges of values over the red, green, blue, and infared bands. Of the species included in the training data, the Giant Sequoia trees appear to have higher density counts for the red, green, and blue bands.
+Figure \ref{fig:pixDensity} displays the range of reflection intensity pixel values per tree type. Each tree species has similar ranges of values over the red, green, blue, and infared bands. Of the species included in the training data, the grass bands appear to differ the most in terms of its infrared density.
 \begin{figure}
 
 {\centering \includegraphics{thesis_files/figure-latex/pixDensity-1} 
@@ -544,7 +544,7 @@ Figure \ref{fig:beforeaftermask} displays a raster strip with every pixel includ
 
 The low resolution of the raster images cause shapes to appear blurry, and especially tree canopies that are close together appear as a single formation.
 
-Masked raster images were imported in QGIS and compared to Google Maps. In general, the NDVI mask was successful in keeping the forest pixels while still removing building structures and roads. For the GRASS mask, if a field of grass is a brownish color, it gets removed, but some greener fields are not masked out. The masks consistently remove river pixels but not lake pixels if the lake is a greenish color. For example, Smith Lake in North Portland is considered an urban wetland, which signifies a body of water with a lot of vegetation. From the perspective of a satellite, this looks like a field of grass. However, the average band pixel values are less than 4900, so they are not masked out by the final GRASS mask stage, and instead are treated as tree pixels in the model (see Figure \ref{fig:masklimit}).
+Masked raster images were imported in QGIS and compared to Google Maps. In general, the NDVI mask was successful in keeping the forest pixels while still removing building structures and roads. For the GRASS mask, if a field of grass is a brownish color, it gets removed, but some greener fields are not masked out. The masks consistently remove river pixels but not lake pixels if the lake is a greenish color. For example, Smith Lake in North Portland is considered an urban wetland, which signifies a body of water with a lot of vegetation. From the perspective of a satellite, this region has NDVI values consistent with vegetation. However, the average band pixel values are less than 4900, so they are not masked out by the final GRASS mask stage, and instead are treated as tree pixels in the model (see Figure \ref{fig:masklimit}).
 
 To address leftover grass pixels in the filtered raster image, access to lidar data would provide a method of determining the height of certain pixels. Setting a height threshold would ensure that grass pixels are removed while higher vegetation pixels are kept. This would also address the masks' limitations in removing lakes with high vegetation, since those pixels would not meet the threshold for height. The GRASS mask did not perform as hoped, so the grass pixels extracted from polygons were included to train the model to distinguish observations as trees or grass pixels instead of applying a second mask on the raster images.
 \begin{figure}
@@ -561,7 +561,7 @@ To address leftover grass pixels in the filtered raster image, access to lidar d
 \hypertarget{existing-methods}{%
 \section{Existing Methods}\label{existing-methods}}
 
-Since the Western redcedar decline is recent, there are currently no published work for identifying tree species like Western redcedars for the Pacific Northwest using satellite imaging. However, a similar study identifies tree species for a strip of land in California by combining ground-level data with satellite images (Fricker et al., 2019). Their methods involved drawing polygons around rastered images that are layered with ground data as explained in Chapter \ref{data}, but the pixels from the polygons are used to train a convolutional neural network (CNN) model instead of the random forests and support vector machines in this study. The CNN model was then evaluated with k-fold cross validation. CNN models are appropriate in a classification setting and when working with satellite images because they account for spatial relations, which is likely to appear in classifying tree species. This study follows the methods of preparing the data for modelling as well as the method of cross validation to evaluate the performance of the random forests and support vector machines models. Random forests are used in a classification setting or regression setting and have the advantage of being simplier to train than CNN models and still performs at a similar level. Random forests use random feature selections to create decision trees and increase the number of correctly classified observations. Since this research strives to provide a computationally simple method of estimating tree locations to track changes in the ecosystem, a random forest is suitable for the study. If a researcher was interested in making more precise predictions, a CNN would require more time but would produce better estimates.
+Since the Western redcedar decline is recent, there are currently no published work for identifying tree species like Western redcedars for the Pacific Northwest using satellite imaging. One literature investigates the dieback of Wester redcedars in Vancouver, B.C. as a result of dry weather and how this links to climate change (Seebacher, 2007). A study identifies tree species for a strip of land in California by combining ground-level data with satellite images (Fricker et al., 2019). Their methods involved drawing polygons around rastered images that are layered with ground data as explained in Chapter \ref{data}, but the pixels from the polygons are used to train a convolutional neural network (CNN) model instead of the random forests and support vector machines in this study. The CNN model was then evaluated with k-fold cross validation. CNN models are appropriate in a classification setting and when working with satellite images because they account for spatial relations, which is likely to appear in classifying tree species. This study follows the methods of preparing the data for modelling as well as the method of cross validation to evaluate the performance of the random forests and support vector machines models. Random forests are used in a classification setting or regression setting and have the advantage of being simplier to train than CNN models and still performs at a similar level. Random forests use random feature selections to create decision trees and increase the number of correctly classified observations. Since this research strives to provide a computationally simple method of estimating tree locations to track changes in the ecosystem, a random forest is suitable for the study. If a researcher was interested in making more precise predictions, a CNN would require more time but would produce better estimates.
 
 \hypertarget{current-methods}{%
 \section{Current Methods}\label{current-methods}}
@@ -611,7 +611,7 @@ Support vector machines are less sensitive to outliers and successful predictors
 \hypertarget{training-models}{%
 \section{Training Models}\label{training-models}}
 
-Data used to train the RF and SVM models are the pixels training data and the point pixels training data. To prepare the data for modelling, first the data is separated into a training set and then a test set by a ratio of 70\% training data and 30\% testing data. The \texttt{dplyr} function \texttt{slice\_sample} was used to take a stratified sample from the entire pixels dataset where 70\% of each tree species in an individual raster strip was randomly selected. For example, the training set consisted of 70\% of the bigleaf maple trees in raster strip `A', 70\% of bigleaf maple trees in raster strip `B', and so on. From the 70\% pixels training data, 500 observations for each tree species are extracted to obtain an even distribution of species. From the point pixels training data, 190 observations for each tree species are sampled.
+Data used to train the RF and SVM models are the pixels training data and the point pixels training data. To prepare the data for modelling, first the data is separated into a training set and then a test set by a ratio of 70\% training data and 30\% testing data. The \texttt{dplyr} function \texttt{slice\_sample} was used to take a stratified sample from the entire pixels dataset where 70\% of each tree species in an individual raster strip was randomly selected. For example, the training set consisted of 70\% of the bigleaf maple trees in raster strip `A', 70\% of bigleaf maple trees in raster strip `B', and so on. From the 70\% pixels training data, 500 observations for each tree species are randomly extracted to obtain an even distribution of species. From the point pixels training data, 190 observations for each tree species are sampled.
 
 The selected variables for training the models are the four bands (red, green, blue, infrared) and an NDVI variable, and the predictive variable is the tree species name. Some predictor variables were manually computed using ratios of bands. Typically, a long over short band ratio provides some more information to train the model. The following bands were created: red/blue, ir/red, red/green, and blue/green. Examining a correlation matrix with these predictors reveals possibly useful and not too highly correlated variables are red/green, red/blue, and blue/green (see Figure \ref{fig:corrmatrix}).
 \begin{figure}
@@ -624,7 +624,7 @@ The selected variables for training the models are the four bands (red, green, b
 \end{figure}
 To address the small number of predictor variables available to predict the large number of classes (7 tree species), some species are grouped together. The Bigleaf Maple, Norway Maple, and English Oak species are grouped under a new ``Broadleaf'' tree category. This reduces the number of classes to 5: Broadleaf, Douglas-Fir, Giant Sequoia, Grass, and Western Redcedar. Both the full 7 tree species training data and the grouped (5 class) species training data are used to train the models.
 
-The \texttt{caret} package (Kuhn, 2020) in RStudio stands for classification and regression training, and it contains functions for facilitating the process of creating training models in R and determining the tuning parameters.
+The \texttt{caret} package (Kuhn, 2020) in RStudio provides the framework for the modelling performed in this work. It stands for classification and regression training, and it contains functions for facilitating the process of creating training models in R and determining the tuning parameters.
 
 \hypertarget{random-forest-tuning}{%
 \subsection{Random Forest Tuning}\label{random-forest-tuning}}
@@ -813,7 +813,7 @@ Poly, C = 4 (point) & 0.4067 & 0.0140\\
 \hypertarget{testing-models}{%
 \section{Testing Models}\label{testing-models}}
 
-A subset of the data was withheld from training the models as test data to provide some measure of how the models perform in predicting results that the answer is unknown. Based on overall and redcedar accuracy, the appropriate models to consider with the testing data are the 5 class 7 predictor RF and the 5 class radial SVM. The results for the overall test accuracy and the prediction test accuracy for Western redcedars are shown in Tables \ref{tab:resultsTest} and \ref{tab:resultsTest2}.
+A subset of the data was withheld from training the models as test data to provide some measure of how the models perform in predicting results on new data. Based on overall and redcedar accuracy, the appropriate models to consider with the testing data are the 5 class 7 predictor RF and the 5 class radial SVM. The results for the overall test accuracy and the prediction test accuracy for Western redcedars are shown in Tables \ref{tab:resultsTest} and \ref{tab:resultsTest2}.
 \begin{table}
 
 \caption{\label{tab:resultsTest}Overall accuracy of 7 predictor RF (5 class) and Radial SVM (5 class) models on test data}
@@ -832,7 +832,7 @@ RF Accuracy & SVM Accuracy\\
 \centering
 \begin{tabular}[t]{r|r}
 \hline
-rf\_accuracy & svm\_accuracy\\
+RF Accuracy & SVM Accuracy\\
 \hline
 0.2164352 & 0.1134259\\
 \hline
@@ -840,14 +840,14 @@ rf\_accuracy & svm\_accuracy\\
 \end{table}
 According to the test data, the best performing models for further analysis are the radial SVM model for 5 class prediction and the 7 predictor RF model for 5 class prediction.
 
-The polygon prediction accuracy on the test dataset was also computed to see how pixels of the same tree were classified compared to individual pixel classification. A ``correct'' prediction was indicated if more than half the pixels in a polygon are correctly predicted. Table \ref{tab:polyTab} displays the results over polygons in the test dataset.
+The polygon prediction accuracy on the test dataset was also computed to see how pixels of the same tree were classified compared to individual pixel classification. A ``correct'' prediction was indicated if more than half the pixels in a polygon are correctly predicted. Table \ref{tab:polyTab} displays the overall results for polygons in the test dataset and Table \ref{tab:polyTabRed} displays the polygons predictions for Western Redcedars.
 \begin{table}
 
-\caption{\label{tab:polyTab}Accuracy of radial SVM model with 5 classes and 7 predictor RF model with 5 classes for polygons in test data. A correct prediction is considered to be a polygon with more than half of the pixels correctly classified.}
+\caption{\label{tab:polyTab}Overall accuracy of radial SVM model with 5 classes and 7 predictor RF model with 5 classes for polygons in test data. A correct prediction is considered to be a polygon with more than half of the pixels correctly classified.}
 \centering
 \begin{tabular}[t]{l|l|r}
 \hline
-Type & Result & n\\
+Type & Result & Polygons\\
 \hline
 SVM C = 5 & Correct & 362\\
 \hline
@@ -856,6 +856,24 @@ SVM C = 5 & Incorrect & 311\\
 RF P = 7, C = 5 & Correct & 349\\
 \hline
 RF P = 7, C = 5 & Incorrect & 324\\
+\hline
+\end{tabular}
+\end{table}
+\begin{table}
+
+\caption{\label{tab:polyTabRed}Western Redcedar accuracy of radial SVM model with 5 classes and 7 predictor RF model with 5 classes for polygons in test data. A correct prediction is considered to be a polygon with more than half of the pixels correctly classified.}
+\centering
+\begin{tabular}[t]{l|l|r}
+\hline
+Type & Result & Polygons\\
+\hline
+SVM C = 5 & Correct & 7\\
+\hline
+SVM C = 5 & Incorrect & 93\\
+\hline
+RF P = 7, C = 5 & Correct & 8\\
+\hline
+RF P = 7, C = 5 & Incorrect & 92\\
 \hline
 \end{tabular}
 \end{table}
@@ -889,9 +907,9 @@ After masking the raster images of the entire region of Portland by NDVI values,
 
 \caption{Model tree classification predictions of Western Redcedars over entire Portland region using radial SVM C = 5.}\label{fig:rfPortlandSVM}
 \end{figure}
-In comparing the RF P = 7, C = 5 model results to the radial SVM C = 5 results, 77\% of the pixel predictions were the same predictions under both models.
+In comparing the RF P = 7, C = 5 model results to the radial SVM C = 5 results, 91\% of the Western Redcedar pixel predictions were the same predictions under both models.
 
-To assess the performance of the model over the Portland region, the results are compared to the remaining Western redcedars from \texttt{pdxTrees} both street and park data. The shapefiles for \texttt{pdxTrees} Western redcedars ground data are mapped over the classified pixel predictions, and the number of correctly and incorrectly classified pixels is recorded to be 66\% accurate for RF P = 7, C = 5 and radial SVM C = 5. Figure \ref{fig:resultsToStreet} visualizes this comparison for RF P = 7, C = 5.
+To assess the performance of the model over the Portland region, the results are compared to the remaining Western redcedars from \texttt{pdxTrees} both street and park data. The shapefiles for \texttt{pdxTrees} Western redcedars ground data are mapped over the classified pixel predictions, and the number of correctly and incorrectly classified pixels is recorded to be 57\% accurate for RF P = 7, C = 5 and 63\% accurate for radial SVM C = 5. Figure \ref{fig:resultsToStreet} visualizes this comparison for RF P = 7, C = 5.
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{figure/resultsToStreet} 
@@ -899,6 +917,15 @@ To assess the performance of the model over the Portland region, the results are
 }
 
 \caption{Comparison of Wester redcedar RF pixel predictions (in green) to Western redcedar trees from pdxTrees (in blue).}\label{fig:resultsToStreet}
+\end{figure}
+As part of the research seeks to investigate whether tree prediction outside of Portland's Tree Inventory Project is possible, Figure \ref{fig:reedTreesTopdx} presents a side-by-side comparison of tree predictions for trees in proximity to Reed College. As part of the Tree Inventory Project, the trees are mapped on a satellite image at a higher resolution than used in this research, and the left image in Figure \ref{fig:reedTreesTopdx} displays which trees are included in the study (\url{https://pdx.maps.arcgis.com/apps/webappviewer/index.html?id=b4671f4591144530b1c590731923b182}). The right image in Figure \ref{fig:reedTreesTopdx} displays model predictions for trees in the same region. Pixels in green accurately indicate grass pixels as the fields of grass in the Eastmoreland Golf Course location. There are also trees outlining some of the golf courses, which can be cross-checked with the satellite image on the left. The trees in the golf course were not inventoried by the field crew, so this research successfully identifies trees not already included in the Inventory Project. A next step would be determining how accurately the trees are classified by sending out field crews to record that information.
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{figure/reedTreesTopdx} 
+
+}
+
+\caption{Comparison of tree model predictions with pdxTrees}\label{fig:reedTreesTopdx}
 \end{figure}
 \hypertarget{discussion}{%
 \chapter{Discussion}\label{discussion}}
@@ -911,7 +938,7 @@ Following along with the Fricker Methods (Fricker et al., 2019), a training data
 \hypertarget{rf-performance-versus-svm-performance}{%
 \section{RF Performance Versus SVM Performance}\label{rf-performance-versus-svm-performance}}
 
-The 7 predictor RF model predicting 5 classes outperforms the SVM model predicting 5 classes in Western redcedar training accuracy and testing overall accuracy as well as testing prediction of Western Redcedars. Surprisingly, the overall testing accuracies were higher than the validation accuracies for both the RF and SVM models. This suggests that the training set was not representative of the true data or the model was underfitting the data. The SVM model performs significantly worse than the RF model in Western Redcedar predictions on the test data. One explanation might be that the validation Western Redcedar accuracy aggregates the results of all 10 cross-validation sets, which might inflate the values, but the test results only consists of one set. Another explanation could be that the lower testing accuracy is an indication of model overfitting, however, the overall testing accuracy is higher than the overall training accuracy. In general, having a small number of predictors compared to the number of classes tends to perform poorly. It was also observed that the models predicting less classes (Broadleaf, Douglas-Fir, Giant Sequoia, Grass, and Western Redcedar) outperformed models predicting on a larger set of tree classes (Bigleaf Maple, English Oak, Norway Maple, Douglas-Fir, Giant Sequoia, Grass, and Western Redcedar). This is likely a result of only having 4-band imagery plus the variables that are linear combinations of these 4 bands; 8 predictors training a model to predict 7 classes will not predict as well as 8 predictors training a model to predict 5 classes. In comparing the entire RF results on Portland to the \texttt{pdxTrees}, the test accuracy was 0.66.
+The 7 predictor RF model predicting 5 classes outperforms the SVM model predicting 5 classes in Western redcedar training accuracy and testing overall accuracy as well as testing prediction of Western Redcedars. Surprisingly, the overall testing accuracies were higher than the validation accuracies for both the RF and SVM models. This suggests that the training set was not representative of the true data or the model was underfitting the data. The SVM model performs significantly worse than the RF model in Western Redcedar predictions on the test data. This could be a reflection of the fact that, by nature, SVM models perform poorly with data that have a lot of overlap and the pixel densities in Figure \ref{fig:pixDensity} appear to be similar, so observations will have overlap. One other explanation might be that the validation Western Redcedar accuracy aggregates the results of all 10 cross-validation sets, which inflates the values, but the test results only consists of one set. Another explanation could be that the lower testing accuracy is an indication of model overfitting, however, the overall testing accuracy is higher than the overall training accuracy. In general, having a small number of predictors compared to the number of classes tends to perform poorly. It was also observed that the models predicting less classes (Broadleaf, Douglas-Fir, Giant Sequoia, Grass, and Western Redcedar) outperformed models predicting on a larger set of tree classes (Bigleaf Maple, English Oak, Norway Maple, Douglas-Fir, Giant Sequoia, Grass, and Western Redcedar). This is likely a result of only having 4-band imagery plus the variables that are linear combinations of these 4 bands; 8 predictors training a model to predict 7 classes will not predict as well as 8 predictors training a model to predict 5 classes. In comparing the entire RF results on Portland to the \texttt{pdxTrees}, the test accuracy was 0.57. Since this is only using Western Redcedar trees from \texttt{pdxTrees}, the accuracy does not provide a true interpretation of how well the model performs on prediction locations and species for trees that were excluded from Portland's Inventory Project.
 
 \hypertarget{model-results-compared-to-fricker-methods-fricker_convolutional_2019}{%
 \section{Model Results Compared to Fricker Methods (Fricker et al., 2019)}\label{model-results-compared-to-fricker-methods-fricker_convolutional_2019}}
@@ -921,9 +948,11 @@ Fricker's methods are conducted under ideal circumstances. The single image stri
 \hypertarget{methods-of-improvementfurther-work}{%
 \section{Methods of Improvement/Further Work}\label{methods-of-improvementfurther-work}}
 
-As Fricker's article has shown, increasing the spectral resolution by having access to hyperspectral data adds more information to the models and improves performance. Hyperspectral imagery collects information from more regions of the spectrum than RGB imagery, which allows it to capture finer details. Tree and vegetation pixels reflect a certain amount of light, especially regions of dense forests, so having more bands can allow the models to detect subtle differences in vegetation pixels with non-vegetation pixels. By increasing the number of variables in the model, the risk of multicollinearity that comes from artificially creating predictors with linear combinations of the RGB bands also gets removed. The benefits of high spatial and spectral resolution imagery also extends to improving the masks applied to the images, which were successful, for example, in removing building structures and dead fields of grass, but incorrectly recognized mossy lakes as trees. Carefully masking the images improves the ability of the model to locate tree pixels and classify them.
+Satellite imagery is widely applied to spatial data applications in environmental fields, and much of the research using remote sensing images has been published for classifying land type. Often this research is conducted under ideal circumstances with fine spatial and spectral resolution data, however, images at such a resolution usually require payment. This research applies imaging methods to satellite data with fewer bands and poorer resolution and investigates improvements to make up for the loss of resolution.
 
-In terms of data, another improvement to this research would be to increase the spatial resolution to 1 meter or better if possible. This refines the process of creating polygons by enhancing the visibility of the tree canopy outlines and reduces noise introduced by having shadows, dirt, building structures, and other non-tree pixels within the polygons. Another method to improve the results is by improving the drawn polygons themselves to only include pixels that represent the tree canopy. Drawing the polygons for each tree species by hand is likely to introduce error to the analysis because the first few polygons are not likely to be drawn the same way that the last few polygons are drawn. This issue is addressed by taking care to only include pure tree pixels (no shadows, dirt, or other structures) and ensuring that each polygon consists of at least 10 pixels.
+As Fricker's article has shown, increasing the spectral resolution by having access to hyperspectral data adds more information to the models and improves performance. Hyperspectral imagery collects information from more regions of the spectrum than RGB imagery, which allows it to capture more spectral features. Tree and vegetation pixels reflect a certain amount of light, especially regions of dense forests, so having more bands can allow the models to detect subtle differences in the spectral profile of different species. By increasing the number of variables in the model, the risk of multicollinearity that comes from artificially creating predictors with linear combinations of the RGB bands also gets removed. The benefits of high spatial and spectral resolution imagery also extends to improving the masks applied to the images, which were successful, for example, in removing building structures and dead fields of grass, but incorrectly recognized mossy lakes as trees. Carefully masking the images improves the ability of the model to locate tree pixels and classify them.
+
+In terms of data, another improvement to this research would be to increase the spatial resolution to 1 meter or better if possible. This refines the process of creating polygons by enhancing the visibility of the tree canopy outlines and reduces noise in polygons introduced by having shadows, dirt, building structures, and other non-tree pixels and even within a single pixel. Another method to improve the results is by improving the drawn polygons themselves to only include pixels that represent the tree canopy. Drawing the polygons for each tree species by hand is likely to introduce error to the analysis because the first few polygons are not likely to be drawn the same way that the last few polygons are drawn. This issue is addressed by taking care to only include pure tree pixels (no shadows, dirt, or other structures) and ensuring that each polygon consists of at least 10 pixels.
 
 An ideal training data set for the models would consist of data from imagery with high spatial and spectral resolution and also polygons with pure tree canopy pixels. If multiple raster strips are neccessary for the area of interest, the polygons need to be evenly distributed across all raster strips and ideally the tree species per polygon as well. The trees themselves should have large canopies that hopefully do not overlap with other tree canopies of different species.
 
@@ -931,8 +960,6 @@ With these improvements, the research will allow researchers to have a better un
 
 \hypertarget{conclusion}{%
 \section{Conclusion}\label{conclusion}}
-
-Satellite imagery is widely applied to spatial data applications in environmental fields, and a lot of research with remote sensing images has been published for classifying land type. Often this research is conducted under ideal circumstances with fine spatial and spectral resolution data, however, images at such a resolution usually require payment. This research applies imaging methods to satellite data with fewer bands and poorer resolution and investigates improvements to make up for the loss of resolution.
 
 Reports of Western redcedars in the Pacific Northwest over the past 10 years have sparked an interest in investigating the decline of the species. This research combined RGB imagery and ground-level data available for the city of Portland to try and predict the locations of Western redcedars and progress towards understanding the decline of the species and eventually expand the methods to larger regions like the Pacific Northwest. Ground-level data was used to locate individual tree canopies and label their species on the satellite images, then the light intensities were extracted for each tree canopy pixel into a training data set. Random forest and support vector machine models were trained to classify 7 or 5 tree species. The best performing model was the random forest model with 7 predictors on 5 tree species with an F-score of 0.27 for Western redcedars. These results were not as high as other results from data with better conditions (higher spatial and spectral resolutions), however, they provide a better way of classifying a tree pixel as Western redcedar than a random guess of one of the 7 species (probability of \(1/7 \approx 0.14\)).
 
@@ -1352,7 +1379,28 @@ Class: Western Redcedar & 0.11 & 0.98 & 0.47 & 0.90 & 0.47 & 0.11 & 0.18 & 0.11 
 \hypertarget{code}{%
 \chapter{Code}\label{code}}
 
-This appendix includes the workflow and all the R code for replicating this research. First the rasters need to be downloaded from Planet.com by creating an account and selecting a date with clear weather and Portland's location. The following libraries and functions are necessary to be loaded into your workspace:
+This appendix includes the workflow and all the R code for replicating this research. The sections are the titles of the RMarkdown documents to be run in order:
+\begin{itemize}
+\tightlist
+\item
+  tree\_canopy\_polygons.Rmd
+\item
+  geographic\_join.Rmd
+\item
+  train\_test\_split.Rmd
+\item
+  svm\_randomforest\_models.Rmd
+\item
+  model\_results\_analysis.Rmd
+\item
+  veg\_mask.Rmd
+\item
+  portland\_model.Rmd
+\end{itemize}
+\hypertarget{tree_canopy_polygons.rmd}{%
+\section{tree\_canopy\_polygons.Rmd}\label{tree_canopy_polygons.rmd}}
+
+First the rasters need to be downloaded from Planet.com by creating an account and selecting a date with clear weather and Portland's location. The following libraries and functions are necessary to be loaded into your workspace:
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{# libraries}
@@ -1474,6 +1522,9 @@ This code creates shapefiles for six tree species from \texttt{pdxTrees}:
 \NormalTok{raster}\OperatorTok{::}\KeywordTok{shapefile}\NormalTok{(train_redcedar, }\StringTok{"redcedar_shapefile.shp"}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
+\hypertarget{geographic_join.rmd}{%
+\section{geographic\_join.Rmd}\label{geographic_join.rmd}}
+
 Once the tree species shapefiles are created, they are imported into QGIS for manual polygons to be drawn around 100 of each tree species. Since the Planet.com imagery has a spatial resolution of 3 meters, the drawn polygons should try to contain around 10-20 pixels. The polygon layer is imported into RStudio for further analysis. To create the pixels data, the polygons are used to indicate the pixels that should be extracted. The point pixels data comes from filtering \texttt{pdxTrees}. The following code performs this geographic join of data:
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1608,6 +1659,9 @@ Once the tree species shapefiles are created, they are imported into QGIS for ma
 \CommentTok{# write.csv(pix_tree_center,'data/pix_tree_center.csv', row.names = F)}
 \end{Highlighting}
 \end{Shaded}
+\hypertarget{train_test_split.rmd}{%
+\section{train\_test\_split.Rmd}\label{train_test_split.rmd}}
+
 To prepare the data for training and testing the models, the pixels and point pixels data are split into training and testing data:
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1654,6 +1708,9 @@ To prepare the data for training and testing the models, the pixels and point pi
 \CommentTok{# write.csv(test_full_grouped, 'data/test_full_grouped.csv', row.names = F)}
 \end{Highlighting}
 \end{Shaded}
+\hypertarget{svm_randomforest_models.rmd}{%
+\section{svm\_randomforest\_models.Rmd}\label{svm_randomforest_models.rmd}}
+
 The training data is used to train the models:
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1711,6 +1768,9 @@ The training data is used to train the models:
 \CommentTok{# saveRDS(svm3_grouped, "data/svm3_grouped.rds")}
 \end{Highlighting}
 \end{Shaded}
+\hypertarget{model_results_analysis.rmd}{%
+\section{model\_results\_analysis.Rmd}\label{model_results_analysis.rmd}}
+
 Analysis on the trained models included in this research is conducted with the following code:
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1808,63 +1868,61 @@ Analysis on the trained models included in this research is conducted with the f
 \NormalTok{svm3_grouped <-}\StringTok{ }\KeywordTok{readRDS}\NormalTok{(}\StringTok{"data/svm3_grouped.rds"}\NormalTok{)}
 
 \CommentTok{# collect resamples}
-\NormalTok{results_svm <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(}\KeywordTok{cbind}\NormalTok{(svm1}\OperatorTok{$}\NormalTok{resample, }\DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Linear, C = 7"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
-                           \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm1}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{])),}
-                     \KeywordTok{cbind}\NormalTok{(svm2}\OperatorTok{$}\NormalTok{resample, }\DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Radial, C = 7"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
-                           \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm2}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{], }\StringTok{"sigma ="}\NormalTok{, }
-                                 \KeywordTok{round}\NormalTok{(svm2}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{], }\DecValTok{4}\NormalTok{))),}
-                     \KeywordTok{cbind}\NormalTok{(svm3}\OperatorTok{$}\NormalTok{resample, }\DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Poly, C = 7"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
-                           \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm3}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{], }\StringTok{", scale ="}\NormalTok{, }
-\NormalTok{                                 svm3}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{], }\StringTok{", degree ="}\NormalTok{, svm3}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{])),}
-                     \KeywordTok{cbind}\NormalTok{(svm1_center}\OperatorTok{$}\NormalTok{resample, }
-                           \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Linear, C = 5 (point)"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
-                           \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm1_center}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{])),}
-                     \KeywordTok{cbind}\NormalTok{(svm2_center}\OperatorTok{$}\NormalTok{resample, }
-                           \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Radial, C = 5 (point)"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
-                           \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm2_center}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{], }
-                                             \StringTok{"sigma ="}\NormalTok{, }
-                                 \KeywordTok{round}\NormalTok{(svm2_center}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{], }\DecValTok{4}\NormalTok{))),}
-                     \KeywordTok{cbind}\NormalTok{(svm3_center}\OperatorTok{$}\NormalTok{resample, }
-                           \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Poly, C = 5 (point)"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
-                           \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm3_center}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{], }
-                                             \StringTok{", scale ="}\NormalTok{, }
-\NormalTok{                                 svm3_center}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{], }
-                                 \StringTok{", degree ="}\NormalTok{, svm3_center}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{])),}
-                     \KeywordTok{cbind}\NormalTok{(svm1_grouped}\OperatorTok{$}\NormalTok{resample, }
-                           \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Linear, C = 5"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
-                           \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm1_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{])),}
-                     \KeywordTok{cbind}\NormalTok{(svm2_grouped}\OperatorTok{$}\NormalTok{resample, }
-                           \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Radial, C = 5"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
-                           \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm2_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{], }
-                                             \StringTok{"sigma ="}\NormalTok{,}
-                                             \KeywordTok{round}\NormalTok{(svm2_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{], }\DecValTok{4}\NormalTok{))),}
-                     \KeywordTok{cbind}\NormalTok{(svm3_grouped}\OperatorTok{$}\NormalTok{resample, }
-                           \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Poly, C = 5"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
-                           \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm3_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{], }
-                                             \StringTok{", scale ="}\NormalTok{, }
-\NormalTok{                                 svm3_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{], }
-                                 \StringTok{", degree ="}\NormalTok{, svm3_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{])),}
-                     \KeywordTok{cbind}\NormalTok{(svm1_center_grouped}\OperatorTok{$}\NormalTok{resample, }
-                           \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Linear, C = 4 (point)"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
-                           \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm1_center_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{])),}
-                     \KeywordTok{cbind}\NormalTok{(svm2_center_grouped}\OperatorTok{$}\NormalTok{resample, }
-                           \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Radial, C = 4 (point)"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
-                           \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm2_center_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{], }
-                                             \StringTok{"sigma ="}\NormalTok{,}
-                                             \KeywordTok{round}\NormalTok{(svm2_center_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{], }\DecValTok{4}\NormalTok{))),}
-                     \KeywordTok{cbind}\NormalTok{(svm3_center_grouped}\OperatorTok{$}\NormalTok{resample, }
-                           \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Poly, C = 4 (point)"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
-                           \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm3_center_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{], }
-                                             \StringTok{", scale ="}\NormalTok{, }
-\NormalTok{                                 svm3_center_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{], }
-                                 \StringTok{", degree ="}\NormalTok{, svm3_center_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{])))}
+\NormalTok{results_svm <-}\StringTok{ }\KeywordTok{rbind}\NormalTok{(}
+  \KeywordTok{cbind}\NormalTok{(svm1}\OperatorTok{$}\NormalTok{resample, }\DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Linear, C = 7"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+        \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm1}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{])),}
+  \KeywordTok{cbind}\NormalTok{(svm2}\OperatorTok{$}\NormalTok{resample, }\DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Radial, C = 7"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+        \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm2}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{], }\StringTok{"sigma ="}\NormalTok{, }
+                          \KeywordTok{round}\NormalTok{(svm2}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{], }\DecValTok{4}\NormalTok{))),}
+  \KeywordTok{cbind}\NormalTok{(svm3}\OperatorTok{$}\NormalTok{resample, }\DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Poly, C = 7"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+        \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm3}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{], }\StringTok{", scale ="}\NormalTok{, }
+\NormalTok{                          svm3}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{], }\StringTok{", degree ="}\NormalTok{, svm3}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{])),}
+  \KeywordTok{cbind}\NormalTok{(svm1_center}\OperatorTok{$}\NormalTok{resample, }
+        \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Linear, C = 5 (point)"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+        \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm1_center}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{])),}
+  \KeywordTok{cbind}\NormalTok{(svm2_center}\OperatorTok{$}\NormalTok{resample, }
+        \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Radial, C = 5 (point)"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+        \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm2_center}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{], }
+                          \StringTok{"sigma ="}\NormalTok{, }\KeywordTok{round}\NormalTok{(svm2_center}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{], }\DecValTok{4}\NormalTok{))),}
+  \KeywordTok{cbind}\NormalTok{(svm3_center}\OperatorTok{$}\NormalTok{resample, }
+        \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Poly, C = 5 (point)"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+        \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm3_center}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{], }
+                          \StringTok{", scale ="}\NormalTok{, svm3_center}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{], }
+                          \StringTok{", degree ="}\NormalTok{, svm3_center}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{])),}
+  \KeywordTok{cbind}\NormalTok{(svm1_grouped}\OperatorTok{$}\NormalTok{resample, }
+        \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Linear, C = 5"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+        \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm1_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{])),}
+  \KeywordTok{cbind}\NormalTok{(svm2_grouped}\OperatorTok{$}\NormalTok{resample, }
+        \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Radial, C = 5"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+        \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm2_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{], }
+                          \StringTok{"sigma ="}\NormalTok{, }\KeywordTok{round}\NormalTok{(svm2_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{], }\DecValTok{4}\NormalTok{))),}
+  \KeywordTok{cbind}\NormalTok{(svm3_grouped}\OperatorTok{$}\NormalTok{resample, }
+        \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Poly, C = 5"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+        \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm3_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{], }
+                          \StringTok{", scale ="}\NormalTok{, svm3_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{], }
+                          \StringTok{", degree ="}\NormalTok{, svm3_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{])),}
+  \KeywordTok{cbind}\NormalTok{(svm1_center_grouped}\OperatorTok{$}\NormalTok{resample, }
+        \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Linear, C = 4 (point)"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+        \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm1_center_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{])),}
+  \KeywordTok{cbind}\NormalTok{(svm2_center_grouped}\OperatorTok{$}\NormalTok{resample, }
+        \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Radial, C = 4 (point)"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+        \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm2_center_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{], }
+                          \StringTok{"sigma ="}\NormalTok{,}
+                          \KeywordTok{round}\NormalTok{(svm2_center_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{], }\DecValTok{4}\NormalTok{))),}
+  \KeywordTok{cbind}\NormalTok{(svm3_center_grouped}\OperatorTok{$}\NormalTok{resample, }
+       \DataTypeTok{Model =} \KeywordTok{rep}\NormalTok{(}\StringTok{"Poly, C = 4 (point)"}\NormalTok{, }\DecValTok{10}\NormalTok{, }\DecValTok{10}\NormalTok{),}
+       \DataTypeTok{Parameter =} \KeywordTok{paste}\NormalTok{(}\StringTok{"C ="}\NormalTok{, svm3_center_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{], }
+                         \StringTok{", scale ="}\NormalTok{, }
+\NormalTok{             svm3_center_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{], }
+             \StringTok{", degree ="}\NormalTok{, svm3_center_grouped}\OperatorTok{$}\NormalTok{bestTune[}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{])))}
 
 \CommentTok{# visualize svm model results}
 \KeywordTok{ggplot}\NormalTok{(results_svm, }\KeywordTok{aes}\NormalTok{(}\DataTypeTok{x =}\NormalTok{ Model, }\DataTypeTok{y =}\NormalTok{ Accuracy, }\DataTypeTok{fill =}\NormalTok{ Model)) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{geom_boxplot}\NormalTok{(}\DataTypeTok{alpha =} \FloatTok{0.8}\NormalTok{) }\OperatorTok{+}
 \StringTok{  }\KeywordTok{theme_minimal}\NormalTok{() }\OperatorTok{+}\StringTok{ }
 \StringTok{  }\KeywordTok{scale_fill_discrete}\NormalTok{() }\OperatorTok{+}
-\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Model Accuracy of SVM Models with 10-Fold CV"}\NormalTok{, }\DataTypeTok{x =} \StringTok{" "}\NormalTok{, }\DataTypeTok{fill =} \StringTok{" "}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{labs}\NormalTok{(}\DataTypeTok{title =} \StringTok{"Model Accuracy of SVM Models with 10-Fold CV"}\NormalTok{, }
+       \DataTypeTok{x =} \StringTok{" "}\NormalTok{, }\DataTypeTok{fill =} \StringTok{" "}\NormalTok{) }\OperatorTok{+}\StringTok{ }
 \StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{axis.text.x =} \KeywordTok{element_blank}\NormalTok{())}
 
 \KeywordTok{grid.arrange}\NormalTok{(}\KeywordTok{plot}\NormalTok{(svm2, }\DataTypeTok{main =} \StringTok{"SVM C = 7"}\NormalTok{),}
@@ -1886,9 +1944,12 @@ Analysis on the trained models included in this research is conducted with the f
 \NormalTok{scm1_grouped <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(svm1_grouped,  }\DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
 \NormalTok{scm2_grouped <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(svm2_grouped,  }\DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
 \NormalTok{scm3_grouped <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(svm3_grouped,  }\DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
-\NormalTok{scm1_center_grouped <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(svm1_center_grouped,  }\DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
-\NormalTok{scm2_center_grouped <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(svm2_center_grouped,  }\DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
-\NormalTok{scm3_center_grouped <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(svm3_center_grouped,  }\DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
+\NormalTok{scm1_center_grouped <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(svm1_center_grouped,  }
+                                       \DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
+\NormalTok{scm2_center_grouped <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(svm2_center_grouped,  }
+                                       \DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
+\NormalTok{scm3_center_grouped <-}\StringTok{ }\KeywordTok{confusionMatrix}\NormalTok{(svm3_center_grouped,  }
+                                       \DataTypeTok{mode =} \StringTok{"prec_recall"}\NormalTok{)}
 
 \CommentTok{# save confusion matrices}
 \CommentTok{# saveRDS(scm1, "data/scm1.rds")}
@@ -1992,6 +2053,9 @@ Analysis on the trained models included in this research is conducted with the f
 \CommentTok{# write.csv(poly_test_svm,'data/poly_test_svm.csv', row.names = F)}
 \end{Highlighting}
 \end{Shaded}
+\hypertarget{veg_mask.rmd}{%
+\section{veg\_mask.Rmd}\label{veg_mask.rmd}}
+
 The rasters are prepped for the Portland model by masking NDVI values with the code:
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2047,6 +2111,9 @@ The rasters are prepped for the Portland model by masking NDVI values with the c
                     \DataTypeTok{overwrite =}\NormalTok{ T)}
 \end{Highlighting}
 \end{Shaded}
+\hypertarget{portland_model.rmd}{%
+\section{portland\_model.Rmd}\label{portland_model.rmd}}
+
 Finally the model is applied to the mask images of Portland and visualized with the following code:
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2081,40 +2148,50 @@ Finally the model is applied to the mask images of Portland and visualized with 
 \NormalTok{results_d <-}\StringTok{ }\KeywordTok{stack}\NormalTok{(}\StringTok{"data/results_d.grd"}\NormalTok{)}
 \NormalTok{results_e <-}\StringTok{ }\KeywordTok{stack}\NormalTok{(}\StringTok{"data/results_e.grd"}\NormalTok{)}
 
-\CommentTok{# merge rasters into one for plotting}
-\NormalTok{r_list_RF <-}\StringTok{ }\KeywordTok{list}\NormalTok{(results_a[[}\DecValTok{1}\NormalTok{]] }\OperatorTok{==}\StringTok{ }\DecValTok{7}\NormalTok{, results_b[[}\DecValTok{1}\NormalTok{]] }\OperatorTok{==}\StringTok{ }\DecValTok{7}\NormalTok{, results_c[[}\DecValTok{1}\NormalTok{]] }\OperatorTok{==}\StringTok{ }\DecValTok{7}\NormalTok{,}
-\NormalTok{                  results_d[[}\DecValTok{1}\NormalTok{]] }\OperatorTok{==}\StringTok{ }\DecValTok{7}\NormalTok{, results_e[[}\DecValTok{1}\NormalTok{]] }\OperatorTok{==}\StringTok{ }\DecValTok{7}\NormalTok{)}
-\NormalTok{r_list_SVM <-}\StringTok{ }\KeywordTok{list}\NormalTok{(results_a[[}\DecValTok{2}\NormalTok{]] }\OperatorTok{==}\StringTok{ }\DecValTok{7}\NormalTok{, results_b[[}\DecValTok{2}\NormalTok{]] }\OperatorTok{==}\StringTok{ }\DecValTok{7}\NormalTok{, results_c[[}\DecValTok{2}\NormalTok{]] }\OperatorTok{==}\StringTok{ }\DecValTok{7}\NormalTok{,}
-\NormalTok{                  results_d[[}\DecValTok{2}\NormalTok{]] }\OperatorTok{==}\StringTok{ }\DecValTok{7}\NormalTok{, results_e[[}\DecValTok{2}\NormalTok{]] }\OperatorTok{==}\StringTok{ }\DecValTok{7}\NormalTok{)}
+\CommentTok{# RF rasters merged}
+\NormalTok{r_list_RF <-}\StringTok{ }\KeywordTok{list}\NormalTok{(results_a[[}\DecValTok{1}\NormalTok{]], results_b[[}\DecValTok{1}\NormalTok{]], results_c[[}\DecValTok{1}\NormalTok{]],}
+\NormalTok{                  results_d[[}\DecValTok{1}\NormalTok{]], results_e[[}\DecValTok{1}\NormalTok{]])}
 \NormalTok{m_RF <-}\StringTok{ }\KeywordTok{do.call}\NormalTok{(merge, r_list_RF)}
-\NormalTok{m_SVM <-}\StringTok{ }\KeywordTok{do.call}\NormalTok{(merge, r_list_SVM)}
+\NormalTok{m_red <-}\StringTok{ }\NormalTok{m_RF }\OperatorTok{==}\StringTok{ }\DecValTok{5} \CommentTok{# RF redcedars}
+\NormalTok{m_grass <-}\StringTok{ }\NormalTok{m_RF }\OperatorTok{==}\StringTok{ }\DecValTok{4} \CommentTok{# RF grass}
+\NormalTok{m_seq <-}\StringTok{ }\NormalTok{m_RF }\OperatorTok{==}\StringTok{ }\DecValTok{3} \CommentTok{# RF Giant Sequoia}
+\NormalTok{m_fir <-}\StringTok{ }\NormalTok{m_RF }\OperatorTok{==}\StringTok{ }\DecValTok{2} \CommentTok{# RF Douglas-Fir}
+\NormalTok{m_broad <-}\StringTok{ }\NormalTok{m_RF }\OperatorTok{==}\StringTok{ }\DecValTok{1} \CommentTok{# RF Broadleaf}
+
+\CommentTok{# SVM rasters merged}
+\NormalTok{r_list_red_SVM <-}\StringTok{ }\KeywordTok{list}\NormalTok{(results_a[[}\DecValTok{2}\NormalTok{]], results_b[[}\DecValTok{2}\NormalTok{]], results_c[[}\DecValTok{2}\NormalTok{]],}
+\NormalTok{                  results_d[[}\DecValTok{2}\NormalTok{]], results_e[[}\DecValTok{2}\NormalTok{]])}
+\NormalTok{m_red_SVM <-}\StringTok{ }\KeywordTok{do.call}\NormalTok{(merge, r_list_red_SVM)}
+\NormalTok{m_red_SVM <-}\StringTok{ }\NormalTok{m_red_SVM }\OperatorTok{==}\StringTok{ }\DecValTok{5} \CommentTok{# SVM redcedars}
+
 
 \CommentTok{# compare rasters}
-\NormalTok{r_matches <-}\StringTok{ }\NormalTok{m_RF }\OperatorTok{==}\StringTok{ }\NormalTok{m_SVM}
-\KeywordTok{freq}\NormalTok{(r_matches)}
+\NormalTok{r_matches <-}\StringTok{ }\NormalTok{m_red }\OperatorTok{==}\StringTok{ }\NormalTok{m_red_SVM}
 \KeywordTok{freq}\NormalTok{(r_matches)[}\DecValTok{2}\NormalTok{, ]}\OperatorTok{/}\NormalTok{(}\KeywordTok{freq}\NormalTok{(r_matches)[}\DecValTok{2}\NormalTok{, ] }\OperatorTok{+}\StringTok{ }\KeywordTok{freq}\NormalTok{(r_matches)[}\DecValTok{1}\NormalTok{, ])}
-\CommentTok{# (r_matches == 1)/((r_matches == 0) + (r_matches == 1)) percentage in common: 83%}
-\KeywordTok{plot}\NormalTok{(r_matches }\OperatorTok{==}\StringTok{ }\DecValTok{1}\NormalTok{, }\DataTypeTok{main =} \StringTok{"RF C = 5 and SVM C = 5 Predictions Comparisons"}\NormalTok{,}
-     \DataTypeTok{labels =}\NormalTok{ F, }\DataTypeTok{xaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{yaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{legend =}\NormalTok{ F, }\DataTypeTok{col =} \StringTok{"lightgreen"}\NormalTok{)}
-\KeywordTok{plot}\NormalTok{(r_matches }\OperatorTok{==}\StringTok{ }\DecValTok{0}\NormalTok{, }\DataTypeTok{col =} \StringTok{"maroon"}\NormalTok{, }\DataTypeTok{labels =}\NormalTok{ F, }\DataTypeTok{xaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{yaxt =} \StringTok{'n'}\NormalTok{,}
-     \DataTypeTok{legend =}\NormalTok{ F, }\DataTypeTok{add =}\NormalTok{ T)}
+\CommentTok{# (r_matches == 1)/((r_matches == 0) + (r_matches == 1)) percentage in common 91%}
+
 
 \CommentTok{# load city outline}
 \NormalTok{or_cities <-}\StringTok{ }\KeywordTok{places}\NormalTok{(}\StringTok{"OR"}\NormalTok{)}
 \NormalTok{portland <-}\StringTok{ }\NormalTok{or_cities }\OperatorTok{%>%}
-\StringTok{  }\KeywordTok{filter}\NormalTok{(NAME }\OperatorTok{==}\StringTok{ "Portland"}\NormalTok{)}
+\StringTok{  }\NormalTok{dplyr}\OperatorTok{::}\KeywordTok{filter}\NormalTok{(NAME }\OperatorTok{==}\StringTok{ "Portland"}\NormalTok{)}
 \NormalTok{portland_wgs84 <-}\StringTok{ }\KeywordTok{spTransform}\NormalTok{(portland, }
-                              \KeywordTok{CRS}\NormalTok{(}\StringTok{"+proj=utm +zone=10 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"}\NormalTok{))}
+                              \KeywordTok{CRS}\NormalTok{(}\StringTok{"+proj=utm +zone=10 +ellps=WGS84 }
+\StringTok{                                  +datum=WGS84 +units=m+no_defs"}\NormalTok{))}
 
 \CommentTok{# plot predictions}
-\KeywordTok{plot}\NormalTok{(m_RF, }\DataTypeTok{main =} \StringTok{"RF Western Redcedar Predictions"}\NormalTok{, }
-     \DataTypeTok{labels =}\NormalTok{ F, }\DataTypeTok{xaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{yaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{legend =}\NormalTok{ F, }\DataTypeTok{col =} \StringTok{"darkgreen"}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(m_red, }\DataTypeTok{main =} \StringTok{"RF Western Redcedar Predictions"}\NormalTok{, }
+     \DataTypeTok{labels =}\NormalTok{ F, }\DataTypeTok{xaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{yaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{legend =}\NormalTok{ F)}
 \KeywordTok{plot}\NormalTok{(portland_wgs84, }\DataTypeTok{add =}\NormalTok{ T)}
 
-\KeywordTok{plot}\NormalTok{(m_SVM, }\DataTypeTok{main =} \StringTok{"SVM Western Redcedar Predictions"}\NormalTok{, }
-     \DataTypeTok{labels =}\NormalTok{ F, }\DataTypeTok{xaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{yaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{legend =}\NormalTok{ F, }\DataTypeTok{col =} \StringTok{"darkgreen"}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(m_red_SVM, }\DataTypeTok{main =} \StringTok{"SVM Western Redcedar Predictions"}\NormalTok{, }
+     \DataTypeTok{labels =}\NormalTok{ F, }\DataTypeTok{xaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{yaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{legend =}\NormalTok{ F)}
 \KeywordTok{plot}\NormalTok{(portland_wgs84, }\DataTypeTok{add =}\NormalTok{ T)}
-
+\end{Highlighting}
+\end{Shaded}
+Compare to pdxTrees
+\begin{Shaded}
+\begin{Highlighting}[]
 \CommentTok{# load street trees western redcedars}
 \NormalTok{pdxTrees_parks <-}\StringTok{ }\KeywordTok{get_pdxTrees_parks}\NormalTok{()}
 \NormalTok{pdxTrees_streets <-}\StringTok{ }\KeywordTok{get_pdxTrees_streets}\NormalTok{()}
@@ -2132,45 +2209,68 @@ Finally the model is applied to the mask images of Portland and visualized with 
 \KeywordTok{proj4string}\NormalTok{(redcedar_dat) <-}\StringTok{ }\KeywordTok{CRS}\NormalTok{(}\StringTok{"+init=epsg:4326"}\NormalTok{)}
 \NormalTok{dat_transformed <-}\StringTok{ }\KeywordTok{spTransform}\NormalTok{(redcedar_dat, }\KeywordTok{CRS}\NormalTok{(}\StringTok{"+proj=utm +zone=10 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"}\NormalTok{))}
 
+
 \CommentTok{# plot pdxTrees with predictions}
-\NormalTok{p1 <-}\StringTok{ }\KeywordTok{plot}\NormalTok{(m_RF, }\DataTypeTok{main =} \StringTok{"RF C = 5 with pdxTrees"}\NormalTok{, }
+\KeywordTok{plot}\NormalTok{(m_red, }\DataTypeTok{main =} \StringTok{"RF C = 5 with pdxTrees"}\NormalTok{, }
      \DataTypeTok{labels =}\NormalTok{ F, }\DataTypeTok{xaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{yaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{legend =}\NormalTok{ F, }\DataTypeTok{col =} \StringTok{"darkgreen"}\NormalTok{)}
 \KeywordTok{plot}\NormalTok{(dat_transformed, }\DataTypeTok{col =} \KeywordTok{rgb}\NormalTok{(}\DataTypeTok{red =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{green =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{blue =} \FloatTok{1.0}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{0.2}\NormalTok{), }
      \DataTypeTok{cex =} \FloatTok{.2}\NormalTok{, }\DataTypeTok{add =}\NormalTok{ T)}
 \KeywordTok{plot}\NormalTok{(portland_wgs84, }\DataTypeTok{add =}\NormalTok{ T)}
 
-\KeywordTok{plot}\NormalTok{(m_SVM, }\DataTypeTok{main =} \StringTok{"SVM C = 5 with pdxTrees"}\NormalTok{, }
+\KeywordTok{plot}\NormalTok{(m_red_SVM, }\DataTypeTok{main =} \StringTok{"SVM C = 5 with pdxTrees"}\NormalTok{, }
      \DataTypeTok{labels =}\NormalTok{ F, }\DataTypeTok{xaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{yaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{legend =}\NormalTok{ F, }\DataTypeTok{col =} \StringTok{"darkgreen"}\NormalTok{)}
 \KeywordTok{plot}\NormalTok{(dat_transformed, }\DataTypeTok{col =} \KeywordTok{rgb}\NormalTok{(}\DataTypeTok{red =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{green =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{blue =} \FloatTok{1.0}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{0.2}\NormalTok{), }
      \DataTypeTok{cex =} \FloatTok{.2}\NormalTok{, }\DataTypeTok{add =}\NormalTok{ T)}
 \KeywordTok{plot}\NormalTok{(portland_wgs84, }\DataTypeTok{add =}\NormalTok{ T)}
 
 \CommentTok{# match pixels with pdxTrees to test for accuracy}
-\NormalTok{street_mask <-}\StringTok{ }\KeywordTok{mask}\NormalTok{(m_RF, dat_transformed)}
-\NormalTok{street_mask_group <-}\StringTok{ }\KeywordTok{mask}\NormalTok{(m_SVM, dat_transformed)}
-\KeywordTok{freq}\NormalTok{(street_mask)[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{]}\OperatorTok{/}\KeywordTok{nrow}\NormalTok{(dat_transformed) }\CommentTok{# estimates for Western redcedars}
-\CommentTok{# 52%}
-\KeywordTok{freq}\NormalTok{(street_mask_group)[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{]}\OperatorTok{/}\KeywordTok{nrow}\NormalTok{(dat_transformed) }\CommentTok{# estimates for Western redcedars}
-\CommentTok{# 66%}
+\NormalTok{street_mask_rf <-}\StringTok{ }\KeywordTok{mask}\NormalTok{(m_red, dat_transformed)}
+\NormalTok{street_mask_svm <-}\StringTok{ }\KeywordTok{mask}\NormalTok{(m_red_SVM, dat_transformed)}
+\KeywordTok{freq}\NormalTok{(street_mask_rf)[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{]}\OperatorTok{/}\KeywordTok{nrow}\NormalTok{(dat_transformed) }\CommentTok{# testing accuracy redcedars}
+\CommentTok{# 57%}
+\KeywordTok{freq}\NormalTok{(street_mask_svm)[}\DecValTok{1}\NormalTok{, }\DecValTok{2}\NormalTok{]}\OperatorTok{/}\KeywordTok{nrow}\NormalTok{(dat_transformed) }\CommentTok{# testing accuracy redcedars}
+\CommentTok{# 63%}
 
 \CommentTok{# smaller visualization around Reed}
-\NormalTok{reed_stack <-}\StringTok{ }\KeywordTok{crop}\NormalTok{(m_RF, }\KeywordTok{extent}\NormalTok{(}\DecValTok{525000}\NormalTok{, }\DecValTok{530000}\NormalTok{, }\DecValTok{5035000}\NormalTok{, }\DecValTok{5040000}\NormalTok{))}
-\NormalTok{trees_reed <-}\StringTok{ }\KeywordTok{crop}\NormalTok{(dat_transformed, }\KeywordTok{extent}\NormalTok{(}\DecValTok{525000}\NormalTok{, }\DecValTok{530000}\NormalTok{, }\DecValTok{5035000}\NormalTok{, }\DecValTok{5040000}\NormalTok{))}
+\NormalTok{reed_stack <-}\StringTok{ }\KeywordTok{crop}\NormalTok{(m_red, }\KeywordTok{extent}\NormalTok{(}\DecValTok{528000}\NormalTok{, }\DecValTok{529500}\NormalTok{, }\DecValTok{5035500}\NormalTok{, }\DecValTok{5036800}\NormalTok{))}
+\NormalTok{trees_reed <-}\StringTok{ }\KeywordTok{crop}\NormalTok{(dat_transformed, }\KeywordTok{extent}\NormalTok{(}\DecValTok{528000}\NormalTok{, }\DecValTok{529500}\NormalTok{, }\DecValTok{5035500}\NormalTok{, }\DecValTok{5036800}\NormalTok{))}
+\NormalTok{reed <-}\StringTok{ }\KeywordTok{crop}\NormalTok{(m_RF, }\KeywordTok{extent}\NormalTok{(}\DecValTok{528000}\NormalTok{, }\DecValTok{529500}\NormalTok{, }\DecValTok{5035500}\NormalTok{, }\DecValTok{5036800}\NormalTok{))}
 
 \CommentTok{# Portland with extent box}
-\KeywordTok{plot}\NormalTok{(m_RF, }\DataTypeTok{main =} \StringTok{"RF C = 7 with pdxTrees"}\NormalTok{, }
-     \DataTypeTok{labels =}\NormalTok{ F, }\DataTypeTok{xaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{yaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{legend =}\NormalTok{ F, }\DataTypeTok{col =} \StringTok{"darkgreen"}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(m_red, }\DataTypeTok{main =} \StringTok{"RF C = 5 with pdxTrees"}\NormalTok{, }
+     \DataTypeTok{xaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{yaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{legend =}\NormalTok{ F)}
 \KeywordTok{plot}\NormalTok{(dat_transformed, }\DataTypeTok{col =} \KeywordTok{rgb}\NormalTok{(}\DataTypeTok{red =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{green =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{blue =} \FloatTok{1.0}\NormalTok{, }\DataTypeTok{alpha =} \FloatTok{0.6}\NormalTok{), }
      \DataTypeTok{cex =} \FloatTok{.2}\NormalTok{, }\DataTypeTok{add =}\NormalTok{ T, }\DataTypeTok{pch =} \DecValTok{1}\NormalTok{)}
 \KeywordTok{plot}\NormalTok{(portland_wgs84, }\DataTypeTok{add =}\NormalTok{ T)}
 \KeywordTok{plot}\NormalTok{(}\KeywordTok{extent}\NormalTok{(reed_stack), }\DataTypeTok{add =}\NormalTok{ T, }\DataTypeTok{col =} \StringTok{"maroon"}\NormalTok{)}
 
 \CommentTok{# Reed plot}
-\KeywordTok{plot}\NormalTok{(reed_stack, }\DataTypeTok{main =} \StringTok{""}\NormalTok{, }\DataTypeTok{labels =}\NormalTok{ F, }\DataTypeTok{xaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{yaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{legend =}\NormalTok{ F, }
-     \DataTypeTok{col =} \StringTok{"darkgreen"}\NormalTok{)}
+\KeywordTok{plot}\NormalTok{(reed_stack, }\DataTypeTok{main =} \StringTok{""}\NormalTok{, }\DataTypeTok{labels =}\NormalTok{ F, }\DataTypeTok{xaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{yaxt =} \StringTok{'n'}\NormalTok{, }\DataTypeTok{legend =}\NormalTok{ F)}
 \KeywordTok{plot}\NormalTok{(trees_reed, }\DataTypeTok{col =} \KeywordTok{rgb}\NormalTok{(}\DataTypeTok{red =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{green =} \FloatTok{0.2}\NormalTok{, }\DataTypeTok{blue =} \FloatTok{1.0}\NormalTok{, }\DataTypeTok{alpha =} \DecValTok{1}\NormalTok{), }
      \DataTypeTok{cex =} \FloatTok{.2}\NormalTok{, }\DataTypeTok{add =}\NormalTok{ T, }\DataTypeTok{pch =} \DecValTok{1}\NormalTok{)}
 \KeywordTok{plot}\NormalTok{(}\KeywordTok{extent}\NormalTok{(reed_stack), }\DataTypeTok{add =}\NormalTok{ T, }\DataTypeTok{col =} \StringTok{"maroon"}\NormalTok{)}
+
+\NormalTok{r_points <-}\StringTok{ }\KeywordTok{rasterToPoints}\NormalTok{(reed)}
+\NormalTok{r_df <-}\StringTok{ }\KeywordTok{data.frame}\NormalTok{(r_points) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{layer =} \KeywordTok{case_when}\NormalTok{(}
+\NormalTok{    layer }\OperatorTok{==}\StringTok{ }\DecValTok{1} \OperatorTok{~}\StringTok{ "Broadleaf"}\NormalTok{,}
+\NormalTok{    layer }\OperatorTok{==}\StringTok{ }\DecValTok{2} \OperatorTok{~}\StringTok{ "Douglas-Fir"}\NormalTok{,}
+\NormalTok{    layer }\OperatorTok{==}\StringTok{ }\DecValTok{3} \OperatorTok{~}\StringTok{ "Giant Sequoia"}\NormalTok{,}
+\NormalTok{    layer }\OperatorTok{==}\StringTok{ }\DecValTok{4} \OperatorTok{~}\StringTok{ "Grass"}\NormalTok{,}
+\NormalTok{    layer }\OperatorTok{==}\StringTok{ }\DecValTok{5} \OperatorTok{~}\StringTok{ "Western Redcedar"}\NormalTok{))}
+
+\NormalTok{m_red <-}\StringTok{ }\NormalTok{m_RF }\OperatorTok{==}\StringTok{ }\DecValTok{5} \CommentTok{# RF redcedars}
+\NormalTok{m_grass <-}\StringTok{ }\NormalTok{m_RF }\OperatorTok{==}\StringTok{ }\DecValTok{4} \CommentTok{# RF grass}
+\NormalTok{m_seq <-}\StringTok{ }\NormalTok{m_RF }\OperatorTok{==}\StringTok{ }\DecValTok{3} \CommentTok{# RF Giant Sequoia}
+\NormalTok{m_fir <-}\StringTok{ }\NormalTok{m_RF }\OperatorTok{==}\StringTok{ }\DecValTok{2} \CommentTok{# RF Douglas-Fir}
+\NormalTok{m_broad <-}\StringTok{ }\NormalTok{m_RF }\OperatorTok{==}\StringTok{ }\DecValTok{1} \CommentTok{# RF Broadleaf}
+\KeywordTok{ggplot}\NormalTok{(}\DataTypeTok{data =}\NormalTok{ r_df) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{geom_tile}\NormalTok{(}\KeywordTok{aes}\NormalTok{(x, y, }\DataTypeTok{fill =}\NormalTok{ layer), }\DataTypeTok{alpha =} \FloatTok{0.98}\NormalTok{) }\OperatorTok{+}\StringTok{ }
+\StringTok{  }\KeywordTok{scale_fill_viridis_d}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{coord_equal}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme_minimal}\NormalTok{() }\OperatorTok{+}
+\StringTok{  }\KeywordTok{theme}\NormalTok{(}\DataTypeTok{panel.grid.major =} \KeywordTok{element_blank}\NormalTok{()) }\OperatorTok{+}
+\StringTok{  }\KeywordTok{xlab}\NormalTok{(}\StringTok{""}\NormalTok{) }\OperatorTok{+}\StringTok{ }\KeywordTok{ylab}\NormalTok{(}\StringTok{""}\NormalTok{)}
 \end{Highlighting}
 \end{Shaded}
 \backmatter
@@ -2205,6 +2305,9 @@ Peterson, J. S. (n.d.). WESTERN RED CEDAR, 3.
 
 \leavevmode\hypertarget{ref-qian_new_2020}{}%
 Qian, Y., Zhou, W., Nytch, C. J., Han, L., \& Li, Z. (2020). A new index to differentiate tree and grass based on high resolution image and object-based methods. \emph{Urban Forestry \& Urban Greening}, \emph{53}, 126661. \url{http://doi.org/10.1016/j.ufug.2020.126661}
+
+\leavevmode\hypertarget{ref-seebacher_western_2007}{}%
+Seebacher, T. M. (2007). \emph{Western redcedar dieback : Possible links to climate change and implications for forest management on Vancouver Island, B.C.} (PhD thesis). University of British Columbia. Retrieved from \url{https://open.library.ubc.ca/cIRcle/collections/ubctheses/831/items/1.0074955}
 
 \leavevmode\hypertarget{ref-noauthor_western_nodate-1}{}%
 Western red cedar. (n.d.). Retrieved from \url{https://www.oregonencyclopedia.org/articles/western_red_cedar/\#.YB7fUy1h1N0}
