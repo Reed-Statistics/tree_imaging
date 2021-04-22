@@ -166,27 +166,49 @@ knitr::kable(results_s, "latex", caption = "Accuracy of support vector machine m
 
 ## Testing Models
 
-A subset of the data was withheld from training the models as test data to provide some measure of how the models perform in predicting results on new data. Based on overall and redcedar accuracy, the appropriate models to consider with the testing data are the 5 class 7 predictor RF and the 5 class radial SVM. The results for the overall test accuracy and the prediction test accuracy for Western redcedars are shown in Tables \@ref(tab:resultsTest) and \@ref(tab:resultsTest2).
+A subset of the data was withheld from training the models as test data to provide some measure of how the models perform in predicting results on new data. Based on overall and redcedar accuracy, the appropriate models to consider with the testing data are the 5 class 7 predictor RF and the 5 class radial SVM. The results for the overall test accuracy and the prediction test accuracy for Western redcedars are shown in Tables \@ref(tab:resultsTestRF), \@ref(tab:resultsTestSVM), \@ref(tab:resultsTest2RF), and \@ref(tab:resultsTest2SVM).
 
-```{r resultsTest, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+```{r resultsTestRF, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+library(caret)
 test_results <- read.csv('~/tree_imaging/data/test_results.csv', check.names = F)
 
-results_tab <- test_results %>%
-  summarise("RF Accuracy" = sum(Class == RF)/nrow(test_results), 
-            "SVM Accuracy" = sum(Class == SVM)/nrow(test_results))
+results_tab_RF <- confusionMatrix(test_results$RF, test_results$Class)
 
-knitr::kable(results_tab, "latex", caption = "Overall accuracy of 7 predictor RF (5 class) and Radial SVM (5 class) models on test data")
+
+knitr::kable(results_tab_RF$byClass, "latex", caption = "Overall accuracy of 7 predictor RF (5 class) model on test data", digits = 2) %>%
+  kable_styling(latex_options = c("scale_down", "hold_position")) %>%
+  column_spec(2:12, width = "0.6in")
 ```
 
-```{r resultsTest2, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+```{r resultsTestSVM, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+results_tab_SVM <- confusionMatrix(test_results$RF, test_results$Class)
+
+knitr::kable(results_tab_SVM$byClass, "latex", caption = "Overall accuracy of Radial SVM (5 class) model on test data", digits = 2) %>%
+  kable_styling(latex_options = c("scale_down", "hold_position")) %>%
+  column_spec(2:12, width = "0.6in")
+```
+
+
+```{r resultsTest2RF, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
 test_results_redceder <- test_results %>%
   dplyr::filter(Class %in% "Western Redcedar")
 
-results_redcedar_tab <- test_results_redceder %>%
-  summarise("RF Accuracy" = sum(Class == RF)/nrow(test_results_redceder), 
-            "SVM Accuracy" = sum(Class == SVM)/nrow(test_results_redceder))
+results_redcedar_tabRF <- confusionMatrix(test_results_redceder$RF, test_results_redceder$Class)
 
-knitr::kable(results_redcedar_tab, "latex", caption = "Western redcedar accuracy of 7 predictor RF (5 class) and Radial SVM (5 class) models on test data")
+knitr::kable(results_redcedar_tabRF$byClass, "latex", caption = "Western redcedar accuracy of 7 predictor RF (5 class) model on test data", digits = 2) %>%
+  kable_styling(latex_options = c("scale_down", "hold_position")) %>%
+  column_spec(2:12, width = "0.6in")
+```
+
+```{r resultsTest2SVM, echo=F, warning=F, message=F, fig.cap='Chart', out.width='100%'}
+test_results_redceder <- test_results %>%
+  dplyr::filter(Class %in% "Western Redcedar")
+
+results_redcedar_tabSVM <- confusionMatrix(test_results_redceder$SVM, test_results_redceder$Class)
+
+knitr::kable(results_redcedar_tabSVM$byClass, "latex", caption = "Western redcedar accuracy of Radial SVM (5 class) model on test data", digits = 2) %>%
+  kable_styling(latex_options = c("scale_down", "hold_position")) %>%
+  column_spec(2:12, width = "0.6in")
 ```
 
 According to the test data, the best performing models for further analysis are the radial SVM model for 5 class prediction and the 7 predictor RF model for 5 class prediction.

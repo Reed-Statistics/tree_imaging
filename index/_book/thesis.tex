@@ -814,30 +814,90 @@ Poly, C = 4 (point) & 0.4067 & 0.0140\\
 \hypertarget{testing-models}{%
 \section{Testing Models}\label{testing-models}}
 
-A subset of the data was withheld from training the models as test data to provide some measure of how the models perform in predicting results on new data. Based on overall and redcedar accuracy, the appropriate models to consider with the testing data are the 5 class 7 predictor RF and the 5 class radial SVM. The results for the overall test accuracy and the prediction test accuracy for Western redcedars are shown in Tables \ref{tab:resultsTest} and \ref{tab:resultsTest2}.
-\begin{table}
+A subset of the data was withheld from training the models as test data to provide some measure of how the models perform in predicting results on new data. Based on overall and redcedar accuracy, the appropriate models to consider with the testing data are the 5 class 7 predictor RF and the 5 class radial SVM. The results for the overall test accuracy and the prediction test accuracy for Western redcedars are shown in Tables \ref{tab:resultsTestRF}, \ref{tab:resultsTestSVM}, \ref{tab:resultsTest2RF}, and \ref{tab:resultsTest2SVM}.
+\begin{table}[!h]
 
-\caption{\label{tab:resultsTest}Overall accuracy of 7 predictor RF (5 class) and Radial SVM (5 class) models on test data}
+\caption{\label{tab:resultsTestRF}Overall accuracy of 7 predictor RF (5 class) model on test data}
 \centering
-\begin{tabular}[t]{r|r}
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{l|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}}
 \hline
-RF Accuracy & SVM Accuracy\\
+  & Sensitivity & Specificity & Pos Pred Value & Neg Pred Value & Precision & Recall & F1 & Prevalence & Detection Rate & Detection Prevalence & Balanced Accuracy\\
 \hline
-0.6533809 & 0.6583471\\
+Class: Broadleaf & 0.78 & 0.68 & 0.57 & 0.85 & 0.57 & 0.78 & 0.66 & 0.35 & 0.27 & 0.48 & 0.73\\
 \hline
-\end{tabular}
+Class: Douglas-Fir & 0.32 & 0.96 & 0.52 & 0.92 & 0.52 & 0.32 & 0.40 & 0.11 & 0.04 & 0.07 & 0.64\\
+\hline
+Class: Giant Sequoia & 0.23 & 0.96 & 0.45 & 0.90 & 0.45 & 0.23 & 0.31 & 0.12 & 0.03 & 0.06 & 0.60\\
+\hline
+Class: grass & 0.95 & 0.96 & 0.92 & 0.98 & 0.92 & 0.95 & 0.93 & 0.31 & 0.29 & 0.32 & 0.95\\
+\hline
+Class: Western Redcedar & 0.22 & 0.95 & 0.35 & 0.91 & 0.35 & 0.22 & 0.27 & 0.11 & 0.02 & 0.07 & 0.58\\
+\hline
+\end{tabular}}
 \end{table}
-\begin{table}
+\begin{table}[!h]
 
-\caption{\label{tab:resultsTest2}Western redcedar accuracy of 7 predictor RF (5 class) and Radial SVM (5 class) models on test data}
+\caption{\label{tab:resultsTestSVM}Overall accuracy of Radial SVM (5 class) model on test data}
 \centering
-\begin{tabular}[t]{r|r}
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{l|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}}
 \hline
-RF Accuracy & SVM Accuracy\\
+  & Sensitivity & Specificity & Pos Pred Value & Neg Pred Value & Precision & Recall & F1 & Prevalence & Detection Rate & Detection Prevalence & Balanced Accuracy\\
 \hline
-0.2164352 & 0.1134259\\
+Class: Broadleaf & 0.78 & 0.68 & 0.57 & 0.85 & 0.57 & 0.78 & 0.66 & 0.35 & 0.27 & 0.48 & 0.73\\
 \hline
-\end{tabular}
+Class: Douglas-Fir & 0.32 & 0.96 & 0.52 & 0.92 & 0.52 & 0.32 & 0.40 & 0.11 & 0.04 & 0.07 & 0.64\\
+\hline
+Class: Giant Sequoia & 0.23 & 0.96 & 0.45 & 0.90 & 0.45 & 0.23 & 0.31 & 0.12 & 0.03 & 0.06 & 0.60\\
+\hline
+Class: grass & 0.95 & 0.96 & 0.92 & 0.98 & 0.92 & 0.95 & 0.93 & 0.31 & 0.29 & 0.32 & 0.95\\
+\hline
+Class: Western Redcedar & 0.22 & 0.95 & 0.35 & 0.91 & 0.35 & 0.22 & 0.27 & 0.11 & 0.02 & 0.07 & 0.58\\
+\hline
+\end{tabular}}
+\end{table}
+\begin{table}[!h]
+
+\caption{\label{tab:resultsTest2RF}Western redcedar accuracy of 7 predictor RF (5 class) model on test data}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{l|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}}
+\hline
+  & Sensitivity & Specificity & Pos Pred Value & Neg Pred Value & Precision & Recall & F1 & Prevalence & Detection Rate & Detection Prevalence & Balanced Accuracy\\
+\hline
+Class: Broadleaf & NA & 0.37 & NA & NA & 0 & NA & NA & 0 & 0.00 & 0.63 & NA\\
+\hline
+Class: Douglas-Fir & NA & 0.92 & NA & NA & 0 & NA & NA & 0 & 0.00 & 0.08 & NA\\
+\hline
+Class: Giant Sequoia & NA & 0.96 & NA & NA & 0 & NA & NA & 0 & 0.00 & 0.04 & NA\\
+\hline
+Class: grass & NA & 0.97 & NA & NA & 0 & NA & NA & 0 & 0.00 & 0.03 & NA\\
+\hline
+Class: Western Redcedar & 0.22 & NA & NA & NA & 1 & 0.22 & 0.36 & 1 & 0.22 & 0.22 & NA\\
+\hline
+\end{tabular}}
+\end{table}
+\begin{table}[!h]
+
+\caption{\label{tab:resultsTest2SVM}Western redcedar accuracy of Radial SVM (5 class) model on test data}
+\centering
+\resizebox{\linewidth}{!}{
+\begin{tabular}[t]{l|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}}
+\hline
+  & Sensitivity & Specificity & Pos Pred Value & Neg Pred Value & Precision & Recall & F1 & Prevalence & Detection Rate & Detection Prevalence & Balanced Accuracy\\
+\hline
+Class: Broadleaf & NA & 0.19 & NA & NA & 0 & NA & NA & 0 & 0.00 & 0.81 & NA\\
+\hline
+Class: Douglas-Fir & NA & 0.97 & NA & NA & 0 & NA & NA & 0 & 0.00 & 0.03 & NA\\
+\hline
+Class: Giant Sequoia & NA & 0.99 & NA & NA & 0 & NA & NA & 0 & 0.00 & 0.01 & NA\\
+\hline
+Class: grass & NA & 0.97 & NA & NA & 0 & NA & NA & 0 & 0.00 & 0.03 & NA\\
+\hline
+Class: Western Redcedar & 0.11 & NA & NA & NA & 1 & 0.11 & 0.2 & 1 & 0.11 & 0.11 & NA\\
+\hline
+\end{tabular}}
 \end{table}
 According to the test data, the best performing models for further analysis are the radial SVM model for 5 class prediction and the 7 predictor RF model for 5 class prediction.
 
@@ -919,14 +979,14 @@ To assess the performance of the model over the Portland region, the results are
 
 \caption{Comparison of Wester redcedar RF pixel predictions (in green) to Western redcedar trees from pdxTrees (in blue).}\label{fig:resultsToStreet}
 \end{figure}
-As part of the research seeks to investigate whether tree prediction outside of Portland's Tree Inventory Project is possible, Figure \ref{fig:reedTreesTopdx} presents a side-by-side comparison of tree predictions for trees in proximity to Reed College. As part of the Tree Inventory Project, the trees are mapped on a satellite image at a higher resolution than used in this research, and the left image in Figure \ref{fig:reedTreesTopdx} displays which trees are included in the study (\url{https://pdx.maps.arcgis.com/apps/webappviewer/index.html?id=b4671f4591144530b1c590731923b182}). The right image in Figure \ref{fig:reedTreesTopdx} displays model predictions for trees in the same region. Pixels in green accurately indicate grass pixels as the fields of grass in the Eastmoreland Golf Course location. There are also trees outlining some of the golf courses, which can be cross-checked with the satellite image on the left. The trees in the golf course were not inventoried by the field crew, so this research successfully identifies trees not already included in the Inventory Project. A next step would be determining how accurately the trees are classified by sending out field crews to record that information.
+As part of the research seeks to investigate whether tree prediction outside of Portland's Tree Inventory Project is possible, Figure \ref{fig:reedTreesTopdx} presents a side-by-side comparison of tree predictions for trees in proximity to Reed College. As part of the Tree Inventory Project, the trees are mapped on a satellite image at a higher resolution than used in this research, and the left image in Figure \ref{fig:reedTreesTopdx} displays which trees are included in the citywide study (``Tree Inventory Project,'' n.d.). The right image in Figure \ref{fig:reedTreesTopdx} displays model predictions for trees in the same region. Pixels in green accurately indicate grass pixels as the fields of grass in the Eastmoreland Golf Course location. There are also trees outlining some of the golf courses, which can be cross-checked with the satellite image on the left. The trees in the golf course were not inventoried by the field crew, so this research successfully identifies trees not already included in the Inventory Project. In the satellite image, Reed College is displayed by the centered clusters of white rectangles just above the rows of green circles. Note that trees on Reed's campus were not inventoried, but that the model predictions in the right image suggest that Western Redcedars can be located around campus. An extension of this research would be determining how accurately the trees are classified by sending out field crews to record information around campus.
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{figure/reedTreesTopdx} 
 
 }
 
-\caption{Comparison of tree model predictions with pdxTrees}\label{fig:reedTreesTopdx}
+\caption{Comparison of tree model predictions (right) with pdxTrees (left) around Reed College. On the left, the circles mark the locations of pdxTrees, with color and shape indicating tree species and size according to the settings found on the website ('Tree Inventory Project'). On the right, the different colored pixels represent model predictions.}\label{fig:reedTreesTopdx}
 \end{figure}
 \hypertarget{discussion}{%
 \chapter{Discussion}\label{discussion}}
@@ -2309,6 +2369,9 @@ Qian, Y., Zhou, W., Nytch, C. J., Han, L., \& Li, Z. (2020). A new index to diff
 
 \leavevmode\hypertarget{ref-seebacher_western_2007}{}%
 Seebacher, T. M. (2007). \emph{Western redcedar dieback : Possible links to climate change and implications for forest management on Vancouver Island, B.C.} (PhD thesis). University of British Columbia. Retrieved from \url{https://open.library.ubc.ca/cIRcle/collections/ubctheses/831/items/1.0074955}
+
+\leavevmode\hypertarget{ref-noauthor_tree_nodate}{}%
+Tree Inventory Project. (n.d.). Retrieved from \url{https://pdx.maps.arcgis.com/apps/webappviewer/index.html?id=b4671f4591144530b1c590731923b182}
 
 \leavevmode\hypertarget{ref-noauthor_western_nodate-1}{}%
 Western red cedar. (n.d.). Retrieved from \url{https://www.oregonencyclopedia.org/articles/western_red_cedar/\#.YB7fUy1h1N0}
