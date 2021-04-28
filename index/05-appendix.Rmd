@@ -988,7 +988,9 @@ redcedar_dat <- rbind(redcedar_dat_street, redcedar_dat_park)
 # match coordinate reference system
 coordinates(redcedar_dat) <- c("Longitude", "Latitude")
 proj4string(redcedar_dat) <- CRS("+init=epsg:4326")
-dat_transformed <- spTransform(redcedar_dat, CRS("+proj=utm +zone=10 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"))
+dat_transformed <- spTransform(redcedar_dat, 
+                               CRS("+proj=utm +zone=10 +ellps=WGS84
+                                   +datum=WGS84 +units=m +no_defs"))
 
 
 # plot pdxTrees with predictions

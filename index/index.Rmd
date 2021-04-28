@@ -26,7 +26,7 @@ abstract: |
 # like below, use a command like that for the abstract above.  Note that a tab is 
 # needed on the line after the |.
 acknowledgements: |
-  Deeply grateful to...
+  A special thank you to Professor Tom Allen for the generous guidance and support throughout this project. I am so grateful for everything I learned from you about light, remote sensing, and research methods in general. It has been a pleasure having you as my thesis advisor! I would like to thank my academic advisor and professor, Kelly McConville, who always encouraged me to get involved in the statistics community and inspired me to work hard and practice ethical statistics. Finally, thank you to all of my friends and family for the continued support and friendship. 
 #dedication: |
 #  You can have a dedication here if you wish. 
 #preface: |

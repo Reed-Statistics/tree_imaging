@@ -161,7 +161,7 @@
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 \Acknowledgements{
-Deeply grateful to\ldots{}
+A special thank you to Professor Tom Allen for the generous guidance and support throughout this project. I am so grateful for everything I learned from you about light, remote sensing, and research methods in general. It has been a pleasure having you as my thesis advisor! I would like to thank my academic advisor and professor, Kelly McConville, who always encouraged me to get involved in the statistics community and inspired me to work hard and practice ethical statistics. Finally, thank you to all of my friends and family for the continued support and friendship.
 }
 
 \Dedication{
@@ -205,7 +205,7 @@ Over the past decade, Western Redcedars have reportedly been in decline. This tr
 \frontmatter % this stuff will be roman-numbered
 \pagestyle{empty} % this removes page numbers from the frontmatter
   \begin{acknowledgements}
-    Deeply grateful to\ldots{}
+    A special thank you to Professor Tom Allen for the generous guidance and support throughout this project. I am so grateful for everything I learned from you about light, remote sensing, and research methods in general. It has been a pleasure having you as my thesis advisor! I would like to thank my academic advisor and professor, Kelly McConville, who always encouraged me to get involved in the statistics community and inspired me to work hard and practice ethical statistics. Finally, thank you to all of my friends and family for the continued support and friendship.
   \end{acknowledgements}
 
   \hypersetup{linkcolor=black}
@@ -814,7 +814,7 @@ Poly, C = 4 (point) & 0.4067 & 0.0140\\
 \hypertarget{testing-models}{%
 \section{Testing Models}\label{testing-models}}
 
-A subset of the data was withheld from training the models as test data to provide some measure of how the models perform in predicting results on new data. Based on overall and redcedar accuracy, the appropriate models to consider with the testing data are the 5 class 7 predictor RF and the 5 class radial SVM. The results for the overall test accuracy and the prediction test accuracy for Western redcedars are shown in Tables \ref{tab:resultsTestRF}, \ref{tab:resultsTestSVM}, \ref{tab:resultsTest2RF}, and \ref{tab:resultsTest2SVM}.
+A subset of the data was withheld from training the models as test data to provide some measure of how the models perform in predicting results on new data. Based on overall and redcedar accuracy, the appropriate models to consider with the testing data are the 5 class 7 predictor RF and the 5 class radial SVM. The results for the overall test accuracy and the prediction test accuracy for Western redcedars are shown in Tables \ref{tab:resultsTestRF}, \ref{tab:resultsTestSVM}.
 \begin{table}[!h]
 
 \caption{\label{tab:resultsTestRF}Overall accuracy of 7 predictor RF (5 class) model on test data}
@@ -845,57 +845,15 @@ Class: Western Redcedar & 0.22 & 0.95 & 0.35 & 0.91 & 0.35 & 0.22 & 0.27 & 0.11 
 \hline
   & Sensitivity & Specificity & Pos Pred Value & Neg Pred Value & Precision & Recall & F1 & Prevalence & Detection Rate & Detection Prevalence & Balanced Accuracy\\
 \hline
-Class: Broadleaf & 0.78 & 0.68 & 0.57 & 0.85 & 0.57 & 0.78 & 0.66 & 0.35 & 0.27 & 0.48 & 0.73\\
+Class: Broadleaf & 0.87 & 0.58 & 0.53 & 0.90 & 0.53 & 0.87 & 0.66 & 0.35 & 0.31 & 0.58 & 0.73\\
 \hline
-Class: Douglas-Fir & 0.32 & 0.96 & 0.52 & 0.92 & 0.52 & 0.32 & 0.40 & 0.11 & 0.04 & 0.07 & 0.64\\
+Class: Douglas-Fir & 0.22 & 0.99 & 0.73 & 0.91 & 0.73 & 0.22 & 0.33 & 0.11 & 0.02 & 0.03 & 0.60\\
 \hline
-Class: Giant Sequoia & 0.23 & 0.96 & 0.45 & 0.90 & 0.45 & 0.23 & 0.31 & 0.12 & 0.03 & 0.06 & 0.60\\
+Class: Giant Sequoia & 0.15 & 0.98 & 0.50 & 0.90 & 0.50 & 0.15 & 0.23 & 0.12 & 0.02 & 0.04 & 0.57\\
 \hline
-Class: grass & 0.95 & 0.96 & 0.92 & 0.98 & 0.92 & 0.95 & 0.93 & 0.31 & 0.29 & 0.32 & 0.95\\
+Class: grass & 0.96 & 0.96 & 0.91 & 0.98 & 0.91 & 0.96 & 0.94 & 0.31 & 0.30 & 0.33 & 0.96\\
 \hline
-Class: Western Redcedar & 0.22 & 0.95 & 0.35 & 0.91 & 0.35 & 0.22 & 0.27 & 0.11 & 0.02 & 0.07 & 0.58\\
-\hline
-\end{tabular}}
-\end{table}
-\begin{table}[!h]
-
-\caption{\label{tab:resultsTest2RF}Western redcedar accuracy of 7 predictor RF (5 class) model on test data}
-\centering
-\resizebox{\linewidth}{!}{
-\begin{tabular}[t]{l|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}}
-\hline
-  & Sensitivity & Specificity & Pos Pred Value & Neg Pred Value & Precision & Recall & F1 & Prevalence & Detection Rate & Detection Prevalence & Balanced Accuracy\\
-\hline
-Class: Broadleaf & NA & 0.37 & NA & NA & 0 & NA & NA & 0 & 0.00 & 0.63 & NA\\
-\hline
-Class: Douglas-Fir & NA & 0.92 & NA & NA & 0 & NA & NA & 0 & 0.00 & 0.08 & NA\\
-\hline
-Class: Giant Sequoia & NA & 0.96 & NA & NA & 0 & NA & NA & 0 & 0.00 & 0.04 & NA\\
-\hline
-Class: grass & NA & 0.97 & NA & NA & 0 & NA & NA & 0 & 0.00 & 0.03 & NA\\
-\hline
-Class: Western Redcedar & 0.22 & NA & NA & NA & 1 & 0.22 & 0.36 & 1 & 0.22 & 0.22 & NA\\
-\hline
-\end{tabular}}
-\end{table}
-\begin{table}[!h]
-
-\caption{\label{tab:resultsTest2SVM}Western redcedar accuracy of Radial SVM (5 class) model on test data}
-\centering
-\resizebox{\linewidth}{!}{
-\begin{tabular}[t]{l|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}|>{\raggedleft\arraybackslash}p{0.6in}}
-\hline
-  & Sensitivity & Specificity & Pos Pred Value & Neg Pred Value & Precision & Recall & F1 & Prevalence & Detection Rate & Detection Prevalence & Balanced Accuracy\\
-\hline
-Class: Broadleaf & NA & 0.19 & NA & NA & 0 & NA & NA & 0 & 0.00 & 0.81 & NA\\
-\hline
-Class: Douglas-Fir & NA & 0.97 & NA & NA & 0 & NA & NA & 0 & 0.00 & 0.03 & NA\\
-\hline
-Class: Giant Sequoia & NA & 0.99 & NA & NA & 0 & NA & NA & 0 & 0.00 & 0.01 & NA\\
-\hline
-Class: grass & NA & 0.97 & NA & NA & 0 & NA & NA & 0 & 0.00 & 0.03 & NA\\
-\hline
-Class: Western Redcedar & 0.11 & NA & NA & NA & 1 & 0.11 & 0.2 & 1 & 0.11 & 0.11 & NA\\
+Class: Western Redcedar & 0.11 & 0.98 & 0.47 & 0.90 & 0.47 & 0.11 & 0.18 & 0.11 & 0.01 & 0.03 & 0.55\\
 \hline
 \end{tabular}}
 \end{table}
