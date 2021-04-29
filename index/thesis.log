@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.1.7)  27 APR 2021 23:02
+This is pdfTeX, Version 3.14159265-2.6-1.40.21 (TeX Live 2020) (preloaded format=pdflatex 2021.1.7)  29 APR 2021 10:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1440,38 +1440,38 @@ Package xcolor Warning: Incompatible color definition on input line 2210.
 Package xcolor Warning: Incompatible color definition on input line 2212.
 
 
-Package xcolor Warning: Incompatible color definition on input line 2294.
+Package xcolor Warning: Incompatible color definition on input line 2296.
 
 
-Package xcolor Warning: Incompatible color definition on input line 2294.
+Package xcolor Warning: Incompatible color definition on input line 2296.
 
 
-Package xcolor Warning: Incompatible color definition on input line 2294.
+Package xcolor Warning: Incompatible color definition on input line 2296.
 
 [65]
 
-Package xcolor Warning: Incompatible color definition on input line 2294.
+Package xcolor Warning: Incompatible color definition on input line 2296.
 
 
-Package xcolor Warning: Incompatible color definition on input line 2294.
+Package xcolor Warning: Incompatible color definition on input line 2296.
 
 
-Underfull \vbox (badness 10000) detected at line 2294
+Underfull \vbox (badness 10000) detected at line 2296
  []
 
 
-Underfull \vbox (badness 10000) detected at line 2294
+Underfull \vbox (badness 10000) detected at line 2296
  []
 
 
-Package xcolor Warning: Incompatible color definition on input line 2294.
+Package xcolor Warning: Incompatible color definition on input line 2296.
 
 [66]
 
-Package xcolor Warning: Incompatible color definition on input line 2294.
+Package xcolor Warning: Incompatible color definition on input line 2296.
 
 
-Package xcolor Warning: Incompatible color definition on input line 2294.
+Package xcolor Warning: Incompatible color definition on input line 2296.
 
 [67] [68
 
@@ -1484,7 +1484,7 @@ Package rerunfilecheck Info: File `thesis.out' has not changed.
 Here is how much of TeX's memory you used:
  11204 strings out of 481233
  176166 string characters out of 5913274
- 575594 words of memory out of 5000000
+ 575595 words of memory out of 5000000
  27582 multiletter control sequences out of 15000+600000
  456305 words of font info for 66 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
@@ -1510,7 +1510,7 @@ ist/fonts/type1/public/lm/lmsy8.pfb></Users/sarahkmaebius/Library/TinyTeX/texmf
 -dist/fonts/type1/public/lm/lmtk10.pfb></Users/sarahkmaebius/Library/TinyTeX/te
 xmf-dist/fonts/type1/public/lm/lmtt12.pfb></Users/sarahkmaebius/Library/TinyTeX
 /texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on thesis.pdf (83 pages, 10338686 bytes).
+Output written on thesis.pdf (83 pages, 10338828 bytes).
 PDF statistics:
  1082 PDF objects out of 1200 (max. 8388607)
  925 compressed objects within 10 object streams

@@ -2,7 +2,7 @@
 author: 'Sarah Maebius'
 date: 'May 2021'
 institution: 'Reed College'
-division: 'Mathematics and Natural Sciences'
+division: 'Mathematical and Natural Sciences'
 advisor: 'Tom Allen'
 #altadvisor: 'Your Other Advisor'
 # Delete line 6 if you only have one advisor
