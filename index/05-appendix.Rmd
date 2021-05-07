@@ -3,7 +3,7 @@
 `r if(!knitr:::is_latex_output()) '# (APPENDIX) Appendix {-}'` 
 
 
-# Tables
+# Tables {#tables}
 
 <!--
 If you feel it necessary to include an appendix, it goes here.

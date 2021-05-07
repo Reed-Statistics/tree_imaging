@@ -226,8 +226,6 @@ Over the past decade, Western Redcedars have reportedly been in decline. This tr
 \chapter*{Introduction}\label{introduction}}
 \addcontentsline{toc}{chapter}{Introduction}
 
-\clearpage
-
 \hypertarget{research-problem-and-background}{%
 \section{Research Problem and Background}\label{research-problem-and-background}}
 
@@ -235,7 +233,7 @@ Western Redcedar trees are evergreen trees that typically grow up to 75 feet tal
 
 Modelling in this research will be conducted by combining information gathered from remotely sensed images with ground level information. There are several sources publishing research done using satellite imagery for land classification (Castelluccio, Poggi, Sansone, \& Verdoliva, 2015) and for predicting tree species (Fricker et al., 2019), which will be the groundwork for this project's application of remote sensing models to the specific topic of Western Redcedar mortality.
 
-Remote sensing is a process for identifying the physical aspects of a large area of land by collecting and measuring the reflected light using airplanes or satellites. This method provides access to lot of information about the region of interest that would otherwise be limited from a human's ground-level persepective. Remote sensing is used to detect characteristics on land as well as the sea. Some remote sensing land applications include tracking forest fires, volcanic eruptions, city growth, and also forest changes.
+Remote sensing is a process for identifying the physical aspects of a large area of land by collecting and measuring the reflected light using airplanes or satellites. This method provides access to lot of information about the region of interest that would otherwise be limited from a human's ground-level persepective. Remote sensing is used to detect characteristics on land as well as the sea. Some remote sensing land applications include tracking forest fires, volcanic eruptions (Tralli, Blom, Zlotnicki, Donnellan, \& Evans, 2005), city growth, and also forest changes (Emery \& Camps, 2017).
 
 Satellites orbit the earth, carrying sensors that record levels of electromagnetic radiation detected by the reflection of the sun on the earth. The data collected is the measured radiation from different regions of the spectrum (visible light, infrared, ultraviolet, etc.). Depending on the surface, sunlight gets absorbed or reflected back at the orbiting satellite. The remotely sensed data is available at certain resolutions depending on the instruments used. Spatial resolution is the area imaged by a satellite image, where a detailed image has smaller spatial resolution hence smaller pixels. Spectral resolution is a measure of the size of the wavelength interval, where smaller bands and smaller intervals improve the spectral resolution of an image and enhance the level of detail. Satellite images need to be corrected to combine the bands into an image depending on the analysis.
 
@@ -247,21 +245,18 @@ Another related study identifies 7 tree species by applying a hyperspectral CNN 
 
 This thesis follows along with the methods in (Fricker et al., 2019) for combining the satellite imagery data with ground data by creating spatial polygons and extracting pixel-level information to train classification models. The work in this thesis differs from the methods in the cited literature by using random forests and support vector machines as classification models instead of CNNs and uses the RGB model instead of hyperspectral model. Finally, this thesis applies established classification methods for satellite imagery data to answer the specific question about the cause of death of Western Redcedars in the Pacific Northwest. The models predict the locations for each tree species to facilitate the identification of any patterns in the species mortality over the past decade.
 
-\hypertarget{overview}{%
-\section{Overview}\label{overview}}
+\hypertarget{overview-a-statistical-learning-approach-to-identifying-location-of-western-redcedars}{%
+\section{Overview: A Statistical Learning Approach to Identifying Location of Western Redcedars}\label{overview-a-statistical-learning-approach-to-identifying-location-of-western-redcedars}}
 
-\hypertarget{a-statistical-learning-approach-to-identifying-location-of-western-redcedars}{%
-\subsection{A Statistical Learning Approach to Identifying Location of Western Redcedars}\label{a-statistical-learning-approach-to-identifying-location-of-western-redcedars}}
-
-This work combines RGB imagery data from Planet.com with ground level tree data from the RStudio \texttt{pdxTrees} library and applies random forest and support vector machine classification methods to predict the location of tree species (specifically Western Redcedars) in Portland, Oregon and model the condition of Western Redcedars to ultimately understand the cause of death in this species. Chapter \ref{data} describes the two levels of data in this research: ground level and pixel level data, where the data comes from, and how the data is combined for modeling. Chapter \ref{methods} discusses the process behind training random forest and support vector machine models. Chapter \ref{results} summarizes how the data is prepared for the final model and the outcome of the research. Chapter \ref{discussion} provides a summary of the research, some limitations, and a discussion of methods of improvement as wells as key takeaways.
+This work combines RGB imagery data from Planet.com with ground level tree data from the RStudio (R Core Team, 2019) \texttt{pdxTrees} library (McConville \& Caldwell, 2020) and applies random forest and support vector machine classification methods to predict the location of tree species (specifically Western Redcedars) in Portland, Oregon and model the condition of Western Redcedars to ultimately understand the cause of death in this species. Chapter \ref{data} describes the two levels of data in this research: ground level and pixel level data, where the data comes from, and how the data is combined for modeling. Chapter \ref{methods} discusses the process behind training random forest and support vector machine models. Chapter \ref{results} summarizes how the data is prepared for the final model and the outcome of the research. Chapter \ref{discussion} provides a summary of the research, some limitations, and a discussion of methods of improvement as wells as key takeaways.
 
 \hypertarget{data}{%
 \chapter{Data}\label{data}}
 
-There are two sources of data in this project. Data at a pixel level come from satellite images downloaded from Planet.com (\url{https://www.planet.com}), and data at the ground level come from library \texttt{pdxTrees} in RStudio (\url{https://github.com/mcconvil/pdxTrees}).
+There are two sources of data in this project. Data at a pixel level come from satellite images downloaded from Planet.com (\url{https://www.planet.com}) (Team, n.d.), and data at the ground level come from library \texttt{pdxTrees} (McConville \& Caldwell, 2020) in RStudio (\url{https://github.com/mcconvil/pdxTrees}).
 
 \hypertarget{imaging}{%
-\subsection{Imaging}\label{imaging}}
+\section{Imaging}\label{imaging}}
 
 Satellite images come from Planet.com's PS2.SD instrument found on Dove-R satellites that were launched in 2017. Satellites have an approximate frame size of 20 km x 12 km parallel to flight path. From a single pass, 4 to 5 overlapping framed scenes are combined to form a tile. To separate the light into red, blue, green, and near-infrared (NIR) channels, the telescope has a high-performance butcher-block filter made of 4 individual pass-band filters. Planet.com equates this pass-band filter with that of Sentinel-2.
 
@@ -272,7 +267,7 @@ The images used in this research were taken on September 2nd, 2020 at an altitud
 Planet.com provides a way to download free images that are already processed and corrected for analysis. Some drawbacks to using this data are the limited number of downloads available per free account, the low spatial resolution, which decreases the performance of statistical models trying to predict tree species location, and the low spectral resolution, so the satellite sensor cannot detect spectral features in detail.
 
 \hypertarget{ground-data}{%
-\subsection{Ground Data}\label{ground-data}}
+\section{Ground Data}\label{ground-data}}
 
 Ground level data is available from the `pdxTrees' package in RStudio. This data was collected as part of Portland's Parks and Recreation's Urban Forestry Tree Inventory Project, which collected park tree information from 2017 to 2019. Originally, the inventory project started with the goal of improving the city's tree management plans. Under the guidance of US Forestry staff, volunteers around the city's neighborhoods are trained in identifying tree species and provided with tools necessary to record tree measurements. Measurements in feet were made using diameter tape. The Portland park trees inventory consists of over 25,000 trees, each with information about tree location, size, species, and health. For the purposes of this project, the following variables were selected:
 \begin{itemize}
@@ -290,12 +285,12 @@ To prepare the ground level data for training the model, the data was filtered b
 Portland's Tree Inventory includes a variable for identifying trees including Western Redcedars as well as variables for filtering to include larger trees canopies (at least 6m in diameter) in the dataset, which helps construct a training set of tree polygons over a satellite image. This data would be even better suited for the purposes of this project if the street trees subdata also contained variables for tree canopy size.
 
 \hypertarget{training-data}{%
-\subsection{Training Data}\label{training-data}}
+\section{Training Data}\label{training-data}}
 
 Two datasets were used to train the models and their performance was compared. A pixels dataset was created by extracting pixel band values (red, green, blue, and infrared) from manually drawn polygons around 100 of each tree species, so that the pixels dataset has multiple pixel observations representing a single tree. The other dataset was a point pixel dataset created by only extracting band values from the pixel directly below the point indicated by a street or park tree. This dataset is smaller than the pixels dataset and differs from the pixels dataset in that it is more likely to have the pure tree pixel values instead of maybe a dirt or shadow pixel value. Having the two datasets allows a comparison between the performance of polygon pixel extraction methods versus single point extraction methods.
 
 \hypertarget{characteristics-of-pixels-training-data}{%
-\subsubsection{Characteristics of Pixels Training Data}\label{characteristics-of-pixels-training-data}}
+\subsection{Characteristics of Pixels Training Data}\label{characteristics-of-pixels-training-data}}
 
 The training data at the ground-level was filtered by tree size and tree type. Trees with at least 20 feet in north to south crown width were included in the training dataset to ensure that the polygons around each tree contain around 9 to 20 pixels. Figure \ref{fig:crownWidth} plots the north to south crown width values against the west to east crown width values to present the ranges of crown widths in the entire pdxTrees parks dataset and to justify only using the north to south crown width for filtering the dataset since the two variables have a strong positive correlation.
 \begin{figure}
@@ -330,7 +325,7 @@ English Oak & 135\\
 \end{tabular}
 \end{table}
 \hypertarget{creating-spatial-polygons}{%
-\subsubsection{Creating Spatial Polygons}\label{creating-spatial-polygons}}
+\subsection{Creating Spatial Polygons}\label{creating-spatial-polygons}}
 
 The training dataset was converted into shapefiles for each type of tree and exported into QGIS where polygons were manually drawn around 100 of the trees for each species. The point shapefile layers were displayed over the raster images downloaded from Planet.com in QGIS, which provided a guide point for locating individual trees. Then using QGIS's drawing tool, a polygon is carefully drawn around the tree canopy (see Figure \ref{fig:polyimage} and Figure \ref{fig:redcedar}). Most polygons turned out to be four to six-sided polygons to retain the general shape of the tree canopy. Tree polygons were only created if the outline of the tree canopy was clearly visible or surrounded by other trees of the same species in order to avoid including pixels from the wrong species in that polygon. Also, the shadows of the trees are visible in the raster images, so the polygons were drawn with the intention of not including the tree shadow. For the five different species of trees, at least 100 polygons were drawn around trees of that type, with each polygon containing at least 6 pixels and at most 20 pixels. The polygon shapefiles were then exported into RStudio where the rest of the analysis was conducted.
 
@@ -436,14 +431,14 @@ e & Western Redcedar & 36 & 507\\
 \end{tabular}
 \end{table}
 \hypertarget{polygon-limitations}{%
-\subsubsection{Polygon Limitations}\label{polygon-limitations}}
+\subsection{Polygon Limitations}\label{polygon-limitations}}
 
 Ideally, the raster strips contain training trees of each species, and as a result, the polygons are evenly distributed across the raster strips, but due to limitations of our ground-level data as well as the coverage of the strips across the city of Portland, this is not achievable. Each of the raster strips contains some number of manually drawn polygons, however, raster strips `C' and `D' are missing some of the tree species. The raster strips do not all cover Portland to the same extent. Strips `A' and `B' encompass most of the city while strips `C' and `D' only make up a small portion that covers the corners of the city not reached by strips `A' and `B'.
 
 The polygons are drawn with the intention of locating and extracting pixels for a known tree species. Ideally, the extracted data is representative of tree pixels and has a sufficient amount of pixels per species. The satellite images' resolution makes some error inevitable. If tree canopies overlap, polygons may contain pixels from different species. If pixels are cast in shadow, the extracted light intensity values will differ from other pixel values. To avoid these errors, polygons with uncertain canopies are cross-checked with the satellite filter on Google Maps. For example, a point in QGIS that is indicated as a douglas-fir tree might appear as one tree on the low-resolution image from Planet.com, but a closer look at Google Maps shows that it is actually two trees in close proximity. Having low spatial resolution decreases the number of pixels available within a polygon, but that has to be balanced out with the need for a large number of pixels. With regards to the number of pixels per tree species, having around the same number of tree polygons per species results in differing amounts of pixels per species due to the different average sizes of tree canopies for different species. After drawing the images, the pixels totals per tree species is computed to ensure that the training pixels data contains at least 800 pixels per tree species.
 
 \hypertarget{combining-ground-level-data-with-pixel-level-data}{%
-\subsubsection{Combining Ground-level Data with Pixel-level Data}\label{combining-ground-level-data-with-pixel-level-data}}
+\subsection{Combining Ground-level Data with Pixel-level Data}\label{combining-ground-level-data-with-pixel-level-data}}
 
 The first spatial join in RStudio was conducted to match up each Spatial Polygon with a point in the training dataset. Then the raster images were loaded and joined with the polygons to extract the pixel values inside each polygon for all 4 bands (red, green, blue, infrared). Ultimately this turned into a pixel table with rows representing each pixel with its corresponding polygon, light reflection intensity values for all 4 bands, and the ground information about that tree. Table \ref{tab:pixelHead} displays the first few entries of the pixels dataset. Table \ref{tab:pixelCounts} contains the summary of the total number of pixels for each tree type.
 \begin{table}
@@ -500,15 +495,15 @@ Figure \ref{fig:pixDensity} displays the range of reflection intensity pixel val
 
 }
 
-\caption{ }\label{fig:pixDensity}
+\caption{Range of reflection intensity pixel values per tree type.}\label{fig:pixDensity}
 \end{figure}
 \hypertarget{preparing-raster-images}{%
-\section{Preparing Raster Images}\label{preparing-raster-images}}
+\chapter{Preparing Raster Images}\label{preparing-raster-images}}
 
 The training model has to be applied to the entire raster image to predict the location of Western Redcedars, however, extracting all the pixels from raster images is a slow process. Filtering the rasters to keep vegetation and to recognize the difference between grass pixels and tree pixels alleviates the computational intensity of extracting all the pixels and improves the performance of the models. To reduce the size of computations, all five raster strips are masked and cropped to only include pixels within the city boundary of Portland, since that is the region of interest, and that is the extent of the ground level data.
 
 \hypertarget{masking-vegetation}{%
-\subsection{Masking Vegetation}\label{masking-vegetation}}
+\section{Masking Vegetation}\label{masking-vegetation}}
 
 The satellite images in RStudio need to be masked to reduce the number of pixels that the model has to classify and prevent the chance of a non-vegetation surface being predicted as a tree. A common mask applied to raster images is a Normalized Difference Vegetation Index (NDVI) mask. This index is a measure of the greenness of a pixel, with higher values indicating vegetation and lower values indicating infertile areas such as a rock. The formula for NDVI is \(NDVI = \frac{NIR - Red}{NIR + Red}\). Figure \ref{fig:ndvival} displays the density of NDVI values over the raster images. To remove the pixels that are not vegetation, an NDVI threshold is determined to be 0.00 to create a mask dividing the pixels into vegetation (1) and non-vegetation (0). When the trained model is applied to the raster image, it is applied to the masked raster image that only keeps pixels with NDVI mask values of 1.
 \begin{figure}
@@ -520,7 +515,7 @@ The satellite images in RStudio need to be masked to reduce the number of pixels
 \caption{Normalized Difference Vegetation Index (NDVI) is a measure of the greenness of a pixel. The histogram displays the frequency of the tree pixels' NDVI values. A good threshold for masking out the nonvegetation pixels is an NDVI of 0.}\label{fig:ndvival}
 \end{figure}
 \hypertarget{masking-grass}{%
-\subsection{Masking Grass}\label{masking-grass}}
+\section{Masking Grass}\label{masking-grass}}
 
 After masking the images to only contain vegetation pixels, the effectiveness of a second mask was investigated to try and determine whether it is feasible to distinguish between tree pixels and grass pixels in a satellite image. This would be useful for preventing the final model from predicting fields of grass as trees. Inspired by previous research, a grass index was created by averaging the values of the four bands, \(GRASS = \frac{RED + BLUE + GREEN + NIR}{4}\) (Qian, Zhou, Nytch, Han, \& Li, 2020). Grass polygons were created in QGIS to add a grass attribute in the pixels dataset. Five fields of grass were outlined as polygons in QGIS. In RStudio, the pixels were extracted from the grass polygons for a total of 2,923 grass pixels. Figure \ref{fig:grassval} displays how the average band values for the grass pixels differ from the other tree types average band values. Based on the figure, pixels in the raster image that have an average band value above 4900 are filtered out. Masking the grass pixels ensures that a field of grass will not be classified as a tree when applied to the entire raster image.
 \begin{figure}
@@ -541,7 +536,7 @@ Figure \ref{fig:beforeaftermask} displays a raster strip with every pixel includ
 \caption{A raster strip with every pixel included (top), only the pixels with NDVI values above 0.00 (middle), and only pixels with NDVI values above 0.00 and average band values below 4900 (bottom)}\label{fig:beforeaftermask}
 \end{figure}
 \hypertarget{masking-limitations}{%
-\subsection{Masking Limitations}\label{masking-limitations}}
+\section{Masking Limitations}\label{masking-limitations}}
 
 The low resolution of the raster images cause shapes to appear blurry, and especially tree canopies that are close together appear as a single formation.
 
@@ -562,7 +557,7 @@ To address leftover grass pixels in the filtered raster image, access to lidar d
 \hypertarget{existing-methods}{%
 \section{Existing Methods}\label{existing-methods}}
 
-Since the Western Redcedar decline is recent, there are currently no published work for identifying tree species like Western Redcedars for the Pacific Northwest using satellite imaging. One literature investigates the dieback of Wester redcedars in Vancouver, B.C. as a result of dry weather and how this links to climate change (Seebacher, 2007). A study identifies tree species for a strip of land in California by combining ground-level data with satellite images (Fricker et al., 2019). Their methods involved drawing polygons around rastered images that are layered with ground data as explained in Chapter \ref{data}, but the pixels from the polygons are used to train a convolutional neural network (CNN) model instead of the random forests and support vector machines in this study. The CNN model was then evaluated with k-fold cross validation. CNN models are appropriate in a classification setting and when working with satellite images because they account for spatial relations, which is likely to appear in classifying tree species. This study follows the methods of preparing the data for modelling as well as the method of cross validation to evaluate the performance of the random forests and support vector machines models. Random forests are used in a classification setting or regression setting and have the advantage of being simplier to train than CNN models and still performs at a similar level. Random forests use random feature selections to create decision trees and increase the number of correctly classified observations. Since this research strives to provide a computationally simple method of estimating tree locations to track changes in the ecosystem, a random forest is suitable for the study. If a researcher was interested in making more precise predictions, a CNN would require more time but would produce better estimates.
+Since the Western Redcedar decline is recent, there are currently no published work for identifying tree species like Western Redcedars for the Pacific Northwest using satellite imaging. One literature investigates the dieback of Wester redcedars in Vancouver, B.C. as a result of dry weather and how this links to climate change (Seebacher, 2007). A study identifies tree species for a strip of land in California by combining ground-level data with satellite images (Fricker et al., 2019). Their methods involved drawing polygons around rastered images that are layered with ground data as explained in Chapter \ref{data}, but the pixels from the polygons are used to train a convolutional neural network (CNN) model instead of the random forests and support vector machines in this study. The CNN model was then evaluated with k-fold cross validation. CNN models are appropriate in a classification setting and when working with satellite images because they account for spatial relations, which is likely to appear in classifying tree species. This study follows the methods of preparing the data for modelling as well as the method of cross validation to evaluate the performance of the random forests and support vector machines models. Random forests are used in a classification setting or regression setting and have the advantage of being simplier to train than CNN models and still performs at a similar level. Random forests apply an element of randomness to create a lot of decision trees and improve the classification power. Since this research strives to provide a computationally simple method of estimating tree locations to track changes in the ecosystem, a random forest is suitable for the study. If a researcher was interested in making more precise predictions, a CNN would require more time but would produce better estimates.
 
 \hypertarget{current-methods}{%
 \section{Current Methods}\label{current-methods}}
@@ -572,27 +567,77 @@ This research applies RF and SVM models on trained data and compares overall tra
 \hypertarget{random-forest}{%
 \subsection{Random Forest}\label{random-forest}}
 
-In building a decision tree for classification, recursive binary splits are made by minimizing the Gini index (\(G\)), the total variance across \(K\) classes:
+In building a decision tree (Figure \ref{fig:decisiontree}) for classification, recursive binary splits are made by minimizing the Gini index (\(G\)), the total variance across \(K\) classes:
 
 \[G = \sum_{k = 1}^K\hat{p}_{mk}(1 - \hat{p}_{mk}),\]
 
-where \(\hat{p}_{mk}\) is the proportion of observations in the \(m^{\text{th}}\) region from the \(k^{\text{th}}\) class (James, Witten, Hastie, \& Tibshirani, 2013). A small Gini index value represents a region containing mostly observations from a single class, while a large Gini index value represents a lot of variation across classes. Then the decision tree is constructed by repeatedly considering different attributes and making splits where the Gini index is minimized. Note that this top-down, greedy approach tends to overfit the training data, so finding the decision tree that performs the best on test data involves a cost-complexity pruning algorithm to obtain smaller trees and apply k-fold cross validation to choose the best tree that minimizes the average error. K-fold cross validation is performed when training the models by splitting the data into \(k = 10\) folds and training ten models each time withholding one of the ten folds until the process goes through every fold. This process aids in understanding how the models will perform against data that has not been included in training the model.
+where \(\hat{p}_{mk}\) is the proportion of observations in the \(m^{\text{th}}\) region from the \(k^{\text{th}}\) class (James, Witten, Hastie, \& Tibshirani, 2013).
+\begin{figure}
 
-In the classification setting, a stronger predictive model than a decision tree is a random forest, which uses an element of randomness to decorrelate bootstrapped decision trees. Bootstrapped samples from the training dataset are used to construct decision trees, where splits are based on minimizing the Gini index when selecting from a random sample \(m\) of attributes from all \(p\) available. In common random forest applications, the number of attributes considered at a split is \(m \approx \sqrt{p}\). Theoretically, by forcing only a subset of attributes to be featured in the tree, this expands the number of possible subtrees that might not have been achieved by the top-down, greedy approach. Hence, random forests provide a method of predicting classes with low variance while also keeping bias at a minimum.
+{\centering \includegraphics[width=0.7\linewidth]{figure/decision_tree} 
+
+}
+
+\caption{A single decision tree (left) displays splits at different predictors. Random forests (right) are constructed by aggregating many decision trees constructed from bootstrapped samples of the data and from splits made from a random subset of predictors.}\label{fig:decisiontree}
+\end{figure}
+A small Gini index value represents a region containing mostly observations from a single class, while a large Gini index value represents a lot of variation across classes. Then the decision tree is constructed by repeatedly considering different attributes and making splits where the Gini index is minimized. This is a ``top-down, greedy'' approach in the sense that, at the first stage, the optimal decision is made, and again, at the next stage, the optimal decision is made, and so on. Note that this top-down, greedy approach tends to overfit the training data, so finding the decision tree that performs the best on test data involves a cost-complexity pruning algorithm to obtain smaller trees and apply k-fold cross validation to choose the best tree that minimizes the average error. Instead of pruning the tree to deal with overfitting, another option is aggregating bootstrapped decision trees constructed with a random element through considering random subsets of the predictors. K-fold cross validation is performed when training the models by splitting the data into \(k = 10\) folds and training ten models each time withholding one of the ten folds to evaluate the accuracy of the model against the remaining nine folds and repeating the process until each fold is left out. This process aids in understanding how the models will perform against data that has not been included in training the model. Larger decision trees are more sensitive to changes in the training data, and so, have higher variance.
+
+In the classification setting, a stronger predictive model than a decision tree is a random forest (Figure \ref{fig:decisiontree}), which involves the construction of many bootstrapped decision trees. The simple method of sampling with replacement from the data and forming decision trees on the boostrapped samples ends up producing many similar, correlated trees. Random forests apply an element of randomness to decorrelate bootstrapped decision trees. Bootstrapped samples from the training dataset are used to construct decision trees, where splits are based on minimizing the Gini index when selecting from a random sample \(m\) of attributes from all \(p\) available. In common random forest applications, the number of attributes considered at a split is \(m \approx \sqrt{p}\). Theoretically, by forcing only a subset of attributes to be featured in the tree, this expands the number of possible subtrees that might not have been achieved by the top-down, greedy approach. Hence, random forests provide a method of predicting classes with low variance while also keeping bias at a minimum.
 
 \hypertarget{support-vector-machine}{%
 \subsection{Support Vector Machine}\label{support-vector-machine}}
 
-Another method investigated in this study imagines the multidimensional data in space and classifies the data using hyperplanes positioned to minimize misclassification error and maximize distance from observations to separate the data (James et al., 2013). Support vectors are vectors in space that represent the subset of observations which influence the hyperplane classifier. For example, in two dimensions, imagine a line separating A's one one side and B's on the other side. This line is the maximal margin hyperplane if it is the farthest possible from the observations and also separates the two classes perfectly. Observations that are closer to the hyperplane (support vectors) have more influence over the line if they move than observations that are further. Consequently, more support vectors indicates a classifier with lower variance and high bias. A tuning parameter can be altered to expand or shrink the margin of error surrounding the hyperplane (how far away the observations have to be from the plane) and decide the level of tolerance for misclassifying observations.
+Another method investigated in this study imagines the multidimensional data in space and classifies the data using hyperplanes positioned to minimize misclassification error and maximize distance from observations to separate the data (James et al., 2013). The maximal margin hyperplane is a plane that separates data so that one class is on one side and another class is on the other side. Figure \ref{fig:hyperplane} displays a two dimensional example where a line separates two classes. Depending on the data, there could be many ways of drawing this line or zero ways. Since test data observations might be positioned close to the hyperplane, the optimal classifier is the hyperplane that maximizes the perpendicular distance between observations and the plane while keeping the classes separated. Observations that are closer to the hyperplane are called support vectors because they have more influence over the line if they move than observations that are further. Observations which are further from the hyperplane than support vectors do not have as much influence because a small movement in those observations does not impact the location of the hyperplane. A large number of support vectors indicates the classifier has low variance and high bias.
+\begin{figure}
 
-Support vector machines can be applied in a linear or nonlinear setting with the use of kernels. A kernel is a function \(K(x_i, x_{i'})\) of two observations specifying the similarities between two points. Given data with \(n\) observations, let \(x_i\) be an observation, where \(i = 1, ... ,n\). A linear kernel is
+{\centering \includegraphics[width=0.7\linewidth]{figure/hyperplane} 
+
+}
+
+\caption{Left: Depending on the data, there could be several ways of drawing a hyperplane or zero ways. If it is possible to separate the classes, the plane that maximizes the perpendicular distance between observations and the plane is the optimal classifier. Right: Points that are close to the hyperplane are support vectors in the sense that slight changes in these points will alter the hyperplane.}\label{fig:hyperplane}
+\end{figure}
+More specifically, the following algorithm is applied to determine the maximal margin hyperplane for observations \(x_1, ..., x_n \in \mathbb{R}^p\) with classes \(y_1, ..., y_n \in \{-1, 1\}\) and \(p\) predictors:
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\item
+  Choose \(\beta_0, \beta_1, ..., \beta_p\) to maximize margin of hyperplane (M)
+\item
+  Apply constraints to ensure that observations are M away from the hyperplane and on the correct side:
+  \[\sum_{j = 1}^p \beta_j^2 = 1 \text{ and } y_i(\beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + ... + \beta_p x_{ip}) \geq M \  \forall \ i = 1, ..., n.\]
+\end{enumerate}
+This determines the optimal hyperplane separating the data if it exists, however, there are some cases where the data cannot be perfectly separated by a plane, which is where suppor vector machines are appropriate.
+
+The support vector classifier allows some observations to be misclassified with some meaure of error \(\epsilon_i\). This \(\epsilon_i\) is 0 if the observation is on the correct side of the margin, between 1 and 0 if the observation is on the wrong side of the margin, and greater than \(1\) if it is on the wrong side of the hyperplane. A tuning parameter \(C\) is the cost measure for the amount of error we are willing to allow. Higher values of \(C\) are more tolerant of misclassifications, so the margin is wider.
+
+The following algorithm determines the support vector classifier for observations \(x_1, ..., x_n \in \mathbb{R}^p\) with classes \(y_1, ..., y_n \in \{-1, 1\}\) and \(p\) predictors:
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\item
+  Choose \(\beta_0, \beta_1, ..., \beta_p, \epsilon_1, ..., \epsilon_n\) to maximize margin of hyperplane (M)
+\item
+  Apply constraints to ensure that observations are M away from the hyperplane and on the correct side:
+\end{enumerate}
+\[\sum_{j = 1}^p \beta_j^2 = 1, \  y_i(\beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + ... + \beta_p x_{ip}) \geq M(1 - \epsilon_i) \  \forall \ i = 1, ..., n, \ \epsilon_i \geq 0, \ \sum_{i = 1}\epsilon_i \leq C.\]
+
+Support vector machines take the concept of support vector classifiers and extend the feature space while also making computations efficient to account for nonlinear boundaries using kernels. The three kernels explored in this study were the linear, radial, and polynomial kernel. The diagrams in Figure \ref{fig:diagrams} display how different kernels are more appropriate depending on the structure of the data and the relationship between classes.
+\begin{figure}
+
+{\centering \includegraphics[width=0.7\linewidth]{figure/hyperplane} 
+
+}
+
+\caption{Left: The linear kernel creates a linear boundary between two classes. Middle: The radial kernel successful models data where one class is surrounded by the other class. Right: The polynomial kernel is slightly more flexible than the linear kernel.}\label{fig:diagrams}
+\end{figure}
+Each kernel has its own set of cost parameters to tune with cross validation.
+
+A linear kernel is
 
 \[K(x_i, x_{i'}) = \sum_{j = 1}^p x_{ij}x_{i'j}\]
 with a support vector classifier
 
 \[f(x) = \beta_0 + \sum_{i = 1}^n \alpha_i \langle x, x_i \rangle.\]
 
-The parameters \(\alpha_i\) and \(\beta_0\) are estimated using the inner products of the observations, but \(\alpha_i \neq 0\) if and only if \(x_i\) is a support vector. Note that this function is similar to a linear regression function. Extending this model to a nonlinear context involves a similar approach as adding nonlinear terms to a regression model.
+The parameters \(\alpha_i\) and \(\beta_0\) are estimated using the inner products of the observations, but \(\alpha_i \neq 0\) if and only if \(x_i\) is a support vector. Note that this function is similar to a linear regression function, and the kernel function is the correlation between pairs of points. Extending this model to a nonlinear context involves a similar approach as adding nonlinear terms to a regression model.
 
 The polynomial kernel of degree \(d\) is defined to be
 
@@ -605,16 +650,16 @@ For some positive constant \(k\), the radial kernel is defined to be
 
 \[K(x_i, x_{i'}) = \mbox{exp}\left( -\gamma\sum_{j = 1}^p(x_{ij} - x_{i'j})^2 \right),\]
 
-which makes the support vector machine more sensitive to nearby observations as opposed to further observations.
+which applies constraints so that the model is more sensitive to nearby observations as opposed to further observations.
 
-Support vector machines are less sensitive to outliers and successful predictors of categorical variables in high-dimensional data. A support vector machine does not perform well for data with observations that overlap and if the kernel is incorrectly selected.
+The cost parameters of support vector machines can be altered to construct models that are less sensitive to outliers and ultimately become successful predictors of categorical variables in high-dimensional data. A support vector machine does not perform well for data with observations that overlap and if the kernel is incorrectly selected.
 
 \hypertarget{training-models}{%
 \section{Training Models}\label{training-models}}
 
 Data used to train the RF and SVM models are the pixels training data and the point pixels training data. To prepare the data for modelling, first the data is separated into a training set and then a test set by a ratio of 70\% training data and 30\% testing data. The \texttt{dplyr} function \texttt{slice\_sample} was used to take a stratified sample from the entire pixels dataset where 70\% of each tree species in an individual raster strip was randomly selected. For example, the training set consisted of 70\% of the bigleaf maple trees in raster strip `A', 70\% of bigleaf maple trees in raster strip `B', and so on. From the 70\% pixels training data, 500 observations for each tree species are randomly extracted to obtain an even distribution of species. From the point pixels training data, 190 observations for each tree species are sampled.
 
-The selected variables for training the models are the four bands (red, green, blue, infrared) and an NDVI variable, and the predictive variable is the tree species name. Some predictor variables were manually computed using ratios of bands. Typically, a long over short band ratio provides some more information to train the model. The following bands were created: red/blue, ir/red, red/green, and blue/green. Examining a correlation matrix with these predictors reveals possibly useful and not too highly correlated variables are red/green, red/blue, and blue/green (see Figure \ref{fig:corrmatrix}).
+The selected variables for training the models are the four bands (red, green, blue, infrared) and an NDVI variable, and the predictive variable is the tree species name. Some predictor variables were manually computed using ratios of bands. Typically, a long over short band ratio provides some more information to train the model. The following bands were created: red/blue, ir/red, red/green, and blue/green. Examining a correlation matrix with these predictors reveals possibly informative and not too highly correlated variables are red/green, red/blue, and blue/green (see Figure \ref{fig:corrmatrix}).
 \begin{figure}
 
 {\centering \includegraphics[width=0.7\linewidth]{figure/corrmatrix} 
@@ -630,7 +675,7 @@ The \texttt{caret} package (Kuhn, 2020) in RStudio provides the framework for th
 \hypertarget{random-forest-tuning}{%
 \subsection{Random Forest Tuning}\label{random-forest-tuning}}
 
-The \texttt{train} function from the \texttt{caret} package (Kuhn, 2020) with the specified \texttt{method\ =\ rf} option is used to train a random forest model on the training dataset to predict the tree species. The function takes parameters for data, the predictive variable, and the method of training the model. To perform k-fold cross validation, the \texttt{trainControl} function is used to create an object that tells the \texttt{train} function to perform cross validation 10 times with a different fold left out each time. The function automatically tries multiple number of tries at each split (mtry) and determines the optimal number through cross-validation. Training preliminary models with varying number of predictors provided a sense of the number of predictors to include in the training data that still add information to the model but avoid adding redundancy or multicollinearity to the model. For example, just having 5 predictors in the model results in a random forest that only selects one variable for each split, while 12 predictors guarantees an issue of multicollinearity. Models were considered with total predictors around 7 or 8 predicting classes of size 7 (individual species) or 5 (oaks and maples grouped together):
+The \texttt{train} function from the \texttt{caret} package (Kuhn, 2020) with the specified \texttt{method\ =\ rf} option is used to train a random forest model on the training dataset to predict the tree species. The function takes parameters for data, the predictive variable, and the method of training the model. To perform 10-fold cross validation, the \texttt{trainControl} function is used to create an object that tells the \texttt{train} function to perform cross validation 10 times with a different fold left out each time. The function automatically tries multiple number of tries at each split (mtry) and determines the optimal number through cross-validation. Models were considered with total predictors around 7 or 8 predicting classes of size 7 (individual species) or 5 (oaks and maples grouped together):
 \begin{itemize}
 \item
   7 predictor model: red, green, blue, infrared, NDVI, \(\frac{\mbox{red}}{\mbox{green}}\), \(\frac{\mbox{blue}}{\mbox{green}}\)
@@ -685,7 +730,7 @@ Figure \ref{fig:rfresults} compares the results of the models based on overall m
 
 \caption{Comparison of results from random forest models with different predictors included}\label{fig:rfresults}
 \end{figure}
-For modelling the 7 individual tree classes, the model with the 7 predictors included has a slightly higher maximum overall accuracy than the 8 predictor model. A confusion matrix located in (cite appendix) was constructed for each model averaging the entry counts over all ten cross validation resamples to investigate model performance just predicting Western Redcedar tree pixels. Both the 7 and the 8 predictor models performed similarly classifying Western Redceder pixels, the 7 predictor model had a prediction accuracy of 32\%, the 8 predictor model had a prediction accuracy of 33\%. Out of both models, Western Redcedars tend to be inaccurately classified under douglas-firs, english oak, and norway maple trees. The 8 predictor model trained on the point pixels data had a prediction accuracy of 29\% for 5 class predictions. This model also misclassified Western Redcedars as norway maples, giant sequoias, and bigleaf maples.
+For modelling the 7 individual tree classes, the model with the 7 predictors included has a slightly higher maximum overall accuracy than the 8 predictor model. A confusion matrix located in Appendix \ref{tables} was constructed for each model averaging the entry counts over all ten cross validation resamples to investigate model performance just predicting Western Redcedar tree pixels. Both the 7 and the 8 predictor models performed similarly classifying Western Redceder pixels, the 7 predictor model had a prediction accuracy of 32\%, the 8 predictor model had a prediction accuracy of 33\%. Out of both models, Western Redcedars tend to be inaccurately classified under douglas-firs, english oak, and norway maple trees. The 8 predictor model trained on the point pixels data had a prediction accuracy of 29\% for 5 class predictions. This model also misclassified Western Redcedars as norway maples, giant sequoias, and bigleaf maples.
 
 Modelling only 5 tree classes by grouping some categories produced higher overall accuracies than the full classes models. The 7 predictor and 8 predictor model produced the highest overall average accuracies of 0.57 through cross-validation. The 7 predictor model and the 8 predictor model accurately predicted Western Redcedars 36\% and 35\% of the time respectively. Most inaccurately predicted redcedars were classified under the broadleaf category. Models on both training sets predicted grass pixels with the highest accuracy. The 4 class model with the point pixel data had an overall accuracy of 0.33 with 0.25 Western Redcedar prediction accuracy.
 
@@ -774,7 +819,7 @@ Figure \ref{fig:svmresults} displays the results of the linear, radial basis, an
 
 \caption{Comparison of results from support vector machine models with different kernel types: linear, radial, and polynomial.}\label{fig:svmresults}
 \end{figure}
-As with the random forest model comparisons, a confusion matrix was constructed using the average counts over all ten cross-validation resamples to obtain the model results predicting Western Redcedars. The support vector machine model that performed best overall was the radial basis kernel model, and it had a prediction accuracy of 35\% for the Western Redcedar class. The polynomial basis kernel had a 34\% prediction accuracy and the linear kernel also had an accuracy of 33\% for Western Redcedars. For Western Redcedar prediction on the grouped classes, the radial model had 44\% accuracy. The highest Western Redcedar prediction accuracy for SVM models with point pixel training data was for the polynomial basis model at 24\%.
+As with the random forest model comparisons, a confusion matrix (Appendix \ref{tables}) was constructed using the average counts over all ten cross-validation resamples to obtain the model results predicting Western Redcedars. The support vector machine model that performed best overall was the radial basis kernel model, and it had a prediction accuracy of 35\% for the Western Redcedar class. The polynomial basis kernel had a 34\% prediction accuracy and the linear kernel also had an accuracy of 33\% for Western Redcedars. For Western Redcedar prediction on the grouped classes, the radial model had 44\% accuracy. The highest Western Redcedar prediction accuracy for SVM models with point pixel training data was for the polynomial basis model at 24\%.
 
 Table \ref{tab:resultsSVM} compares the hyperparameters accross all support vector machine models.
 \begin{table}
@@ -2312,6 +2357,9 @@ Compare to pdxTrees
 \leavevmode\hypertarget{ref-castelluccio_land_2015}{}%
 Castelluccio, M., Poggi, G., Sansone, C., \& Verdoliva, L. (2015). Land Use Classification in Remote Sensing Images by Convolutional Neural Networks. \emph{arXiv:1508.00092 {[}Cs{]}}. Retrieved from \url{http://arxiv.org/abs/1508.00092}
 
+\leavevmode\hypertarget{ref-emery_introduction_2017}{}%
+Emery, W., \& Camps, A. (2017). \emph{Introduction to Satellite Remote Sensing: Atmosphere, Ocean, Land and Cryosphere Applications}. Elsevier.
+
 \leavevmode\hypertarget{ref-fricker_convolutional_2019}{}%
 Fricker, G. A., Ventura, J. D., Wolf, J. A., North, M. P., Davis, F. W., \& Franklin, J. (2019). A Convolutional Neural Network Classifier Identifies Tree Species in Mixed-Conifer Forest from Hyperspectral Imagery. \emph{Remote Sensing}, \emph{11}(19), 2326. \url{http://doi.org/10.3390/rs11192326}
 
@@ -2321,14 +2369,26 @@ James, G., Witten, D., Hastie, T., \& Tibshirani, R. (2013). \emph{An Introducti
 \leavevmode\hypertarget{ref-caret}{}%
 Kuhn, M. (2020). \emph{Caret: Classification and regression training}. Retrieved from \url{https://CRAN.R-project.org/package=caret}
 
+\leavevmode\hypertarget{ref-pdxtrees}{}%
+McConville, K., \& Caldwell, I. (2020). \emph{PdxTrees: Data package of portland, oregon trees}. Retrieved from \url{https://CRAN.R-project.org/package=pdxTrees}
+
 \leavevmode\hypertarget{ref-peterson_western_nodate}{}%
 Peterson, J. S. (n.d.). WESTERN RED CEDAR, 3.
 
 \leavevmode\hypertarget{ref-qian_new_2020}{}%
 Qian, Y., Zhou, W., Nytch, C. J., Han, L., \& Li, Z. (2020). A new index to differentiate tree and grass based on high resolution image and object-based methods. \emph{Urban Forestry \& Urban Greening}, \emph{53}, 126661. \url{http://doi.org/10.1016/j.ufug.2020.126661}
 
+\leavevmode\hypertarget{ref-rstudio}{}%
+R Core Team. (2019). \emph{R: A language and environment for statistical computing}. Vienna, Austria: R Foundation for Statistical Computing. Retrieved from \url{https://www.R-project.org/}
+
 \leavevmode\hypertarget{ref-seebacher_western_2007}{}%
 Seebacher, T. M. (2007). \emph{Western redcedar dieback : Possible links to climate change and implications for forest management on Vancouver Island, B.C.} (PhD thesis). University of British Columbia. Retrieved from \url{https://open.library.ubc.ca/cIRcle/collections/ubctheses/831/items/1.0074955}
+
+\leavevmode\hypertarget{ref-planet}{}%
+Team, P. (n.d.). Planet application program interface: In space for life on earth. Planet. Retrieved from \url{https://api.planet.com}
+
+\leavevmode\hypertarget{ref-tralli_satellite_2005}{}%
+Tralli, D. M., Blom, R. G., Zlotnicki, V., Donnellan, A., \& Evans, D. L. (2005). Satellite remote sensing of earthquake, volcano, flood, landslide and coastal inundation hazards. \emph{ISPRS Journal of Photogrammetry and Remote Sensing}, \emph{59}(4), 185--198. \url{http://doi.org/10.1016/j.isprsjprs.2005.02.002}
 
 \leavevmode\hypertarget{ref-noauthor_tree_nodate}{}%
 Tree Inventory Project. (n.d.). Retrieved from \url{https://pdx.maps.arcgis.com/apps/webappviewer/index.html?id=b4671f4591144530b1c590731923b182}

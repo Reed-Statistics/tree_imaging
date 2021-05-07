@@ -1,8 +1,8 @@
 # Data {#data}
 
-There are two sources of data in this project. Data at a pixel level come from satellite images downloaded from Planet.com (https://www.planet.com), and data at the ground level come from library `pdxTrees` in RStudio (https://github.com/mcconvil/pdxTrees). 
+There are two sources of data in this project. Data at a pixel level come from satellite images downloaded from Planet.com (https://www.planet.com) [@planet], and data at the ground level come from library `pdxTrees` [@pdxtrees] in RStudio (https://github.com/mcconvil/pdxTrees). 
 
-### Imaging
+## Imaging
 
 Satellite images come from Planet.com's PS2.SD instrument found on Dove-R satellites that were launched in 2017. Satellites have an approximate frame size of 20 km x 12 km parallel to flight path. From a single pass, 4 to 5 overlapping framed scenes are combined to form a tile. To separate the light into red, blue, green, and near-infrared (NIR) channels, the telescope has a high-performance butcher-block filter made of 4 individual pass-band filters. Planet.com equates this pass-band filter with that of Sentinel-2.
 
@@ -12,7 +12,7 @@ The images used in this research were taken on September 2nd, 2020 at an altitud
 
 Planet.com provides a way to download free images that are already processed and corrected for analysis. Some drawbacks to using this data are the limited number of downloads available per free account, the low spatial resolution, which decreases the performance of statistical models trying to predict tree species location, and the low spectral resolution, so the satellite sensor cannot detect spectral features in detail.
 
-### Ground Data
+## Ground Data
 Ground level data is available from the ‘pdxTrees’ package in RStudio. This data was collected as part of Portland’s Parks and Recreation’s Urban Forestry Tree Inventory Project, which collected park tree information from 2017 to 2019. Originally, the inventory project started with the goal of improving the city's tree management plans. Under the guidance of US Forestry staff, volunteers around the city's neighborhoods are trained in identifying tree species and provided with tools necessary to record tree measurements. Measurements in feet were made using diameter tape. The Portland park trees inventory consists of over 25,000 trees, each with information about tree location, size, species, and health. For the purposes of this project, the following variables were selected:
 
 * Spatial information: Longitude and latitude of tree. Location of tree is recorded on a tablet with Collector for ArcGIS and recorders manually select the tree from a satellite image on the screen. The tree's location is mapped over the satellite images in QGIS for analysis.
@@ -28,11 +28,11 @@ To prepare the ground level data for training the model, the data was filtered b
 
 Portland's Tree Inventory includes a variable for identifying trees including Western Redcedars as well as variables for filtering to include larger trees canopies (at least 6m in diameter) in the dataset, which helps construct a training set of tree polygons over a satellite image. This data would be even better suited for the purposes of this project if the street trees subdata also contained variables for tree canopy size.
 
-### Training Data
+## Training Data
 
 Two datasets were used to train the models and their performance was compared. A pixels dataset was created by extracting pixel band values (red, green, blue, and infrared) from manually drawn polygons around 100 of each tree species, so that the pixels dataset has multiple pixel observations representing a single tree. The other dataset was a point pixel dataset created by only extracting band values from the pixel directly below the point indicated by a street or park tree. This dataset is smaller than the pixels dataset and differs from the pixels dataset in that it is more likely to have the pure tree pixel values instead of maybe a dirt or shadow pixel value. Having the two datasets allows a comparison between the performance of polygon pixel extraction methods versus single point extraction methods.
 
-#### Characteristics of Pixels Training Data
+### Characteristics of Pixels Training Data
 
 The training data at the ground-level was filtered by tree size and tree type. Trees with at least 20 feet in north to south crown width were included in the training dataset to ensure that the polygons around each tree contain around 9 to 20 pixels. Figure \@ref(fig:crownWidth) plots the north to south crown width values against the west to east crown width values to present the ranges of crown widths in the entire pdxTrees parks dataset and to justify only using the north to south crown width for filtering the dataset since the two variables have a strong positive correlation.
 
@@ -59,7 +59,7 @@ train_points_dat <- train_points %>%
 knitr::kable(train_points_dat, col.names = c("Tree Name", "Tree Count"), "latex", caption = "Common names of trees included in the data and their total counts.")
 ```
 
-#### Creating Spatial Polygons
+### Creating Spatial Polygons
 
 The training dataset was converted into shapefiles for each type of tree and exported into QGIS where polygons were manually drawn around 100 of the trees for each species. The point shapefile layers were displayed over the raster images downloaded from Planet.com in QGIS, which provided a guide point for locating individual trees. Then using QGIS's drawing tool, a polygon is carefully drawn around the tree canopy (see Figure \@ref(fig:polyimage) and Figure \@ref(fig:redcedar)). Most polygons turned out to be four to six-sided polygons to retain the general shape of the tree canopy. Tree polygons were only created if the outline of the tree canopy was clearly visible or surrounded by other trees of the same species in order to avoid including pixels from the wrong species in that polygon. Also, the shadows of the trees are visible in the raster images, so the polygons were drawn with the intention of not including the tree shadow. For the five different species of trees, at least 100 polygons were drawn around trees of that type, with each polygon containing at least 6 pixels and at most 20 pixels. The polygon shapefiles were then exported into RStudio where the rest of the analysis was conducted.
 
@@ -92,13 +92,13 @@ poly_count <- pixels_data %>%
 knitr::kable(poly_count, "latex", caption = "Number of polygons per tree type per raster strip")
 ```
 
-#### Polygon Limitations
+### Polygon Limitations
 
 Ideally, the raster strips contain training trees of each species, and as a result, the polygons are evenly distributed across the raster strips, but due to limitations of our ground-level data as well as the coverage of the strips across the city of Portland, this is not achievable. Each of the raster strips contains some number of manually drawn polygons, however, raster strips 'C' and 'D' are missing some of the tree species. The raster strips do not all cover Portland to the same extent. Strips 'A' and 'B' encompass most of the city while strips 'C' and 'D' only make up a small portion that covers the corners of the city not reached by strips 'A' and 'B'.
 
 The polygons are drawn with the intention of locating and extracting pixels for a known tree species. Ideally, the extracted data is representative of tree pixels and has a sufficient amount of pixels per species. The satellite images' resolution makes some error inevitable. If tree canopies overlap, polygons may contain pixels from different species. If pixels are cast in shadow, the extracted light intensity values will differ from other pixel values. To avoid these errors, polygons with uncertain canopies are cross-checked with the satellite filter on Google Maps. For example, a point in QGIS that is indicated as a douglas-fir tree might appear as one tree on the low-resolution image from Planet.com, but a closer look at Google Maps shows that it is actually two trees in close proximity. Having low spatial resolution decreases the number of pixels available within a polygon, but that has to be balanced out with the need for a large number of pixels. With regards to the number of pixels per tree species, having around the same number of tree polygons per species results in differing amounts of pixels per species due to the different average sizes of tree canopies for different species. After drawing the images, the pixels totals per tree species is computed to ensure that the training pixels data contains at least 800 pixels per tree species.
 
-#### Combining Ground-level Data with Pixel-level Data
+### Combining Ground-level Data with Pixel-level Data
 
 The first spatial join in RStudio was conducted to match up each Spatial Polygon with a point in the training dataset. Then the raster images were loaded and joined with the polygons to extract the pixel values inside each polygon for all 4 bands (red, green, blue, infrared). Ultimately this turned into a pixel table with rows representing each pixel with its corresponding polygon, light reflection intensity values for all 4 bands, and the ground information about that tree. Table \@ref(tab:pixelHead) displays the first few entries of the pixels dataset. Table \@ref(tab:pixelCounts) contains the summary of the total number of pixels for each tree type.
 
@@ -121,7 +121,7 @@ knitr::kable(pixels_summary_dat, col.names = c("Tree Name", "Pixels Count"), "la
 
 Figure \@ref(fig:pixDensity) displays the range of reflection intensity pixel values per tree type. Each tree species has similar ranges of values over the red, green, blue, and infared bands. Of the species included in the training data, the grass bands appear to differ the most in terms of its infrared density.
 
-```{r pixDensity, echo=F, warning=F, message=F, fig.cap=' '}
+```{r pixDensity, echo=F, warning=F, message=F, fig.cap='Range of reflection intensity pixel values per tree type.'}
 ggplot(pixels_data) +
   geom_density(aes(x = red), col = "red") +
   geom_density(aes(x = blue), col = "blue") + 
@@ -131,10 +131,10 @@ ggplot(pixels_data) +
   theme_classic() + labs(x = "Reflection Intensity", y = "Density")
 ```
 
-## Preparing Raster Images
+# Preparing Raster Images
 The training model has to be applied to the entire raster image to predict the location of Western Redcedars, however, extracting all the pixels from raster images is a slow process. Filtering the rasters to keep vegetation and to recognize the difference between grass pixels and tree pixels alleviates the computational intensity of extracting all the pixels and improves the performance of the models. To reduce the size of computations, all five raster strips are masked and cropped to only include pixels within the city boundary of Portland, since that is the region of interest, and that is the extent of the ground level data.
 
-### Masking Vegetation
+## Masking Vegetation
 The satellite images in RStudio need to be masked to reduce the number of pixels that the model has to classify and prevent the chance of a non-vegetation surface being predicted as a tree. A common mask applied to raster images is a Normalized Difference Vegetation Index (NDVI) mask. This index is a measure of the greenness of a pixel, with higher values indicating vegetation and lower values indicating infertile areas such as a rock. The formula for NDVI is $NDVI = \frac{NIR - Red}{NIR + Red}$. Figure \@ref(fig:ndvival) displays the density of NDVI values over the raster images. To remove the pixels that are not vegetation, an NDVI threshold is determined to be 0.00 to create a mask dividing the pixels into vegetation (1) and non-vegetation (0). When the trained model is applied to the raster image, it is applied to the masked raster image that only keeps pixels with NDVI mask values of 1.
 
 ```{r ndvival, results="asis", echo=FALSE, warning=F, message=F, fig.cap="Normalized Difference Vegetation Index (NDVI) is a measure of the greenness of a pixel. The histogram displays the frequency of the tree pixels' NDVI values. A good threshold for masking out the nonvegetation pixels is an NDVI of 0.", fig.width=4, fig.align='center'}
@@ -144,7 +144,7 @@ ggplot(pixels_data, mapping = aes(x = ndvi)) +
   theme_minimal() + labs(x = "NDVI values", y = "frequency")
 ```
 
-### Masking Grass
+## Masking Grass
 <!-- Further preparation for applying the model to the entire mask involved creating grass polygons in QGIS to add a grass attribute in the model. Five fields of grass were outlined as polygons in QGIS. In RStudio, the pixels were extracted from the grass polygons for a total of 2,923 grass pixels. Training the model to also predict grass ensures that a field of grass will not be classified as a tree when applied to the entire raster image. -->
 
 After masking the images to only contain vegetation pixels, the effectiveness of a second mask was investigated to try and determine whether it is feasible to distinguish between tree pixels and grass pixels in a satellite image. This would be useful for preventing the final model from predicting fields of grass as trees. Inspired by previous research, a grass index was created by averaging the values of the four bands, $GRASS = \frac{RED + BLUE + GREEN + NIR}{4}$  [@qian_new_2020]. Grass polygons were created in QGIS to add a grass attribute in the pixels dataset. Five fields of grass were outlined as polygons in QGIS. In RStudio, the pixels were extracted from the grass polygons for a total of 2,923 grass pixels. Figure \@ref(fig:grassval) displays how the average band values for the grass pixels differ from the other tree types average band values. Based on the figure, pixels in the raster image that have an average band value above 4900 are filtered out.  Masking the grass pixels ensures that a field of grass will not be classified as a tree when applied to the entire raster image.
@@ -162,7 +162,7 @@ Figure \@ref(fig:beforeaftermask) displays a raster strip with every pixel inclu
 include_graphics("figure/beforeaftermask.png")
 ```
 
-### Masking Limitations
+## Masking Limitations
 
 The low resolution of the raster images cause shapes to appear blurry, and especially tree canopies that are close together appear as a single formation.
 
