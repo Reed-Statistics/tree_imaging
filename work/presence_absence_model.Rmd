@@ -1,0 +1,372 @@
+---
+title: "Final Project"
+author: "Sarah Maebius"
+date: "5/12/2021"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = F, message = F)
+```
+
+Load necessary libraries
+```{r}
+library(ggplot2)
+library(tidyverse)
+library(raster)
+library(rgdal)
+library(tigris)
+library(sf)
+library(pdxTrees)
+library(mecofun)
+```
+
+This project explores the distribution of Western Redcedars in Portland. It combines current and predicted climate data from ![WorldClim](https://www.worldclim.org/data/index.html) with tree locations from ![pdxTrees](https://github.com/mcconvil/pdxTrees) to predict and analyse the species distribution changes over time. Methods in this project closely follow methods used in a ![Species Distribution Modelling Study](https://damariszurell.github.io/SDM-Intro/#1_Background). That project investigated the changes in distribution of Ring Ouzel birds in Switzerland using climate data and presence-absence of the species data.
+
+The raster function `getData` was used to obtain a raster of current and predicted climate data for Portland. The variables selected were 
+
+* `bio_2`: the mean of variation between the daily high and low temperatures
+* `bio_5`: the maximum temperature of the warmest month
+* `bio_14`: the precipitation of the driest month
+
+![Research](https://besjournals.onlinelibrary.wiley.com/doi/10.1111/j.1365-2745.2010.01741.x) suggested that climated change affects tree locations because decreased rainfall and increased temperatures negatively impact tree growth. Some other rainfall and temperature variables were included in the models, but `bio_2`, `bio_5`, and `bio_14` performed the best and they provide measurements for rainfall and temperature.
+
+## Climate analysis
+Source: https://www.rdocumentation.org/packages/raster/versions/3.4-5/topics/getData
+```{r}
+# current climate data
+bio_curr <- raster::getData('worldclim', var = 'bio', res = 0.5, lon = -122, 
+                    lat = 45, path = 'data')[[c(2, 5, 14)]]
+# projected climate data
+bio_fut <- raster::getData('CMIP5', var = 'bio', res = 2.5, lon = -122, lat = 45, 
+                   rcp = 45, model = 'NO', year = 70, path = 'data', 
+                   download = T)[[c(2, 5, 14)]]
+
+# reduce size
+pdx_ext <- c(-122.9, -122.4, 45.3, 45.65)
+bio_curr <- crop(bio_curr, pdx_ext)
+bio_fut <- crop(bio_fut, pdx_ext)
+
+# get portland outline
+or_cities <- tigris::places("OR", class = "sp")
+portland <- or_cities %>%
+  dplyr::filter(NAME == "Portland")
+portland_wgs84 <- spTransform(portland, CRS("+proj=utm +zone=10 +ellps=WGS84 
+                                            +datum=WGS84 +units=m +no_defs"))
+
+# portland to raster
+r <- raster(ncol = 180, nrow = 180)
+extent(r) <- extent(portland)
+rp <- rasterize(portland, r)
+
+# project and clip to boundary
+bio_curr <- projectRaster(bio_curr, rp)
+bio_curr <- resample(bio_curr, rp)
+bio_curr <- raster::mask(bio_curr, rp)
+names(bio_curr) <- c('bio_2', 'bio_5', 'bio_14')
+bio_fut <- projectRaster(bio_fut, rp)
+bio_fut <- resample(bio_fut, rp)
+bio_fut <- mask(bio_fut, rp)
+names(bio_fut) <- c('bio_2', 'bio_5', 'bio_14')
+
+# convert temp to celcius
+bio_curr[[1]] <- bio_curr[[1]]/10
+bio_curr[[2]] <- bio_curr[[2]]/10
+bio_fut[[1]] <- bio_fut[[1]]/10
+bio_fut[[2]] <- bio_fut[[2]]/10
+
+# visualize climates
+plot(bio_curr)
+plot(bio_fut)
+```
+
+To analyze the climate change over Portland, I computed the rainfall and temperature gradients. The following functions provided code to obtain a semi-systematic sample of coordinates and compute the gradient for a field.
+
+### Functions
+```{r}
+obtain_sys = function(N,n){
+  k = ceiling(N/n)
+  r = sample(1:k, 1)
+  seq(r, r + k*(n-1), k)
+}
+
+GradientComp <- function(field, variable) {
+  variable <- field[, variable]
+  gradx <- field %>% # x component
+  group_by(y) %>%
+  mutate(gradx = c(NA, variable[3:n()], NA) - c(NA, variable[1:(n() - 2)], NA))
+  grady <- field %>% # y component
+    group_by(x) %>%
+    mutate(grady = c(NA, variable[3:n()], NA) - c(NA, variable[1:(n() - 2)], NA)) 
+  return(full_join(gradx, grady))
+}
+```
+
+### Current Rainfall and Temperature Gradients
+The functions were used to obtain and vizualize the rainfall and temperature gradients for the current climate in Portland.
+```{r}
+# precipitation
+field_cur_precip <- data.frame(rasterToPoints(bio_curr[[3]]))
+grad_precip <- GradientComp(field_cur_precip, "bio_14")
+gradplot_precip <- grad_precip[obtain_sys(nrow(grad_precip), 100), ]
+
+ggplot(data = field_cur_precip, aes(x, y)) +
+  geom_tile(aes(fill = bio_14)) +
+  scale_fill_viridis_c() +
+  theme_classic() +
+  geom_segment(data = gradplot_precip,
+               aes(x, y, xend = x + gradx*0.02, yend = y + grady*0.02), 
+               arrow = arrow(length = unit(0.01,"npc")),
+               color = "maroon") 
+
+# temp range
+field_cur_temp <- data.frame(rasterToPoints(bio_curr[[1]]))
+grad_temp <- GradientComp(field_cur_temp, "bio_2")
+gradplot_temp <- grad_temp[obtain_sys(nrow(grad_temp), 100), ]
+
+ggplot(data = field_cur_temp, aes(x, y)) +
+  geom_tile(aes(fill = bio_2)) +
+  scale_fill_viridis_c() +
+  theme_classic() +
+  geom_segment(data = gradplot_temp,
+               aes(x, y, xend = x + gradx*0.02, yend = y + grady*0.02), 
+               arrow = arrow(length = unit(0.01,"npc")),
+               color = "maroon") 
+
+# max temp
+field_cur_temp_max <- data.frame(rasterToPoints(bio_curr[[2]]))
+grad_temp_max <- GradientComp(field_cur_temp_max, "bio_5")
+gradplot_temp_max <- grad_temp_max[obtain_sys(nrow(grad_temp_max), 100), ]
+
+ggplot(data = field_cur_temp_max, aes(x, y)) +
+  geom_tile(aes(fill = bio_5)) +
+  scale_fill_viridis_c() +
+  theme_classic() +
+  geom_segment(data = gradplot_temp_max,
+               aes(x, y, xend = x + gradx*0.02, yend = y + grady*0.02), 
+               arrow = arrow(length = unit(0.01,"npc")),
+               color = "maroon") 
+```
+
+### Predicted Rainfall and Temperature Gradients
+The same was done for the predicted climate variable gradients.
+```{r, eval = F}
+# precipitation
+field_fut_precip <- data.frame(rasterToPoints(bio_fut[[3]]))
+grad_precip <- GradientComp(field_fut_precip, "bio_14")
+
+gradx <- field_fut_precip %>% # x component
+  group_by(y) %>%
+  mutate(gradx = c(NA, bio_14[3:n()], NA) - c(NA, bio_14[1:(n() - 2)], NA))
+grady <- field_fut_precip %>% # y component
+  group_by(x) %>%
+  mutate(grady = c(NA, bio_14[3:n()], NA) - c(NA, bio_14[1:(n() - 2)], NA)) 
+grad_precip <- full_join(gradx, grady)
+
+gradplot_precip <- grad_precip[obtain_sys(nrow(grad_precip), 100), ]
+
+ggplot(data = field_fut_precip, aes(x, y)) +
+  geom_tile(aes(fill = bio_14)) +
+  scale_fill_viridis_c() +
+  theme_classic() +
+  geom_segment(data = gradplot_precip,
+               aes(x, y, xend = x + gradx*0.02, yend = y + grady*0.02), 
+               arrow = arrow(length = unit(0.01,"npc")),
+               color = "maroon") 
+
+# temp range
+field_fut_temp <- data.frame(rasterToPoints(bio_fut[[1]]))
+grad_temp <- GradientComp(field_fut_temp, "bio_2")
+gradplot_temp <- grad_temp[obtain_sys(nrow(grad_temp), 100), ]
+
+ggplot(data = field_fut_temp, aes(x, y)) +
+  geom_tile(aes(fill = bio_2)) +
+  scale_fill_viridis_c() +
+  theme_classic() +
+  geom_segment(data = gradplot_temp,
+               aes(x, y, xend = x + gradx*0.02, yend = y + grady*0.02), 
+               arrow = arrow(length = unit(0.01,"npc")),
+               color = "maroon") 
+
+# max temp
+field_fut_temp_max <- data.frame(rasterToPoints(bio_fut[[2]]))
+grad_temp_max <- GradientComp(field_fut_temp_max, "bio_5")
+gradplot_temp_max <- grad_temp_max[obtain_sys(nrow(grad_temp_max), 100), ]
+
+ggplot(data = field_fut_temp_max, aes(x, y)) +
+  geom_tile(aes(fill = bio_5)) +
+  scale_fill_viridis_c() +
+  theme_classic() +
+  geom_segment(data = gradplot_temp_max,
+               aes(x, y, xend = x + gradx*0.02, yend = y + grady*0.02), 
+               arrow = arrow(length = unit(0.01,"npc")),
+               color = "maroon") 
+```
+
+## Western Redcedar Data Preparation
+Using ![pdxTrees](https://github.com/mcconvil/pdxTrees), I create a table that has Western Redcedar tree presence locations and join that table with climate data for that location. A column `blockCV_tile` is added to separate the data into 4 spatial regions in Portland.
+
+```{r}
+# load data
+pdxTrees_parks <- get_pdxTrees_parks()
+pdxTrees_streets <- get_pdxTrees_streets()
+pdxTrees_full <- full_join(pdxTrees_parks, pdxTrees_streets)
+
+pdxTrees <- pdxTrees_full %>%
+  mutate(Presence = case_when(
+    Common_Name %in% "Western Redcedar" ~ 1,
+    TRUE ~ 0
+  )) %>%
+  dplyr::select(Longitude, Latitude, Presence) %>%
+  na.omit()
+
+# combine with climate info
+coords <- data.frame(x = pdxTrees$Longitude, y = pdxTrees$Latitude)
+points <- SpatialPointsDataFrame(coords, data = pdxTrees, 
+                                 proj4string = bio_curr@crs)
+values_curr <- extract(bio_curr, points)
+values_fut <- extract(bio_fut, points)
+trees_curr <- cbind.data.frame(pdxTrees, values_curr) %>% na.omit()
+trees_fut <- cbind.data.frame(pdxTrees, values_fut) %>% na.omit()
+
+head(trees_curr)
+head(trees_fut)
+
+# spatial blocks
+trees_curr <- trees_curr %>%
+  mutate(blockCV_tile = case_when(
+    Longitude >= min(Longitude) & Longitude < -122.7431 & 
+      Latitude <= max(Latitude) & Latitude > 45.57818 ~ 1,
+    Longitude >= -122.7431 & Longitude < -122.6531 &
+      Latitude <= max(Latitude) & Latitude > 45.57818 ~ 2,
+    Longitude >= -122.6531 & Longitude < -122.5631 &
+      Latitude <= max(Latitude) & Latitude > 45.57818 ~ 3,
+    Longitude >= -122.5631 & Longitude <= max(Longitude) &
+      Latitude <= max(Latitude) & Latitude > 45.57818 ~ 4,
+    Longitude >= min(Longitude) & Longitude < -122.7431 &
+      Latitude <= 45.57818 & Latitude > 45.50606 ~ 5,
+    Longitude >= -122.7431 & Longitude < -122.6531 &
+      Latitude <= 45.57818 & Latitude > 45.50606 ~ 6,
+    Longitude >= -122.6531 & Longitude < -122.5631 &
+      Latitude <= 45.57818 & Latitude > 45.50606 ~ 7,
+    Longitude >= -122.5631 & Longitude <= max(Longitude) &
+      Latitude <= 45.57818 & Latitude > 45.50606 ~ 8,
+    Longitude >= min(Longitude) & Longitude < -122.7431 &
+      Latitude <= 45.50606 & Latitude >= min(Latitude) ~ 9,
+    Longitude >= -122.7431 & Longitude < -122.6531 &
+      Latitude <= 45.50606 & Latitude >= min(Latitude) ~ 10,
+    Longitude >= -122.6531 & Longitude < -122.5631 &
+      Latitude <= 45.50606 & Latitude >= min(Latitude) ~ 11,
+    Longitude >= -122.5631 & Longitude <= max(Longitude) &
+      Latitude <= 45.50606 & Latitude >= min(Latitude) ~ 12
+  ))
+
+ggplot() +
+  geom_point(trees_curr, mapping = aes(Longitude, Latitude, color = blockCV_tile))
+
+# separate into train and test data
+set.seed(2)
+train <- trees_curr %>%
+  group_by(Presence) %>%
+  slice_sample(prop = 0.7)
+test <- anti_join(trees_curr, train)
+
+# compare training data to full data
+ggplot(train, aes(Longitude, Latitude, color = Presence)) + 
+  geom_point()
+ggplot(test, aes(Longitude, Latitude, color = Presence)) + 
+  geom_point(alpha = 0.4)
+ggplot(trees_curr, aes(Longitude, Latitude, color = Presence)) + 
+  geom_point()
+```
+
+## Modelling
+First a ![generalized linear model](https://cran.r-project.org/web/packages/jtools/vignettes/summ.html) and a random forest is applied to the current climate to predict tree locations.
+
+```{r}
+library(jtools)
+
+# Fit GLM
+m_glm <- glm(Presence ~ bio_2 + I(bio_2^2) + bio_5 + I(bio_5^2) + bio_14 + I(bio_14^2), family = 'binomial', data = train)
+
+summary(m_glm)
+summ(m_glm)
+```
+
+```{r, eval = F}
+library(ranger)
+# Fit RF
+# m_rf <- randomForest(Presence ~ ., data = train[, 3:6], importance = T)
+# m_rf <- randomForest(y = train[, 3], x = trees_curr[, 4:6], importance = T)
+m_rf <- ranger(Presence ~ ., data = train[, 3:6], classification = T)
+m_rf
+importance(m_rf)
+plot(m_rf)
+head(getTree(m_rf,1,T))
+pred <- c('bio_2', 'bio_5', 'bio_14')
+```
+
+## Model Assessment
+### Implementing spatial cross validation
+```{r, eval = F}
+# glm
+pred_df <- data.frame(matrix(ncol = 2, nrow = 4))
+colnames(pred_df) <- c('accuracy', 'fold')
+for(x in 1:12) {
+  test_fold <- train %>%
+    filter(blockCV_tile != x)
+  test_odds <- predict.glm(m_glm, test_fold, type = 'response')
+  test_pred <- ifelse(test_odds >= 0.5, 1, 0)
+  accuracy <- sum(test_pred == test_fold$Presence)/nrow(test_fold)
+  pred_df[x, 'accuracy'] <- accuracy
+  pred_df[x, 'fold'] <- x
+}
+
+# rf
+pred_df <- data.frame(matrix(ncol = 2, nrow = 4))
+colnames(pred_df) <- c('accuracy', 'fold')
+for(x in 1:12) {
+  test_fold <- train %>%
+    filter(blockCV_tile != x)
+  test_pred <- predict(m_rf, test_fold, type = 'response')
+  accuracy <- sum(test_pred$predictions == test_fold$Presence)/nrow(test_fold)
+  pred_df[x, 'accuracy'] <- accuracy
+  pred_df[x, 'fold'] <- x
+}
+```
+
+Predictions
+```{r, eval = F}
+bio_curr_df <- data.frame(rasterToPoints(bio_curr))
+bio_curr_df$pred_glm <- ifelse(predict.glm(m_glm, bio_curr_df, type = 'response') >= 0.5, 1, 0)
+bio_curr_df$pred_rf <- predict(m_rf, bio_curr_df)$predictions
+
+r_pred_curr <- rasterFromXYZ(bio_curr_df[,-c(3:5)])
+plot(r_pred_curr)
+plot(rasterFromXYZ(bio_curr_df[, c(1, 2, 6)]))
+ggplot(bio_curr_df %>% filter(pred_rf == 1), aes(x, y)) +
+  geom_point()
+ggplot(bio_curr_df, aes(x, y)) +
+  geom_point(alpha = 0.2, fill = "lightgray") +
+  geom_point(bio_curr_df %>% filter(pred_rf == 1), mapping = aes(x, y), color = "purple", alpha = 0.8) + theme_minimal()
+```
+
+```{r}
+bio_fut_df <- data.frame(rasterToPoints(bio_fut))
+bio_fut_df$pred_glm <- ifelse(predict.glm(m_glm, bio_fut_df, type = 'response') >= 0.5, 1, 0)
+bio_fut_df$pred_rf <- predict(m_rf, bio_fut_df)$predictions
+
+r_pred_fut <- rasterFromXYZ(bio_fut_df[,-c(3:5)])
+
+ggplot(bio_fut_df, aes(x, y)) +
+  geom_point(alpha = 0.2, fill = "lightgray") +
+  geom_point(bio_fut_df %>% filter(pred_glm == 1), mapping = aes(x, y), color = "purple", alpha = 0.8) + theme_minimal()
+```
+
+
+Questions:
+Do redcedars migrate? How long does it take for significant changes in the distribution of redcedars to be visible?
+What variables explain the distribution of redcedars?
+
+SDM: https://www.molecularecologist.com/2013/04/23/species-distribution-models-in-r/
+Spatial CV: https://geocompr.robinlovelace.net/spatial-cv.html
